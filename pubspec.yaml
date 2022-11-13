@@ -1,0 +1,97 @@
+name: ayyami
+description: A new Flutter project.
+
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+version: 1.0.0+1
+
+environment:
+  sdk: '>=2.18.2 <3.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+
+  cupertino_icons: ^1.0.2
+
+  flutter_screenutil: ^5.5.3+2
+  flutter_svg: ^1.1.5
+  dropdown_button2: ^1.8.8
+  fluttertoast: ^8.0.9
+  google_fonts: ^3.0.1
+  flutter_spinkit: ^5.1.0
+  regexed_validator: ^2.0.0+1
+  intl_phone_number_input: ^0.7.1
+  firebase_core: ^1.24.0
+  firebase_storage: ^10.3.10
+  firebase_auth: ^3.11.0
+  cloud_firestore: ^3.5.0
+  firebase_database: ^9.1.7
+  image_picker: ^0.8.6
+  numberpicker: ^2.1.1
+  flutter_time_picker_spinner: ^2.0.0
+  firebase_core_platform_interface: 4.5.1
+
+#  date
+  hijri_picker: ^3.0.0
+  hijri: ^3.0.0
+  table_calendar: ^3.0.7
+
+#  state
+  provider: ^6.0.4
+
+#  formating
+  intl: ^0.17.0
+
+#  storage
+  shared_preferences: ^2.0.15
+
+#  networking
+  http: ^0.13.5
+
+#  notification
+  flutter_local_notifications: ^12.0.3
+
+#  players
+  audioplayers: ^1.1.1
+
+  change_app_package_name: ^1.1.0
+  get: ^4.6.5
+  get_storage: ^2.0.3
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^2.0.0
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/
+    - assets/svg/
+    - assets/images/
+
+  fonts:
+    - family: DMSans
+      fonts:
+       - asset: assets/fonts/DM-Sans-Bold.ttf
+       - asset: assets/fonts/DM-Sans-Regular.ttf
+
+    - family: Charm
+      fonts:
+        - asset: assets/fonts/Charm-Regular.ttf
+        - asset: assets/fonts/Charm-Bold.ttf
+          weight: 700
+
+    - family: Inter
+      fonts:
+        - asset: assets/fonts/Inter-Regular.ttf
+        - asset: assets/fonts/Inter-Medium.ttf
+        - asset: assets/fonts/Inter-Light.ttf
+        - asset: assets/fonts/Inter-Bold.ttf
+        - asset: assets/fonts/Inter-ExtraBold.ttf
+          weight: 900
+   
+
