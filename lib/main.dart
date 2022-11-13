@@ -9,7 +9,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:provider/provider.dart';
 
 import 'screens/home.dart';
@@ -41,8 +40,8 @@ class MyApp extends StatelessWidget {
               debugShowCheckedModeBanner: false,
               navigatorKey: Get.key,
               translations: AppTranslate(),
-              locale:const Locale('en','US'),
-              fallbackLocale: const Locale('en','US'),
+              locale: const Locale('en', 'US'),
+              fallbackLocale: const Locale('en', 'US'),
               title: 'Ayyami',
               routes: {
                 homeRoute: (context) => HomeScreen(),
