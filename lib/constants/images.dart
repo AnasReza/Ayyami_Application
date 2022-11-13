@@ -19,6 +19,7 @@ class AppImages {
   static const String downIcon = "assets/svg/down_icon.svg";
   static const String safeIcon = "assets/svg/safe_icon.svg";
   static const String bellIcon = "assets/svg/bell.png";
+  static const String medicineIcon = "assets/svg/medicine.svg";
 
   /// General App Assets
   static const String logo = "assets/svg/app_logo.svg";
