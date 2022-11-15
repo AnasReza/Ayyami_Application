@@ -6,8 +6,10 @@ import 'package:flutter_svg/svg.dart';
 import '../constants/images.dart';
 
 class FAB extends StatelessWidget {
+  final Function(int tappingIndex) tappingIndex;
   const FAB({
     Key? key,
+    required this.tappingIndex
   }) : super(key: key);
 
   @override
@@ -84,11 +86,13 @@ class FAB extends StatelessWidget {
     //   ),
     // ),
     return InkWell(
-      onTap: () => Navigator.of(context).pushNamed(historyRoute),
+      onTap: () {
+        tappingIndex(2);
+      },
       child: SvgPicture.asset(
         AppImages.fabBtn,
-        width: 170.w,
-        height: 170.h,
+        width: 180.w,
+        height: 180.h,
       ),
     );
   }

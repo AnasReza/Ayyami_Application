@@ -29,12 +29,12 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
   void initState() {
     super.initState();
     final provider = context.read<PrayerProvider>();
-    provider.callNotification();
-    provider.fetchTimerAndCalculate();
-    Future.delayed(const Duration(microseconds: 100), () {
-      provider.initPrayerTiming(context);
-    });
-    WidgetsBinding.instance.addObserver(this);
+    // provider.callNotification();
+    // provider.fetchTimerAndCalculate();
+    // Future.delayed(const Duration(microseconds: 100), () {
+    //   provider.initPrayerTiming(context);
+    // });
+    // WidgetsBinding.instance.addObserver(this);
   }
 
   @override
@@ -63,9 +63,9 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
     final provider = context.read<PrayerProvider>();
 
     return Scaffold(
-      bottomNavigationBar: CustomBottomNav(cIndex: _cIndex),
+      bottomNavigationBar: CustomBottomNav(cIndex: _cIndex,tappingIndex: (index){},),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: const FAB(),
+      floatingActionButton: FAB(tappingIndex: (index){}),
       backgroundColor: AppColors.white,
       body: SafeArea(
         child: Container(

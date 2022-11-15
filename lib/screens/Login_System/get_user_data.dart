@@ -1,20 +1,24 @@
 import 'dart:io';
+import 'package:ayyami/constants/const.dart';
+import 'package:ayyami/providers/user_provider.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+import 'package:provider/provider.dart';
 
 import '../../widgets/gradient_button.dart';
 import '../../widgets/utils.dart';
-
+import '../main_screen.dart';
 
 class set_password extends StatefulWidget {
   final contact_number;
   final user_id;
 
-  const set_password(
-      {super.key, required this.contact_number, required this.user_id});
+  const set_password({super.key, required this.contact_number, required this.user_id});
 
   @override
   State<set_password> createState() => _set_passwordState();
@@ -29,8 +33,7 @@ class _set_passwordState extends State<set_password> {
   File? imageData;
 
   Future getImageFromCamera() async {
-    final img =
-        await picker.pickImage(source: ImageSource.camera, imageQuality: 80);
+    final img = await picker.pickImage(source: ImageSource.camera, imageQuality: 80);
 
     setState(() {
       if (img != null) {
@@ -42,8 +45,7 @@ class _set_passwordState extends State<set_password> {
   }
 
   Future getImageFromGallery() async {
-    final img =
-        await picker.pickImage(source: ImageSource.gallery, imageQuality: 80);
+    final img = await picker.pickImage(source: ImageSource.gallery, imageQuality: 80);
 
     setState(() {
       if (img != null) {
@@ -55,8 +57,7 @@ class _set_passwordState extends State<set_password> {
   }
 
   //Data get to firebase
-  firebase_storage.FirebaseStorage storage =
-      firebase_storage.FirebaseStorage.instance;
+  firebase_storage.FirebaseStorage storage = firebase_storage.FirebaseStorage.instance;
   final databaseRef = FirebaseDatabase.instance.ref("Users");
   final userNameController = TextEditingController();
   final auth = FirebaseAuth.instance;
@@ -97,11 +98,10 @@ class _set_passwordState extends State<set_password> {
                     ),
                     SizedBox(height: 40),
                     InkWell(
-                      onTap: () 
-                          { 
-                            //----Dialog Start-----
+                      onTap: () {
+                        //----Dialog Start-----
 
-                             showDialog(
+                        showDialog(
                             context: context,
                             builder: (BuildContext context) {
                               return Dialog(
@@ -116,9 +116,7 @@ class _set_passwordState extends State<set_password> {
                                         height: 250,
                                         child: Column(
                                           children: [
-                                            const Padding(
-                                                padding: EdgeInsets.symmetric(
-                                                    vertical: 30)),
+                                            const Padding(padding: EdgeInsets.symmetric(vertical: 30)),
                                             const Text(
                                               "Choose",
                                               style: TextStyle(
@@ -130,42 +128,30 @@ class _set_passwordState extends State<set_password> {
                                             ),
                                             SizedBox(height: 30),
                                             Padding(
-                                                padding:
-                                                    const EdgeInsets.fromLTRB(
-                                                        30, 0, 10, 10),
+                                                padding: const EdgeInsets.fromLTRB(30, 0, 10, 10),
                                                 child: Row(
                                                   children: [
                                                     Container(
-                                                      padding: const EdgeInsets
-                                                              .symmetric(
-                                                          horizontal: 30),
+                                                      padding: const EdgeInsets.symmetric(horizontal: 30),
                                                       child: Column(
                                                         children: [
                                                           InkWell(
                                                               child: const Icon(
-                                                                Icons
-                                                                    .camera_alt,
+                                                                Icons.camera_alt,
                                                                 size: 40,
-                                                                color: Color(
-                                                                    0xff1F3D73),
+                                                                color: Color(0xff1F3D73),
                                                               ),
                                                               onTap: () {
                                                                 getImageFromCamera();
-                                                              
                                                               }),
-                                                          const SizedBox(
-                                                              height: 5),
+                                                          const SizedBox(height: 5),
                                                           const Text(
                                                             "Camera",
                                                             style: TextStyle(
                                                               fontSize: 18.0,
-                                                              fontFamily:
-                                                                  'DMSans',
-                                                              color: Color(
-                                                                  0xff1F3D73),
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w400,
+                                                              fontFamily: 'DMSans',
+                                                              color: Color(0xff1F3D73),
+                                                              fontWeight: FontWeight.w400,
                                                             ),
                                                           )
                                                         ],
@@ -173,39 +159,29 @@ class _set_passwordState extends State<set_password> {
                                                     ),
                                                     const SizedBox(width: 40),
                                                     Container(
-                                                      padding: const EdgeInsets
-                                                              .symmetric(
-                                                          horizontal: 0),
+                                                      padding: const EdgeInsets.symmetric(horizontal: 0),
                                                       child: Column(
                                                         children: [
                                                           InkWell(
                                                             child: const Icon(
                                                               Icons.image,
                                                               size: 40,
-                                                              color: Color(
-                                                                  0xff1F3D73),
+                                                              color: Color(0xff1F3D73),
                                                             ),
-                                                            onTap:
-                                                                () //Gallery OnTap
+                                                            onTap: () //Gallery OnTap
 
                                                                 {
                                                               getImageFromGallery();
-                                                             
                                                             },
                                                           ),
-                                                          const SizedBox(
-                                                              height: 5),
+                                                          const SizedBox(height: 5),
                                                           const Text(
                                                             "Gallery",
                                                             style: TextStyle(
                                                               fontSize: 18.0,
-                                                              fontFamily:
-                                                                  'DMSans',
-                                                              color: Color(
-                                                                  0xff1F3D73),
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w400,
+                                                              fontFamily: 'DMSans',
+                                                              color: Color(0xff1F3D73),
+                                                              fontWeight: FontWeight.w400,
                                                             ),
                                                           )
                                                         ],
@@ -227,8 +203,7 @@ class _set_passwordState extends State<set_password> {
                                     ],
                                   ));
                             });
-
-                          }, //----Dialog End-----
+                      }, //----Dialog End-----
                       child: Stack(
                         children: <Widget>[
                           CircleAvatar(
@@ -240,7 +215,6 @@ class _set_passwordState extends State<set_password> {
                                 child: imageData != null
                                     ? Image.file(
                                         imageData!.absolute,
-                                      
                                         fit: BoxFit.fitWidth,
                                       )
                                     : Image.asset(
@@ -258,8 +232,7 @@ class _set_passwordState extends State<set_password> {
                               width: 40,
                               decoration: const BoxDecoration(
                                 color: Colors.white,
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(40)),
+                                borderRadius: BorderRadius.all(Radius.circular(40)),
                               ),
                               child: Image.asset("assets/images/camera.png"),
                             ),
@@ -325,28 +298,28 @@ class _set_passwordState extends State<set_password> {
                     setState(() {
                       loading = true;
                     });
-                    String uid =
-                        DateTime.now().millisecondsSinceEpoch.toString();
+                    String? uid = FirebaseAuth.instance.currentUser?.uid;
 
-                    firebase_storage.Reference ref = firebase_storage
-                        .FirebaseStorage.instance
-                        .ref('/AyyamiApplication$uid');
+                    firebase_storage.Reference ref =
+                        firebase_storage.FirebaseStorage.instance.ref('/AyyamiApplication$uid');
 
-                    firebase_storage.UploadTask uploadImage =
-                        ref.putFile(imageData!.absolute);
+                    firebase_storage.UploadTask uploadImage = ref.putFile(imageData!.absolute);
                     await Future.value(uploadImage);
                     var newUrl = await ref.getDownloadURL();
 
-                    databaseRef.child(uid).set({
+                    FirebaseFirestore.instance.collection('users').doc(uid).set({
                       'user_name': userNameController.text.toString(),
                       'contact_no': widget.contact_number,
-                      "title": newUrl.toString(),
-                      'u_id': uid
+                      "imgUrl": newUrl.toString(),
+                      'uid': uid
+                    }).then((value){
+                      final provider=Provider.of<UserProvider>(context,listen: false);
+                      provider.setUID(uid!);
+                      setHive(uid!);
+                      nextScreen(context, MainScreen());
                     });
 
-                    toast_notification().toast_message("uploadImage");
 
-                
 
                     // Navigator.push(
                     //     context,
@@ -365,6 +338,10 @@ class _set_passwordState extends State<set_password> {
       ),
     );
   }
+  void setHive(String uid) async{
+    var box=await Hive.openBox('aayami');
+    box.put('uid', uid);
+    box.put('login', true);
+  }
+
 }
-
-

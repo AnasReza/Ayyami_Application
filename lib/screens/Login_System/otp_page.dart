@@ -1,8 +1,14 @@
 // ignore_for_file: non_constant_identifier_names
 
+import 'package:ayyami/providers/user_provider.dart';
+import 'package:ayyami/screens/main_screen.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
+import 'package:hive/hive.dart';
+import 'package:provider/provider.dart';
 
 import '../../widgets/gradient_button.dart';
 import '../../widgets/utils.dart';
@@ -12,8 +18,7 @@ class otp_page extends StatefulWidget {
   final String verificationId;
   final String get_number;
 
-  const otp_page(
-      {super.key, required this.verificationId, required this.get_number});
+  const otp_page({super.key, required this.verificationId, required this.get_number});
 
   @override
   State<otp_page> createState() => _otp_pageState(get_number, verificationId);
@@ -257,7 +262,7 @@ class _otp_pageState extends State<otp_page> {
                   loading = true;
                 });
 
-                String uid = auth.currentUser!.uid;
+                // String uid = auth.currentUser!.uid;
 
                 String code1 = code1Controller.text.toString();
                 String code2 = code2Controller.text.toString();
@@ -268,18 +273,25 @@ class _otp_pageState extends State<otp_page> {
 
                 finalCode = code1 + code2 + code3 + code4 + code5 + code6;
 
-                final crendential = PhoneAuthProvider.credential(
-                    verificationId: verificationId, smsCode: finalCode);
+                final crendential = PhoneAuthProvider.credential(verificationId: verificationId, smsCode: finalCode);
 
                 try {
-                  String getUid = "";
-                  await auth
-                      .signInWithCredential(crendential)
-                      .then((value) => getUid);
-
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => set_password(
-                          contact_number: get_number, user_id: getUid)));
+                  String? getUid = "";
+                  await auth.signInWithCredential(crendential).then((value) {
+                    getUid = value.user?.uid;
+                    FirebaseFirestore.instance.collection('users').doc(getUid).get().then((value) {
+                      if (value.exists) {
+                        final provider=Provider.of<UserProvider>(context,listen: false);
+                        provider.setUID(getUid!);
+                        setHive(getUid!);
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => MainScreen()));
+                      } else {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => set_password(contact_number: get_number, user_id: getUid)));
+                      }
+                    });
+                  });
                 } catch (e) {
                   setState(() {
                     loading = false;
@@ -339,5 +351,10 @@ class _otp_pageState extends State<otp_page> {
         ],
       ),
     )));
+  }
+  void setHive(String uid) async{
+    var box=await Hive.openBox('aayami');
+    box.put('uid', uid);
+    box.put('login', true);
   }
 }

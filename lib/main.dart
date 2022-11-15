@@ -1,5 +1,6 @@
 import 'package:ayyami/constants/routes.dart';
 import 'package:ayyami/providers/prayer_provider.dart';
+import 'package:ayyami/providers/user_provider.dart';
 import 'package:ayyami/screens/Splash_screen.dart';
 import 'package:ayyami/screens/history.dart';
 import 'package:ayyami/screens/medicine_reminder.dart';
@@ -9,6 +10,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:hive/hive.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 
 import 'screens/home.dart';
@@ -16,7 +19,15 @@ import 'screens/home.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  runApp(const MyApp());
+  runApp(MultiProvider(providers: [ChangeNotifierProvider(create: (_) => UserProvider())],child: const MyApp(),));
+  _openBoxes();
+}
+
+Future<List<Box>> _openBoxes() async {
+  final dir = await getApplicationDocumentsDirectory();
+  Hive.init(dir.path);
+
+  return await Future.wait([Hive.openBox('aayami')]);
 }
 
 class MyApp extends StatelessWidget {

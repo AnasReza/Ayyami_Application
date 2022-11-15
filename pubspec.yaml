@@ -23,15 +23,16 @@ dependencies:
   flutter_spinkit: ^5.1.0
   regexed_validator: ^2.0.0+1
   intl_phone_number_input: ^0.7.1
-  firebase_core: ^1.24.0
-  firebase_storage: ^10.3.10
-  firebase_auth: ^3.11.0
-  cloud_firestore: ^3.5.0
-  firebase_database: ^9.1.7
+  firebase_core: ^2.2.0
+  firebase_storage: ^11.0.5
+  firebase_auth: ^4.1.2
+  cloud_firestore: ^4.0.5
+  firebase_database: ^10.0.5
   image_picker: ^0.8.6
   numberpicker: ^2.1.1
   flutter_time_picker_spinner: ^2.0.0
-  firebase_core_platform_interface: 4.5.1
+  firebase_core_platform_interface: ^4.5.2
+  path_provider: ^2.0.11
 
 #  date
   hijri_picker: ^3.0.0
@@ -46,6 +47,7 @@ dependencies:
 
 #  storage
   shared_preferences: ^2.0.15
+  hive: ^2.2.3
 
 #  networking
   http: ^0.13.5

@@ -1,20 +1,20 @@
 // ignore_for_file: prefer_const_constructors_in_immutables
 
 import 'package:ayyami/constants/images.dart';
-import 'package:ayyami/screens/prayer_timing.dart';
+import 'package:ayyami/screens/prayer/prayer_timing.dart';
 import 'package:ayyami/widgets/app_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 
-import '../constants/colors.dart';
-import '../navigation/custom_bottom_nav.dart';
-import '../navigation/custom_fab.dart';
-import '../providers/prayer_provider.dart';
-import '../services/local_noti_service.dart';
-import '../widgets/category_box.dart';
-import '../widgets/timer_box.dart';
+import '../../constants/colors.dart';
+import '../../navigation/custom_bottom_nav.dart';
+import '../../navigation/custom_fab.dart';
+import '../../providers/prayer_provider.dart';
+import '../../services/local_noti_service.dart';
+import '../../widgets/category_box.dart';
+import '../../widgets/timer_box.dart';
 
 class HomeScreen extends StatefulWidget {
   HomeScreen({super.key});
@@ -36,7 +36,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
     // Future.delayed(const Duration(microseconds: 100),(){
     //   provider.initPrayerTiming(context);
     // });
-    // WidgetsBinding.instance.addObserver(this);
+    WidgetsBinding.instance.addObserver(this);
   }
 
   @override
@@ -64,9 +64,9 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
   Widget build(BuildContext context) {
     final provider = context.read<PrayerProvider>();
     return Scaffold(
-      bottomNavigationBar: CustomBottomNav(cIndex: _cIndex,tappingIndex: (index){},),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: FAB(tappingIndex: (index){},),
+      // bottomNavigationBar: CustomBottomNav(cIndex: _cIndex),
+      // floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      // floatingActionButton: const FAB(),
       backgroundColor: AppColors.white,
       body: SafeArea(
         child: Container(
@@ -80,26 +80,26 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
             ),
             child: SingleChildScrollView(
               child: Column(children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    SvgPicture.asset(
-                      AppImages.logo,
-                      width: 249.6.w,
-                      height: 78.36.h,
-                    ),
-                    InkWell(
-                      onTap: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => PrayerTiming()));
-                      },
-                      child: SvgPicture.asset(
-                        AppImages.menuIcon,
-                        width: 44.w,
-                        height: 38.h,
-                      ),
-                    ),
-                  ],
-                ),
+                // Row(
+                //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //   children: [
+                //     SvgPicture.asset(
+                //       AppImages.logo,
+                //       width: 249.6.w,
+                //       height: 78.36.h,
+                //     ),
+                //     InkWell(
+                //       onTap: () {
+                //         Navigator.push(context, MaterialPageRoute(builder: (context) => PrayerTiming()));
+                //       },
+                //       child: SvgPicture.asset(
+                //         AppImages.menuIcon,
+                //         width: 44.w,
+                //         height: 38.h,
+                //       ),
+                //     ),
+                //   ],
+                // ),
                 Padding(
                   padding: EdgeInsets.only(left: 440.w, top: 60.h),
                   child: AppText(
