@@ -199,10 +199,10 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                               ),
                             ),
                           ),
-                          const TimerBox()
+                          TimerBox(mensis: (_){},)
                         ],
                       )
-                    : const TimerBox(),
+                    : TimerBox(mensis: (_){}),
                 SizedBox(height: 117.6.h),
                 Align(
                   alignment: Alignment.centerLeft,

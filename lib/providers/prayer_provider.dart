@@ -29,7 +29,6 @@ class PrayerProvider extends ChangeNotifier
   int days = 0;
   bool isTimerStart = false;
 
-
   String medicineTimeValue = 'Morning';
 
   List<MedicineModel> medicinesLsit = [];

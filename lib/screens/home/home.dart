@@ -25,7 +25,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
   final int _cIndex = 0;
-  bool regulationExpanded = true;
+  bool regulationExpanded = false;
 
   @override
   void initState() {
@@ -145,7 +145,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
                         InkWell(
                           onTap: () {
                             setState(() {
-                              regulationExpanded = !regulationExpanded;
+                              // regulationExpanded = !regulationExpanded;
                             });
                           },
                           child: SvgPicture.asset(
@@ -161,6 +161,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
                     ),
                   ),
                 ),
+
                 regulationExpanded
                     ? Column(
                         children: [
@@ -199,10 +200,14 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
                               ),
                             ),
                           ),
-                          const TimerBox()
                         ],
                       )
-                    : const TimerBox(),
+                    :Container(),
+                TimerBox(mensis: (value){
+                  setState(() {
+                    regulationExpanded=value;
+                  });
+                }),
                 SizedBox(height: 117.6.h),
                 Align(
                   alignment: Alignment.centerLeft,

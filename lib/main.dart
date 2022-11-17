@@ -1,5 +1,6 @@
 import 'package:ayyami/constants/routes.dart';
 import 'package:ayyami/providers/prayer_provider.dart';
+import 'package:ayyami/providers/timer_provider.dart';
 import 'package:ayyami/providers/user_provider.dart';
 import 'package:ayyami/screens/Splash_screen.dart';
 import 'package:ayyami/screens/history.dart';
@@ -19,7 +20,11 @@ import 'screens/home.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  runApp(MultiProvider(providers: [ChangeNotifierProvider(create: (_) => UserProvider())],child: const MyApp(),));
+  runApp(MultiProvider(
+    providers: [ChangeNotifierProvider(create: (_) => UserProvider()),
+      ChangeNotifierProvider(create: (_) => TimerProvider()),],
+    child: const MyApp(),
+  ));
   _openBoxes();
 }
 

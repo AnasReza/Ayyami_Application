@@ -13,6 +13,13 @@ class AppTranslate extends Translations{
       'No':'No',
       'Confirm':'Confirm',
       'Skip to the tracker':'Skip to the tracker',
+      'start_menses':'Are you sure that you want to start the Menses Timer?',
+      'stop_menses':'Are you sure that you want to start the Menses Timer?',
+      'stop_mensus_timer_message':'You cannot stop the timer before three days',
+      'start_timer':'START TIMER?',
+      'stop_timer':'STOP TIMER?',
+      'yes':'YES',
+      'no':'NO',
     },
     
     'ur_AE': {
@@ -25,7 +32,14 @@ class AppTranslate extends Translations{
       'Yes':'جی ہاں',
       'No':'نہیں',
       'Confirm':'تصدیق کریں۔',
-      'Skip to the tracker':'ٹریکر پر جائیں۔'
+      'Skip to the tracker':'ٹریکر پر جائیں۔',
+      'start_menses':'کیا آپ واقعی حیض کا ٹائمر شروع کرنا چاہتے ہیں؟',
+      'stop_mensus':'کیا آپ واقعی حیض کا ٹائمر بند کرنا چاہتے ہیں؟',
+      'stop_mensus_timer_message':'آپ ٹائمر کو تین دن سے پہلے نہیں روک سکتے',
+      'start_timer':'ٹائمر شروع کریں؟',
+      'stop_timer':'ٹائمر کو روکیں؟',
+      'yes':'جی ہاں',
+      'no':'جی ہاں',
     },
 
   };
