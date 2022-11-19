@@ -1,12 +1,17 @@
 import 'dart:async';
+import 'dart:ui';
 
+import 'package:ayyami/firebase_calls/menses_record.dart';
 import 'package:ayyami/widgets/utils.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_background_service/flutter_background_service.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:hive/hive.dart';
 import 'package:provider/provider.dart';
 import 'package:stop_watch_timer/stop_watch_timer.dart';
+import 'package:workmanager/workmanager.dart';
 
 import '../constants/colors.dart';
 import '../constants/images.dart';
@@ -23,25 +28,46 @@ class TimerBox extends StatefulWidget {
   State<TimerBox> createState() => _TimerBoxState();
 }
 
-class _TimerBoxState extends State<TimerBox> {
-  final int tuhur = 15;
-  final _stopWatch = StopWatchTimer(mode: StopWatchMode.countUp);
-  late TimerProvider pray;
-  int secondsCount = 0;
-  int minutesCount = 0;
-  int hoursCount = 0;
-  int daysCount = 0;
+class _TimerBoxState extends State<TimerBox> with WidgetsBindingObserver{
+  static late String uid;
+  static final int tuhur = 15;
+  static late TimerProvider pray;
+  static int secondsCount = 0;
+  static int minutesCount = 0;
+  static int hoursCount = 0;
+  static int daysCount = 0;
+  static String mensesID='';
+  static final _stopWatch = StopWatchTimer(mode: StopWatchMode.countUp);
 
   @override
   void initState() {
+    WidgetsBinding.instance.addObserver(this);
     super.initState();
   }
 
+@override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+    switch(state){
+      case AppLifecycleState.resumed:
+        print('Timer Box is resumed');
+        break;
+      case AppLifecycleState.inactive:
+        print('Timer Box is inactive');
+        break;
+      case AppLifecycleState.paused:
+        print('Timer Box is paused');
+        break;
+      case AppLifecycleState.detached:
+        print('Timer Box is detached');
+        break;
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return Consumer<TimerProvider>(builder: (conTimer, pro, build) {
       var userProvider = Provider.of<UserProvider>(context);
-      String uid = userProvider.getUid!;
+      uid = userProvider.getUid!;
       bool isTimerStart = pro.getTimerStart;
 
       pray = pro;
@@ -166,19 +192,16 @@ class _TimerBoxState extends State<TimerBox> {
                   if (tuhur >= 15) {
                     //startService(pro);
                     showStartDialog();
-
                   } else {
                     widget.mensis(true);
                     pray.setTimerStart(false);
                   }
                 } else {
-                  if(minutesCount<=3){
+                  if (minutesCount <= 3) {
                     toast_notification().toast_message('stop_mensus_timer_message'.tr);
-                  }else{
+                  } else {
                     showStopDialog();
                   }
-
-
                 }
               },
               child: Container(
@@ -213,7 +236,7 @@ class _TimerBoxState extends State<TimerBox> {
     final service = FlutterBackgroundService();
     await service.configure(
       androidConfiguration: AndroidConfiguration(
-        autoStart: true,
+        autoStart: false,
         onStart: onStart,
         isForegroundMode: true,
       ),
@@ -224,18 +247,33 @@ class _TimerBoxState extends State<TimerBox> {
 
   @pragma('vm:entry-point')
   static void onStart(ServiceInstance service) {
+    DartPluginRegistrant.ensureInitialized();
+
     // if (pro.isTimerStart) {
     //   pro.stopTimer();
     // } else {
     //   pro.startTimer();
     // }
-    Timer.periodic(Duration(seconds: 30), (timer) {
-      print('Time is over');
-    });
+    startMensisTimer();
+
+    // print('${stopwatch.elapsedMilliseconds}==millisecond');
+    // Timer.periodic(Duration(seconds: 30), (timer) {
+    //   print('Time is over');
+    //
+    //   print('${timer.tick}  ==sec');
+    //   print('${stopwatch.elapsedMilliseconds}==millisecond');
+    // });
   }
 
-  void startMensisTimer() {
+  static void startMensisTimer() {
     print('mensis timer started');
+
+    Future<DocumentReference<Map<String, dynamic>>> menses=MensesRecord.uploadMensesStartTime(uid);
+    menses.then((value){
+     // saveDocId(value.id);
+      mensesID=value.id;
+      print('${value.id} record doc id');
+    });
 
     _stopWatch.secondTime.listen((event) {
       print('$secondsCount==sec    $minutesCount==minutes');
@@ -254,7 +292,7 @@ class _TimerBoxState extends State<TimerBox> {
           }
           pray.setHours(hoursCount);
           minutesCount = 0;
-        }else if(minutesCount==10){
+        } else if (minutesCount == 10) {
           _stopWatch.onStopTimer();
           _stopWatch.onResetTimer();
         }
@@ -283,14 +321,13 @@ class _TimerBoxState extends State<TimerBox> {
                   'yes'.tr,
                 ),
                 onTap: () {
-
                   widget.mensis(false);
                   pray.setTimerStart(true);
+                 // startService();
                   startMensisTimer();
                   Navigator.pop(dialogContext);
                 },
               ),
-
               InkWell(
                 child: Text(
                   'no'.tr,
@@ -319,14 +356,17 @@ class _TimerBoxState extends State<TimerBox> {
                   'yes'.tr,
                 ),
                 onTap: () {
-                  _stopWatch.onStopTimer();
-                  _stopWatch.onResetTimer();
-                  pray.setTimerStart(false);
-                  widget.mensis(true);
-                  Navigator.pop(dialogContext);
+                  if(mensesID.isNotEmpty){
+                    MensesRecord.uploadMensesEndTime(mensesID);
+                    _stopWatch.onStopTimer();
+                    _stopWatch.onResetTimer();
+                    pray.setTimerStart(false);
+                    widget.mensis(true);
+                    Navigator.pop(dialogContext);
+                  }
+
                 },
               ),
-
               InkWell(
                 child: Text(
                   'no'.tr,
@@ -338,5 +378,14 @@ class _TimerBoxState extends State<TimerBox> {
             ],
           );
         });
+  }
+
+  static void saveDocId(String id) async{
+    var box= await Hive.openBox('aayami_menses');
+    box.put('menses_timer_doc_id', id);
+  }
+  dynamic getDocID() async{
+    var box= await Hive.openBox('aayami_menses');
+    return box.get('menses_timer_doc_id');
   }
 }

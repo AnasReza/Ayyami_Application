@@ -41,24 +41,27 @@ dependencies:
   hijri: ^3.0.0
   table_calendar: ^3.0.7
 
-#  state
+  #  state
   provider: ^6.0.4
 
-#  formating
+  #  formating
   intl: ^0.17.0
 
-#  storage
+  #  storage
   shared_preferences: ^2.0.15
   hive: ^2.2.3
 
-#  networking
+  #  networking
   http: ^0.13.5
 
-#  notification
+  #  notification
   flutter_local_notifications: ^12.0.3
 
-#  players
+  #  players
   audioplayers: ^1.1.1
+
+  #background
+  workmanager: ^0.5.1
 
   change_app_package_name: ^1.1.0
   get: ^4.6.5
@@ -80,8 +83,8 @@ flutter:
   fonts:
     - family: DMSans
       fonts:
-       - asset: assets/fonts/DM-Sans-Bold.ttf
-       - asset: assets/fonts/DM-Sans-Regular.ttf
+        - asset: assets/fonts/DM-Sans-Bold.ttf
+        - asset: assets/fonts/DM-Sans-Regular.ttf
 
     - family: Charm
       fonts:

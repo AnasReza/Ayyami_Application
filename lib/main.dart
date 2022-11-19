@@ -21,8 +21,10 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   runApp(MultiProvider(
-    providers: [ChangeNotifierProvider(create: (_) => UserProvider()),
-      ChangeNotifierProvider(create: (_) => TimerProvider()),],
+    providers: [
+      ChangeNotifierProvider(create: (_) => UserProvider()),
+      ChangeNotifierProvider(create: (_) => TimerProvider()),
+    ],
     child: const MyApp(),
   ));
   _openBoxes();
@@ -32,7 +34,7 @@ Future<List<Box>> _openBoxes() async {
   final dir = await getApplicationDocumentsDirectory();
   Hive.init(dir.path);
 
-  return await Future.wait([Hive.openBox('aayami')]);
+  return await Future.wait([Hive.openBox('aayami'),Hive.openBox('aayami_menses')]);
 }
 
 class MyApp extends StatelessWidget {
