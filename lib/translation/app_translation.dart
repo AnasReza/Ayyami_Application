@@ -20,6 +20,11 @@ class AppTranslate extends Translations{
       'stop_timer':'STOP TIMER?',
       'yes':'YES',
       'no':'NO',
+      'after_fajar':'After Fajar',
+      'after_duhur':'After Duhur',
+      'after_asar':'After Asar',
+      'after_maghrib':'After Maghrib',
+      'after_isha':'After Isha',
     },
     
     'ur_AE': {
@@ -40,6 +45,11 @@ class AppTranslate extends Translations{
       'stop_timer':'ٹائمر کو روکیں؟',
       'yes':'جی ہاں',
       'no':'جی ہاں',
+      'after_fajar':'فجر کے بعد',
+      'after_duhur':'ظہر کے بعد',
+      'after_asar':'عصر کے بعد',
+      'after_maghrib':'مغرب کے بعد',
+      'after_isha':'عشاء کے بعد',
     },
 
   };

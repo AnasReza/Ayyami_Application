@@ -70,8 +70,6 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
       backgroundColor: AppColors.white,
       body: SafeArea(
         child: Container(
-          decoration:
-              const BoxDecoration(gradient: AppColors.backgroundGradient),
           child: Padding(
             padding: EdgeInsets.only(
               left: 70.w,
@@ -230,6 +228,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
                   days: 21,
                   hours: 12,
                   checkbox: false,
+                  showDate: true,
                   isSelected: false,
                 ),
                 SizedBox(height: 41.h),
@@ -237,7 +236,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
                   categoryName: 'Mensis',
                   days: 4,
                   hours: 8,
-                  checkbox: false,
+                  checkbox: false,showDate: true,
                   isSelected: false,
                 ),
               ]),

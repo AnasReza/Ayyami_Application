@@ -14,11 +14,12 @@ class CategoryBox extends StatefulWidget {
     required this.hours,
     required this.checkbox,
     required this.isSelected,
+    required this.showDate
   }) : super(key: key);
 
   final String categoryName;
   final int days, hours;
-  bool checkbox, isSelected;
+  bool checkbox, isSelected,showDate;
 
   @override
   State<CategoryBox> createState() => _CategoryBoxState();
@@ -32,7 +33,8 @@ class _CategoryBoxState extends State<CategoryBox> {
             clipBehavior: Clip.none,
             children: [
               Container(
-                width: 558.w,
+                margin: EdgeInsets.only(left: 30,right: 30),
+                width: double.infinity,
                 height: 104.h,
                 decoration: BoxDecoration(
                   color: AppColors.lightGreyBoxColor,
@@ -67,6 +69,7 @@ class _CategoryBoxState extends State<CategoryBox> {
                         ),
                       ),
                       //SizedBox(width: 205.w),
+                     widget.showDate?
                       Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -79,8 +82,9 @@ class _CategoryBoxState extends State<CategoryBox> {
                               fontSize: 16.sp,
                               fontWeight: FontWeight.w400),
                         ],
-                      ),
+                      ):Container(),
                       SizedBox(width: 20.w),
+                      widget.showDate?
                       Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -93,7 +97,7 @@ class _CategoryBoxState extends State<CategoryBox> {
                               fontSize: 16.sp,
                               fontWeight: FontWeight.w400),
                         ],
-                      ),
+                      ):Container(),
                       SizedBox(width: 24.w),
                       SvgPicture.asset(
                         AppImages.forwardIcon,
@@ -165,7 +169,8 @@ class _CategoryBoxState extends State<CategoryBox> {
             ],
           )
         : Container(
-            width: 558.w,
+      margin:EdgeInsets.only(left: 30,right: 30),
+            width: double.infinity,
             height: 104.h,
             decoration: BoxDecoration(
               color: AppColors.lightGreyBoxColor,
@@ -199,6 +204,7 @@ class _CategoryBoxState extends State<CategoryBox> {
                       fontWeight: FontWeight.w700,
                     ),
                   ),
+                  widget.showDate?
                   Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -211,8 +217,9 @@ class _CategoryBoxState extends State<CategoryBox> {
                           fontSize: 16.sp,
                           fontWeight: FontWeight.w400),
                     ],
-                  ),
+                  ):Container(),
                   SizedBox(width: 20.w),
+                  widget.showDate?
                   Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -225,7 +232,7 @@ class _CategoryBoxState extends State<CategoryBox> {
                           fontSize: 16.sp,
                           fontWeight: FontWeight.w400),
                     ],
-                  ),
+                  ):Container(),
                   SizedBox(width: 30.w),
                   SvgPicture.asset(
                     AppImages.forwardIcon,

@@ -1,3 +1,4 @@
+import 'package:ayyami/constants/colors.dart';
 import 'package:ayyami/screens/prayer/prayer_timing.dart';
 import 'package:ayyami/screens/profile/profile.dart';
 import 'package:ayyami/screens/settings/settings.dart';
@@ -63,7 +64,7 @@ class MainScreenState extends State<MainScreen> {
         //   ),
         // ],
       ),
-      body: widgetList[widgetIndex],
+      body: Container(decoration:const BoxDecoration(gradient: AppColors.backgroundGradient),child: widgetList[widgetIndex],),
       bottomNavigationBar: CustomBottomNav(
           cIndex: _cIndex,
           tappingIndex: (index) {
