@@ -44,23 +44,10 @@ class _PrayerTimingState extends State<PrayerTiming> {
                     //   ),
                     // ),
                     SizedBox(height: 70.6.h),
-                    Row(
-                      children: [
-                        InkWell(
-                          onTap: () => Navigator.of(context).pop(),
-                          child: SvgPicture.asset(
-                            AppImages.backIcon,
-                            width: 49.w,
-                            height: 34.h,
-                          ),
-                        ),
-                        SizedBox(width: 110.w),
-                        AppText(
-                          text: "Prayer Times",
-                          fontSize: 45.sp,
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ],
+                    AppText(
+                      text: "Prayer Times",
+                      fontSize: 45.sp,
+                      fontWeight: FontWeight.w700,
                     ),
                     SizedBox(
                       height: 20.h,

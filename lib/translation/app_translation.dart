@@ -25,6 +25,13 @@ class AppTranslate extends Translations{
       'after_asar':'After Asar',
       'after_maghrib':'After Maghrib',
       'after_isha':'After Isha',
+      'change_location':'Change Location',
+      'change_language':'Change Language',
+      'change_theme':'Change Theme',
+      'change_tracker_face':'Change Tracker Face',
+      'dark_mode':'Dark Mode',
+      'buy_premium':'Buy Premium',
+      'rate_app':'Rate App'
     },
     
     'ur_AE': {
@@ -50,6 +57,13 @@ class AppTranslate extends Translations{
       'after_asar':'عصر کے بعد',
       'after_maghrib':'مغرب کے بعد',
       'after_isha':'عشاء کے بعد',
+      'change_location':'مقام تبدیل کریں۔',
+      'change_language':'زبان تبدیل کریں',
+      'change_theme':'تھیم تبدیل کریں۔',
+      'change_tracker_face':'ٹریکر کا چہرہ تبدیل کریں',
+      'dark_mode':'ڈارک موڈ',
+      'buy_premium':'پریمیم خریدیں',
+      'rate_app':'ایپ کی درجہ بندی کریں'
     },
 
   };

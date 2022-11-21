@@ -36,23 +36,10 @@ class _ProfilePageState extends State<ProfilePage> {
                 //   ),
                 // ),
                 SizedBox(height: 70.6.h),
-                Row(
-                  children: [
-                    InkWell(
-                      onTap: () => Navigator.of(context).pop(),
-                      child: SvgPicture.asset(
-                        AppImages.backIcon,
-                        width: 49.w,
-                        height: 34.h,
-                      ),
-                    ),
-                    SizedBox(width: 170.w),
-                    AppText(
-                      text: "Profile",
-                      fontSize: 45.sp,
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ],
+                AppText(
+                  text: "Profile",
+                  fontSize: 45.sp,
+                  fontWeight: FontWeight.w700,
                 ),
                 SizedBox(
                   height: 20.h,
