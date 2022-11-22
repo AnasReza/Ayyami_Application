@@ -6,8 +6,9 @@ import '../constants/colors.dart';
 
 class SideBarBox extends StatelessWidget {
   String text, image;
+  bool showComingSoon;
 
-  SideBarBox(this.text, this.image, {super.key});
+  SideBarBox(this.text, this.image, this.showComingSoon, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -26,11 +27,27 @@ class SideBarBox extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            SvgPicture.asset(
-              image,
-              width: 50.w,
-              height: 50.h,
-            ),
+            SizedBox(height:70,child:  Stack(alignment: Alignment.center,
+              children: [
+                Align(alignment:Alignment.topRight,child: Visibility(
+                  visible: showComingSoon,
+                  child: Container(
+                    decoration: BoxDecoration(color: AppColors.lightGreen, borderRadius: BorderRadius.circular(5)),
+                    padding: const EdgeInsets.all(3),
+                    child: const Text(
+                      'Coming soon',
+                      style: TextStyle(fontSize: 10, fontWeight: FontWeight.w400, color: Colors.black),
+                    ),
+                  ),
+                ),),
+                SvgPicture.asset(
+                  image,
+                  width: 50.w,
+                  height: 50.h,
+                ),
+              ],
+            ),),
+
             SizedBox(
               height: 20,
             ),

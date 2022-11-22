@@ -17,6 +17,7 @@ class SideBar extends StatelessWidget {
     AppImages.historyIcon,
     AppImages.askIcon
   ];
+  bool showComingSoon=false;
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +26,7 @@ class SideBar extends StatelessWidget {
       width: MediaQuery.of(context).size.width * 0.8,
       decoration: BoxDecoration(gradient: AppColors.backgroundGradient),
       height: double.infinity,
-      padding: EdgeInsets.only(left: 10, right: 10,top: 10),
+      padding: EdgeInsets.only(left: 10, right: 10, top: 10),
       child: SingleChildScrollView(
         child: Column(
           children: [
@@ -37,22 +38,35 @@ class SideBar extends StatelessWidget {
             const SizedBox(
               height: 20,
             ),
-            GridView.builder(shrinkWrap: true,
+            GridView.builder(
+              shrinkWrap: true,
               itemCount: textList.length,
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2, crossAxisSpacing: 10.0, mainAxisSpacing: 10.0),
               itemBuilder: (BuildContext context, int index) {
-                return SideBarBox(textList[index], imageList[index]);
+                if(index==5){
+                  showComingSoon=true;
+                }else{
+                  showComingSoon=false;
+                }
+                return SideBarBox(textList[index], imageList[index],showComingSoon);
               },
             ),
-            const SizedBox(height: 20,),
-            SideBarBottomView('Invite Friends',AppImages.inviteIcon),
-          const SizedBox(height: 20,),
-            SideBarBottomView('About Us',AppImages.aboutIcon),
-            const SizedBox(height: 20,),
-            SideBarBottomView('Logout',AppImages.logoutIcon),
-            const SizedBox(height: 20,),
-
+            const SizedBox(
+              height: 20,
+            ),
+            SideBarBottomView('Invite Friends', AppImages.inviteIcon),
+            const SizedBox(
+              height: 20,
+            ),
+            SideBarBottomView('About Us', AppImages.aboutIcon),
+            const SizedBox(
+              height: 20,
+            ),
+            SideBarBottomView('Logout', AppImages.logoutIcon),
+            const SizedBox(
+              height: 20,
+            ),
           ],
         ),
       ),
