@@ -230,6 +230,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
                   checkbox: false,
                   showDate: true,
                   isSelected: false,
+                  comingSoon: false,
                 ),
                 SizedBox(height: 41.h),
                 CategoryBox(
@@ -237,6 +238,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
                   days: 4,
                   hours: 8,
                   checkbox: false,showDate: true,
+                  comingSoon: false,
                   isSelected: false,
                 ),
               ]),

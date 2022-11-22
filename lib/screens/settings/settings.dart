@@ -29,50 +29,59 @@ class SettingsState extends State<Settings> {
             SizedBox(
               height: 20,
             ),
+            //CHANGE LOCATION
             CategoryBox(
               categoryName: 'change_location'.tr,
               days: 21,
               hours: 12,
               checkbox: false,
               isSelected: false,
+              comingSoon: false,
               showDate: false,
             ),
             const SizedBox(
               height: 20,
             ),
+            //CHANGE Language
             CategoryBox(
               categoryName: 'change_language'.tr,
               days: 21,
               hours: 12,
               checkbox: false,
               isSelected: false,
+              comingSoon: false,
               showDate: false,
             ),
             const SizedBox(
               height: 20,
             ),
+            //CGANGE THEME
             CategoryBox(
               categoryName: 'change_theme'.tr,
               days: 21,
               hours: 12,
               checkbox: false,
+              comingSoon: true,
               isSelected: false,
               showDate: false,
             ),
             const SizedBox(
               height: 20,
             ),
+            //TRACKER FACE
             CategoryBox(
               categoryName: 'change_tracker_face'.tr,
               days: 21,
               hours: 12,
               checkbox: false,
               isSelected: false,
+              comingSoon: true,
               showDate: false,
             ),
             const SizedBox(
               height: 20,
             ),
+            //DARK MODE
             CategoryBox(
               categoryName: 'dark_mode'.tr,
               days: 21,
@@ -80,27 +89,32 @@ class SettingsState extends State<Settings> {
               checkbox: false,
               isSelected: false,
               showDate: false,
+              comingSoon: false,
             ),
             const SizedBox(
               height: 20,
             ),
+            //BUY PREMIUM
             CategoryBox(
               categoryName: 'buy_premium'.tr,
               days: 21,
               hours: 12,
               checkbox: false,
               isSelected: false,
+              comingSoon: false,
               showDate: false,
             ),
             const SizedBox(
               height: 20,
             ),
+            //RATE APP
             CategoryBox(
               categoryName: 'rate_app'.tr,
               days: 21,
               hours: 12,
               checkbox: false,
               isSelected: false,
+              comingSoon: false,
               showDate: false,
             ),
             const SizedBox(

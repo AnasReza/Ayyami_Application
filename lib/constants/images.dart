@@ -21,6 +21,16 @@ class AppImages {
   static const String bellIcon = "assets/svg/bell.png";
   static const String medicineIcon = "assets/svg/medicine.svg";
 
+  /// Side Bar Assets
+  static const String calenderIcon = "assets/svg/calendar.svg";
+  static const String aboutIcon = "assets/svg/about_us.svg";
+  static const String askIcon = "assets/svg/ask_mufti.svg";
+  static const String historyIcon = "assets/svg/history.svg";
+  static const String inviteIcon = "assets/svg/invite.svg";
+  static const String logoutIcon = "assets/svg/logout.svg";
+  static const String timeIcon = "assets/svg/time.svg";
+  static const String trackerIcon = "assets/svg/tracker.svg";
+
   /// General App Assets
   static const String logo = "assets/svg/app_logo.svg";
   static const String rectBtnGradientColor = "assets/base.png";

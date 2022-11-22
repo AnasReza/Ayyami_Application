@@ -15,7 +15,10 @@ class AppColors {
   static const Color lightPink = Color(0xffD88DBC);
   static const Color pinkShade = Color(0xffffbbe6);
 
+
+
   static const Color green = Color(0xFF219653);
+  static const Color lightGreen=Color(0xFF6ce06a);
 
   /// Shimmer effect
   static const Color shimmerBaseColor = Color(0xFFEEEEEE);

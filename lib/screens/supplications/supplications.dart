@@ -35,6 +35,7 @@ class SupplicationsState extends State<Supplications> {
               checkbox: false,
               isSelected: false,
               showDate: false,
+              comingSoon: false,
             ),
             const SizedBox(
               height: 20,
@@ -45,6 +46,7 @@ class SupplicationsState extends State<Supplications> {
               hours: 12,
               checkbox: false,
               isSelected: false,
+              comingSoon: false,
               showDate: false,
             ),
             const SizedBox(
@@ -57,6 +59,7 @@ class SupplicationsState extends State<Supplications> {
               checkbox: false,
               isSelected: false,
               showDate: false,
+              comingSoon: false,
             ),
             const SizedBox(
               height: 20,
@@ -65,6 +68,7 @@ class SupplicationsState extends State<Supplications> {
               categoryName: 'after_maghrib'.tr,
               days: 21,
               hours: 12,
+              comingSoon: false,
               checkbox: false,
               isSelected: false,
               showDate: false,
@@ -78,6 +82,7 @@ class SupplicationsState extends State<Supplications> {
               hours: 12,
               checkbox: false,
               isSelected: false,
+              comingSoon: false,
               showDate: false,
             ),
             const SizedBox(

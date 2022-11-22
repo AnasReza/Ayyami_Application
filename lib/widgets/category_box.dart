@@ -7,19 +7,20 @@ import 'package:flutter_svg/svg.dart';
 import '../constants/colors.dart';
 
 class CategoryBox extends StatefulWidget {
-  CategoryBox({
-    Key? key,
-    required this.categoryName,
-    required this.days,
-    required this.hours,
-    required this.checkbox,
-    required this.isSelected,
-    required this.showDate
-  }) : super(key: key);
+  CategoryBox(
+      {Key? key,
+      required this.categoryName,
+      required this.days,
+      required this.hours,
+      required this.checkbox,
+      required this.isSelected,
+      required this.showDate,
+      required this.comingSoon})
+      : super(key: key);
 
   final String categoryName;
   final int days, hours;
-  bool checkbox, isSelected,showDate;
+  bool checkbox, isSelected, showDate, comingSoon;
 
   @override
   State<CategoryBox> createState() => _CategoryBoxState();
@@ -33,7 +34,7 @@ class _CategoryBoxState extends State<CategoryBox> {
             clipBehavior: Clip.none,
             children: [
               Container(
-                margin: EdgeInsets.only(left: 30,right: 30),
+                margin: EdgeInsets.only(left: 30, right: 30),
                 width: double.infinity,
                 height: 104.h,
                 decoration: BoxDecoration(
@@ -44,11 +45,7 @@ class _CategoryBoxState extends State<CategoryBox> {
                   ),
                   borderRadius: BorderRadius.circular(18.r),
                   boxShadow: const [
-                    BoxShadow(
-                        color: Color(0x1e1f3d73),
-                        offset: Offset(0, 12),
-                        blurRadius: 40,
-                        spreadRadius: 0)
+                    BoxShadow(color: Color(0x1e1f3d73), offset: Offset(0, 12), blurRadius: 40, spreadRadius: 0)
                   ],
                 ),
                 child: Padding(
@@ -62,42 +59,46 @@ class _CategoryBoxState extends State<CategoryBox> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Expanded(
-                        child: AppText(
-                          text: widget.categoryName,
-                          fontSize: 25.sp,
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
+                          child: Wrap(
+                        children: [
+                          AppText(
+                            text: widget.categoryName,
+                            fontSize: 25.sp,
+                            fontWeight: FontWeight.w700,
+                          ),
+                          widget.comingSoon
+                              ? Container(
+                                  decoration: BoxDecoration(
+                                      color: AppColors.lightGreen, borderRadius: BorderRadius.circular(5)),
+                                  padding: const EdgeInsets.all(3),
+                                  child: const Text(
+                                    'Coming soon',
+                                    style: TextStyle(fontSize: 10, fontWeight: FontWeight.w400, color: Colors.black),
+                                  ),
+                                )
+                              : Container(),
+                        ],
+                      )),
                       //SizedBox(width: 205.w),
-                     widget.showDate?
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          AppText(
-                              text: widget.days.toString(),
-                              fontSize: 28.sp,
-                              fontWeight: FontWeight.w700),
-                          AppText(
-                              text: "Days",
-                              fontSize: 16.sp,
-                              fontWeight: FontWeight.w400),
-                        ],
-                      ):Container(),
+                      widget.showDate
+                          ? Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                AppText(text: widget.days.toString(), fontSize: 28.sp, fontWeight: FontWeight.w700),
+                                AppText(text: "Days", fontSize: 16.sp, fontWeight: FontWeight.w400),
+                              ],
+                            )
+                          : Container(),
                       SizedBox(width: 20.w),
-                      widget.showDate?
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          AppText(
-                              text: widget.hours.toString(),
-                              fontSize: 28.sp,
-                              fontWeight: FontWeight.w700),
-                          AppText(
-                              text: "Hours",
-                              fontSize: 16.sp,
-                              fontWeight: FontWeight.w400),
-                        ],
-                      ):Container(),
+                      widget.showDate
+                          ? Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                AppText(text: widget.hours.toString(), fontSize: 28.sp, fontWeight: FontWeight.w700),
+                                AppText(text: "Hours", fontSize: 16.sp, fontWeight: FontWeight.w400),
+                              ],
+                            )
+                          : Container(),
                       SizedBox(width: 24.w),
                       SvgPicture.asset(
                         AppImages.forwardIcon,
@@ -141,10 +142,7 @@ class _CategoryBoxState extends State<CategoryBox> {
                             gradient: AppColors.bgPinkishGradient,
                             boxShadow: const [
                               BoxShadow(
-                                  color: Color(0x1e1f3d73),
-                                  offset: Offset(0, 12),
-                                  blurRadius: 40,
-                                  spreadRadius: 0)
+                                  color: Color(0x1e1f3d73), offset: Offset(0, 12), blurRadius: 40, spreadRadius: 0)
                             ],
                           )
                         : BoxDecoration(
@@ -157,10 +155,7 @@ class _CategoryBoxState extends State<CategoryBox> {
                             color: AppColors.white,
                             boxShadow: const [
                               BoxShadow(
-                                  color: Color(0x1e1f3d73),
-                                  offset: Offset(0, 12),
-                                  blurRadius: 40,
-                                  spreadRadius: 0)
+                                  color: Color(0x1e1f3d73), offset: Offset(0, 12), blurRadius: 40, spreadRadius: 0)
                             ],
                           ),
                   ),
@@ -169,7 +164,7 @@ class _CategoryBoxState extends State<CategoryBox> {
             ],
           )
         : Container(
-      margin:EdgeInsets.only(left: 30,right: 30),
+            margin: EdgeInsets.only(left: 30, right: 30),
             width: double.infinity,
             height: 104.h,
             decoration: BoxDecoration(
@@ -180,11 +175,7 @@ class _CategoryBoxState extends State<CategoryBox> {
               ),
               borderRadius: BorderRadius.circular(18.r),
               boxShadow: const [
-                BoxShadow(
-                    color: Color(0x1e1f3d73),
-                    offset: Offset(0, 12),
-                    blurRadius: 40,
-                    spreadRadius: 0)
+                BoxShadow(color: Color(0x1e1f3d73), offset: Offset(0, 12), blurRadius: 40, spreadRadius: 0)
               ],
             ),
             child: Padding(
@@ -198,41 +189,45 @@ class _CategoryBoxState extends State<CategoryBox> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Expanded(
-                    child: AppText(
-                      text: widget.categoryName,
-                      fontSize: 25.sp,
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                  widget.showDate?
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                      child: Wrap(spacing: 10,
                     children: [
                       AppText(
-                          text: widget.days.toString(),
-                          fontSize: 28.sp,
-                          fontWeight: FontWeight.w700),
-                      AppText(
-                          text: "Days",
-                          fontSize: 16.sp,
-                          fontWeight: FontWeight.w400),
+                        text: widget.categoryName,
+                        fontSize: 25.sp,
+                        fontWeight: FontWeight.w700,
+                      ),
+                      widget.comingSoon
+                          ? Container(
+                        padding: EdgeInsets.all(3),
+                              decoration:
+                                  BoxDecoration(color: AppColors.lightGreen, borderRadius: BorderRadius.circular(5)),
+                              child: const Text(
+                                'Coming soon',
+                                style: TextStyle(fontSize:5, fontWeight: FontWeight.w400, color: Colors.black),
+                              ),
+                            )
+                          : Container(),
                     ],
-                  ):Container(),
+                  )),
+                  widget.showDate
+                      ? Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            AppText(text: widget.days.toString(), fontSize: 28.sp, fontWeight: FontWeight.w700),
+                            AppText(text: "Days", fontSize: 16.sp, fontWeight: FontWeight.w400),
+                          ],
+                        )
+                      : Container(),
                   SizedBox(width: 20.w),
-                  widget.showDate?
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      AppText(
-                          text: widget.hours.toString(),
-                          fontSize: 28.sp,
-                          fontWeight: FontWeight.w700),
-                      AppText(
-                          text: "Hours",
-                          fontSize: 16.sp,
-                          fontWeight: FontWeight.w400),
-                    ],
-                  ):Container(),
+                  widget.showDate
+                      ? Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            AppText(text: widget.hours.toString(), fontSize: 28.sp, fontWeight: FontWeight.w700),
+                            AppText(text: "Hours", fontSize: 16.sp, fontWeight: FontWeight.w400),
+                          ],
+                        )
+                      : Container(),
                   SizedBox(width: 30.w),
                   SvgPicture.asset(
                     AppImages.forwardIcon,
