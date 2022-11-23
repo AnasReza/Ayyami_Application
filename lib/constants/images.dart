@@ -30,6 +30,8 @@ class AppImages {
   static const String logoutIcon = "assets/svg/logout.svg";
   static const String timeIcon = "assets/svg/time.svg";
   static const String trackerIcon = "assets/svg/tracker.svg";
+  static const String suggestIcon = "assets/svg/suggest.svg";
+  static const String deobandIcon = "assets/images/deoband.png";
 
   /// General App Assets
   static const String logo = "assets/svg/app_logo.svg";

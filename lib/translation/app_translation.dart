@@ -31,7 +31,10 @@ class AppTranslate extends Translations{
       'change_tracker_face':'Change Tracker Face',
       'dark_mode':'Dark Mode',
       'buy_premium':'Buy Premium',
-      'rate_app':'Rate App'
+      'rate_app':'Rate App',
+      'about_us':'Ayyami is your one point all app to keep track of your menstrual cycles with Period Calendar.\n\nIt tracks your periods, non-menstrual cycles, pragnancy, likoria and post-natal bleedings. It also helps you know what islamic regulation is now you have to follow as per your tracking calender.\n\nAyyami is useful, whether you have irregular periods or regular periods. It can track your chance of pregnancy every day.\n\nThink of it as your personal period diary. It will help you to maintain your deen along with your menstrual health.',
+      'verified_by':'Verified By:',
+      'suggest_update':'Suggest an Update',
     },
     
     'ur_AE': {
@@ -63,7 +66,10 @@ class AppTranslate extends Translations{
       'change_tracker_face':'ٹریکر کا چہرہ تبدیل کریں',
       'dark_mode':'ڈارک موڈ',
       'buy_premium':'پریمیم خریدیں',
-      'rate_app':'ایپ کی درجہ بندی کریں'
+      'rate_app':'ایپ کی درجہ بندی کریں',
+      'about_us':'ایامی پیریڈ کیلنڈر کے ساتھ آپ کے ماہواری کے چکروں پر نظر رکھنے کے لیے آپ کی ون پوائنٹ آل ایپ ہے۔\n\n یہ آپ کے ماہواری، غیر ماہواری، حمل، لیکوریا اور بعد از پیدائش خون کا پتہ لگاتا ہے۔ اس سے آپ کو یہ جاننے میں بھی مدد ملتی ہے کہ اب آپ کو اپنے ٹریکنگ کیلنڈر کے مطابق اسلامی ضابطے کی پیروی کرنی ہوگی۔\n\nایامی مفید ہے، چاہے آپ کی ماہواری بے قاعدہ ہو یا باقاعدہ۔ یہ ہر روز آپ کے حمل کے امکانات کو ٹریک کر سکتا ہے۔\n\nاسے اپنی ذاتی مدت کی ڈائری سمجھیں۔ یہ آپ کی ماہواری کی صحت کے ساتھ اپنے دین کو برقرار رکھنے میں مدد کرے گا۔',
+      'verified_by':'تصدیق شدہ بذریعہ:',
+      'suggest_update':'ایک اپ ڈیٹ تجویز کریں۔',
     },
 
   };
