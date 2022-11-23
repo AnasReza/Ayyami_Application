@@ -1,6 +1,7 @@
 import 'package:ayyami/calender_page.dart';
 import 'package:ayyami/constants/colors.dart';
 import 'package:ayyami/constants/const.dart';
+import 'package:ayyami/screens/all_trackers/all_trackers.dart';
 import 'package:ayyami/widgets/side_bar_bottom_view.dart';
 import 'package:ayyami/widgets/side_bar_box.dart';
 import 'package:flutter/material.dart';
@@ -70,6 +71,7 @@ class SideBar extends StatelessWidget {
                         Navigator.pushNamed(context, remindersRoute);
                         break;
                       case 3:
+                        nextScreen(context, AllTrackers());
                         print('Trackers');
                         break;
                       case 4:

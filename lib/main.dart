@@ -1,5 +1,8 @@
 import 'package:ayyami/constants/routes.dart';
+import 'package:ayyami/providers/likoria_timer_provider.dart';
+import 'package:ayyami/providers/post-natial_timer_provider.dart';
 import 'package:ayyami/providers/prayer_provider.dart';
+import 'package:ayyami/providers/pregnancy_timer_provider.dart';
 import 'package:ayyami/providers/timer_provider.dart';
 import 'package:ayyami/providers/user_provider.dart';
 import 'package:ayyami/screens/Splash_screen.dart';
@@ -24,6 +27,9 @@ void main() async {
     providers: [
       ChangeNotifierProvider(create: (_) => UserProvider()),
       ChangeNotifierProvider(create: (_) => TimerProvider()),
+      ChangeNotifierProvider(create: (_) => PregnancyTimerProvider()),
+      ChangeNotifierProvider(create: (_) => LikoriaTimerProvider()),
+      ChangeNotifierProvider(create: (_) => PostNatalTimerProvider()),
     ],
     child: const MyApp(),
   ));
