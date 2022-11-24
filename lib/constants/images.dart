@@ -33,6 +33,9 @@ class AppImages {
   static const String suggestIcon = "assets/svg/suggest.svg";
   static const String deobandIcon = "assets/images/deoband.png";
 
+  ///DIALOGS
+  static const String rateIcon = "assets/images/rate.png";
+
   /// General App Assets
   static const String logo = "assets/svg/app_logo.svg";
   static const String rectBtnGradientColor = "assets/base.png";

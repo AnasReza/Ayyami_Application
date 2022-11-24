@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
+import '../../dialog/rate_dialog.dart';
 import '../../widgets/app_text.dart';
 import '../../widgets/category_box.dart';
 
@@ -108,7 +109,7 @@ class SettingsState extends State<Settings> {
               height: 20,
             ),
             //RATE APP
-            CategoryBox(
+            GestureDetector(child: CategoryBox(
               categoryName: 'rate_app'.tr,
               days: 21,
               hours: 12,
@@ -116,7 +117,12 @@ class SettingsState extends State<Settings> {
               isSelected: false,
               comingSoon: false,
               showDate: false,
-            ),
+            ),onTap: (){
+              showDialog(context: context, builder: (dialogContext){
+                return RateDialog();
+              },useSafeArea: true);
+            },),
+
             const SizedBox(
               height: 20,
             ),

@@ -39,6 +39,9 @@ class AppTranslate extends Translations{
       'likoria':'Likoria',
       'menstrual_bleeding':'Menstrual Bleeding',
       'post-natal_bleeding':'Post-Natal Bleeding',
+      'like_using':'Like using AAYAMI App?',
+      'recommend_rating':'Recommend us to others by rating us on Store!',
+      'rate_us':'RATE US',
     },
     
     'ur_AE': {
@@ -78,6 +81,9 @@ class AppTranslate extends Translations{
       'likoria':'لیکوریا',
       'menstrual_bleeding':'ماہواری کا خون بہنا',
       'post-natal_bleeding':'پیدائش کے بعد خون بہنا',
+      'like_using':'ایامی ایپ استعمال کرنا پسند ہے؟',
+      'recommend_rating':'ہمیں اسٹور پر درجہ بندی کرکے دوسروں کو ہماری تجویز کریں!',
+      'rate_us':'ہمیں درجہ دیں',
     },
 
   };
