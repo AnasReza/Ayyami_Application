@@ -1,4 +1,4 @@
-
+import 'package:ayyami/firebase_calls/questions_record.dart';
 import 'package:ayyami/screens/Questions/starting_time.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -7,10 +7,10 @@ import 'package:table_calendar/table_calendar.dart';
 
 import '../../widgets/gradient_button.dart';
 
-
-
 class third_question extends StatefulWidget {
-  const third_question({super.key});
+  String uid;
+
+  third_question({required this.uid, super.key});
 
   @override
   State<third_question> createState() => _third_questionState();
@@ -23,10 +23,6 @@ class _third_questionState extends State<third_question> {
   DateTime selectedDay = DateTime.now();
   DateTime focusedDay = DateTime.now();
   String getDate = "";
-
-
-
- 
 
   @override
   Widget build(BuildContext context) {
@@ -137,22 +133,11 @@ class _third_questionState extends State<third_question> {
                 child: GradientButton(
                   title: "Confirm",
                   onPressedButon: () {
-                                           
-                    getDate = '${focusedDay.day}-${focusedDay.month}-${focusedDay.year}';  
-                    String qId =
-                        DateTime.now().millisecondsSinceEpoch.toString();
-                    // String uid = auth.currentUser!.uid;
-                    databaseRef.child(qId).set({
-                      'Question': "When did the bleeding start?",
-                      'Answer': getDate,
-                      'Q_id': qId,
-                      // 'User_id': uid
-                    });
+                    getDate = '${focusedDay.day}-${focusedDay.month}-${focusedDay.year}';
 
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => starting_time()));
+                    QuestionRecord().uploadWhenBleedingStartQuestion(widget.uid, getDate).then((value) {
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => starting_time(uid: widget.uid,)));
+                    });
                   },
                 ),
               ),
@@ -195,7 +180,4 @@ class _third_questionState extends State<third_question> {
       )),
     );
   }
- 
 }
-
-

@@ -1,3 +1,5 @@
+import 'package:ayyami/constants/const.dart';
+import 'package:ayyami/screens/supplications/supplications_details.dart';
 import 'package:ayyami/widgets/category_box.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -25,10 +27,10 @@ class SupplicationsState extends State<Supplications> {
               fontSize: 45.sp,
               fontWeight: FontWeight.w700,
             ),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
-            CategoryBox(
+            GestureDetector(child:CategoryBox(
               categoryName: 'after_fajar'.tr,
               days: 21,
               hours: 12,
@@ -36,11 +38,14 @@ class SupplicationsState extends State<Supplications> {
               isSelected: false,
               showDate: false,
               comingSoon: false,
-            ),
+            ), onTap: (){
+              nextScreen(context, SupplicationsDetails('fajar'));
+            },),
+
             const SizedBox(
               height: 20,
             ),
-            CategoryBox(
+            GestureDetector(child:CategoryBox(
               categoryName: 'after_duhur'.tr,
               days: 21,
               hours: 12,
@@ -48,11 +53,14 @@ class SupplicationsState extends State<Supplications> {
               isSelected: false,
               comingSoon: false,
               showDate: false,
-            ),
+            ), onTap: (){
+              nextScreen(context, SupplicationsDetails('zuhur'));
+            },),
+
             const SizedBox(
               height: 20,
             ),
-            CategoryBox(
+            GestureDetector(child: CategoryBox(
               categoryName: 'after_asar'.tr,
               days: 21,
               hours: 12,
@@ -60,11 +68,14 @@ class SupplicationsState extends State<Supplications> {
               isSelected: false,
               showDate: false,
               comingSoon: false,
-            ),
+            ),onTap: (){
+              nextScreen(context, SupplicationsDetails('asr'));
+            },),
+
             const SizedBox(
               height: 20,
             ),
-            CategoryBox(
+            GestureDetector(child: CategoryBox(
               categoryName: 'after_maghrib'.tr,
               days: 21,
               hours: 12,
@@ -72,11 +83,14 @@ class SupplicationsState extends State<Supplications> {
               checkbox: false,
               isSelected: false,
               showDate: false,
-            ),
+            ),onTap: (){
+              nextScreen(context, SupplicationsDetails('maghrib'));
+            },),
+
             const SizedBox(
               height: 20,
             ),
-            CategoryBox(
+            GestureDetector(child: CategoryBox(
               categoryName: 'after_isha'.tr,
               days: 21,
               hours: 12,
@@ -84,7 +98,10 @@ class SupplicationsState extends State<Supplications> {
               isSelected: false,
               comingSoon: false,
               showDate: false,
-            ),
+            ),onTap: (){
+              nextScreen(context, SupplicationsDetails('isha'));
+            },),
+
             const SizedBox(
               height: 20,
             ),

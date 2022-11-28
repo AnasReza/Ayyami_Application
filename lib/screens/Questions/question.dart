@@ -1,4 +1,4 @@
-
+import 'package:ayyami/firebase_calls/questions_record.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
@@ -6,7 +6,9 @@ import 'package:flutter/material.dart';
 import '../../widgets/gradient_button.dart';
 
 class Question_Upload extends StatefulWidget {
-  const Question_Upload({super.key});
+  String uid;
+
+  Question_Upload({required this.uid, super.key});
 
   @override
   State<Question_Upload> createState() => _Question_UploadState();
@@ -48,28 +50,19 @@ class _Question_UploadState extends State<Question_Upload> {
           ),
           SizedBox(height: 35),
           GradientButton(
-              title: "Upload",
-              onPressedButon:(){
-               String q_id = DateTime.now().millisecondsSinceEpoch.toString();
-                databaseRef.child(q_id).set({
-                       'Question': questionController.text.toString(),
-                       'Q_id':q_id,
-
-                    });
-
-                 String question = questionController.text.toString();
-                  final snackBar = SnackBar(
-            content:  Text('$question'),
-            action: SnackBarAction(
-              label: 'Undo',
-              onPressed: (){},
-            ));
-             ScaffoldMessenger.of(context).showSnackBar(snackBar);
-            }
-            
-            ,
-
-        )
+            title: "Upload",
+            onPressedButon: () {
+              String question = questionController.text.toString();
+              QuestionRecord().uploadQuestion(widget.uid, question);
+              final snackBar = SnackBar(
+                  content: Text('$question'),
+                  action: SnackBarAction(
+                    label: 'Undo',
+                    onPressed: () {},
+                  ));
+              ScaffoldMessenger.of(context).showSnackBar(snackBar);
+            },
+          )
         ],
       ),
     );

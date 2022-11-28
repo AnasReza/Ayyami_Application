@@ -1,3 +1,5 @@
+import 'package:ayyami/firebase_calls/questions_record.dart';
+import 'package:ayyami/screens/main_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
@@ -7,7 +9,9 @@ import '../../widgets/gradient_button.dart';
 import '../Profile_System/home.dart';
 
 class stopping_time extends StatefulWidget {
-  const stopping_time({super.key});
+  String uid;
+
+  stopping_time({required this.uid, super.key});
 
   @override
   State<stopping_time> createState() => _stopping_timeState();
@@ -19,6 +23,7 @@ class _stopping_timeState extends State<stopping_time> {
 
   DateTime _dateTime = DateTime.now();
   String getTimeVal = "";
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -88,21 +93,12 @@ class _stopping_timeState extends State<stopping_time> {
                 child: GradientButton(
                   title: "Confirm",
                   onPressedButon: () {
-                    getTimeVal =
-                        '${_dateTime.hour}:${_dateTime.minute}:${_dateTime.second}:${_dateTime.timeZoneName}';
-                    String qId =
-                        DateTime.now().millisecondsSinceEpoch.toString();
-                    // String uid = auth.currentUser!.uid;
-                    databaseRef.child(qId).set({
-                      'Question': "Stoping time of Bleeding?",
-                      'Answer': getTimeVal,
-                      'Q_id': qId,
-                      // 'User_id': uid
-                    });
+                    getTimeVal = '${_dateTime.hour}:${_dateTime.minute}:${_dateTime.second}:${_dateTime.timeZoneName}';
 
+                    QuestionRecord().uploadStopTimeQuestion(widget.uid, getTimeVal).then((value) {
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => MainScreen()));
+                    });
                     print(_dateTime);
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => HomeScreen()));
                   },
                 ),
               ),

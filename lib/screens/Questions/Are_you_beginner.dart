@@ -1,4 +1,4 @@
-
+import 'package:ayyami/firebase_calls/questions_record.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
@@ -9,7 +9,9 @@ import 'Are_you_married.dart';
 import 'When_did_the_bleeding_start.dart';
 
 class first_question extends StatefulWidget {
-  const first_question({super.key});
+  String uid;
+
+  first_question({required this.uid, super.key});
 
   @override
   State<first_question> createState() => _first_questionState();
@@ -86,17 +88,11 @@ class _first_questionState extends State<first_question> {
                             decoration: BoxDecoration(
                               gradient: _BeginnerBeenPressed
                                   ? const LinearGradient(
-                                      colors: [
-                                          Color(0xffFFBBE6),
-                                          Color(0xffC43CF3)
-                                        ],
+                                      colors: [Color(0xffFFBBE6), Color(0xffC43CF3)],
                                       begin: Alignment.centerLeft,
                                       end: Alignment.center)
                                   : const LinearGradient(
-                                      colors: [
-                                          Color(0xFFF2F2F2),
-                                          Color(0xFFF2F2F2)
-                                        ],
+                                      colors: [Color(0xFFF2F2F2), Color(0xFFF2F2F2)],
                                       begin: Alignment.centerLeft,
                                       end: Alignment.center),
                               borderRadius: BorderRadius.circular(25),
@@ -112,9 +108,7 @@ class _first_questionState extends State<first_question> {
                                         fontFamily: 'DMSans',
                                         fontSize: 17,
                                         fontWeight: FontWeight.w700,
-                                        color: _BeginnerBeenPressed
-                                            ? Colors.white
-                                            : const Color(0xFF1F3D73)))),
+                                        color: _BeginnerBeenPressed ? Colors.white : const Color(0xFF1F3D73)))),
                           ),
                         )
                       ],
@@ -135,17 +129,11 @@ class _first_questionState extends State<first_question> {
                             decoration: BoxDecoration(
                               gradient: _AccustomedBeenPressed
                                   ? const LinearGradient(
-                                      colors: [
-                                          Color(0xffFFBBE6),
-                                          Color(0xffC43CF3)
-                                        ],
+                                      colors: [Color(0xffFFBBE6), Color(0xffC43CF3)],
                                       begin: Alignment.centerLeft,
                                       end: Alignment.center)
                                   : const LinearGradient(
-                                      colors: [
-                                          Color(0xFFF2F2F2),
-                                          Color(0xFFF2F2F2)
-                                        ],
+                                      colors: [Color(0xFFF2F2F2), Color(0xFFF2F2F2)],
                                       begin: Alignment.centerLeft,
                                       end: Alignment.center),
                               borderRadius: BorderRadius.circular(25),
@@ -161,9 +149,7 @@ class _first_questionState extends State<first_question> {
                                         fontFamily: 'DMSans',
                                         fontSize: 17,
                                         fontWeight: FontWeight.w700,
-                                        color: _AccustomedBeenPressed
-                                            ? Colors.white
-                                            : const Color(0xFF1F3D73)))),
+                                        color: _AccustomedBeenPressed ? Colors.white : const Color(0xFF1F3D73)))),
                           ),
                         )
                       ],
@@ -176,43 +162,25 @@ class _first_questionState extends State<first_question> {
                 child: GradientButton(
                   title: "Confirm",
                   onPressedButon: () {
-                    String q_id =
-                        DateTime.now().millisecondsSinceEpoch.toString();
+                    Widget nextWidget;
+                    String answer = '';
+                    String q_id = DateTime.now().millisecondsSinceEpoch.toString();
 
-                    if (_BeginnerBeenPressed == true &&
-                        _AccustomedBeenPressed == true) {
-                      toast_notification()
-                          .toast_message("Please select only one");
+                    if (_BeginnerBeenPressed == true && _AccustomedBeenPressed == true) {
+                      toast_notification().toast_message("Please select only one");
                       return;
                     }
 
                     if (_BeginnerBeenPressed == true) {
-                      // String uid = auth.currentUser!.uid;
-                      databaseRef.child(q_id).set({
-                        'Question': "Are you Beginner or Accustomed?",
-                        'Answer': "Beginner",
-                        'Q_id': q_id,
-                        // 'User_id': uid
-                      });
-
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const third_question()));
-                    } else if (_AccustomedBeenPressed == true) {
-                      // String uid = auth.currentUser!.uid;
-                      databaseRef.child(q_id).set({
-                        'Question': "Are you Beginner or Accustomed?",
-                        'Answer': "Accustomed",
-                        'Q_id': q_id,
-                        // 'User_id': uid
-                      });
-
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const second_question()));
+                      answer = 'Beginner';
+                      nextWidget = third_question(uid: widget.uid,);
+                    } else  {
+                      answer = 'Accustomed';
+                      nextWidget = second_question(uid: widget.uid,);
                     }
+                    QuestionRecord().uploadBeginnerQuestion(widget.uid, answer).then((value) {
+                      Navigator.push(context, MaterialPageRoute(builder: (context) =>  nextWidget));
+                    });
                   },
                 ),
               ),

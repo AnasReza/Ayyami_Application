@@ -1,3 +1,4 @@
+import 'package:ayyami/firebase_calls/questions_record.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
@@ -9,7 +10,8 @@ import '../../widgets/gradient_button.dart';
 import 'Is_it_still_bleeding.dart';
 
 class starting_time extends StatefulWidget {
-  const starting_time({super.key});
+  String uid;
+  starting_time({required this.uid,super.key});
 
   @override
   State<starting_time> createState() => _starting_timeState();
@@ -95,19 +97,14 @@ class _starting_timeState extends State<starting_time> {
                   onPressedButon: () {
                     print(_dateTime);
                      getTimeVal =  '${_dateTime.hour}:${_dateTime.minute}:${_dateTime.second}:${_dateTime.timeZoneName}';
-                     String qId =
-                        DateTime.now().millisecondsSinceEpoch.toString();
-                    // String uid = auth.currentUser!.uid;
-                    databaseRef.child(qId).set({
-                      'Question': "Starting time of Bleeding?",
-                      'Answer': getTimeVal,
-                      'Q_id': qId,
-                      // 'User_id': uid
+
+                    QuestionRecord().uploadStartTimeQuestion(widget.uid, getTimeVal).then((value){
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => isit_bleeding(uid: widget.uid,)));
                     });
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => isit_bleeding()));
+
                   },
                 ),
               ),

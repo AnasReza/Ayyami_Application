@@ -1,13 +1,16 @@
 
+import 'package:ayyami/screens/main_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import "package:flutter/material.dart";
 
+import '../../firebase_calls/questions_record.dart';
 import '../../widgets/gradient_button.dart';
 import '../Profile_System/home.dart';
 
 class postNatal_Cycle extends StatefulWidget {
-  const postNatal_Cycle({super.key});
+  String uid;
+  postNatal_Cycle({required this.uid,super.key});
 
   @override
   State<postNatal_Cycle> createState() => _postNatal_CycleState();
@@ -116,10 +119,13 @@ class _postNatal_CycleState extends State<postNatal_Cycle> {
                         // 'User_id': uid
                       });
                     print(counter);
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>  HomeScreen()));
+                    QuestionRecord().uploadPostNatalBleedingQuestion(widget.uid, counter.toString()).then((value){
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>  MainScreen()));
+                    });
+
                   },
                 ),
               ),

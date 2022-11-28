@@ -1,34 +1,33 @@
-
+import 'package:ayyami/firebase_calls/questions_record.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 
-
 import '../../widgets/gradient_button.dart';
 import 'Stoping_time.dart';
 
-
 class bleeding_stop extends StatefulWidget {
-  const bleeding_stop({super.key});
+  String uid;
+
+  bleeding_stop({required this.uid, super.key});
 
   @override
   State<bleeding_stop> createState() => _bleeding_stopState();
 }
 
 class _bleeding_stopState extends State<bleeding_stop> {
-   final databaseRef = FirebaseDatabase.instance.ref("QuestionAnswers");
+  final databaseRef = FirebaseDatabase.instance.ref("QuestionAnswers");
   final FirebaseAuth auth = FirebaseAuth.instance;
 
-
- DateTime selectedDay = DateTime.now();
+  DateTime selectedDay = DateTime.now();
   DateTime focusedDay = DateTime.now();
 
   String getDate = "";
 
   @override
   Widget build(BuildContext context) {
-   return Scaffold(
+    return Scaffold(
       backgroundColor: Color(0xffF5F5F5),
       body: Center(
           child: SingleChildScrollView(
@@ -40,7 +39,7 @@ class _bleeding_stopState extends State<bleeding_stop> {
                 width: 200,
                 child: Image.asset("assets/images/icon_name.png"),
               ),
-            
+
               SizedBox(height: 5),
               Container(
                 height: 130,
@@ -79,21 +78,18 @@ class _bleeding_stopState extends State<bleeding_stop> {
                   },
                   //Calendar Style
                   calendarStyle: const CalendarStyle(
-                    defaultTextStyle: TextStyle(
-                      fontFamily: "Inter",
-                      fontSize: 14,
-                      fontWeight: FontWeight.w400,
-                      color: Color(0xFF333333),
-                      
-                    ),
-                    weekendTextStyle: TextStyle(
-                      fontFamily: "Inter",
-                      fontSize: 14,
-                      fontWeight: FontWeight.w400,
-                      color: Color(0xFF333333),
-                      
-                    ),
-                    
+                      defaultTextStyle: TextStyle(
+                        fontFamily: "Inter",
+                        fontSize: 14,
+                        fontWeight: FontWeight.w400,
+                        color: Color(0xFF333333),
+                      ),
+                      weekendTextStyle: TextStyle(
+                        fontFamily: "Inter",
+                        fontSize: 14,
+                        fontWeight: FontWeight.w400,
+                        color: Color(0xFF333333),
+                      ),
                       isTodayHighlighted: true,
                       selectedDecoration: BoxDecoration(
                         color: Color(0xFFFB3F4A),
@@ -105,23 +101,18 @@ class _bleeding_stopState extends State<bleeding_stop> {
                       ),
                       selectedTextStyle: TextStyle(color: Colors.white)),
                   daysOfWeekStyle: const DaysOfWeekStyle(
-                 
                     weekdayStyle: TextStyle(
                       fontFamily: "Inter",
                       fontSize: 15,
                       fontWeight: FontWeight.w500,
                       color: Color(0xFF333333),
-                      
                     ),
                     weekendStyle: TextStyle(
                       fontFamily: "Inter",
                       fontSize: 15,
                       fontWeight: FontWeight.w500,
                       color: Color(0xFF333333),
-                      
-              
                     ),
-                    
                   ),
 
                   headerStyle: const HeaderStyle(
@@ -136,7 +127,6 @@ class _bleeding_stopState extends State<bleeding_stop> {
                   selectedDayPredicate: (DateTime date) {
                     return isSameDay(selectedDay, date);
                   },
-                  
                 ),
               ),
               SizedBox(height: 28),
@@ -145,17 +135,15 @@ class _bleeding_stopState extends State<bleeding_stop> {
                   title: "Confirm",
                   onPressedButon: () {
                     getDate = '${focusedDay.day}-${focusedDay.month}-${focusedDay.year}';
-                       String qId =
-                        DateTime.now().millisecondsSinceEpoch.toString();
-                    // String uid = auth.currentUser!.uid;
-                    databaseRef.child(qId).set({
-                      'Question': "When did the bleeding stop?",
-                      'Answer': focusedDay.microsecondsSinceEpoch,
-                      'Q_id': qId,
-                      // 'User_id': uid
-                    });
 
-                     Navigator.push(context, MaterialPageRoute(builder: (context)=> stopping_time()));
+                    QuestionRecord().uploadWhenBleedingStopQuestion(widget.uid, getDate).then((value) {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => stopping_time(
+                                    uid: widget.uid,
+                                  )));
+                    });
                   },
                 ),
               ),
@@ -166,10 +154,11 @@ class _bleeding_stopState extends State<bleeding_stop> {
                   Container(
                     child: TextButton(
                       onPressed: () {
-                       showDialog(context: context, 
-                       builder: (BuildContext context){
-                        return MyDialog();
-                       });
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return MyDialog();
+                            });
                       },
                       style: TextButton.styleFrom(
                         foregroundColor: Color(0xff1F3D73),

@@ -1,8 +1,7 @@
-
+import 'package:ayyami/firebase_calls/questions_record.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
-
 
 import '../../widgets/gradient_button.dart';
 import '../../widgets/utils.dart';
@@ -10,16 +9,18 @@ import 'Which_pregnancy_it_is.dart';
 import 'is_it_bleeding_pregnant.dart';
 
 class pregnant_question extends StatefulWidget {
-  const pregnant_question({super.key});
+  String uid;
+
+  pregnant_question({required this.uid, super.key});
 
   @override
   State<pregnant_question> createState() => _pregnant_questionState();
 }
 
 class _pregnant_questionState extends State<pregnant_question> {
-   final databaseRef = FirebaseDatabase.instance.ref("QuestionAnswers");
+  final databaseRef = FirebaseDatabase.instance.ref("QuestionAnswers");
   final FirebaseAuth auth = FirebaseAuth.instance;
-  
+
   bool _YesBeenPressed = false;
   bool _NoBeenPressed = false;
 
@@ -75,17 +76,11 @@ class _pregnant_questionState extends State<pregnant_question> {
                             decoration: BoxDecoration(
                               gradient: _YesBeenPressed
                                   ? const LinearGradient(
-                                      colors: [
-                                          Color(0xffFFBBE6),
-                                          Color(0xffC43CF3)
-                                        ],
+                                      colors: [Color(0xffFFBBE6), Color(0xffC43CF3)],
                                       begin: Alignment.centerLeft,
                                       end: Alignment.center)
                                   : const LinearGradient(
-                                      colors: [
-                                          Color(0xFFF2F2F2),
-                                          Color(0xFFF2F2F2)
-                                        ],
+                                      colors: [Color(0xFFF2F2F2), Color(0xFFF2F2F2)],
                                       begin: Alignment.centerLeft,
                                       end: Alignment.center),
                               borderRadius: BorderRadius.circular(25),
@@ -101,9 +96,7 @@ class _pregnant_questionState extends State<pregnant_question> {
                                         fontFamily: 'DMSans',
                                         fontSize: 17,
                                         fontWeight: FontWeight.w700,
-                                        color: _YesBeenPressed
-                                            ? Colors.white
-                                            : const Color(0xFF1F3D73)))),
+                                        color: _YesBeenPressed ? Colors.white : const Color(0xFF1F3D73)))),
                           ),
                         )
                       ],
@@ -124,17 +117,11 @@ class _pregnant_questionState extends State<pregnant_question> {
                             decoration: BoxDecoration(
                               gradient: _NoBeenPressed
                                   ? const LinearGradient(
-                                      colors: [
-                                          Color(0xffFFBBE6),
-                                          Color(0xffC43CF3)
-                                        ],
+                                      colors: [Color(0xffFFBBE6), Color(0xffC43CF3)],
                                       begin: Alignment.centerLeft,
                                       end: Alignment.center)
                                   : const LinearGradient(
-                                      colors: [
-                                          Color(0xFFF2F2F2),
-                                          Color(0xFFF2F2F2)
-                                        ],
+                                      colors: [Color(0xFFF2F2F2), Color(0xFFF2F2F2)],
                                       begin: Alignment.centerLeft,
                                       end: Alignment.center),
                               borderRadius: BorderRadius.circular(25),
@@ -150,9 +137,7 @@ class _pregnant_questionState extends State<pregnant_question> {
                                         fontFamily: 'DMSans',
                                         fontSize: 17,
                                         fontWeight: FontWeight.w700,
-                                        color: _NoBeenPressed
-                                            ? Colors.white
-                                            : const Color(0xFF1F3D73)))),
+                                        color: _NoBeenPressed ? Colors.white : const Color(0xFF1F3D73)))),
                           ),
                         )
                       ],
@@ -165,40 +150,26 @@ class _pregnant_questionState extends State<pregnant_question> {
                 child: GradientButton(
                   title: "Confirm",
                   onPressedButon: () {
-                     String q_id = DateTime.now().millisecondsSinceEpoch.toString();
+                    String q_id = DateTime.now().millisecondsSinceEpoch.toString();
+                    Widget nextWidget;
+                    String answer = '';
 
                     if (_YesBeenPressed == true && _NoBeenPressed == true) {
-                      toast_notification()
-                          .toast_message("Please select only one");
+                      toast_notification().toast_message("Please select only one");
                       return;
                     }
                     if (_YesBeenPressed == true) {
-                      // String uid = auth.currentUser!.uid;
-                      databaseRef.child(q_id).set({
-                        'Question': "Are you Pregnant or Not?",
-                        'Answer': "Pregnant",
-                        'Q_id': q_id,
-                        // 'User_id': uid
-                      });
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  const which_pregnancy()));
+                      nextWidget = which_pregnancy(uid: widget.uid,);
+                      answer = 'Pregnant';
+                    } else {
+                      nextWidget = is_it_bleeding_pregnant(
+                        uid: widget.uid,
+                      );
+                      answer = 'No Pregnancy';
                     }
-                     else if (_NoBeenPressed == true) {
-                        // String uid = auth.currentUser!.uid;
-                      databaseRef.child(q_id).set({
-                        'Question': "Are you Pregnant or Not?",
-                        'Answer': "No Pregnancy",
-                        'Q_id': q_id,
-                        // 'User_id': uid
-                      });
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const is_it_bleeding_pregnant()));
-                    }
+                    QuestionRecord().uploadArePregnantQuestion(widget.uid, answer).then((value) {
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => nextWidget));
+                    });
                   },
                 ),
               ),

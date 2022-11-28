@@ -1,3 +1,5 @@
+import 'package:ayyami/firebase_calls/questions_record.dart';
+import 'package:ayyami/screens/main_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
@@ -8,18 +10,20 @@ import '../Profile_System/home.dart';
 import 'menstrual_period.dart';
 
 class is_it_bleeding_pregnant extends StatefulWidget {
-  const is_it_bleeding_pregnant({super.key});
+  String uid;
+  is_it_bleeding_pregnant({required this.uid,super.key});
 
   @override
   State<is_it_bleeding_pregnant> createState() => _is_it_bleeding_pregnantState();
 }
 
 class _is_it_bleeding_pregnantState extends State<is_it_bleeding_pregnant> {
-   final databaseRef = FirebaseDatabase.instance.ref("QuestionAnswers");
+  final databaseRef = FirebaseDatabase.instance.ref("QuestionAnswers");
   final FirebaseAuth auth = FirebaseAuth.instance;
-  
-   bool _YesBeenPressed = false;
-   bool _NoBeenPressed = false;
+
+  bool _YesBeenPressed = false;
+  bool _NoBeenPressed = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -56,7 +60,7 @@ class _is_it_bleeding_pregnantState extends State<is_it_bleeding_pregnant> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                     Container(
+                    Container(
                         child: Column(
                       children: [
                         InkWell(
@@ -72,17 +76,11 @@ class _is_it_bleeding_pregnantState extends State<is_it_bleeding_pregnant> {
                             decoration: BoxDecoration(
                               gradient: _YesBeenPressed
                                   ? const LinearGradient(
-                                      colors: [
-                                          Color(0xffFFBBE6),
-                                          Color(0xffC43CF3)
-                                        ],
+                                      colors: [Color(0xffFFBBE6), Color(0xffC43CF3)],
                                       begin: Alignment.centerLeft,
                                       end: Alignment.center)
                                   : const LinearGradient(
-                                      colors: [
-                                          Color(0xFFF2F2F2),
-                                          Color(0xFFF2F2F2)
-                                        ],
+                                      colors: [Color(0xFFF2F2F2), Color(0xFFF2F2F2)],
                                       begin: Alignment.centerLeft,
                                       end: Alignment.center),
                               borderRadius: BorderRadius.circular(25),
@@ -95,12 +93,10 @@ class _is_it_bleeding_pregnantState extends State<is_it_bleeding_pregnant> {
                                 alignment: Alignment.center,
                                 child: Text(("Yes").toUpperCase(),
                                     style: TextStyle(
-                                        fontFamily:'DMSans',
-                                        fontSize:17 ,
+                                        fontFamily: 'DMSans',
+                                        fontSize: 17,
                                         fontWeight: FontWeight.w700,
-                                        color: _YesBeenPressed
-                                            ? Colors.white
-                                            : const Color(0xFF1F3D73)))),
+                                        color: _YesBeenPressed ? Colors.white : const Color(0xFF1F3D73)))),
                           ),
                         )
                       ],
@@ -121,17 +117,11 @@ class _is_it_bleeding_pregnantState extends State<is_it_bleeding_pregnant> {
                             decoration: BoxDecoration(
                               gradient: _NoBeenPressed
                                   ? const LinearGradient(
-                                      colors: [
-                                          Color(0xffFFBBE6),
-                                          Color(0xffC43CF3)
-                                        ],
+                                      colors: [Color(0xffFFBBE6), Color(0xffC43CF3)],
                                       begin: Alignment.centerLeft,
                                       end: Alignment.center)
                                   : const LinearGradient(
-                                      colors: [
-                                          Color(0xFFF2F2F2),
-                                          Color(0xFFF2F2F2)
-                                        ],
+                                      colors: [Color(0xFFF2F2F2), Color(0xFFF2F2F2)],
                                       begin: Alignment.centerLeft,
                                       end: Alignment.center),
                               borderRadius: BorderRadius.circular(25),
@@ -145,15 +135,14 @@ class _is_it_bleeding_pregnantState extends State<is_it_bleeding_pregnant> {
                                 child: Text(("No").toUpperCase(),
                                     style: TextStyle(
                                         fontFamily: 'DMSans',
-                                        fontSize:17 ,
+                                        fontSize: 17,
                                         fontWeight: FontWeight.w700,
-                                        color: _NoBeenPressed
-                                            ? Colors.white
-                                            : const Color(0xFF1F3D73)))),
+                                        color: _NoBeenPressed ? Colors.white : const Color(0xFF1F3D73)))),
                           ),
                         )
                       ],
-                    )),  ],
+                    )),
+                  ],
                 ),
               ),
               SizedBox(height: 65),
@@ -162,41 +151,24 @@ class _is_it_bleeding_pregnantState extends State<is_it_bleeding_pregnant> {
                   title: "Confirm",
                   onPressedButon: () {
                     String q_id = DateTime.now().millisecondsSinceEpoch.toString();
-                   if(_YesBeenPressed == true && _NoBeenPressed == true){
-                        toast_notification().toast_message("Please select only one");
-                        return;
-                    
+                    Widget nextWidget;
+                    String answer = '';
+                    if (_YesBeenPressed == true && _NoBeenPressed == true) {
+                      toast_notification().toast_message("Please select only one");
+                      return;
                     }
                     if (_YesBeenPressed == true) {
 
-                      // String uid = auth.currentUser!.uid;
-                      databaseRef.child(q_id).set({
-                        'Question': "Is it still bleedeing?",
-                        'Answer': "Yes",
-                        'Q_id': q_id,
-                        // 'User_id': uid
-                      });
-                       Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>  HomeScreen()));
-                    
-                    }
+                      answer = 'Yes';
+                      nextWidget = MainScreen();
+                    } else {
 
-                    else if(_NoBeenPressed == true){
-                      // String uid = auth.currentUser!.uid;
-                      databaseRef.child(q_id).set({
-                        'Question': "Is it still bleedeing?",
-                        'Answer': "No",
-                        'Q_id': q_id,
-                        // 'User_id': uid
-                      });
-                       Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const menstrual_period()));
-                    
+                      answer = 'No';
+                      nextWidget = menstrual_period(uid: widget.uid,);
+
                     }
+                    QuestionRecord().uploadBleedingPregnantQuestion(widget.uid, answer);
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => nextWidget));
                   },
                 ),
               ),

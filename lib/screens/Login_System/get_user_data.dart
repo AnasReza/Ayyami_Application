@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:ayyami/constants/const.dart';
 import 'package:ayyami/providers/user_provider.dart';
+import 'package:ayyami/screens/Questions/Are_you_beginner.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -316,7 +317,7 @@ class _set_passwordState extends State<set_password> {
                       final provider=Provider.of<UserProvider>(context,listen: false);
                       provider.setUID(uid!);
                       setHive(uid!);
-                      nextScreen(context, MainScreen());
+                      nextScreen(context, first_question(uid: uid,));
                     });
 
 

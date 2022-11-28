@@ -1,4 +1,5 @@
-
+import 'package:ayyami/firebase_calls/questions_record.dart';
+import 'package:ayyami/screens/main_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
@@ -7,7 +8,9 @@ import '../../widgets/gradient_button.dart';
 import '../Profile_System/home.dart';
 
 class menstrual_period extends StatefulWidget {
-  const menstrual_period({super.key});
+  String uid;
+
+  menstrual_period({required this.uid, super.key});
 
   @override
   State<menstrual_period> createState() => menstrual_periodState();
@@ -16,6 +19,7 @@ class menstrual_period extends StatefulWidget {
 class menstrual_periodState extends State<menstrual_period> {
   final databaseRef = FirebaseDatabase.instance.ref("QuestionAnswers");
   final FirebaseAuth auth = FirebaseAuth.instance;
+
   // ignore: non_constant_identifier_names
   DateTime? Startdate;
   DateTime? Enddate;
@@ -70,8 +74,7 @@ class menstrual_periodState extends State<menstrual_period> {
                             child: Row(
                               children: [
                                 Container(
-                                  padding:
-                                      const EdgeInsets.only(left: 60, top: 20),
+                                  padding: const EdgeInsets.only(left: 60, top: 20),
                                   child: const Icon(
                                     Icons.calendar_month,
                                     color: Color(0xFF1F3D73),
@@ -95,8 +98,7 @@ class menstrual_periodState extends State<menstrual_period> {
                           Row(
                             children: [
                               Container(
-                                margin:
-                                    const EdgeInsets.only(left: 58, top: 10),
+                                margin: const EdgeInsets.only(left: 58, top: 10),
                                 width: 130,
                                 height: 3,
                                 decoration: BoxDecoration(
@@ -116,8 +118,7 @@ class menstrual_periodState extends State<menstrual_period> {
                             child: Row(
                               children: [
                                 Container(
-                                  padding:
-                                      const EdgeInsets.only(left: 60, top: 20),
+                                  padding: const EdgeInsets.only(left: 60, top: 20),
                                   child: const Icon(
                                     Icons.access_time_outlined,
                                     color: Color(0xFF1F3D73),
@@ -141,8 +142,7 @@ class menstrual_periodState extends State<menstrual_period> {
                           Row(
                             children: [
                               Container(
-                                margin:
-                                    const EdgeInsets.only(left: 58, top: 10),
+                                margin: const EdgeInsets.only(left: 58, top: 10),
                                 width: 130,
                                 height: 3,
                                 decoration: BoxDecoration(
@@ -179,8 +179,7 @@ class menstrual_periodState extends State<menstrual_period> {
                             child: Row(
                               children: [
                                 Container(
-                                  padding:
-                                      const EdgeInsets.only(left: 60, top: 20),
+                                  padding: const EdgeInsets.only(left: 60, top: 20),
                                   child: const Icon(
                                     Icons.calendar_month,
                                     color: Color(0xFF1F3D73),
@@ -204,8 +203,7 @@ class menstrual_periodState extends State<menstrual_period> {
                           Row(
                             children: [
                               Container(
-                                margin:
-                                    const EdgeInsets.only(left: 58, top: 10),
+                                margin: const EdgeInsets.only(left: 58, top: 10),
                                 width: 130,
                                 height: 3,
                                 decoration: BoxDecoration(
@@ -225,8 +223,7 @@ class menstrual_periodState extends State<menstrual_period> {
                             child: Row(
                               children: [
                                 Container(
-                                  padding:
-                                      const EdgeInsets.only(left: 60, top: 20),
+                                  padding: const EdgeInsets.only(left: 60, top: 20),
                                   child: const Icon(
                                     Icons.access_time_outlined,
                                     color: Color(0xFF1F3D73),
@@ -250,8 +247,7 @@ class menstrual_periodState extends State<menstrual_period> {
                           Row(
                             children: [
                               Container(
-                                margin:
-                                    const EdgeInsets.only(left: 58, top: 10),
+                                margin: const EdgeInsets.only(left: 58, top: 10),
                                 width: 130,
                                 height: 3,
                                 decoration: BoxDecoration(
@@ -271,29 +267,11 @@ class menstrual_periodState extends State<menstrual_period> {
                 child: GradientButton(
                   title: "Confirm",
                   onPressedButon: () {
-                    String q_id =
-                        DateTime.now().millisecondsSinceEpoch.toString();
-
-                    // String uid = auth.currentUser!.uid;
-                    databaseRef.child(q_id).set({
-                      'Question': "Last menstrual period start date and time?",
-                      'Answer Date': SelectedStartDate,
-                      'Answer Time': SelectedStartTime,
-                      'Q_id': q_id,
-                      // 'User_id': uid
+                    String answer = '$SelectedStartDate@$SelectedStartTime';
+                    QuestionRecord().uploadMenstrualPeriodQuestion(widget.uid, answer).then((value){
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => MainScreen()));
                     });
 
-                     databaseRef.child(q_id).set({
-                      'Question': "Last menstrual period End date and time?",
-                      'Answer Date': SelectedEndDate,
-                      'Answer Time': SelectedEndTime,
-                      'Q_id': q_id,
-                      // 'User_id': uid
-                    });
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>  HomeScreen()));
                   },
                 ),
               ),
@@ -388,8 +366,7 @@ class menstrual_periodState extends State<menstrual_period> {
   //Start Time
   Future pickStartTime() async {
     final initialTime = TimeOfDay(hour: 9, minute: 0);
-    final getStartTime = await showTimePicker(
-        context: context, initialTime: Starttime ?? initialTime);
+    final getStartTime = await showTimePicker(context: context, initialTime: Starttime ?? initialTime);
     if (getStartTime == null) {
       return;
     } else {
@@ -414,8 +391,7 @@ class menstrual_periodState extends State<menstrual_period> {
   //End Time
   Future pickEndTime() async {
     final initialTime = TimeOfDay(hour: 9, minute: 0);
-    final getEndTime = await showTimePicker(
-        context: context, initialTime: Endtime ?? initialTime);
+    final getEndTime = await showTimePicker(context: context, initialTime: Endtime ?? initialTime);
     if (getEndTime == null) {
       return;
     } else {

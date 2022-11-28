@@ -1,4 +1,4 @@
-
+import 'package:ayyami/firebase_calls/questions_record.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
@@ -7,7 +7,9 @@ import '../../widgets/gradient_button.dart';
 import '../Profile_System/home.dart';
 
 class weeks_of_pregnant extends StatefulWidget {
-  const weeks_of_pregnant({super.key});
+  String uid;
+
+  weeks_of_pregnant({required this.uid, super.key});
 
   @override
   State<weeks_of_pregnant> createState() => _weeks_of_pregnantState();
@@ -101,22 +103,19 @@ class _weeks_of_pregnantState extends State<weeks_of_pregnant> {
                 child: GradientButton(
                   title: "Confirm",
                   onPressedButon: () {
-                    String q_id =
-                        DateTime.now().millisecondsSinceEpoch.toString();
+                    String q_id = DateTime.now().millisecondsSinceEpoch.toString();
 
-                        // String uid = auth.currentUser!.uid;
-                      databaseRef.child(q_id).set({
-                        'Question': "How many weeks are you pregnant?",
-                        'Answer': counter,
-                        'Q_id': q_id,
-                        // 'User_id': uid
-                      });
-
+                    // String uid = auth.currentUser!.uid;
+                    databaseRef.child(q_id).set({
+                      'Question': "How many weeks are you pregnant?",
+                      'Answer': counter,
+                      'Q_id': q_id,
+                      // 'User_id': uid
+                    });
+                    QuestionRecord().uploadWeekPregnantQuestion(widget.uid, counter.toString()).then((value) {
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => HomeScreen()));
+                    });
                     print(counter);
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>  HomeScreen()));
                   },
                 ),
               ),

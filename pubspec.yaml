@@ -100,5 +100,9 @@ flutter:
         - asset: assets/fonts/Inter-Bold.ttf
         - asset: assets/fonts/Inter-ExtraBold.ttf
           weight: 900
+
+    - family: Al Qalam Quran Majeed Web
+      fonts:
+        - asset: assets/fonts/Qalam_Quran-Majeed.ttf
    
 

@@ -1,5 +1,7 @@
 
+import 'package:ayyami/firebase_calls/questions_record.dart';
 import 'package:ayyami/screens/Questions/when_did_the_bleeding_stop.dart';
+import 'package:ayyami/screens/main_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
@@ -10,7 +12,8 @@ import '../../widgets/utils.dart';
 import '../Profile_System/home.dart';
 
 class isit_bleeding extends StatefulWidget {
-  const isit_bleeding({super.key});
+  String uid;
+  isit_bleeding({required this.uid,super.key});
 
   @override
   State<isit_bleeding> createState() => _isit_bleedingState();
@@ -167,6 +170,8 @@ class _isit_bleedingState extends State<isit_bleeding> {
                   onPressedButon: () {
                     String q_id =
                         DateTime.now().millisecondsSinceEpoch.toString();
+                    Widget nextWidget;
+                    String answer;
 
                     if (_YesBeenPressed == true && _NoBeenPressed == true) {
                       toast_notification()
@@ -176,37 +181,21 @@ class _isit_bleedingState extends State<isit_bleeding> {
 
                     if (_YesBeenPressed == true) {
 
-                       // String uid = auth.currentUser!.uid;
-                      databaseRef.child(q_id).set({
-                        'Question': "Is it still bleeding?",
-                        'Answer': "Yes",
-                        'Q_id': q_id,
-                        // 'User_id': uid
-                      });
+                      nextWidget=MainScreen();
+                      answer='Yes';
+                    } else {
 
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>  HomeScreen()));
-                    } 
-                    
-                    
-                    else if (_NoBeenPressed == true) {
+                      nextWidget=bleeding_stop(uid: widget.uid,);
+                      answer='No';
 
-                      
-                       // String uid = auth.currentUser!.uid;
-                      databaseRef.child(q_id).set({
-                        'Question': "Is it still bleeding?",
-                        'Answer': "No",
-                        'Q_id': q_id,
-                        // 'User_id': uid
-                      });
-
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const bleeding_stop()));
                     }
+                    QuestionRecord().uploadIsItBleedingQuestion(widget.uid, answer).then((value){
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => nextWidget));
+                    });
+
                   },
                 ),
               ),
