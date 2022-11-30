@@ -3,10 +3,11 @@ import 'package:ayyami/providers/likoria_timer_provider.dart';
 import 'package:ayyami/providers/post-natial_timer_provider.dart';
 import 'package:ayyami/providers/prayer_provider.dart';
 import 'package:ayyami/providers/pregnancy_timer_provider.dart';
-import 'package:ayyami/providers/timer_provider.dart';
+import 'package:ayyami/providers/menses_provider.dart';
 import 'package:ayyami/providers/user_provider.dart';
 import 'package:ayyami/screens/Splash_screen.dart';
 import 'package:ayyami/screens/history.dart';
+import 'package:ayyami/screens/main_screen.dart';
 import 'package:ayyami/screens/medicine_reminder.dart';
 import 'package:ayyami/translation/app_translation.dart';
 
@@ -18,15 +19,13 @@ import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 
-import 'screens/home.dart';
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   runApp(MultiProvider(
     providers: [
       ChangeNotifierProvider(create: (_) => UserProvider()),
-      ChangeNotifierProvider(create: (_) => TimerProvider()),
+      ChangeNotifierProvider(create: (_) => MensesProvider()),
       ChangeNotifierProvider(create: (_) => PregnancyTimerProvider()),
       ChangeNotifierProvider(create: (_) => LikoriaTimerProvider()),
       ChangeNotifierProvider(create: (_) => PostNatalTimerProvider()),
@@ -68,7 +67,7 @@ class MyApp extends StatelessWidget {
               fallbackLocale: const Locale('en', 'US'),
               title: 'Ayyami',
               routes: {
-                homeRoute: (context) => HomeScreen(),
+                homeRoute: (context) => MainScreen(),
                 historyRoute: (context) => const HistoryScreen(),
                 remindersRoute: (context) => const MedicineReminderScreen()
               },

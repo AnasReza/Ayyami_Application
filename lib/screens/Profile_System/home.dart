@@ -12,7 +12,7 @@ import '../../navigation/custom_fab.dart';
 import '../../providers/prayer_provider.dart';
 import '../../widgets/app_text.dart';
 import '../../widgets/category_box.dart';
-import '../../widgets/timer_box.dart';
+import '../../widgets/menses_timer_box.dart';
 
 class HomeScreen extends StatefulWidget {
   HomeScreen({super.key});

@@ -2,6 +2,8 @@ import 'dart:async';
 import 'dart:ui';
 
 import 'package:ayyami/firebase_calls/menses_record.dart';
+import 'package:ayyami/providers/tuhur_provider.dart';
+import 'package:ayyami/tracker/menses_tracker.dart';
 import 'package:ayyami/widgets/utils.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -15,7 +17,7 @@ import 'package:workmanager/workmanager.dart';
 
 import '../constants/colors.dart';
 import '../constants/images.dart';
-import '../providers/timer_provider.dart';
+import '../providers/menses_provider.dart';
 import '../providers/user_provider.dart';
 import 'app_text.dart';
 
@@ -28,16 +30,16 @@ class TimerBox extends StatefulWidget {
   State<TimerBox> createState() => _TimerBoxState();
 }
 
-class _TimerBoxState extends State<TimerBox> with WidgetsBindingObserver{
+class _TimerBoxState extends State<TimerBox> with WidgetsBindingObserver {
   static late String uid;
   static final int tuhur = 15;
-  static late TimerProvider pray;
+  static late MensesProvider mensesProvider;
   static int secondsCount = 0;
   static int minutesCount = 0;
   static int hoursCount = 0;
   static int daysCount = 0;
-  static String mensesID='';
   static final _stopWatch = StopWatchTimer(mode: StopWatchMode.countUp);
+  MensesTracker mensesTrack = MensesTracker();
 
   @override
   void initState() {
@@ -45,10 +47,10 @@ class _TimerBoxState extends State<TimerBox> with WidgetsBindingObserver{
     super.initState();
   }
 
-@override
+  @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     super.didChangeAppLifecycleState(state);
-    switch(state){
+    switch (state) {
       case AppLifecycleState.resumed:
         print('Timer Box is resumed');
         break;
@@ -63,14 +65,15 @@ class _TimerBoxState extends State<TimerBox> with WidgetsBindingObserver{
         break;
     }
   }
+
   @override
   Widget build(BuildContext context) {
-    return Consumer<TimerProvider>(builder: (conTimer, pro, build) {
+    return Consumer<MensesProvider>(builder: (conTimer, pro, build) {
       var userProvider = Provider.of<UserProvider>(context);
       uid = userProvider.getUid!;
       bool isTimerStart = pro.getTimerStart;
 
-      pray = pro;
+      mensesProvider = pro;
       return Stack(
         clipBehavior: Clip.none,
         children: [
@@ -194,7 +197,7 @@ class _TimerBoxState extends State<TimerBox> with WidgetsBindingObserver{
                     showStartDialog();
                   } else {
                     widget.mensis(true);
-                    pray.setTimerStart(false);
+                    mensesProvider.setTimerStart(false);
                   }
                 } else {
                   if (minutesCount <= 3) {
@@ -267,14 +270,6 @@ class _TimerBoxState extends State<TimerBox> with WidgetsBindingObserver{
 
   static void startMensisTimer() {
     print('mensis timer started');
-
-    Future<DocumentReference<Map<String, dynamic>>> menses=MensesRecord.uploadMensesStartTime(uid);
-    menses.then((value){
-     // saveDocId(value.id);
-      mensesID=value.id;
-      print('${value.id} record doc id');
-    });
-
     _stopWatch.secondTime.listen((event) {
       print('$secondsCount==sec    $minutesCount==minutes');
       secondsCount++;
@@ -287,21 +282,21 @@ class _TimerBoxState extends State<TimerBox> with WidgetsBindingObserver{
             if (daysCount > 30) {
               daysCount = 0;
             }
-            pray.setDays(daysCount);
+            mensesProvider.setDays(daysCount);
             hoursCount = 0;
           }
-          pray.setHours(hoursCount);
+          mensesProvider.setHours(hoursCount);
           minutesCount = 0;
         } else if (minutesCount == 10) {
           _stopWatch.onStopTimer();
           _stopWatch.onResetTimer();
         }
 
-        pray.setMin(minutesCount);
+        mensesProvider.setMin(minutesCount);
         secondsCount = 0;
       }
 
-      pray.setSec(secondsCount);
+      mensesProvider.setSec(secondsCount);
     });
     _stopWatch.onStartTimer();
   }
@@ -321,10 +316,11 @@ class _TimerBoxState extends State<TimerBox> with WidgetsBindingObserver{
                   'yes'.tr,
                 ),
                 onTap: () {
+                  var tuhurProvider=Provider.of<TuhurProvider>(context,listen: false);
                   widget.mensis(false);
-                  pray.setTimerStart(true);
-                 // startService();
-                  startMensisTimer();
+                  mensesProvider.setTimerStart(true);
+                  // startService();
+                  mensesTrack.startMensisTimer(mensesProvider, uid,tuhurProvider);
                   Navigator.pop(dialogContext);
                 },
               ),
@@ -356,14 +352,12 @@ class _TimerBoxState extends State<TimerBox> with WidgetsBindingObserver{
                   'yes'.tr,
                 ),
                 onTap: () {
-                  if(mensesID.isNotEmpty){
-                    MensesRecord.uploadMensesEndTime(mensesID);
-                    _stopWatch.onStopTimer();
-                    _stopWatch.onResetTimer();
-                    pray.setTimerStart(false);
+
+                    TuhurProvider tuhurProvider = Provider.of<TuhurProvider>(context,listen: false);
+                    mensesTrack.stopMensesTimer(mensesProvider,tuhurProvider,uid);
+
                     widget.mensis(true);
                     Navigator.pop(dialogContext);
-                  }
 
                 },
               ),
@@ -380,12 +374,13 @@ class _TimerBoxState extends State<TimerBox> with WidgetsBindingObserver{
         });
   }
 
-  static void saveDocId(String id) async{
-    var box= await Hive.openBox('aayami_menses');
+  static void saveDocId(String id) async {
+    var box = await Hive.openBox('aayami_menses');
     box.put('menses_timer_doc_id', id);
   }
-  dynamic getDocID() async{
-    var box= await Hive.openBox('aayami_menses');
+
+  dynamic getDocID() async {
+    var box = await Hive.openBox('aayami_menses');
     return box.get('menses_timer_doc_id');
   }
 }

@@ -15,7 +15,7 @@ import 'package:workmanager/workmanager.dart';
 
 import '../constants/colors.dart';
 import '../constants/images.dart';
-import '../providers/timer_provider.dart';
+import '../providers/menses_provider.dart';
 import '../providers/user_provider.dart';
 import 'app_text.dart';
 
@@ -31,7 +31,7 @@ class LikoriaTimerBox extends StatefulWidget {
 class _LikoriaTimerBoxState extends State<LikoriaTimerBox> with WidgetsBindingObserver{
   static late String uid;
   static final int tuhur = 15;
-  static late TimerProvider pray;
+  static late MensesProvider pray;
   static int secondsCount = 0;
   static int minutesCount = 0;
   static int hoursCount = 0;
@@ -65,7 +65,7 @@ class _LikoriaTimerBoxState extends State<LikoriaTimerBox> with WidgetsBindingOb
   }
   @override
   Widget build(BuildContext context) {
-    return Consumer<TimerProvider>(builder: (conTimer, pro, build) {
+    return Consumer<MensesProvider>(builder: (conTimer, pro, build) {
       var userProvider = Provider.of<UserProvider>(context);
       uid = userProvider.getUid!;
       bool isTimerStart = pro.getTimerStart;

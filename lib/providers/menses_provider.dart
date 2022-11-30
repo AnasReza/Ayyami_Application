@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 
-class TimerProvider extends ChangeNotifier {
+class MensesProvider extends ChangeNotifier {
   int seconds = 0;
   int minutes = 0;
   int hours = 0;
   int days = 0;
   bool isTimerStart = false;
+  String mensesID='';
 
   int get getSec => seconds;
 
@@ -14,6 +15,13 @@ class TimerProvider extends ChangeNotifier {
   int get getDays => days;
 
   bool get getTimerStart => isTimerStart;
+
+  String get getMensesID => mensesID;
+
+  setMensesID(String value){
+    mensesID=value;
+    notifyListeners();
+  }
 
   setSec(int value) {
     seconds = value;

@@ -2,7 +2,7 @@ import 'package:ayyami/constants/colors.dart';
 import 'package:ayyami/widgets/likoria_timer_box.dart';
 import 'package:ayyami/widgets/post_natal_timer_box.dart';
 import 'package:ayyami/widgets/pregnancy_timer_box.dart';
-import 'package:ayyami/widgets/timer_box.dart';
+import 'package:ayyami/widgets/menses_timer_box.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
