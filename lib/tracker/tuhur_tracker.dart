@@ -41,15 +41,10 @@ class TuhurTracker{
           }
           tuhurProvider.setHours(hoursCount);
           minutesCount = 0;
-        } else if (minutesCount == 10) {
-          _stopWatch.onStopTimer();
-          _stopWatch.onResetTimer();
         }
-
         tuhurProvider.setMin(minutesCount);
         secondsCount = 0;
       }
-
       tuhurProvider.setSec(secondsCount);
     });
     _stopWatch.onStartTimer();
@@ -57,9 +52,13 @@ class TuhurTracker{
 
   void stopTuhurTimer(TuhurProvider tuhurProvider){
     String tuhurID=tuhurProvider.getTuhurID;
-    TuhurRecord.uploadMensesEndTime(tuhurID);
+    TuhurRecord.uploadMensesEndTime(tuhurID,daysCount,hoursCount,minutesCount,secondsCount);
 
     tuhurProvider.setTimerStart(false);
+    tuhurProvider.setDays(0);
+    tuhurProvider.setHours(0);
+    tuhurProvider.setMin(0);
+    tuhurProvider.setSec(0);
     _stopWatch.onStopTimer();
     _stopWatch.onResetTimer();
   }

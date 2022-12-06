@@ -45,8 +45,7 @@ class MensesTracker {
           mensesProvider.setHours(hoursCount);
           minutesCount = 0;
         } else if (minutesCount == 10) {
-          _stopWatch.onStopTimer();
-          _stopWatch.onResetTimer();
+          stopMensesTimer(mensesProvider, tuhurProvider, uid);
         }
 
         mensesProvider.setMin(minutesCount);
@@ -61,8 +60,12 @@ class MensesTracker {
   void stopMensesTimer(MensesProvider mensesProvider, TuhurProvider tuhurProvider, String uid) {
     tuhurTracker.startTuhurTimer(tuhurProvider, uid);
     String mensesID = mensesProvider.getMensesID;
-    MensesRecord.uploadMensesEndTime(mensesID);
+    MensesRecord.uploadMensesEndTime(mensesID, daysCount, hoursCount, minutesCount, secondsCount);
     mensesProvider.setTimerStart(false);
+    mensesProvider.setDays(0);
+    mensesProvider.setHours(0);
+    mensesProvider.setMin(0);
+    mensesProvider.setSec(0);
     _stopWatch.onStopTimer();
     _stopWatch.onResetTimer();
   }

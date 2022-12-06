@@ -357,7 +357,7 @@ class _PostNatalTimerBoxState extends State<PostNatalTimerBox> with WidgetsBindi
                 ),
                 onTap: () {
                   if(mensesID.isNotEmpty){
-                    MensesRecord.uploadMensesEndTime(mensesID);
+                    MensesRecord.uploadMensesEndTime(mensesID,0,0,0,0);
                     _stopWatch.onStopTimer();
                     _stopWatch.onResetTimer();
                     pray.setTimerStart(false);

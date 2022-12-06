@@ -7,7 +7,7 @@ class MensesRecord {
     return FirebaseFirestore.instance.collection('menses').add({'uid': uid, 'start_date': startTime});
   }
 
-  static uploadMensesEndTime(String docID) {
+  static uploadMensesEndTime(String docID,int days,int hours,int minutes,int seconds) {
     var endTime = Timestamp.now();
     var endDate = endTime.toDate();
     var firestore = FirebaseFirestore.instance;
@@ -18,7 +18,7 @@ class MensesRecord {
       firestore
           .collection('menses')
           .doc(docID)
-          .update({'end_time': endTime, 'days_calculated': diffDuration.inSeconds});
+          .update({'end_time': endTime, 'days':days,'hours':hours,'minutes':minutes,'seconds':seconds});
     });
   }
 }

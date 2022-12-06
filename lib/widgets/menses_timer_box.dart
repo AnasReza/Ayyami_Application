@@ -32,7 +32,7 @@ class TimerBox extends StatefulWidget {
 
 class _TimerBoxState extends State<TimerBox> with WidgetsBindingObserver {
   static late String uid;
-  static final int tuhur = 15;
+  static const int tuhurMinimum = 15;
   static late MensesProvider mensesProvider;
   static int secondsCount = 0;
   static int minutesCount = 0;
@@ -191,16 +191,23 @@ class _TimerBoxState extends State<TimerBox> with WidgetsBindingObserver {
             top: 174.h,
             child: InkWell(
               onTap: () {
+                bool start=calculateLastMenses();
+
                 if (!isTimerStart) {
-                  if (tuhur >= 15) {
-                    //startService(pro);
-                    showStartDialog();
+                  if (tuhurMinimum >= 15) {
+                    if(start){
+                      showStartDialog();
+                    }else{
+                      widget.mensis(true);
+                      mensesProvider.setTimerStart(false);
+                    }
+
                   } else {
                     widget.mensis(true);
                     mensesProvider.setTimerStart(false);
                   }
                 } else {
-                  if (minutesCount <= 3) {
+                  if (minutesCount >= 3) {
                     toast_notification().toast_message('stop_mensus_timer_message'.tr);
                   } else {
                     showStopDialog();
@@ -233,6 +240,49 @@ class _TimerBoxState extends State<TimerBox> with WidgetsBindingObserver {
       );
     });
   }
+
+  bool calculateLastMenses() {
+    var provider = Provider.of<UserProvider>(context, listen: false);
+    var menseslast = provider.getLastMenses;
+    var tuhurLast = provider.getLastTuhur;
+    DateTime now = DateTime.now();
+    var menseslastdate = menseslast.toDate();
+    var tuhurlastdate = tuhurLast.toDate();
+
+    var mensesTimeMap = provider.getLastMensesTime;
+    var tuhurTimeMap = provider.getLastTuhurTime;
+    Duration tuhurDuration = Duration(days: tuhurTimeMap!['day']!, hours: tuhurTimeMap!['hours']!, minutes: tuhurTimeMap!['minutes']!, seconds: tuhurTimeMap!['second']!);
+    var menses_should_start = menseslastdate.add(tuhurDuration);
+
+    Duration diff = menses_should_start.difference(now);
+    if (diff.inSeconds < 0) {
+      return true;
+    } else {
+      int diffINT=diff.inSeconds;
+      var diffDuration=timeLeft(diffINT);
+      int secs=diffDuration.inSeconds;
+      int totalSeconds=secs+diffINT;
+      var duration=timeLeft(totalSeconds);
+      if(duration.inDays>10){
+        return false;
+      }else{
+        return true;
+      }
+    }
+  }
+   Duration timeLeft(int seconds) {
+    int diff = seconds;
+
+    int days = diff ~/ (24 * 60 * 60);
+    diff -= days * (24 * 60 * 60);
+    int hours = diff ~/ (60 * 60);
+    diff -= hours * (60 * 60);
+    int minutes = diff ~/ (60);
+    diff -= minutes * (60);
+
+    return Duration(days: days,hours: hours,minutes: minutes);
+  }
+
 
   void startService() async {
     print('service started');
@@ -316,11 +366,11 @@ class _TimerBoxState extends State<TimerBox> with WidgetsBindingObserver {
                   'yes'.tr,
                 ),
                 onTap: () {
-                  var tuhurProvider=Provider.of<TuhurProvider>(context,listen: false);
+                  var tuhurProvider = Provider.of<TuhurProvider>(context, listen: false);
                   widget.mensis(false);
                   mensesProvider.setTimerStart(true);
                   // startService();
-                  mensesTrack.startMensisTimer(mensesProvider, uid,tuhurProvider);
+                  mensesTrack.startMensisTimer(mensesProvider, uid, tuhurProvider);
                   Navigator.pop(dialogContext);
                 },
               ),
@@ -352,13 +402,11 @@ class _TimerBoxState extends State<TimerBox> with WidgetsBindingObserver {
                   'yes'.tr,
                 ),
                 onTap: () {
+                  TuhurProvider tuhurProvider = Provider.of<TuhurProvider>(context, listen: false);
+                  mensesTrack.stopMensesTimer(mensesProvider, tuhurProvider, uid);
 
-                    TuhurProvider tuhurProvider = Provider.of<TuhurProvider>(context,listen: false);
-                    mensesTrack.stopMensesTimer(mensesProvider,tuhurProvider,uid);
-
-                    widget.mensis(true);
-                    Navigator.pop(dialogContext);
-
+                  widget.mensis(true);
+                  Navigator.pop(dialogContext);
                 },
               ),
               InkWell(
@@ -383,4 +431,13 @@ class _TimerBoxState extends State<TimerBox> with WidgetsBindingObserver {
     var box = await Hive.openBox('aayami_menses');
     return box.get('menses_timer_doc_id');
   }
+}
+
+extension Reset on Duration{
+  int get inDaysRest => inDays;
+  int get inHoursRest => inHours - (inDays * 24);
+  int get inMinutesRest => inMinutes - (inHours * 60);
+  int get inSecondsRest => inSeconds - (inMinutes * 60);
+  int get inMillisecondsRest => inMilliseconds - (inSeconds * 1000);
+  int get inMicrosecondsRest => inMicroseconds - (inMilliseconds * 1000);
 }

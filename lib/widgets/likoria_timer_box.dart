@@ -357,7 +357,7 @@ class _LikoriaTimerBoxState extends State<LikoriaTimerBox> with WidgetsBindingOb
                 ),
                 onTap: () {
                   if(mensesID.isNotEmpty){
-                    MensesRecord.uploadMensesEndTime(mensesID);
+                    MensesRecord.uploadMensesEndTime(mensesID,0,0,0,0);
                     _stopWatch.onStopTimer();
                     _stopWatch.onResetTimer();
                     pray.setTimerStart(false);
