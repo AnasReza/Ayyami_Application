@@ -36,17 +36,18 @@ class MensesTracker {
           hoursCount++;
           if (hoursCount > 23) {
             daysCount++;
-            if (daysCount > 30) {
-              daysCount = 0;
-            }
+            // if (daysCount > 30) {
+            //   daysCount = 0;
+            // }
             mensesProvider.setDays(daysCount);
             hoursCount = 0;
           }
           mensesProvider.setHours(hoursCount);
           minutesCount = 0;
-        } else if (minutesCount == 10) {
-          stopMensesTimer(mensesProvider, tuhurProvider, uid);
         }
+        // else if (minutesCount == 10) {
+        //   stopMensesTimer(mensesProvider, tuhurProvider, uid);
+        // }
 
         mensesProvider.setMin(minutesCount);
         secondsCount = 0;

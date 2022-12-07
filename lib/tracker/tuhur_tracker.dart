@@ -33,9 +33,9 @@ class TuhurTracker{
           hoursCount++;
           if (hoursCount > 23) {
             daysCount++;
-            if (daysCount > 30) {
-              daysCount = 0;
-            }
+            // if (daysCount > 30) {
+            //   daysCount = 0;
+            // }
             tuhurProvider.setDays(daysCount);
             hoursCount = 0;
           }
