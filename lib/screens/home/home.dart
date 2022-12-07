@@ -98,6 +98,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
       var docList = event.docs;
       for (var doc in docList) {
         Timestamp startTime = doc.get('start_date');
+        Timestamp endTime = doc.get('end_time');
         DateTime startDate = startTime.toDate();
        int days=doc.get('days');
        int hour=doc.get('hours');
@@ -112,6 +113,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
           lastCycleDate = format.format(startDate);
         });
         pro.setLastMenses(startTime);
+        pro.setLastMensesEnd(endTime);
         pro.setLastMensesTime(days, hour, minute, seconds);
         print('${doc.id}=uid from menses collection');
       }

@@ -5,6 +5,7 @@ class UserProvider extends ChangeNotifier{
   String? uid;
   bool? login;
   late Timestamp lastMenses;
+  late Timestamp lastMensesEnd;
   late Timestamp lastTuhur;
   late Map<String, int> lastMensesTime;
   Map<String, int>? lastTuhurTime;
@@ -12,6 +13,7 @@ class UserProvider extends ChangeNotifier{
   String? get getUid=> uid;
   bool? get getLogin=>login;
   Timestamp get getLastMenses => lastMenses;
+  Timestamp get getLastMensesEnd => lastMensesEnd;
   Timestamp get getLastTuhur => lastTuhur;
   Map<String, int> get getLastMensesTime => lastMensesTime;
   Map<String, int>? get getLastTuhurTime => lastTuhurTime;
@@ -24,6 +26,10 @@ class UserProvider extends ChangeNotifier{
   setLastTuhurTime(int days,int hour,int minute,int seconds) {
 
     lastTuhurTime= {'day':days,'hours':hour,'minutes':minute,'second':seconds};
+    notifyListeners();
+  }
+  setLastMensesEnd(Timestamp value){
+    lastMensesEnd=value;
     notifyListeners();
   }
   setLastMenses(Timestamp value){

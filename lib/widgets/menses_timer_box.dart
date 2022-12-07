@@ -32,7 +32,7 @@ class TimerBox extends StatefulWidget {
 
 class _TimerBoxState extends State<TimerBox> with WidgetsBindingObserver {
   static late String uid;
-  static const int tuhurMinimum = 15;
+  static int tuhurMinimum = 15;
   static late MensesProvider mensesProvider;
   static int secondsCount = 0;
   static int minutesCount = 0;
@@ -244,6 +244,7 @@ class _TimerBoxState extends State<TimerBox> with WidgetsBindingObserver {
   bool calculateLastMenses() {
     var provider = Provider.of<UserProvider>(context, listen: false);
     var menseslast = provider.getLastMenses;
+    var mensesEnd = provider.getLastMenses;
     var tuhurLast = provider.getLastTuhur;
     DateTime now = DateTime.now();
     var menseslastdate = menseslast.toDate();
@@ -255,6 +256,8 @@ class _TimerBoxState extends State<TimerBox> with WidgetsBindingObserver {
     var menses_should_start = menseslastdate.add(tuhurDuration);
 
     Duration diff = menses_should_start.difference(now);
+    var mensesDiff=now.difference(mensesEnd.toDate());
+    tuhurMinimum=mensesDiff.inDays;
     if (diff.inSeconds < 0) {
       return true;
     } else {
