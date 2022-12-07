@@ -20,10 +20,12 @@ class MensesTracker {
   final _stopWatch = StopWatchTimer(mode: StopWatchMode.countUp);
 
   void startMensisTimer(MensesProvider mensesProvider, String uid, TuhurProvider tuhurProvider) {
-    var menses = MensesRecord.uploadMensesStartTime(uid);
+    var startTime=Timestamp.now();
+    var menses = MensesRecord.uploadMensesStartTime(uid,startTime);
     menses.then((value) {
       saveDocId(value.id);
       mensesProvider.setMensesID(value.id);
+      mensesProvider.setStartTime(startTime);
       tuhurTracker.stopTuhurTimer(tuhurProvider);
       print('${value.id} record doc id');
     });
@@ -61,14 +63,19 @@ class MensesTracker {
   void stopMensesTimer(MensesProvider mensesProvider, TuhurProvider tuhurProvider, String uid) {
     tuhurTracker.startTuhurTimer(tuhurProvider, uid);
     String mensesID = mensesProvider.getMensesID;
-    MensesRecord.uploadMensesEndTime(mensesID, daysCount, hoursCount, minutesCount, secondsCount);
-    mensesProvider.setTimerStart(false);
-    mensesProvider.setDays(0);
-    mensesProvider.setHours(0);
-    mensesProvider.setMin(0);
-    mensesProvider.setSec(0);
-    _stopWatch.onStopTimer();
-    _stopWatch.onResetTimer();
+    Timestamp startTime=mensesProvider.getStartTime;
+    var diff= Timestamp.now().toDate().difference(startTime.toDate());
+    if(diff.inDays<=10){
+      MensesRecord.uploadMensesEndTime(mensesID, daysCount, hoursCount, minutesCount, secondsCount);
+      mensesProvider.setTimerStart(false);
+      mensesProvider.setDays(0);
+      mensesProvider.setHours(0);
+      mensesProvider.setMin(0);
+      mensesProvider.setSec(0);
+      _stopWatch.onStopTimer();
+      _stopWatch.onResetTimer();
+    }
+
   }
 
   static void saveDocId(String id) async {

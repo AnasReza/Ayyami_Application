@@ -268,7 +268,7 @@ class _PostNatalTimerBoxState extends State<PostNatalTimerBox> with WidgetsBindi
   static void startMensisTimer() {
     print('mensis timer started');
 
-    Future<DocumentReference<Map<String, dynamic>>> menses=MensesRecord.uploadMensesStartTime(uid);
+    Future<DocumentReference<Map<String, dynamic>>> menses=MensesRecord.uploadMensesStartTime(uid,Timestamp.now());
     menses.then((value){
      // saveDocId(value.id);
       mensesID=value.id;

@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class MensesProvider extends ChangeNotifier {
@@ -7,6 +8,7 @@ class MensesProvider extends ChangeNotifier {
   int days = 0;
   bool isTimerStart = false;
   String mensesID='';
+  late Timestamp startTime;
 
   int get getSec => seconds;
 
@@ -17,9 +19,14 @@ class MensesProvider extends ChangeNotifier {
   bool get getTimerStart => isTimerStart;
 
   String get getMensesID => mensesID;
+  Timestamp get getStartTime => startTime;
 
   setMensesID(String value){
     mensesID=value;
+    notifyListeners();
+  }
+  setStartTime(Timestamp value){
+    startTime=value;
     notifyListeners();
   }
 

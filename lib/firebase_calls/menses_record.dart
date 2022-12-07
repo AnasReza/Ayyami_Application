@@ -1,9 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class MensesRecord {
-  static uploadMensesStartTime(String uid) {
-    var startTime = Timestamp.now();
-
+  static uploadMensesStartTime(String uid,Timestamp startTime) {
     return FirebaseFirestore.instance.collection('menses').add({'uid': uid, 'start_date': startTime});
   }
 

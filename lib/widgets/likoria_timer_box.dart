@@ -6,6 +6,7 @@ import 'package:ayyami/widgets/utils.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_background_service/flutter_background_service.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
@@ -268,7 +269,7 @@ class _LikoriaTimerBoxState extends State<LikoriaTimerBox> with WidgetsBindingOb
   static void startMensisTimer() {
     print('mensis timer started');
 
-    Future<DocumentReference<Map<String, dynamic>>> menses=MensesRecord.uploadMensesStartTime(uid);
+    Future<DocumentReference<Map<String, dynamic>>> menses=MensesRecord.uploadMensesStartTime(uid,Timestamp.now());
     menses.then((value){
      // saveDocId(value.id);
       mensesID=value.id;

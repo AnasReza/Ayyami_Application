@@ -191,17 +191,16 @@ class _TimerBoxState extends State<TimerBox> with WidgetsBindingObserver {
             top: 174.h,
             child: InkWell(
               onTap: () {
-                bool start=calculateLastMenses();
+                bool start = calculateLastMenses();
 
                 if (!isTimerStart) {
                   if (tuhurMinimum >= 15) {
-                    if(start){
+                    if (start) {
                       showStartDialog();
-                    }else{
+                    } else {
                       widget.mensis(true);
                       mensesProvider.setTimerStart(false);
                     }
-
                   } else {
                     widget.mensis(true);
                     mensesProvider.setTimerStart(false);
@@ -252,28 +251,33 @@ class _TimerBoxState extends State<TimerBox> with WidgetsBindingObserver {
 
     var mensesTimeMap = provider.getLastMensesTime;
     var tuhurTimeMap = provider.getLastTuhurTime;
-    Duration tuhurDuration = Duration(days: tuhurTimeMap!['day']!, hours: tuhurTimeMap!['hours']!, minutes: tuhurTimeMap!['minutes']!, seconds: tuhurTimeMap!['second']!);
+    Duration tuhurDuration = Duration(
+        days: tuhurTimeMap!['day']!,
+        hours: tuhurTimeMap!['hours']!,
+        minutes: tuhurTimeMap!['minutes']!,
+        seconds: tuhurTimeMap!['second']!);
     var menses_should_start = menseslastdate.add(tuhurDuration);
 
     Duration diff = menses_should_start.difference(now);
-    var mensesDiff=now.difference(mensesEnd.toDate());
-    tuhurMinimum=mensesDiff.inDays;
+    var mensesDiff = now.difference(mensesEnd.toDate());
+    tuhurMinimum = mensesDiff.inDays;
     if (diff.inSeconds < 0) {
       return true;
     } else {
-      int diffINT=diff.inSeconds;
-      var diffDuration=timeLeft(diffINT);
-      int secs=diffDuration.inSeconds;
-      int totalSeconds=secs+diffINT;
-      var duration=timeLeft(totalSeconds);
-      if(duration.inDays>10){
+      int diffINT = diff.inSeconds;
+      var diffDuration = timeLeft(diffINT);
+      int secs = diffDuration.inSeconds;
+      int totalSeconds = secs + diffINT;
+      var duration = timeLeft(totalSeconds);
+      if (duration.inDays > 10) {
         return false;
-      }else{
+      } else {
         return true;
       }
     }
   }
-   Duration timeLeft(int seconds) {
+
+  Duration timeLeft(int seconds) {
     int diff = seconds;
 
     int days = diff ~/ (24 * 60 * 60);
@@ -283,9 +287,8 @@ class _TimerBoxState extends State<TimerBox> with WidgetsBindingObserver {
     int minutes = diff ~/ (60);
     diff -= minutes * (60);
 
-    return Duration(days: days,hours: hours,minutes: minutes);
+    return Duration(days: days, hours: hours, minutes: minutes);
   }
-
 
   void startService() async {
     print('service started');
@@ -406,6 +409,7 @@ class _TimerBoxState extends State<TimerBox> with WidgetsBindingObserver {
                 ),
                 onTap: () {
                   TuhurProvider tuhurProvider = Provider.of<TuhurProvider>(context, listen: false);
+
                   mensesTrack.stopMensesTimer(mensesProvider, tuhurProvider, uid);
 
                   widget.mensis(true);
@@ -436,11 +440,16 @@ class _TimerBoxState extends State<TimerBox> with WidgetsBindingObserver {
   }
 }
 
-extension Reset on Duration{
+extension Reset on Duration {
   int get inDaysRest => inDays;
+
   int get inHoursRest => inHours - (inDays * 24);
+
   int get inMinutesRest => inMinutes - (inHours * 60);
+
   int get inSecondsRest => inSeconds - (inMinutes * 60);
+
   int get inMillisecondsRest => inMilliseconds - (inSeconds * 1000);
+
   int get inMicrosecondsRest => inMicroseconds - (inMilliseconds * 1000);
 }
