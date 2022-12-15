@@ -192,6 +192,7 @@ class _TimerBoxState extends State<TimerBox> with WidgetsBindingObserver {
             child: InkWell(
               onTap: () {
                 bool start = calculateLastMenses();
+                print('$start  start');
 
                 if (!isTimerStart) {
                   if (tuhurMinimum >= 15) {
@@ -240,10 +241,10 @@ class _TimerBoxState extends State<TimerBox> with WidgetsBindingObserver {
     });
   }
 
-  bool calculateLastMenses() {
+  bool calculateLastMenses() {try{
     var provider = Provider.of<UserProvider>(context, listen: false);
     var menseslast = provider.getLastMenses;
-    var mensesEnd = provider.getLastMenses;
+    var mensesEnd = provider.getLastMensesEnd;
     var tuhurLast = provider.getLastTuhur;
     DateTime now = DateTime.now();
     var menseslastdate = menseslast.toDate();
@@ -275,6 +276,10 @@ class _TimerBoxState extends State<TimerBox> with WidgetsBindingObserver {
         return true;
       }
     }
+  }catch(e){
+    return true;
+  }
+
   }
 
   Duration timeLeft(int seconds) {
@@ -409,8 +414,9 @@ class _TimerBoxState extends State<TimerBox> with WidgetsBindingObserver {
                 ),
                 onTap: () {
                   TuhurProvider tuhurProvider = Provider.of<TuhurProvider>(context, listen: false);
+                  UserProvider userProvider = Provider.of<UserProvider>(context, listen: false);
 
-                  mensesTrack.stopMensesTimer(mensesProvider, tuhurProvider, uid);
+                  mensesTrack.stopMensesTimer(mensesProvider, tuhurProvider, uid,userProvider);
 
                   widget.mensis(true);
                   Navigator.pop(dialogContext);
@@ -438,18 +444,4 @@ class _TimerBoxState extends State<TimerBox> with WidgetsBindingObserver {
     var box = await Hive.openBox('aayami_menses');
     return box.get('menses_timer_doc_id');
   }
-}
-
-extension Reset on Duration {
-  int get inDaysRest => inDays;
-
-  int get inHoursRest => inHours - (inDays * 24);
-
-  int get inMinutesRest => inMinutes - (inHours * 60);
-
-  int get inSecondsRest => inSeconds - (inMinutes * 60);
-
-  int get inMillisecondsRest => inMilliseconds - (inSeconds * 1000);
-
-  int get inMicrosecondsRest => inMicroseconds - (inMilliseconds * 1000);
 }

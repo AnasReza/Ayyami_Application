@@ -70,8 +70,8 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
             int seconds = doc.get('seconds');
             setState(() {
               //change minutes and seconds to days and hours
-              lastTuhurDays = doc.get('minutes');
-              lastTuhurHours = doc.get('seconds');
+              lastTuhurDays = doc.get('days');
+              lastTuhurHours = doc.get('hours');
             });
             print('${doc.id}==menses');
             pro.setLastTuhur(startTime);
@@ -108,8 +108,8 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
         DateFormat format = DateFormat('dd MMMM yyyy');
         setState(() {
           //change minutes and seconds to days and hours
-          lastMensesDays = doc.get('minutes');
-          lastMensesHours = doc.get('seconds');
+          lastMensesDays = doc.get('days');
+          lastMensesHours = doc.get('hours');
           lastCycleDate = format.format(startDate);
         });
         pro.setLastMenses(startTime);
