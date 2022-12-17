@@ -20,8 +20,8 @@ class MensesTracker {
   final TuhurTracker tuhurTracker = TuhurTracker();
   late var _stopWatch = StopWatchTimer(mode: StopWatchMode.countUp);
 
-  void startMensisTimer(MensesProvider mensesProvider, String uid, TuhurProvider tuhurProvider) {
-    var startTime = Timestamp.now();
+  void startMensisTimer(MensesProvider mensesProvider, String uid, TuhurProvider tuhurProvider,Timestamp startTime) {
+    // var startTime = Timestamp.now();
     var menses = MensesRecord.uploadMensesStartTime(uid, startTime);
     menses.then((value) {
       saveDocId(value.id);
@@ -102,18 +102,18 @@ class MensesTracker {
   }
 
   void stopMensesTimer(
-      MensesProvider mensesProvider, TuhurProvider tuhurProvider, String uid, UserProvider userProvider) {
+      MensesProvider mensesProvider, TuhurProvider tuhurProvider, String uid, UserProvider userProvider,Timestamp endTime) {
     tuhurTracker.startTuhurTimer(tuhurProvider, uid);
     String mensesID = mensesProvider.getMensesID;
     Timestamp startTime = mensesProvider.getStartTime;
-    var diff = Timestamp.now().toDate().difference(startTime.toDate());
+    var diff = endTime.toDate().difference(startTime.toDate());
     if (diff.inDays <= 10) {
       uploadMensesEndTime(mensesID, daysCount, hoursCount, minutesCount, secondsCount, mensesProvider);
     } else {
       var lastMensesStartTime = userProvider.getLastMenses;
       var lastMensesEndTime = userProvider.getLastMenses;
       var currentMenses = mensesProvider.getStartTime;
-      var now = Timestamp.now();
+      var now = endTime;
 
       var lastStartDay = lastMensesStartTime.toDate();
       var lastEndDay = lastMensesEndTime.toDate();

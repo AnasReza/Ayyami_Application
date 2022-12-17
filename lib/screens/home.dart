@@ -71,7 +71,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver{
       body: SafeArea(
         child: Container(
           decoration:
-              const BoxDecoration(gradient: AppColors.backgroundGradient),
+              BoxDecoration(gradient: AppColors.backgroundGradient),
           child: Padding(
             padding: EdgeInsets.only(
               left: 70.w,

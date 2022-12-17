@@ -93,7 +93,7 @@ class _CustomSwitch1State extends State<CustomSwitch1>
                         child: Container(
                           width: 52.0.w,
                           height: 52.0.h,
-                          decoration: const BoxDecoration(
+                          decoration: BoxDecoration(
                             shape: BoxShape.circle,
                             gradient: AppColors.bgPinkishGradient,
                           ),

@@ -25,7 +25,7 @@ class _MedicineReminderScreenState extends State<MedicineReminderScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           gradient: AppColors.backgroundGradient,
         ),
         child: Padding(

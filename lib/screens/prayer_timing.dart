@@ -21,7 +21,7 @@ class _PrayerTimingState extends State<PrayerTiming> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           gradient: AppColors.backgroundGradient,
         ),
         child: Padding(

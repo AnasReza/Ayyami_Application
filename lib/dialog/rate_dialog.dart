@@ -45,13 +45,13 @@ class RateDialog extends StatelessWidget {
                         child: Container(
                           padding: EdgeInsets.all(8),
                           width: double.infinity,
-                          decoration: const BoxDecoration(
+                          decoration: BoxDecoration(
                               gradient: AppColors.bgPinkishGradient,
                               borderRadius:
                                   BorderRadius.only(bottomLeft: Radius.circular(10), bottomRight: Radius.circular(10))),
                           child: Text(
                             'rate_us'.tr,
-                            style: const TextStyle(
+                            style: TextStyle(
                               color: AppColors.white,
                               fontWeight: FontWeight.w700,
                               fontSize: 20

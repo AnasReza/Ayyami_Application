@@ -64,7 +64,7 @@ class MainScreenState extends State<MainScreen> {
         //   ),
         // ],
       ),
-      body: Container(decoration:const BoxDecoration(gradient: AppColors.backgroundGradient),child: widgetList[widgetIndex],),
+      body: Container(decoration:BoxDecoration(gradient: AppColors.backgroundGradient),child: widgetList[widgetIndex],),
       bottomNavigationBar: CustomBottomNav(
           cIndex: _cIndex,
           tappingIndex: (index) {

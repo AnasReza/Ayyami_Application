@@ -22,7 +22,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         body: Container(
-            decoration: const BoxDecoration(
+            decoration: BoxDecoration(
               gradient: AppColors.backgroundGradient,
             ),
             child: Padding(

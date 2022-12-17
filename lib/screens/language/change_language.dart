@@ -22,7 +22,7 @@ class _changeLanguageState extends State<changeLanguage> {
      return Scaffold(
       body: Container(
         height: getHeight(context),
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           gradient: AppColors.backgroundGradient,
         ),
         child: SafeArea(

@@ -11,12 +11,14 @@ import 'package:flutter_background_service/flutter_background_service.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:stop_watch_timer/stop_watch_timer.dart';
 import 'package:workmanager/workmanager.dart';
 
 import '../constants/colors.dart';
 import '../constants/images.dart';
+import '../dialog/timer_date_time.dart';
 import '../providers/menses_provider.dart';
 import '../providers/user_provider.dart';
 import 'app_text.dart';
@@ -241,45 +243,45 @@ class _TimerBoxState extends State<TimerBox> with WidgetsBindingObserver {
     });
   }
 
-  bool calculateLastMenses() {try{
-    var provider = Provider.of<UserProvider>(context, listen: false);
-    var menseslast = provider.getLastMenses;
-    var mensesEnd = provider.getLastMensesEnd;
-    var tuhurLast = provider.getLastTuhur;
-    DateTime now = DateTime.now();
-    var menseslastdate = menseslast.toDate();
-    var tuhurlastdate = tuhurLast.toDate();
+  bool calculateLastMenses() {
+    try {
+      var provider = Provider.of<UserProvider>(context, listen: false);
+      var menseslast = provider.getLastMenses;
+      var mensesEnd = provider.getLastMensesEnd;
+      var tuhurLast = provider.getLastTuhur;
+      DateTime now = DateTime.now();
+      var menseslastdate = menseslast.toDate();
+      var tuhurlastdate = tuhurLast.toDate();
 
-    var mensesTimeMap = provider.getLastMensesTime;
-    var tuhurTimeMap = provider.getLastTuhurTime;
-    Duration tuhurDuration = Duration(
-        days: tuhurTimeMap!['day']!,
-        hours: tuhurTimeMap!['hours']!,
-        minutes: tuhurTimeMap!['minutes']!,
-        seconds: tuhurTimeMap!['second']!);
-    var menses_should_start = menseslastdate.add(tuhurDuration);
+      var mensesTimeMap = provider.getLastMensesTime;
+      var tuhurTimeMap = provider.getLastTuhurTime;
+      Duration tuhurDuration = Duration(
+          days: tuhurTimeMap!['day']!,
+          hours: tuhurTimeMap!['hours']!,
+          minutes: tuhurTimeMap!['minutes']!,
+          seconds: tuhurTimeMap!['second']!);
+      var menses_should_start = menseslastdate.add(tuhurDuration);
 
-    Duration diff = menses_should_start.difference(now);
-    var mensesDiff = now.difference(mensesEnd.toDate());
-    tuhurMinimum = mensesDiff.inDays;
-    if (diff.inSeconds < 0) {
-      return true;
-    } else {
-      int diffINT = diff.inSeconds;
-      var diffDuration = timeLeft(diffINT);
-      int secs = diffDuration.inSeconds;
-      int totalSeconds = secs + diffINT;
-      var duration = timeLeft(totalSeconds);
-      if (duration.inDays > 10) {
-        return false;
-      } else {
+      Duration diff = menses_should_start.difference(now);
+      var mensesDiff = now.difference(mensesEnd.toDate());
+      tuhurMinimum = mensesDiff.inDays;
+      if (diff.inSeconds < 0) {
         return true;
+      } else {
+        int diffINT = diff.inSeconds;
+        var diffDuration = timeLeft(diffINT);
+        int secs = diffDuration.inSeconds;
+        int totalSeconds = secs + diffINT;
+        var duration = timeLeft(totalSeconds);
+        if (duration.inDays > 10) {
+          return false;
+        } else {
+          return true;
+        }
       }
+    } catch (e) {
+      return true;
     }
-  }catch(e){
-    return true;
-  }
-
   }
 
   Duration timeLeft(int seconds) {
@@ -366,39 +368,88 @@ class _TimerBoxState extends State<TimerBox> with WidgetsBindingObserver {
     showDialog(
         context: context,
         builder: (dialogContext) {
-          return AlertDialog(
-            title: Text(
-              'start_timer'.tr,
-            ),
-            content: Text('start_menses'.tr),
-            actions: [
-              InkWell(
-                child: Text(
-                  'yes'.tr,
-                ),
-                onTap: () {
-                  var tuhurProvider = Provider.of<TuhurProvider>(context, listen: false);
-                  widget.mensis(false);
-                  mensesProvider.setTimerStart(true);
-                  // startService();
-                  mensesTrack.startMensisTimer(mensesProvider, uid, tuhurProvider);
-                  Navigator.pop(dialogContext);
-                },
-              ),
-              InkWell(
-                child: Text(
-                  'no'.tr,
-                ),
-                onTap: () {
-                  Navigator.pop(dialogContext);
-                },
-              ),
-            ],
+          return DialogDateTime(
+            getDateTime: (date, time) {
+              int year=date.year;
+              int month=date.month;
+              int day=date.day;
+              int hour=time.hour;
+              int minute=time.minute;
+              String period=time.period.name;
+              DateTime startDate=DateTime.utc(year,month,day,hour,minute);
+              var dateString=DateFormat.yMEd().add_jms().format(startDate);
+              print('$dateString  == dateString');
+
+              var tuhurProvider = Provider.of<TuhurProvider>(context, listen: false);
+              widget.mensis(false);
+              mensesProvider.setTimerStart(true);
+              // startService();
+              mensesTrack.startMensisTimer(mensesProvider, uid, tuhurProvider,Timestamp.fromDate(startDate));
+              Navigator.pop(dialogContext);
+            },
           );
         });
+    // showDialog(
+    //     context: context,
+    //     builder: (dialogContext) {
+    //       return AlertDialog(
+    //         title: Text(
+    //           'start_timer'.tr,
+    //         ),
+    //         content: Text('start_menses'.tr),
+    //         actions: [
+    //           InkWell(
+    //             child: Text(
+    //               'yes'.tr,
+    //             ),
+    //             onTap: () {
+    //               var tuhurProvider = Provider.of<TuhurProvider>(context, listen: false);
+    //               widget.mensis(false);
+    //               mensesProvider.setTimerStart(true);
+    //               // startService();
+    //               mensesTrack.startMensisTimer(mensesProvider, uid, tuhurProvider);
+    //               Navigator.pop(dialogContext);
+    //             },
+    //           ),
+    //           InkWell(
+    //             child: Text(
+    //               'no'.tr,
+    //             ),
+    //             onTap: () {
+    //               Navigator.pop(dialogContext);
+    //             },
+    //           ),
+    //         ],
+    //       );
+    //     });
   }
 
   void showStopDialog() {
+    showDialog(
+        context: context,
+        builder: (dialogContext) {
+          return DialogDateTime(
+            getDateTime: (date, time) {
+              int year=date.year;
+              int month=date.month;
+              int day=date.day;
+              int hour=time.hour;
+              int minute=time.minute;
+              String period=time.period.name;
+              DateTime startDate=DateTime.utc(year,month,day,hour,minute);
+              var dateString=DateFormat.yMEd().add_jms().format(startDate);
+              print('$dateString  == dateString');
+
+              var tuhurProvider = Provider.of<TuhurProvider>(context, listen: false);
+              UserProvider userProvider = Provider.of<UserProvider>(context, listen: false);
+
+              mensesTrack.stopMensesTimer(mensesProvider, tuhurProvider, uid, userProvider,Timestamp.fromDate(startDate));
+
+              widget.mensis(true);
+              Navigator.pop(dialogContext);
+            },
+          );
+        });
     showDialog(
         context: context,
         builder: (dialogContext) {
@@ -416,7 +467,7 @@ class _TimerBoxState extends State<TimerBox> with WidgetsBindingObserver {
                   TuhurProvider tuhurProvider = Provider.of<TuhurProvider>(context, listen: false);
                   UserProvider userProvider = Provider.of<UserProvider>(context, listen: false);
 
-                  mensesTrack.stopMensesTimer(mensesProvider, tuhurProvider, uid,userProvider);
+                  mensesTrack.stopMensesTimer(mensesProvider, tuhurProvider, uid, userProvider);
 
                   widget.mensis(true);
                   Navigator.pop(dialogContext);
