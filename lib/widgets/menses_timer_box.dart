@@ -450,40 +450,40 @@ class _TimerBoxState extends State<TimerBox> with WidgetsBindingObserver {
             },
           );
         });
-    showDialog(
-        context: context,
-        builder: (dialogContext) {
-          return AlertDialog(
-            title: Text(
-              'stop_timer'.tr,
-            ),
-            content: Text('stop_menses'.tr),
-            actions: [
-              InkWell(
-                child: Text(
-                  'yes'.tr,
-                ),
-                onTap: () {
-                  TuhurProvider tuhurProvider = Provider.of<TuhurProvider>(context, listen: false);
-                  UserProvider userProvider = Provider.of<UserProvider>(context, listen: false);
-
-                  mensesTrack.stopMensesTimer(mensesProvider, tuhurProvider, uid, userProvider);
-
-                  widget.mensis(true);
-                  Navigator.pop(dialogContext);
-                },
-              ),
-              InkWell(
-                child: Text(
-                  'no'.tr,
-                ),
-                onTap: () {
-                  Navigator.pop(dialogContext);
-                },
-              ),
-            ],
-          );
-        });
+    // showDialog(
+    //     context: context,
+    //     builder: (dialogContext) {
+    //       return AlertDialog(
+    //         title: Text(
+    //           'stop_timer'.tr,
+    //         ),
+    //         content: Text('stop_menses'.tr),
+    //         actions: [
+    //           InkWell(
+    //             child: Text(
+    //               'yes'.tr,
+    //             ),
+    //             onTap: () {
+    //               TuhurProvider tuhurProvider = Provider.of<TuhurProvider>(context, listen: false);
+    //               UserProvider userProvider = Provider.of<UserProvider>(context, listen: false);
+    //
+    //               mensesTrack.stopMensesTimer(mensesProvider, tuhurProvider, uid, userProvider);
+    //
+    //               widget.mensis(true);
+    //               Navigator.pop(dialogContext);
+    //             },
+    //           ),
+    //           InkWell(
+    //             child: Text(
+    //               'no'.tr,
+    //             ),
+    //             onTap: () {
+    //               Navigator.pop(dialogContext);
+    //             },
+    //           ),
+    //         ],
+    //       );
+    //     });
   }
 
   static void saveDocId(String id) async {

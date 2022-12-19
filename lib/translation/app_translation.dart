@@ -57,7 +57,8 @@ class AppTranslate extends Translations{
       'When_did_the_bleeding_stop' : 'When did the bleeding stop?',
       'select_date_time':'Please select the date and time',
       'select_date':'Please select the date',
-      'select_time':'Please select the time'
+      'select_time':'Please select the time',
+      'confirm':'Confirm',
     },
     
     'ur_AE': {
@@ -115,7 +116,8 @@ class AppTranslate extends Translations{
       'When_did_the_bleeding_stop' : 'خون کب بند ہوا؟',
       'select_date_time':'براہ کرم تاریخ اور وقت منتخب کریں۔',
       'select_date':'براہ کرم تاریخ منتخب کریں۔',
-      'select_time':'براہ کرم وقت کا انتخاب کریں۔'
+      'select_time':'براہ کرم وقت کا انتخاب کریں۔',
+      'confirm':'تصدیق کریں',
     },
 
   };

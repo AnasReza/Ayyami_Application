@@ -255,13 +255,12 @@ class _otp_pageState extends State<otp_page> {
             ),
           ),
           GradientButton(
-              title: "Sent OTP",
+              title: "confirm".tr,
               loading: loading,
               onPressedButon: () async {
                 setState(() {
                   loading = true;
                 });
-
                 // String uid = auth.currentUser!.uid;
 
                 String code1 = code1Controller.text.toString();
