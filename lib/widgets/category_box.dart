@@ -34,7 +34,7 @@ class _CategoryBoxState extends State<CategoryBox> {
             clipBehavior: Clip.none,
             children: [
               Container(
-                margin: EdgeInsets.only(left: 30, right: 30),
+                margin: const EdgeInsets.only(left: 30, right: 30),
                 width: double.infinity,
                 height: 104.h,
                 decoration: BoxDecoration(
@@ -164,7 +164,7 @@ class _CategoryBoxState extends State<CategoryBox> {
             ],
           )
         : Container(
-            margin: EdgeInsets.only(left: 30, right: 30),
+            margin: const EdgeInsets.only(left: 30, right: 30),
             width: double.infinity,
             height: 104.h,
             decoration: BoxDecoration(
@@ -198,7 +198,7 @@ class _CategoryBoxState extends State<CategoryBox> {
                       ),
                       widget.comingSoon
                           ? Container(
-                        padding: EdgeInsets.all(3),
+                        padding:const EdgeInsets.all(3),
                               decoration:
                                   BoxDecoration(color: AppColors.lightGreen, borderRadius: BorderRadius.circular(5)),
                               child: const Text(

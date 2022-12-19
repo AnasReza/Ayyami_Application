@@ -14,6 +14,8 @@ import '../navigation/custom_fab.dart';
 import 'home/home.dart';
 
 class MainScreen extends StatefulWidget {
+  const MainScreen({super.key});
+
   @override
   State<StatefulWidget> createState() {
     return MainScreenState();

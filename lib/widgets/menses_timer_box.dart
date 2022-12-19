@@ -1,7 +1,6 @@
-import 'dart:async';
+
 import 'dart:ui';
 
-import 'package:ayyami/firebase_calls/menses_record.dart';
 import 'package:ayyami/providers/tuhur_provider.dart';
 import 'package:ayyami/tracker/menses_tracker.dart';
 import 'package:ayyami/widgets/utils.dart';
@@ -14,7 +13,7 @@ import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:stop_watch_timer/stop_watch_timer.dart';
-import 'package:workmanager/workmanager.dart';
+
 
 import '../constants/colors.dart';
 import '../constants/images.dart';
@@ -257,9 +256,9 @@ class _TimerBoxState extends State<TimerBox> with WidgetsBindingObserver {
       var tuhurTimeMap = provider.getLastTuhurTime;
       Duration tuhurDuration = Duration(
           days: tuhurTimeMap!['day']!,
-          hours: tuhurTimeMap!['hours']!,
-          minutes: tuhurTimeMap!['minutes']!,
-          seconds: tuhurTimeMap!['second']!);
+          hours: tuhurTimeMap['hours']!,
+          minutes: tuhurTimeMap['minutes']!,
+          seconds: tuhurTimeMap['second']!);
       var menses_should_start = menseslastdate.add(tuhurDuration);
 
       Duration diff = menses_should_start.difference(now);

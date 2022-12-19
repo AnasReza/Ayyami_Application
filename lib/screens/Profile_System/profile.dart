@@ -74,7 +74,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           decoration: BoxDecoration(
                             color: Colors.white60,
                             shape: BoxShape.circle,
-                            image: DecorationImage(
+                            image: const DecorationImage(
                               fit: BoxFit.cover,
                               image: NetworkImage("https://thumbs.dreamstime.com/b/portrait-young-man-beard-hair-style-male-avatar-vector-portrait-young-man-beard-hair-style-male-avatar-105082137.jpg")
                             ),
@@ -83,7 +83,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                 color: Colors.grey.withOpacity(0.5),
                                 spreadRadius: 3,
                                 blurRadius: 4,
-                                offset: Offset(0, 2), // changes position of shadow
+                                offset:const Offset(0, 2), // changes position of shadow
                               ),
                             ],
                           ),
@@ -96,8 +96,8 @@ class _ProfilePageState extends State<ProfilePage> {
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(100)
                           ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(4.0),
+                          child: const Padding(
+                            padding: EdgeInsets.all(4.0),
                             child: Icon(Icons.camera_alt),
                           ),
                         ),
@@ -116,7 +116,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     boxShadow: [
                       BoxShadow(
                         color: Colors.grey.withOpacity(0.2),
-                        offset: Offset(0, 3),
+                        offset:const Offset(0, 3),
                         blurRadius: 4.5,
                         spreadRadius: 2,
                       )
@@ -134,7 +134,7 @@ class _ProfilePageState extends State<ProfilePage> {
                               Row(
                                 children: [
                                   Column(
-                                    children: [
+                                    children:const [
                                       Icon(Icons.person)
                                     ],
                                   ),
@@ -146,7 +146,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                         text: "Name",
                                         fontSize: 16.sp
                                       ),
-                                      SizedBox(height: 5,),
+                                      const SizedBox(height: 5,),
                                       AppText(
                                         text: "Ameer Hamza",
                                         fontSize: 20.sp,

@@ -1,10 +1,8 @@
 import 'package:ayyami/firebase_calls/tuhur_record.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:hive/hive.dart';
 import 'package:stop_watch_timer/stop_watch_timer.dart';
 
-import '../providers/menses_provider.dart';
 import '../providers/tuhur_provider.dart';
 
 class TuhurTracker{

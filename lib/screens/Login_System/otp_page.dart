@@ -39,7 +39,7 @@ class _otp_pageState extends State<otp_page> {
   final String get_number;
   final String verificationId;
 
-  _otp_pageState(this.get_number, this.verificationId) {}
+  _otp_pageState(this.get_number, this.verificationId);
 
   @override
   Widget build(BuildContext context) {
@@ -59,16 +59,14 @@ class _otp_pageState extends State<otp_page> {
             child: Image.asset("assets/images/logo.png"),
           ),
           SizedBox(height: 40),
-          Container(
-            child: const Text(
-              "OTP Verification",
-              style: TextStyle(
-                fontSize: 28.0,
-                letterSpacing: 0.4,
-                fontFamily: 'DMSans',
-                color: Color(0xff1F3D73),
-                fontWeight: FontWeight.w700,
-              ),
+          const Text(
+            "OTP Verification",
+            style: TextStyle(
+              fontSize: 28.0,
+              letterSpacing: 0.4,
+              fontFamily: 'DMSans',
+              color: Color(0xff1F3D73),
+              fontWeight: FontWeight.w700,
             ),
           ),
           SizedBox(height: 20),

@@ -13,6 +13,7 @@ import '../constants/routes.dart';
 import '../screens/about_us/about_us.dart';
 import '../screens/history.dart';
 
+// ignore: must_be_immutable
 class SideBar extends StatelessWidget {
   List<String> textList = ['Add Members', 'Calender', 'Reminders', 'Trackers', 'Cycle History', 'Ask Mufti'];
   List<String> imageList = [
@@ -25,6 +26,8 @@ class SideBar extends StatelessWidget {
   ];
   bool showComingSoon = false;
 
+  SideBar({super.key});
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -32,7 +35,7 @@ class SideBar extends StatelessWidget {
       width: MediaQuery.of(context).size.width * 0.8,
       decoration: BoxDecoration(gradient: AppColors.backgroundGradient),
       height: double.infinity,
-      padding: EdgeInsets.only(left: 10, right: 10, top: 10),
+      padding: const EdgeInsets.only(left: 10, right: 10, top: 10),
       child: SingleChildScrollView(
         child: Column(
           children: [

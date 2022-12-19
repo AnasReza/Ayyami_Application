@@ -3,10 +3,8 @@ import 'package:ayyami/providers/prayer_provider.dart';
 import 'package:ayyami/widgets/prayer_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
-import '../../constants/colors.dart';
-import '../../constants/images.dart';
+
 import '../../widgets/app_text.dart';
 
 class PrayerTiming extends StatefulWidget {

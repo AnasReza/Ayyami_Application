@@ -3,12 +3,11 @@ import 'package:ayyami/providers/user_provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
 import '../../constants/colors.dart';
-import '../../constants/images.dart';
+
 import '../../widgets/app_text.dart';
 import '../../widgets/question_answer_view.dart';
 

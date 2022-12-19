@@ -13,7 +13,7 @@ import 'package:provider/provider.dart';
 
 import '../../widgets/gradient_button.dart';
 import '../../widgets/utils.dart';
-import '../main_screen.dart';
+
 
 class set_password extends StatefulWidget {
   final contact_number;
@@ -70,10 +70,9 @@ class _set_passwordState extends State<set_password> {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
 
     return Scaffold(
-      backgroundColor: Color(0xffF5F5F5),
+      backgroundColor: const Color(0xffF5F5F5),
       body: Center(
         child: SingleChildScrollView(
           child: Container(
@@ -316,7 +315,7 @@ class _set_passwordState extends State<set_password> {
                     }).then((value){
                       final provider=Provider.of<UserProvider>(context,listen: false);
                       provider.setUID(uid!);
-                      setHive(uid!);
+                      setHive(uid);
                       nextScreen(context, first_question(uid: uid,));
                     });
 

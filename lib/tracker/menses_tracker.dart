@@ -128,7 +128,7 @@ class MensesTracker {
           currentMensesEndDay.isAtSameMomentAs(assumptionEnd!)) {
         // var diff = assumptionEnd.difference(assumptionStart);
         uploadMensesEndTime(mensesID, daysCount, hoursCount, minutesCount, secondsCount, mensesProvider);
-      } else if (currentMensesStartDay.isAtSameMomentAs(assumptionStart!) &&
+      } else if (currentMensesStartDay.isAtSameMomentAs(assumptionStart) &&
           currentMensesEndDay.isBefore(assumptionEnd!)) {
         var diff = currentMensesEndDay.difference(currentMensesStartDay);
         var map = Utils.timeConverter(diff);
@@ -142,7 +142,7 @@ class MensesTracker {
           //STOP THE MENSES TIMER AND ADD IT TO THE MENSES COLLECTION
           uploadMensesEndTime(mensesID, days, hours, minutes, seconds, mensesProvider);
         }
-      } else if (currentMensesStartDay.isAtSameMomentAs(assumptionStart!) &&
+      } else if (currentMensesStartDay.isAtSameMomentAs(assumptionStart) &&
           currentMensesEndDay.isAfter(assumptionEnd!)) {
         var diff = assumptionEnd.difference(currentMensesStartDay);
         var map = Utils.timeConverter(diff);
@@ -166,7 +166,7 @@ class MensesTracker {
           //STOP THE MENSES TIMER AND ADD IT TO THE MENSES COLLECTION
           uploadMensesEndTime(mensesID, days, hours, minutes, seconds, mensesProvider);
         }
-      } else if (currentMensesStartDay.isBefore(assumptionStart!) &&
+      } else if (currentMensesStartDay.isBefore(assumptionStart) &&
           currentMensesEndDay.isAtSameMomentAs(assumptionEnd!)) {
         var diff = currentMensesEndDay.difference(assumptionStart);
         var map = Utils.timeConverter(diff);
@@ -179,7 +179,7 @@ class MensesTracker {
         }else{
           uploadMensesEndTime(mensesID, days, hours, minutes, seconds, mensesProvider);
         }
-      } else if (currentMensesStartDay.isBefore(assumptionStart!) && currentMensesEndDay.isAfter(assumptionEnd!)) {
+      } else if (currentMensesStartDay.isBefore(assumptionStart) && currentMensesEndDay.isAfter(assumptionEnd!)) {
         var diff = assumptionEnd.difference(assumptionStart);
         var map = Utils.timeConverter(diff);
         int days = map['days']!;
@@ -191,7 +191,7 @@ class MensesTracker {
         }else{
           uploadMensesEndTime(mensesID, days, hours, minutes, seconds, mensesProvider);
         }
-      } else if (currentMensesStartDay.isBefore(assumptionStart!) && currentMensesEndDay.isBefore(assumptionEnd!)) {
+      } else if (currentMensesStartDay.isBefore(assumptionStart) && currentMensesEndDay.isBefore(assumptionEnd!)) {
         var diff = currentMensesEndDay.difference(assumptionStart);
         var map = Utils.timeConverter(diff);
         int days = map['days']!;
@@ -282,14 +282,14 @@ class MensesTracker {
     var mensesTimeMap = provider.getLastMensesTime;
     Duration tuhurDuration = Duration(
         days: tuhurTimeMap!['day']!,
-        hours: tuhurTimeMap!['hours']!,
-        minutes: tuhurTimeMap!['minutes']!,
-        seconds: tuhurTimeMap!['second']!);
+        hours: tuhurTimeMap['hours']!,
+        minutes: tuhurTimeMap['minutes']!,
+        seconds: tuhurTimeMap['second']!);
     Duration mensesDuration = Duration(
-        days: mensesTimeMap!['day']!,
-        hours: mensesTimeMap!['hours']!,
-        minutes: mensesTimeMap!['minutes']!,
-        seconds: mensesTimeMap!['second']!);
+        days: mensesTimeMap['day']!,
+        hours: mensesTimeMap['hours']!,
+        minutes: mensesTimeMap['minutes']!,
+        seconds: mensesTimeMap['second']!);
     var menses_should_start = startTime.add(tuhurDuration);
     var menses_should_end = menses_should_start.add(mensesDuration);
     return {'start': menses_should_start, 'end': menses_should_end};

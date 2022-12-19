@@ -31,7 +31,7 @@ class SupplicationsDetails extends StatelessWidget {
             itemCount: list?.length,
             itemBuilder: (listContext, index) {
               return SupplicationView(
-                  list![index]['heading']!, list![index]['dua']!, list![index]['times']!, list![index]['description']!);
+                  list![index]['heading']!, list[index]['dua']!, list[index]['times']!, list[index]['description']!);
             }),
       ),
     );

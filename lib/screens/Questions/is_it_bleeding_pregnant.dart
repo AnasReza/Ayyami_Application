@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 
 import '../../widgets/gradient_button.dart';
 import '../../widgets/utils.dart';
-import '../Profile_System/home.dart';
 import 'menstrual_period.dart';
 
 class is_it_bleeding_pregnant extends StatefulWidget {
@@ -55,153 +54,143 @@ class _is_it_bleeding_pregnantState extends State<is_it_bleeding_pregnant> {
                       letterSpacing: 1),
                 ),
               ),
-              SizedBox(height: 35),
-              Container(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Container(
-                        child: Column(
-                      children: [
-                        InkWell(
-                          onTap: () {
-                            String v1 = "Yes Value";
-                            print(_YesBeenPressed);
-                            print(v1);
-                            setState(() {
-                              _YesBeenPressed = !_YesBeenPressed;
-                            });
-                          },
-                          child: Ink(
-                            decoration: BoxDecoration(
-                              gradient: _YesBeenPressed
-                                  ? const LinearGradient(
-                                      colors: [Color(0xffFFBBE6), Color(0xffC43CF3)],
-                                      begin: Alignment.centerLeft,
-                                      end: Alignment.center)
-                                  : const LinearGradient(
-                                      colors: [Color(0xFFF2F2F2), Color(0xFFF2F2F2)],
-                                      begin: Alignment.centerLeft,
-                                      end: Alignment.center),
-                              borderRadius: BorderRadius.circular(25),
-                            ),
-                            child: Container(
-                                constraints: const BoxConstraints(
-                                  maxWidth: 120,
-                                  minHeight: 50,
-                                ),
-                                alignment: Alignment.center,
-                                child: Text(("Yes").toUpperCase(),
-                                    style: TextStyle(
-                                        fontFamily: 'DMSans',
-                                        fontSize: 17,
-                                        fontWeight: FontWeight.w700,
-                                        color: _YesBeenPressed ? Colors.white : const Color(0xFF1F3D73)))),
+             const SizedBox(height: 35),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Column(
+                    children: [
+                  InkWell(
+                    onTap: () {
+                      // String v1 = "Yes Value";
+                      // print(_YesBeenPressed);
+                      // print(v1);
+                      setState(() {
+                        _YesBeenPressed = !_YesBeenPressed;
+                      });
+                    },
+                    child: Ink(
+                      decoration: BoxDecoration(
+                        gradient: _YesBeenPressed
+                            ? const LinearGradient(
+                                colors: [Color(0xffFFBBE6), Color(0xffC43CF3)],
+                                begin: Alignment.centerLeft,
+                                end: Alignment.center)
+                            : const LinearGradient(
+                                colors: [Color(0xFFF2F2F2), Color(0xFFF2F2F2)],
+                                begin: Alignment.centerLeft,
+                                end: Alignment.center),
+                        borderRadius: BorderRadius.circular(25),
+                      ),
+                      child: Container(
+                          constraints: const BoxConstraints(
+                            maxWidth: 120,
+                            minHeight: 50,
                           ),
-                        )
-                      ],
-                    )),
-                    Container(
-                        child: Column(
-                      children: [
-                        InkWell(
-                          onTap: () {
-                            String v2 = "No Value";
-                            print(_NoBeenPressed);
-                            print(v2);
-                            setState(() {
-                              _NoBeenPressed = !_NoBeenPressed;
-                            });
-                          },
-                          child: Ink(
-                            decoration: BoxDecoration(
-                              gradient: _NoBeenPressed
-                                  ? const LinearGradient(
-                                      colors: [Color(0xffFFBBE6), Color(0xffC43CF3)],
-                                      begin: Alignment.centerLeft,
-                                      end: Alignment.center)
-                                  : const LinearGradient(
-                                      colors: [Color(0xFFF2F2F2), Color(0xFFF2F2F2)],
-                                      begin: Alignment.centerLeft,
-                                      end: Alignment.center),
-                              borderRadius: BorderRadius.circular(25),
-                            ),
-                            child: Container(
-                                constraints: const BoxConstraints(
-                                  maxWidth: 120,
-                                  minHeight: 50,
-                                ),
-                                alignment: Alignment.center,
-                                child: Text(("No").toUpperCase(),
-                                    style: TextStyle(
-                                        fontFamily: 'DMSans',
-                                        fontSize: 17,
-                                        fontWeight: FontWeight.w700,
-                                        color: _NoBeenPressed ? Colors.white : const Color(0xFF1F3D73)))),
+                          alignment: Alignment.center,
+                          child: Text(("Yes").toUpperCase(),
+                              style: TextStyle(
+                                  fontFamily: 'DMSans',
+                                  fontSize: 17,
+                                  fontWeight: FontWeight.w700,
+                                  color: _YesBeenPressed ? Colors.white : const Color(0xFF1F3D73)))),
+                    ),
+                  )
+                    ],
+                  ),
+                  Column(
+                    children: [
+                  InkWell(
+                    onTap: () {
+                      // String v2 = "No Value";
+                      // print(_NoBeenPressed);
+                      // print(v2);
+                      setState(() {
+                        _NoBeenPressed = !_NoBeenPressed;
+                      });
+                    },
+                    child: Ink(
+                      decoration: BoxDecoration(
+                        gradient: _NoBeenPressed
+                            ? const LinearGradient(
+                                colors: [Color(0xffFFBBE6), Color(0xffC43CF3)],
+                                begin: Alignment.centerLeft,
+                                end: Alignment.center)
+                            : const LinearGradient(
+                                colors: [Color(0xFFF2F2F2), Color(0xFFF2F2F2)],
+                                begin: Alignment.centerLeft,
+                                end: Alignment.center),
+                        borderRadius: BorderRadius.circular(25),
+                      ),
+                      child: Container(
+                          constraints: const BoxConstraints(
+                            maxWidth: 120,
+                            minHeight: 50,
                           ),
-                        )
-                      ],
-                    )),
-                  ],
-                ),
+                          alignment: Alignment.center,
+                          child: Text(("No").toUpperCase(),
+                              style: TextStyle(
+                                  fontFamily: 'DMSans',
+                                  fontSize: 17,
+                                  fontWeight: FontWeight.w700,
+                                  color: _NoBeenPressed ? Colors.white : const Color(0xFF1F3D73)))),
+                    ),
+                  )
+                    ],
+                  ),
+                ],
               ),
-              SizedBox(height: 65),
-              Container(
-                child: GradientButton(
-                  title: "Confirm",
-                  onPressedButon: () {
-                    String q_id = DateTime.now().millisecondsSinceEpoch.toString();
-                    Widget nextWidget;
-                    String answer = '';
-                    if (_YesBeenPressed == true && _NoBeenPressed == true) {
-                      toast_notification().toast_message("Please select only one");
-                      return;
-                    }
-                    if (_YesBeenPressed == true) {
+              const SizedBox(height: 65),
+              GradientButton(
+                title: "Confirm",
+                onPressedButon: () {
+                  String q_id = DateTime.now().millisecondsSinceEpoch.toString();
+                  Widget nextWidget;
+                  String answer = '';
+                  if (_YesBeenPressed == true && _NoBeenPressed == true) {
+                    toast_notification().toast_message("Please select only one");
+                    return;
+                  }
+                  if (_YesBeenPressed == true) {
 
-                      answer = 'Yes';
-                      nextWidget = MainScreen();
-                    } else {
+                    answer = 'Yes';
+                    nextWidget = MainScreen();
+                  } else {
 
-                      answer = 'No';
-                      nextWidget = menstrual_period(uid: widget.uid,);
+                    answer = 'No';
+                    nextWidget = menstrual_period(uid: widget.uid,);
 
-                    }
-                    QuestionRecord().uploadBleedingPregnantQuestion(widget.uid, answer);
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => nextWidget));
-                  },
-                ),
+                  }
+                  QuestionRecord().uploadBleedingPregnantQuestion(widget.uid, answer);
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => nextWidget));
+                },
               ),
               SizedBox(height: 20),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Container(
-                    child: TextButton(
-                      onPressed: () {
-                        showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return MyDialog();
-                            });
-                      },
-                      style: TextButton.styleFrom(
-                        foregroundColor: Color(0xff1F3D73),
-                        textStyle: const TextStyle(
-                          fontFamily: 'DMSans',
-                          fontSize: 14.0,
-                          fontWeight: FontWeight.w500,
-                        ),
+                  TextButton(
+                    onPressed: () {
+                      showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return const MyDialog();
+                          });
+                    },
+                    style: TextButton.styleFrom(
+                      foregroundColor: const Color(0xff1F3D73),
+                      textStyle: const TextStyle(
+                        fontFamily: 'DMSans',
+                        fontSize: 14.0,
+                        fontWeight: FontWeight.w500,
                       ),
-                      child: Text("Skip to the tracker"),
                     ),
+                    child: const Text("Skip to the tracker"),
                   ),
-                  Container(
-                    child: const Icon(
-                      Icons.arrow_forward,
-                      size: 18,
-                      color: Color(0xFF1F3D73),
-                    ),
+                  const Icon(
+                    Icons.arrow_forward,
+                    size: 18,
+                    color: Color(0xFF1F3D73),
                   )
                 ],
               ),

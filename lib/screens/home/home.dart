@@ -2,7 +2,6 @@
 
 import 'package:ayyami/constants/images.dart';
 import 'package:ayyami/providers/user_provider.dart';
-import 'package:ayyami/screens/prayer/prayer_timing.dart';
 import 'package:ayyami/widgets/app_text.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -12,10 +11,8 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import '../../constants/colors.dart';
-import '../../navigation/custom_bottom_nav.dart';
-import '../../navigation/custom_fab.dart';
 import '../../providers/prayer_provider.dart';
-import '../../services/local_noti_service.dart';
+
 import '../../widgets/category_box.dart';
 import '../../widgets/menses_timer_box.dart';
 

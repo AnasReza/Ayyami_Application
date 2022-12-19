@@ -48,7 +48,7 @@ class SideBarBox extends StatelessWidget {
               ],
             ),),
 
-            SizedBox(
+           const SizedBox(
               height: 20,
             ),
             Text(

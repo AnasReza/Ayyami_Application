@@ -263,17 +263,15 @@ class menstrual_periodState extends State<menstrual_period> {
                 ],
               ),
               const SizedBox(height: 40),
-              Container(
-                child: GradientButton(
-                  title: "Confirm",
-                  onPressedButon: () {
-                    String answer = '$SelectedStartDate@$SelectedStartTime';
-                    QuestionRecord().uploadMenstrualPeriodQuestion(widget.uid, answer).then((value){
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => MainScreen()));
-                    });
+              GradientButton(
+                title: "Confirm",
+                onPressedButon: () {
+                  String answer = '$SelectedStartDate@$SelectedStartTime';
+                  QuestionRecord().uploadMenstrualPeriodQuestion(widget.uid, answer).then((value){
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => MainScreen()));
+                  });
 
-                  },
-                ),
+                },
               ),
               SizedBox(height: 20),
               Row(

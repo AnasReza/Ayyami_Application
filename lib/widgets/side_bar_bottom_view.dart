@@ -13,7 +13,7 @@ class SideBarBottomView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      padding: EdgeInsets.all(10),
+      padding:const EdgeInsets.all(10),
       decoration: BoxDecoration(
         color: AppColors.lightGreyBoxColor,
         borderRadius: BorderRadius.circular(10),

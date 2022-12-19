@@ -15,7 +15,7 @@ class CustomSwitch1 extends StatefulWidget {
   final Color inactiveTextColor;
 
   const CustomSwitch1(
-      {required this.value,
+      {super.key, required this.value,
       required this.onChanged,
       required this.activeColor,
       this.inactiveColor = Colors.grey,

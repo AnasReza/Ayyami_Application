@@ -1,7 +1,5 @@
 import 'package:ayyami/constants/colors.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
@@ -98,7 +96,7 @@ class DialogDateTimeState extends State<DialogDateTime> {
                                   .then((value) {
                                 date = value!;
                                 DateFormat format = DateFormat('dd, MMMM, yyyy');
-                                var s = format.format(value!);
+                                var s = format.format(value);
                                 setState(() {
                                   pickedDate = s;
                                 });
@@ -153,7 +151,7 @@ class DialogDateTimeState extends State<DialogDateTime> {
                                 print('${value?.minute}--${value?.period.name}');
                                 time = value!;
                                 setState(() {
-                                  pickedTime = '${value?.hour}:${value?.minute} ${value?.period.name}';
+                                  pickedTime = '${value.hour}:${value.minute} ${value.period.name}';
                                 });
                               });
                             },

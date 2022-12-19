@@ -73,7 +73,7 @@ class _AddMedicineState extends State<AddMedicine> {
                 decoration: BoxDecoration(
                     color: const Color(0xffd9d9d9),
                     borderRadius: BorderRadius.circular(8.r)),
-                child: Center(
+                child: const Center(
                     child: Text("Add Medicine")
                 ),
               ),

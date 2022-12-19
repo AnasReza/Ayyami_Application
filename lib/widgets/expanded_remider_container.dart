@@ -1,4 +1,4 @@
-import 'package:ayyami/models/medicine_model.dart';
+
 import 'package:ayyami/providers/prayer_provider.dart';
 import 'package:ayyami/widgets/add_medicine.dart';
 import 'package:ayyami/widgets/customerSwitch1.dart';

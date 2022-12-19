@@ -3,7 +3,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../constants/colors.dart';
 
-class SupplicationView extends StatelessWidget {
+// ignore: must_be_immutable
+class  SupplicationView extends StatelessWidget {
   String heading, times, dua, description;
 
   SupplicationView(this.heading, this.dua, this.times, this.description, {super.key});
@@ -14,7 +15,7 @@ class SupplicationView extends StatelessWidget {
       children: [
         const SizedBox(height: 20,),
         Container(
-          padding: EdgeInsets.all(10),
+          padding:const EdgeInsets.all(10),
           width: double.infinity,
           decoration: BoxDecoration(
             color: AppColors.lightGreyBoxColor,
@@ -36,9 +37,9 @@ class SupplicationView extends StatelessWidget {
               ),
              
               Container(
-                padding: EdgeInsets.all(5),
+                padding: const EdgeInsets.all(5),
                 decoration: BoxDecoration(
-                  color: Color.fromARGB(100, 216, 220, 227).withOpacity(1.0),
+                  color:const Color.fromARGB(100, 216, 220, 227).withOpacity(1.0),
                   borderRadius: BorderRadius.circular(5),
                 ),
                 child: Text(
@@ -54,7 +55,7 @@ class SupplicationView extends StatelessWidget {
         ),
         Text(
           dua,
-          style: TextStyle(color: AppColors.headingColor, fontSize: 20, fontWeight: FontWeight.w400),
+          style: const TextStyle(color: AppColors.headingColor, fontSize: 20, fontWeight: FontWeight.w400),
           textAlign: TextAlign.end,
         ),
         const SizedBox(height: 30,),

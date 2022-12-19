@@ -15,43 +15,41 @@ class GradientButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: TextButton(
-        style: TextButton.styleFrom(
-            primary: Colors.white,
-            backgroundColor: Colors.purpleAccent,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(50),
-            ),
-            padding: const EdgeInsets.all(0.0)),
-        onPressed: onPressedButon,
-        child: Ink(
-          decoration: BoxDecoration(
-            gradient: const LinearGradient(
-                colors: [Color(0xffFFBBE6), Color(0xffC43CF3)],
-                begin: Alignment.centerLeft,
-                end: Alignment.center),
-            borderRadius: BorderRadius.circular(15),
+    return TextButton(
+      style: TextButton.styleFrom(
+          primary: Colors.white,
+          backgroundColor: Colors.purpleAccent,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(50),
           ),
-          child: Container(
-              constraints: const BoxConstraints(
-                maxWidth: 320,
-                minHeight: 50,
-              ),
-              alignment: Alignment.center,
-              child: loading
-                  ? const CircularProgressIndicator(
-                      strokeWidth: 3,
-                      color: Colors.white,
-                    )
-                  : Text(
-                      title.toUpperCase(),
-                      style: const TextStyle(
-                        fontFamily: 'DMSans',
-                        fontWeight: FontWeight.w700,
-                      ),
-                    )),
+          padding: const EdgeInsets.all(0.0)),
+      onPressed: onPressedButon,
+      child: Ink(
+        decoration: BoxDecoration(
+          gradient: const LinearGradient(
+              colors: [Color(0xffFFBBE6), Color(0xffC43CF3)],
+              begin: Alignment.centerLeft,
+              end: Alignment.center),
+          borderRadius: BorderRadius.circular(15),
         ),
+        child: Container(
+            constraints: const BoxConstraints(
+              maxWidth: 320,
+              minHeight: 50,
+            ),
+            alignment: Alignment.center,
+            child: loading
+                ? const CircularProgressIndicator(
+                    strokeWidth: 3,
+                    color: Colors.white,
+                  )
+                : Text(
+                    title.toUpperCase(),
+                    style: const TextStyle(
+                      fontFamily: 'DMSans',
+                      fontWeight: FontWeight.w700,
+                    ),
+                  )),
       ),
     );
   }
@@ -96,108 +94,106 @@ class _MyDialogState extends State<MyDialog> {
                           fontWeight: FontWeight.w600,
                           color: Color(0xff1F3D73)),
                     ),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                     Container(
-                        child: Column(
+                     Column(
                       children: [
-                        InkWell(
-                          onTap: () {
-                             setState(() {
-                              _hasBeenPressed = !_hasBeenPressed;
-                            });
-                          Navigator.pop(context);
-                           
-                          },
-                          child: Ink(
-                            decoration: BoxDecoration(
-                              gradient: _hasBeenPressed
-                                  ? const LinearGradient(
-                                      colors: [
-                                          Color(0xffFFBBE6),
-                                          Color(0xffC43CF3)
-                                        ],
-                                      begin: Alignment.centerLeft,
-                                      end: Alignment.center)
-                                  : const LinearGradient(
-                                      colors: [
-                                          Color(0xFFF2F2F2),
-                                          Color(0xFFF2F2F2)
-                                        ],
-                                      begin: Alignment.centerLeft,
-                                      end: Alignment.center),
-                              borderRadius: BorderRadius.circular(25),
-                            ),
-                            child: Container(
-                                constraints: const BoxConstraints(
-                                  maxWidth: 120,
-                                  minHeight: 50,
-                                ),
-                                alignment: Alignment.center,
-                                child: Text(("No").toUpperCase(),
-                                    style: TextStyle(
-                                        fontFamily:'DMSans',
-                                        fontSize:17 ,
-                                        fontWeight: FontWeight.w700,
-                                        color: _hasBeenPressed
-                                            ? Colors.white
-                                            : const Color(0xFF1F3D73)))),
-                          ),
-                        )
+                     InkWell(
+                       onTap: () {
+                          setState(() {
+                           _hasBeenPressed = !_hasBeenPressed;
+                         });
+                       Navigator.pop(context);
+                        
+                       },
+                       child: Ink(
+                         decoration: BoxDecoration(
+                           gradient: _hasBeenPressed
+                               ? const LinearGradient(
+                                   colors: [
+                                       Color(0xffFFBBE6),
+                                       Color(0xffC43CF3)
+                                     ],
+                                   begin: Alignment.centerLeft,
+                                   end: Alignment.center)
+                               : const LinearGradient(
+                                   colors: [
+                                       Color(0xFFF2F2F2),
+                                       Color(0xFFF2F2F2)
+                                     ],
+                                   begin: Alignment.centerLeft,
+                                   end: Alignment.center),
+                           borderRadius: BorderRadius.circular(25),
+                         ),
+                         child: Container(
+                             constraints: const BoxConstraints(
+                               maxWidth: 120,
+                               minHeight: 50,
+                             ),
+                             alignment: Alignment.center,
+                             child: Text(("No").toUpperCase(),
+                                 style: TextStyle(
+                                     fontFamily:'DMSans',
+                                     fontSize:17 ,
+                                     fontWeight: FontWeight.w700,
+                                     color: _hasBeenPressed
+                                         ? Colors.white
+                                         : const Color(0xFF1F3D73)))),
+                       ),
+                     )
                       ],
-                    )),
-                    Container(
-                        child: Column(
+                    ),
+                    Column(
                       children: [
-                        InkWell(
-                          onTap: () {
-                             setState(() {
-                              _hasBeenPressed1 = !_hasBeenPressed1;
-                            });
-                             Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>  HomeScreen()));
-                          },
-                          child: Ink(
-                            decoration: BoxDecoration(
-                              gradient: _hasBeenPressed1
-                                  ? const LinearGradient(
-                                      colors: [
-                                          Color(0xffFFBBE6),
-                                          Color(0xffC43CF3)
-                                        ],
-                                      begin: Alignment.centerLeft,
-                                      end: Alignment.center)
-                                  : const LinearGradient(
-                                      colors: [
-                                          Color(0xFFF2F2F2),
-                                          Color(0xFFF2F2F2)
-                                        ],
-                                      begin: Alignment.centerLeft,
-                                      end: Alignment.center),
-                              borderRadius: BorderRadius.circular(25),
+                    InkWell(
+                      onTap: () {
+                         setState(() {
+                          _hasBeenPressed1 = !_hasBeenPressed1;
+                        });
+                         Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>  HomeScreen()));
+                      },
+                      child: Ink(
+                        decoration: BoxDecoration(
+                          gradient: _hasBeenPressed1
+                              ? const LinearGradient(
+                                  colors: [
+                                      Color(0xffFFBBE6),
+                                      Color(0xffC43CF3)
+                                    ],
+                                  begin: Alignment.centerLeft,
+                                  end: Alignment.center)
+                              : const LinearGradient(
+                                  colors: [
+                                      Color(0xFFF2F2F2),
+                                      Color(0xFFF2F2F2)
+                                    ],
+                                  begin: Alignment.centerLeft,
+                                  end: Alignment.center),
+                          borderRadius: BorderRadius.circular(25),
+                        ),
+                        child: Container(
+                            constraints: const BoxConstraints(
+                              maxWidth: 120,
+                              minHeight: 50,
                             ),
-                            child: Container(
-                                constraints: const BoxConstraints(
-                                  maxWidth: 120,
-                                  minHeight: 50,
-                                ),
-                                alignment: Alignment.center,
-                                child: Text(("Yes").toUpperCase(),
-                                    style: TextStyle(
-                                        fontFamily: 'DMSans',
-                                        fontSize:17 ,
-                                        fontWeight: FontWeight.w700,
-                                        color: _hasBeenPressed1
-                                            ? Colors.white
-                                            : const Color(0xFF1F3D73)))),
-                          ),
-                        )
+                            alignment: Alignment.center,
+                            child: Text(("Yes").toUpperCase(),
+                                style: TextStyle(
+                                    fontFamily: 'DMSans',
+                                    fontSize:17 ,
+                                    fontWeight: FontWeight.w700,
+                                    color: _hasBeenPressed1
+                                        ? Colors.white
+                                        : const Color(0xFF1F3D73)))),
+                      ),
+                    )
                       ],
-                    )),
+                    ),
                       ],
                     ),
                   ],
