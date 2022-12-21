@@ -280,7 +280,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                     ],
                   )
                       : Container(),
-                  TimerBox(mensis: (value) {
+                  TimerBox(mensis: (value,message) {
                     setState(() {
                       regulationExpanded = value;
                     });

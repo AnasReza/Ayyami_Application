@@ -1,10 +1,11 @@
 import 'package:ayyami/firebase_calls/questions_record.dart';
+import 'package:ayyami/screens/main_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 
 import '../../widgets/gradient_button.dart';
-import '../Profile_System/home.dart';
+// import '../Profile_System/home.dart';
 
 class weeks_of_pregnant extends StatefulWidget {
   String uid;
@@ -113,7 +114,7 @@ class _weeks_of_pregnantState extends State<weeks_of_pregnant> {
                       // 'User_id': uid
                     });
                     QuestionRecord().uploadWeekPregnantQuestion(widget.uid, counter.toString()).then((value) {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => HomeScreen()));
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => MainScreen()));
                     });
                     print(counter);
                   },

@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 
 import '../../widgets/gradient_button.dart';
 import '../../widgets/utils.dart';
-import '../Profile_System/home.dart';
 import 'menstrual_period.dart';
 
 class is_it_bleeding_pregnant extends StatefulWidget {

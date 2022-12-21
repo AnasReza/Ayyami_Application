@@ -1,6 +1,6 @@
+import 'package:ayyami/screens/main_screen.dart';
 import 'package:flutter/material.dart';
 
-import '../Screens/Profile_System/home.dart';
 
 class GradientButton extends StatelessWidget {
   final String title;
@@ -159,7 +159,7 @@ class _MyDialogState extends State<MyDialog> {
                              Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) =>  HomeScreen()));
+                            builder: (context) =>  MainScreen()));
                           },
                           child: Ink(
                             decoration: BoxDecoration(

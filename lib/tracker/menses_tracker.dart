@@ -4,6 +4,7 @@ import 'package:ayyami/tracker/tuhur_tracker.dart';
 import 'package:ayyami/utils/utils.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:provider/provider.dart';
 import 'package:stop_watch_timer/stop_watch_timer.dart';
@@ -101,15 +102,17 @@ class MensesTracker {
     _stopWatch.onStartTimer();
   }
 
-  void stopMensesTimer(
+  String stopMensesTimer(
       MensesProvider mensesProvider, TuhurProvider tuhurProvider, String uid, UserProvider userProvider,Timestamp endTime) {
-    tuhurTracker.startTuhurTimer(tuhurProvider, uid);
+    String regulationMessage='';
     String mensesID = mensesProvider.getMensesID;
     Timestamp startTime = mensesProvider.getStartTime;
     var diff = endTime.toDate().difference(startTime.toDate());
-    if (diff.inDays <= 10) {
-      uploadMensesEndTime(mensesID, daysCount, hoursCount, minutesCount, secondsCount, mensesProvider);
-    } else {
+    if (diff.inDays>=3&&diff.inDays < 10) {
+      uploadMensesEndTime(mensesID, daysCount, hoursCount, minutesCount, secondsCount, mensesProvider,tuhurProvider,userProvider.getUid!);
+      regulationMessage= 'after_3_before_10'.tr;
+    }
+    else if(diff.inDays>10) {
       var lastMensesStartTime = userProvider.getLastMenses;
       var lastMensesEndTime = userProvider.getLastMenses;
       var currentMenses = mensesProvider.getStartTime;
@@ -127,8 +130,10 @@ class MensesTracker {
       if (currentMensesStartDay.isAtSameMomentAs(assumptionStart!) &&
           currentMensesEndDay.isAtSameMomentAs(assumptionEnd!)) {
         // var diff = assumptionEnd.difference(assumptionStart);
-        uploadMensesEndTime(mensesID, daysCount, hoursCount, minutesCount, secondsCount, mensesProvider);
-      } else if (currentMensesStartDay.isAtSameMomentAs(assumptionStart!) &&
+        uploadMensesEndTime(mensesID, daysCount, hoursCount, minutesCount, secondsCount, mensesProvider,tuhurProvider,userProvider.getUid!);
+        regulationMessage='after_3_before_10'.tr;
+      }
+      else if (currentMensesStartDay.isAtSameMomentAs(assumptionStart!) &&
           currentMensesEndDay.isBefore(assumptionEnd!)) {
         var diff = currentMensesEndDay.difference(currentMensesStartDay);
         var map = Utils.timeConverter(diff);
@@ -138,11 +143,14 @@ class MensesTracker {
         int seconds = map['seconds']!;
         if (days < 3) {
           stopTimerWithDeletion(mensesID, mensesProvider, tuhurProvider);
+          regulationMessage='before_3_days'.tr;
         } else {
           //STOP THE MENSES TIMER AND ADD IT TO THE MENSES COLLECTION
-          uploadMensesEndTime(mensesID, days, hours, minutes, seconds, mensesProvider);
+          uploadMensesEndTime(mensesID, days, hours, minutes, seconds, mensesProvider,tuhurProvider,userProvider.getUid!);
+          regulationMessage='after_3_before_10'.tr;
         }
-      } else if (currentMensesStartDay.isAtSameMomentAs(assumptionStart!) &&
+      }
+      else if (currentMensesStartDay.isAtSameMomentAs(assumptionStart!) &&
           currentMensesEndDay.isAfter(assumptionEnd!)) {
         var diff = assumptionEnd.difference(currentMensesStartDay);
         var map = Utils.timeConverter(diff);
@@ -159,12 +167,15 @@ class MensesTracker {
           int currentSeconds = currentMap['seconds']!;
           if (currentMap['days']! < 3) {
             stopTimerWithDeletion(mensesID, mensesProvider, tuhurProvider);
+            regulationMessage='before_3_days'.tr;
           } else {
-            uploadMensesEndTime(mensesID, currentDays, currentHours, currentMinutes, currentSeconds, mensesProvider);
+            uploadMensesEndTime(mensesID, currentDays, currentHours, currentMinutes, currentSeconds, mensesProvider,tuhurProvider,userProvider.getUid!);
+            regulationMessage='after_3_before_10'.tr;
           }
         } else {
           //STOP THE MENSES TIMER AND ADD IT TO THE MENSES COLLECTION
-          uploadMensesEndTime(mensesID, days, hours, minutes, seconds, mensesProvider);
+          uploadMensesEndTime(mensesID, days, hours, minutes, seconds, mensesProvider,tuhurProvider,userProvider.getUid!);
+          regulationMessage='after_3_before_10'.tr;
         }
       } else if (currentMensesStartDay.isBefore(assumptionStart!) &&
           currentMensesEndDay.isAtSameMomentAs(assumptionEnd!)) {
@@ -176,10 +187,13 @@ class MensesTracker {
         int seconds = map['seconds']!;
         if(days<3){
           stopTimerWithDeletion(mensesID, mensesProvider, tuhurProvider);
+          regulationMessage='before_3_days'.tr;
         }else{
-          uploadMensesEndTime(mensesID, days, hours, minutes, seconds, mensesProvider);
+          uploadMensesEndTime(mensesID, days, hours, minutes, seconds, mensesProvider,tuhurProvider,userProvider.getUid!);
+          regulationMessage='after_3_before_10'.tr;
         }
-      } else if (currentMensesStartDay.isBefore(assumptionStart!) && currentMensesEndDay.isAfter(assumptionEnd!)) {
+      }
+      else if (currentMensesStartDay.isBefore(assumptionStart!) && currentMensesEndDay.isAfter(assumptionEnd!)) {
         var diff = assumptionEnd.difference(assumptionStart);
         var map = Utils.timeConverter(diff);
         int days = map['days']!;
@@ -188,10 +202,13 @@ class MensesTracker {
         int seconds = map['seconds']!;
         if(days<3){
           stopTimerWithDeletion(mensesID, mensesProvider, tuhurProvider);
+          regulationMessage='before_3_days'.tr;
         }else{
-          uploadMensesEndTime(mensesID, days, hours, minutes, seconds, mensesProvider);
+          uploadMensesEndTime(mensesID, days, hours, minutes, seconds, mensesProvider,tuhurProvider,userProvider.getUid!);
+          regulationMessage='after_3_before_10'.tr;
         }
-      } else if (currentMensesStartDay.isBefore(assumptionStart!) && currentMensesEndDay.isBefore(assumptionEnd!)) {
+      }
+      else if (currentMensesStartDay.isBefore(assumptionStart!) && currentMensesEndDay.isBefore(assumptionEnd!)) {
         var diff = currentMensesEndDay.difference(assumptionStart);
         var map = Utils.timeConverter(diff);
         int days = map['days']!;
@@ -200,8 +217,10 @@ class MensesTracker {
         int seconds = map['seconds']!;
         if(days<3){
           stopTimerWithDeletion(mensesID, mensesProvider, tuhurProvider);
+          regulationMessage='before_3_days'.tr;
         }else{
-          uploadMensesEndTime(mensesID, days, hours, minutes, seconds, mensesProvider);
+          uploadMensesEndTime(mensesID, days, hours, minutes, seconds, mensesProvider,tuhurProvider,userProvider.getUid!);
+          regulationMessage='after_3_before_10'.tr;
         }
       } else if (currentMensesStartDay.isAfter(assumptionStart!) &&
           currentMensesEndDay.isAtSameMomentAs(assumptionEnd!)) {
@@ -214,7 +233,7 @@ class MensesTracker {
         if(days<3){
           stopTimerWithDeletion(mensesID, mensesProvider, tuhurProvider);
         }else{
-          uploadMensesEndTime(mensesID, days, hours, minutes, seconds, mensesProvider);
+          uploadMensesEndTime(mensesID, days, hours, minutes, seconds, mensesProvider,tuhurProvider,userProvider.getUid!);
         }
       } else if (currentMensesStartDay.isAfter(assumptionStart!) && currentMensesEndDay.isBefore(assumptionEnd!)) {
         var diff = currentMensesEndDay.difference(currentMensesStartDay);
@@ -225,8 +244,10 @@ class MensesTracker {
         int seconds = map['seconds']!;
         if(days<3){
           stopTimerWithDeletion(mensesID, mensesProvider, tuhurProvider);
+          regulationMessage='before_3_days'.tr;
         }else{
-          uploadMensesEndTime(mensesID, days, hours, minutes, seconds, mensesProvider);
+          uploadMensesEndTime(mensesID, days, hours, minutes, seconds, mensesProvider,tuhurProvider,userProvider.getUid!);
+          regulationMessage='after_3_before_10'.tr;
         }
       } else if (currentMensesStartDay.isAfter(assumptionStart!) && currentMensesEndDay.isAfter(assumptionEnd!)) {
         var diff = assumptionEnd.difference(currentMensesStartDay);
@@ -244,14 +265,22 @@ class MensesTracker {
           int currentSeconds = currentMap['seconds']!;
           if(currentDays<3){
             stopTimerWithDeletion(mensesID, mensesProvider, tuhurProvider);
+            regulationMessage='before_3_days'.tr;
           }else{
-            uploadMensesEndTime(mensesID, currentDays, currentHours, currentMinutes, currentSeconds, mensesProvider);
+            uploadMensesEndTime(mensesID, currentDays, currentHours, currentMinutes, currentSeconds, mensesProvider,tuhurProvider,userProvider.getUid!);
+            regulationMessage='after_3_before_10'.tr;
           }
         }else{
-          uploadMensesEndTime(mensesID, days, hours, minutes, seconds, mensesProvider);
+          uploadMensesEndTime(mensesID, days, hours, minutes, seconds, mensesProvider,tuhurProvider,userProvider.getUid!);
+          regulationMessage='after_3_before_10'.tr;
         }
       }
     }
+    else{
+      stopTimerWithDeletion(mensesID, mensesProvider, tuhurProvider);
+      regulationMessage= 'before_3_days'.tr;
+    }
+    return regulationMessage;
   }
 
   void stopTimerWithDeletion(String mensesID, MensesProvider mensesProvider, TuhurProvider tuhurProvider) {
@@ -266,7 +295,8 @@ class MensesTracker {
   }
 
   void uploadMensesEndTime(String mensesID, int daysCount, int hoursCount, int minutesCount, int secondsCount,
-      MensesProvider mensesProvider) {
+      MensesProvider mensesProvider,TuhurProvider tuhurProvider,String uid) {
+    tuhurTracker.startTuhurTimer(tuhurProvider, uid);
     MensesRecord.uploadMensesEndTime(mensesID, daysCount, hoursCount, minutesCount, secondsCount);
     mensesProvider.setTimerStart(false);
     mensesProvider.setDays(0);

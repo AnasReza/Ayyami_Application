@@ -24,7 +24,7 @@ import '../providers/user_provider.dart';
 import 'app_text.dart';
 
 class TimerBox extends StatefulWidget {
-  Function(bool mensis) mensis;
+  Function(bool mensis,String regulationMessage) mensis;
 
   TimerBox({Key? key, required this.mensis}) : super(key: key);
 
@@ -201,11 +201,11 @@ class _TimerBoxState extends State<TimerBox> with WidgetsBindingObserver {
                     if (start) {
                       showStartDialog();
                     } else {
-                      widget.mensis(true);
+                      widget.mensis(true,'');
                       mensesProvider.setTimerStart(false);
                     }
                   } else {
-                    widget.mensis(true);
+                    widget.mensis(true,'');
                     mensesProvider.setTimerStart(false);
                   }
                 } else {
@@ -381,7 +381,7 @@ class _TimerBoxState extends State<TimerBox> with WidgetsBindingObserver {
               print('$dateString  == dateString');
 
               var tuhurProvider = Provider.of<TuhurProvider>(context, listen: false);
-              widget.mensis(false);
+              widget.mensis(false,'');
               mensesProvider.setTimerStart(true);
               // startService();
               mensesTrack.startMensisTimer(mensesProvider, uid, tuhurProvider,Timestamp.fromDate(startDate));
@@ -443,9 +443,9 @@ class _TimerBoxState extends State<TimerBox> with WidgetsBindingObserver {
               var tuhurProvider = Provider.of<TuhurProvider>(context, listen: false);
               UserProvider userProvider = Provider.of<UserProvider>(context, listen: false);
 
-              mensesTrack.stopMensesTimer(mensesProvider, tuhurProvider, uid, userProvider,Timestamp.fromDate(startDate));
+              String showRegulation=mensesTrack.stopMensesTimer(mensesProvider, tuhurProvider, uid, userProvider,Timestamp.fromDate(startDate));
 
-              widget.mensis(true);
+              widget.mensis(true,showRegulation);
               Navigator.pop(dialogContext);
             },
           );

@@ -5,7 +5,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 import '../../widgets/gradient_button.dart';
 import '../../widgets/utils.dart';
-import '../Profile_System/home.dart';
 import '../Questions/Are_you_beginner.dart';
 import 'otp_page.dart';
 
