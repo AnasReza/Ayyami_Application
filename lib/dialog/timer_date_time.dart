@@ -28,7 +28,6 @@ class DialogDateTimeState extends State<DialogDateTime> {
       backgroundColor: Colors.transparent,
       body: Center(
         child: Container(
-          color: Colors.red,
           height: 500,
           margin: const EdgeInsets.only(left: 30, right: 30),
           child: Align(
@@ -170,7 +169,7 @@ class DialogDateTimeState extends State<DialogDateTime> {
                                   borderRadius: const BorderRadius.only(
                                       bottomLeft: Radius.circular(10), bottomRight: Radius.circular(10))),
                               child: Text(
-                                'rate_us'.tr,
+                                'confirm'.tr,
                                 style: TextStyle(color: AppColors.white, fontWeight: FontWeight.w700, fontSize: 20),
                                 textAlign: TextAlign.center,
                               ),

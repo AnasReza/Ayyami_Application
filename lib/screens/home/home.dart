@@ -29,7 +29,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
   final int _cIndex = 0;
   bool regulationExpanded = false;
-  String lastCycleDate = '';
+  String lastCycleDate = '', regulationMessage = '';
   String uid = '';
   int lastMensesDays = 0, lastMensesHours = 0, lastMensesMinutes = 0, lastMensesSeconds = 0;
   int lastTuhurDays = 0, lastTuhurHours = 0, lastTuhurMinutes = 0, lastTuhurSeconds = 0;
@@ -45,11 +45,11 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
     //   provider.initPrayerTiming(context);
     // });
     WidgetsBinding.instance.addObserver(this);
-    getLastTuhur(uid,provider);
-    getLastMenses(uid,provider);
+    getLastTuhur(uid, provider);
+    getLastMenses(uid, provider);
   }
 
-  getLastTuhur(String uid,UserProvider pro) {
+  getLastTuhur(String uid, UserProvider pro) {
     FirebaseFirestore.instance
         .collection('tuhur')
         .where('uid', isEqualTo: uid)
@@ -57,16 +57,16 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
         .snapshots()
         .listen((event) {
       var docList = event.docs;
-      for (int x=0;x<docList.length;x++) {
-        var doc=docList[x];
-        bool non_menstrual_bleeding= doc.get('non_menstrual_bleeding');
-        if(!non_menstrual_bleeding){
-          try{
+      for (int x = 0; x < docList.length; x++) {
+        var doc = docList[x];
+        bool non_menstrual_bleeding = doc.get('non_menstrual_bleeding');
+        if (!non_menstrual_bleeding) {
+          try {
             Timestamp startTime = doc.get('start_date');
 
-            int days=doc.get('days');
-            int hour=doc.get('hours');
-            int minute=doc.get('minutes');
+            int days = doc.get('days');
+            int hour = doc.get('hours');
+            int minute = doc.get('minutes');
             int seconds = doc.get('seconds');
             setState(() {
               //change minutes and seconds to days and hours
@@ -78,16 +78,13 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
             pro.setLastTuhurTime(days, hour, minute, seconds);
             print('${doc.id}=uid from menses collection');
             break;
-          }catch(e){
-
-          }
-
+          } catch (e) {}
         }
       }
     });
   }
 
-  getLastMenses(String uid,UserProvider pro) {
+  getLastMenses(String uid, UserProvider pro) {
     FirebaseFirestore.instance
         .collection('menses')
         .where('uid', isEqualTo: uid)
@@ -100,10 +97,10 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
         Timestamp startTime = doc.get('start_date');
         Timestamp endTime = doc.get('end_time');
         DateTime startDate = startTime.toDate();
-       int days=doc.get('days');
-       int hour=doc.get('hours');
-       int minute=doc.get('minutes');
-       int seconds = doc.get('seconds');
+        int days = doc.get('days');
+        int hour = doc.get('hours');
+        int minute = doc.get('minutes');
+        int seconds = doc.get('seconds');
 
         DateFormat format = DateFormat('dd MMMM yyyy');
         setState(() {
@@ -142,8 +139,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
-
-    return Consumer<UserProvider>(builder: (consumerContext,userProvider,child){
+    return Consumer<UserProvider>(builder: (consumerContext, userProvider, child) {
       final provider = context.read<PrayerProvider>();
       return Scaffold(
         // bottomNavigationBar: CustomBottomNav(cIndex: _cIndex),
@@ -242,47 +238,53 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
 
                   regulationExpanded
                       ? Column(
-                    children: [
-                      Container(
-                        width: 558.w,
-                        height: 94.h,
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                            color: AppColors.headingColor,
-                            width: 1.w,
-                          ),
-                          color: AppColors.white,
-                          boxShadow: const [
-                            BoxShadow(
-                              color: Color(0x1e1f3d73),
-                              offset: Offset(0, 12),
-                              blurRadius: 40,
-                              spreadRadius: 0,
-                            )
-                          ],
-                        ),
-                        child: Padding(
-                          padding: EdgeInsets.only(left: 30.w, right: 72.w),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              SvgPicture.asset(AppImages.safeIcon),
-                              SizedBox(width: 25.8.w),
-                              AppText(
-                                text: "You are Pak Now you can perform salah.",
-                                fontSize: 20.sp,
-                                fontWeight: FontWeight.w700,
+                          children: [
+                            Container(
+                              width: 558.w,
+                              height: 550.h,
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: AppColors.headingColor,
+                                  width: 1.w,
+                                ),
+                                color: AppColors.white,
+                                boxShadow: const [
+                                  BoxShadow(
+                                    color: Color(0x1e1f3d73),
+                                    offset: Offset(0, 12),
+                                    blurRadius: 40,
+                                    spreadRadius: 0,
+                                  )
+                                ],
                               ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
-                  )
+                              child: Padding(
+                                padding: EdgeInsets.only(left: 30.w, right: 5.w,top: 10),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+
+                                    SvgPicture.asset(AppImages.safeIcon),
+                                    SizedBox(width: 25.8.w),
+                                    Container(
+                                      width: MediaQuery.of(context).size.width * 0.63,
+                                      child: SingleChildScrollView(child: AppText(
+                                        text: regulationMessage,
+                                        fontSize: 20.sp,
+                                        fontWeight: FontWeight.w700,
+                                      ),)
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                        )
                       : Container(),
-                  TimerBox(mensis: (value,message) {
+                  TimerBox(mensis: (value, message) {
                     setState(() {
                       regulationExpanded = value;
+                      regulationMessage = message;
                     });
                   }),
                   SizedBox(height: 117.6.h),
