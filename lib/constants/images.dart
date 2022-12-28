@@ -20,6 +20,8 @@ class AppImages {
   static const String safeIcon = "assets/svg/safe_icon.svg";
   static const String bellIcon = "assets/svg/bell.png";
   static const String medicineIcon = "assets/svg/medicine.svg";
+  static const String locationIcon = "assets/svg/location.svg";
+  static const String locateIcon = "assets/svg/locate.svg";
 
   /// Side Bar Assets
   static const String calenderIcon = "assets/svg/calendar.svg";

@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 
 class UserProvider extends ChangeNotifier{
   String? uid;
+  String? location;
+  late GeoPoint currentPoint;
   bool? login;
   late Timestamp lastMenses;
   late Timestamp lastMensesEnd;
@@ -11,6 +13,8 @@ class UserProvider extends ChangeNotifier{
   Map<String, int>? lastTuhurTime;
 
   String? get getUid=> uid;
+  String? get getLocation=> location;
+  GeoPoint get getCurrentPoint=> currentPoint;
   bool? get getLogin=>login;
   Timestamp get getLastMenses => lastMenses;
   Timestamp get getLastMensesEnd => lastMensesEnd;
@@ -47,6 +51,15 @@ class UserProvider extends ChangeNotifier{
   }
   setLogin(bool value){
     login=value;
+    notifyListeners();
+  }
+
+  setLocation(String value){
+    location=value;
+    notifyListeners();
+  }
+  setCurrentPoint(GeoPoint value){
+    currentPoint=value;
     notifyListeners();
   }
 

@@ -12,9 +12,7 @@ dependencies:
   flutter:
     sdk: flutter
 
-
   cupertino_icons: ^1.0.2
-
   flutter_screenutil: ^5.5.3+2
   flutter_svg: ^1.1.5
   dropdown_button2: ^1.8.8
@@ -35,6 +33,11 @@ dependencies:
   path_provider: ^2.0.11
   flutter_background_service: ^2.4.5
   stop_watch_timer: ^2.0.0
+  adhan: ^2.0.0-nullsafety.2
+
+  # GPS
+  geolocator: ^9.0.2
+  geocoding: ^2.0.5
 
   #  date
   hijri_picker: ^3.0.0

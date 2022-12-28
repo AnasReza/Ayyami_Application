@@ -1,4 +1,6 @@
 import 'package:ayyami/constants/colors.dart';
+import 'package:ayyami/constants/const.dart';
+import 'package:ayyami/screens/settings/change_location.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -31,14 +33,19 @@ class SettingsState extends State<Settings> {
               height: 20,
             ),
             //CHANGE LOCATION
-            CategoryBox(
-              categoryName: 'change_location'.tr,
-              days: 21,
-              hours: 12,
-              checkbox: false,
-              isSelected: false,
-              comingSoon: false,
-              showDate: false,
+            GestureDetector(
+              child: CategoryBox(
+                categoryName: 'change_location'.tr,
+                days: 21,
+                hours: 12,
+                checkbox: false,
+                isSelected: false,
+                comingSoon: false,
+                showDate: false,
+              ),
+              onTap: () {
+                nextScreen(context, ChangeLocation());
+              },
             ),
             const SizedBox(
               height: 20,
@@ -109,19 +116,25 @@ class SettingsState extends State<Settings> {
               height: 20,
             ),
             //RATE APP
-            GestureDetector(child: CategoryBox(
-              categoryName: 'rate_app'.tr,
-              days: 21,
-              hours: 12,
-              checkbox: false,
-              isSelected: false,
-              comingSoon: false,
-              showDate: false,
-            ),onTap: (){
-              showDialog(context: context, builder: (dialogContext){
-                return RateDialog();
-              },useSafeArea: true);
-            },),
+            GestureDetector(
+              child: CategoryBox(
+                categoryName: 'rate_app'.tr,
+                days: 21,
+                hours: 12,
+                checkbox: false,
+                isSelected: false,
+                comingSoon: false,
+                showDate: false,
+              ),
+              onTap: () {
+                showDialog(
+                    context: context,
+                    builder: (dialogContext) {
+                      return RateDialog();
+                    },
+                    useSafeArea: true);
+              },
+            ),
 
             const SizedBox(
               height: 20,

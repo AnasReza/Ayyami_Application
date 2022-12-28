@@ -42,8 +42,8 @@ class PrayerProvider extends ChangeNotifier
   bool get hijriCalender => _isHijri;
   static final _hijriDateToday = HijriCalendar.now();
   var hijriDateFormated = _hijriDateToday.toFormat("dd MMMM yyyy");
-  static DateTime _gorgeonDateToday = DateTime.now();
-  static DateFormat _todayDateFormated = DateFormat('dd MMMM yyyy');
+  static final DateTime _gorgeonDateToday = DateTime.now();
+  static final DateFormat _todayDateFormated = DateFormat('dd MMMM yyyy');
   String gorgeonTodayDateFormated = _todayDateFormated.format(_gorgeonDateToday);
 
 
@@ -54,16 +54,19 @@ class PrayerProvider extends ChangeNotifier
       if(seconds >= 60){
         minutes++;
         seconds = 0;
-      }else if(minutes >= 60){
+      }
+      else if(minutes >= 60){
         hours++;
         minutes = 0;
         seconds = 0;
-      }else if(hours >= 24){
+      }
+      else if(hours >= 24){
         days++;
         hours = 0;
         minutes = 0;
         seconds = 0;
-      }else{
+      }
+      else{
         seconds++;
       }
       notifyListeners();
