@@ -1,5 +1,6 @@
 // ignore_for_file: non_constant_identifier_names
 
+import 'package:ayyami/firebase_calls/user_record.dart';
 import 'package:ayyami/providers/user_provider.dart';
 import 'package:ayyami/screens/main_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -278,10 +279,12 @@ class _otp_pageState extends State<otp_page> {
                   String? getUid = "";
                   await auth.signInWithCredential(crendential).then((value) {
                     getUid = value.user?.uid;
-                    FirebaseFirestore.instance.collection('users').doc(getUid).get().then((value) {
+                    UsersRecord().getUsersData(getUid!).then((value){
                       if (value.exists) {
                         final provider=Provider.of<UserProvider>(context,listen: false);
                         provider.setUID(getUid!);
+                        provider.setLocation(value.get('location_name'));
+                        provider.setCurrentPoint(value.get('coordinates'));
                         setHive(getUid!);
                         Navigator.of(context).push(MaterialPageRoute(
                             builder: (context) => MainScreen()));

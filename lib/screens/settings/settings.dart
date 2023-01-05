@@ -9,14 +9,16 @@ import '../../dialog/rate_dialog.dart';
 import '../../widgets/app_text.dart';
 import '../../widgets/category_box.dart';
 
-class Settings extends StatefulWidget {
+class SettingsApp extends StatefulWidget {
+
+
   @override
   State<StatefulWidget> createState() {
     return SettingsState();
   }
 }
 
-class SettingsState extends State<Settings> {
+class SettingsState extends State<SettingsApp> {
   @override
   Widget build(BuildContext context) {
     return Center(

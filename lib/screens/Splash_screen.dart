@@ -15,6 +15,7 @@ import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
+import '../firebase_calls/user_record.dart';
 import '../providers/menses_provider.dart';
 import 'Login_System/account_create.dart';
 
@@ -43,9 +44,14 @@ class _Splash_ScreenState extends State<Splash_Screen> {
       bool login = hiveValue['login'];
       String uid = hiveValue['uid'];
       if (login) {
-        var provider = Provider.of<UserProvider>(context, listen: false);
-        provider.setUID(uid);
-        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => MainScreen()));
+        UsersRecord().getUsersData(uid).then((value){
+          var provider = Provider.of<UserProvider>(context, listen: false);
+          provider.setUID(value.id);
+          provider.setCurrentPoint(value.get('coordinates'));
+          provider.setLocation('location_name');
+          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => MainScreen()));
+        });
+        
       } else {
         Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => account_create()));
       }
