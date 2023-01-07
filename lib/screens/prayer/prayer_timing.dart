@@ -11,7 +11,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_background_service/flutter_background_service.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_background_service_android/flutter_background_service_android.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hijri/hijri_calendar.dart';
@@ -61,89 +60,89 @@ class _PrayerTimingState extends State<PrayerTiming> {
     // BackgroundFetch.start();
   }
 
-  Future<void> initializeService() async {
-    final service = FlutterBackgroundService();
-    AndroidNotificationChannel Androidchannel = AndroidNotificationChannel(
-      notificationChannelId, // id
-      'MY FOREGROUND SERVICE', // title
-      description: 'This channel is used for important notifications.', // description
-      importance: Importance.low, // importance must be at low or higher level
-    );
-    final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
-
-    await flutterLocalNotificationsPlugin
-        .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()
-        ?.createNotificationChannel(Androidchannel);
-
-    // await flutterLocalNotificationsPlugin.zo
-    service
-        .configure(
-            androidConfiguration: AndroidConfiguration(
-              // this will be executed when app is in foreground or background in separated isolate
-              onStart: onStart,
-
-              // auto start service
-              autoStart: true,
-              isForegroundMode: true,
-
-              // notificationChannelId: notificationChannelId, // this must match with notification channel you created above.
-              // initialNotificationTitle: 'AWESOME SERVICE',
-              // initialNotificationContent: 'Initializing',
-              // foregroundServiceNotificationId: notificationId,
-            ),
-            iosConfiguration: IosConfiguration(autoStart: true, onForeground: onStart, onBackground: onIosBackground))
-        .then((value) {
-      if (value) {
-        service.startService();
-      } else {
-        print('android not configure');
-      }
-    });
-  }
-
-  @pragma('vm:entry-point')
-  Future<bool> onIosBackground(ServiceInstance service) async {
-    WidgetsFlutterBinding.ensureInitialized();
-    DartPluginRegistrant.ensureInitialized();
-
-    // SharedPreferences preferences = await SharedPreferences.getInstance();
-    // await preferences.reload();
-    // final log = preferences.getStringList('log') ?? <String>[];
-    // log.add(DateTime.now().toIso8601String());
-    // await preferences.setStringList('log', log);
-
-    return true;
-  }
-
-  static Future<void> onStart(ServiceInstance service) async {
-    // Only available for flutter 3.0.0 and later
-    DartPluginRegistrant.ensureInitialized();
-
-    final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
-
-    // bring to foreground
-
-    startTimer();
-    // Timer.periodic(const Duration(seconds: 1), (timer) async {
-    //   if (service is AndroidServiceInstance) {
-    //     if (await service.isForegroundService()) {
-    //       flutterLocalNotificationsPlugin.show(
-    //         notificationId,
-    //         'COOL SERVICE',
-    //         'Awesome ${DateTime.now()}',
-    //         NotificationDetails(
-    //           android: AndroidNotificationDetails(
-    //             notificationChannelId,
-    //             'MY FOREGROUND SERVICE',
-    //             icon: 'ic_bg_service_small',
-    //             ongoing: true,
-    //           ),
-    //         ),
-    //       );
-    //     }
-    //   }
-    // });
-  }
+  // Future<void> initializeService() async {
+  //   final service = FlutterBackgroundService();
+  //   AndroidNotificationChannel Androidchannel = AndroidNotificationChannel(
+  //     notificationChannelId, // id
+  //     'MY FOREGROUND SERVICE', // title
+  //     description: 'This channel is used for important notifications.', // description
+  //     importance: Importance.low, // importance must be at low or higher level
+  //   );
+  //   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+  //
+  //   await flutterLocalNotificationsPlugin
+  //       .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()
+  //       ?.createNotificationChannel(Androidchannel);
+  //
+  //   // await flutterLocalNotificationsPlugin.zo
+  //   service
+  //       .configure(
+  //           androidConfiguration: AndroidConfiguration(
+  //             // this will be executed when app is in foreground or background in separated isolate
+  //             onStart: onStart,
+  //
+  //             // auto start service
+  //             autoStart: true,
+  //             isForegroundMode: true,
+  //
+  //             // notificationChannelId: notificationChannelId, // this must match with notification channel you created above.
+  //             // initialNotificationTitle: 'AWESOME SERVICE',
+  //             // initialNotificationContent: 'Initializing',
+  //             // foregroundServiceNotificationId: notificationId,
+  //           ),
+  //           iosConfiguration: IosConfiguration(autoStart: true, onForeground: onStart, onBackground: onIosBackground))
+  //       .then((value) {
+  //     if (value) {
+  //       service.startService();
+  //     } else {
+  //       print('android not configure');
+  //     }
+  //   });
+  // }
+  //
+  // @pragma('vm:entry-point')
+  // Future<bool> onIosBackground(ServiceInstance service) async {
+  //   WidgetsFlutterBinding.ensureInitialized();
+  //   DartPluginRegistrant.ensureInitialized();
+  //
+  //   // SharedPreferences preferences = await SharedPreferences.getInstance();
+  //   // await preferences.reload();
+  //   // final log = preferences.getStringList('log') ?? <String>[];
+  //   // log.add(DateTime.now().toIso8601String());
+  //   // await preferences.setStringList('log', log);
+  //
+  //   return true;
+  // }
+  //
+  // static Future<void> onStart(ServiceInstance service) async {
+  //   // Only available for flutter 3.0.0 and later
+  //   DartPluginRegistrant.ensureInitialized();
+  //
+  //   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+  //
+  //   // bring to foreground
+  //
+  //   startTimer();
+  //   // Timer.periodic(const Duration(seconds: 1), (timer) async {
+  //   //   if (service is AndroidServiceInstance) {
+  //   //     if (await service.isForegroundService()) {
+  //   //       flutterLocalNotificationsPlugin.show(
+  //   //         notificationId,
+  //   //         'COOL SERVICE',
+  //   //         'Awesome ${DateTime.now()}',
+  //   //         NotificationDetails(
+  //   //           android: AndroidNotificationDetails(
+  //   //             notificationChannelId,
+  //   //             'MY FOREGROUND SERVICE',
+  //   //             icon: 'ic_bg_service_small',
+  //   //             ongoing: true,
+  //   //           ),
+  //   //         ),
+  //   //       );
+  //   //     }
+  //   //   }
+  //   // });
+  // }
 
   Future<void> initPlatformState() async {
     // Configure BackgroundFetch.
