@@ -14,6 +14,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:hijri/hijri_calendar.dart';
+import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
@@ -44,10 +45,15 @@ class MainScreenState extends State<MainScreen> {
   @override
   void initState() {
     // TODO: implement initState
-    getPrayerTiming();
+    bool once=bool.hasEnvironment(getNamazStart().toString());
+    if(!once||once==null){
+      getPrayerTiming();
+    }
+
   }
 
   void getPrayerTiming() {
+    saveNamazStart(true);
     var userProvider = context.read<UserProvider>();
     var prayerProvider = context.read<NamazProvider>();
     var currentPoints = userProvider.getCurrentPoint;
@@ -137,5 +143,15 @@ class MainScreenState extends State<MainScreen> {
       }),
       drawer: SideBar(),
     );
+  }
+
+  void saveNamazStart(bool check) async {
+    var box = await Hive.openBox('aayami');
+    box.put('namaz_once', check);
+  }
+
+  dynamic getNamazStart() async {
+    var box = await Hive.openBox('aayami');
+    return box.get('namaz_once');
   }
 }
