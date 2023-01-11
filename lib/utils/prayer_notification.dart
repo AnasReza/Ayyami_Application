@@ -9,6 +9,7 @@ class PrayerNotification{
       "1",
       'Prayer Notification',
       importance: Importance.max,
+
     );
     var ios = DarwinNotificationDetails();
     var platform = NotificationDetails(android: android, iOS: ios);
@@ -20,36 +21,49 @@ class PrayerNotification{
 
     notificationsPlugin?.initialize(
       initializationSettings,
+        onDidReceiveNotificationResponse: (response){
+        print('onDidReceiveNotificationResponse');
+    },onDidReceiveBackgroundNotificationResponse: (response){
+      print('onDidReceiveBackgroundNotificationResponse');
+    }
     );
+
     notificationsPlugin.zonedSchedule(
         1, 'Fajr', 'Its Fajr time', tz.TZDateTime.from(fajrTime, tz.local), platform,
         uiLocalNotificationDateInterpretation: UILocalNotificationDateInterpretation.absoluteTime,
         androidAllowWhileIdle: true,
         matchDateTimeComponents: DateTimeComponents.time);
     notificationsPlugin.zonedSchedule(
-        2, 'Sunrise', 'Its Sunrise time', tz.TZDateTime.from(sunriseTime, tz.local), platform,
+        1, 'Fajr', 'Its Fajr time', tz.TZDateTime.now(tz.local).add(Duration(minutes: 1)), platform,
         uiLocalNotificationDateInterpretation: UILocalNotificationDateInterpretation.absoluteTime,
         androidAllowWhileIdle: true,
         matchDateTimeComponents: DateTimeComponents.time);
     notificationsPlugin.zonedSchedule(
-        3, 'Duhur', 'Its Duhur time', tz.TZDateTime.from(zuharTime, tz.local), platform,
+        2, 'Sunrise', 'Its Sunrise time', tz.TZDateTime.now(tz.local).add(Duration(minutes: 1)), platform,
         uiLocalNotificationDateInterpretation: UILocalNotificationDateInterpretation.absoluteTime,
         androidAllowWhileIdle: true,
         matchDateTimeComponents: DateTimeComponents.time);
     notificationsPlugin.zonedSchedule(
-        4, 'Asr', 'Its Asr time', tz.TZDateTime.from(asrTime, tz.local), platform,
+        3, 'Duhur', 'Its Duhur time', tz.TZDateTime.now(tz.local).add(Duration(minutes: 1)), platform,
         uiLocalNotificationDateInterpretation: UILocalNotificationDateInterpretation.absoluteTime,
         androidAllowWhileIdle: true,
         matchDateTimeComponents: DateTimeComponents.time);
     notificationsPlugin.zonedSchedule(
-        5, 'Asr', 'Its Maghrib time', tz.TZDateTime.from(maghribTime, tz.local), platform,
+        4, 'Asr', 'Its Asr time', tz.TZDateTime.now(tz.local).add(Duration(minutes: 1)), platform,
         uiLocalNotificationDateInterpretation: UILocalNotificationDateInterpretation.absoluteTime,
         androidAllowWhileIdle: true,
         matchDateTimeComponents: DateTimeComponents.time);
     notificationsPlugin.zonedSchedule(
-        6, 'Asr', 'Its Isha time', tz.TZDateTime.from(ishaTime, tz.local), platform,
+        5, 'Asr', 'Its Maghrib time', tz.TZDateTime.now(tz.local).add(Duration(minutes: 1)), platform,
         uiLocalNotificationDateInterpretation: UILocalNotificationDateInterpretation.absoluteTime,
         androidAllowWhileIdle: true,
         matchDateTimeComponents: DateTimeComponents.time);
+    notificationsPlugin.zonedSchedule(
+        6, 'Asr', 'Its Isha time', tz.TZDateTime.now(tz.local).add(Duration(minutes: 1)), platform,
+        uiLocalNotificationDateInterpretation: UILocalNotificationDateInterpretation.absoluteTime,
+        androidAllowWhileIdle: true,
+        matchDateTimeComponents: DateTimeComponents.time).then((value){
+          print('isha timings');
+    });
   }
 }

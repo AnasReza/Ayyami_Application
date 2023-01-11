@@ -1,8 +1,13 @@
 import 'package:ayyami/firebase_calls/questions_record.dart';
+import 'package:ayyami/screens/Questions/where_are_you_from.dart';
 import 'package:ayyami/screens/main_screen.dart';
+import 'package:ayyami/utils/utils.dart';
+import 'package:ayyami/widgets/utils.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import '../../widgets/gradient_button.dart';
 
@@ -267,9 +272,26 @@ class menstrual_periodState extends State<menstrual_period> {
                   title: "Confirm",
                   onPressedButon: () {
                     String answer = '$SelectedStartDate@$SelectedStartTime';
-                    QuestionRecord().uploadMenstrualPeriodQuestion(widget.uid, answer).then((value){
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => MainScreen()));
-                    });
+                    if (Startdate != null && Starttime != null && Enddate != null && Endtime != null) {
+                      var lastMensesStartDate=DateTime(Startdate!.year,Startdate!.month,Startdate!.day,Starttime!.hour,Startdate!.minute,0);
+                      var lastMensesEndDate=DateTime(Enddate!.year,Enddate!.month,Enddate!.day,Endtime!.hour,Enddate!.minute,0);
+                      var diff=Utils.timeConverter(lastMensesEndDate.difference(lastMensesStartDate));
+                      if(diff['days']!<3){
+                        toast_notification().toast_message('msg_notified');
+                      }else{
+                        var startTimeStamp=Timestamp.fromDate(lastMensesStartDate);
+                        var endTimeStamp=Timestamp.fromDate(lastMensesEndDate);
+                        int? days=diff['days'];
+                        int? hours=diff['hours'];
+                        int? minutes=diff['minutes'];
+                        int? seconds=diff['seconds'];
+                        QuestionRecord().uploadMenstrualPeriodQuestion(widget.uid, startTimeStamp,endTimeStamp,days!,hours!,minutes!,seconds!).then((value) {
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => LocationQuestion(uid: widget.uid,)));
+                        });
+                      }
+                    }else{
+                      // add toast for null start date
+                    }
 
                   },
                 ),
@@ -320,8 +342,8 @@ class menstrual_periodState extends State<menstrual_period> {
     final getstartDate = await showDatePicker(
         context: context,
         initialDate: Startdate ?? initialDate,
-        firstDate: DateTime(DateTime.now().year - 5),
-        lastDate: DateTime(DateTime.now().year + 5));
+        firstDate: DateTime(DateTime.now().month - 5),
+        lastDate: DateTime.now());
     if (getstartDate == null) return;
 
     setState(() {

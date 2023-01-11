@@ -32,7 +32,7 @@ class NamazProvider extends ChangeNotifier{
     notifyListeners();
   }
   void setMaghribTime(String value){
-    fajrTiming=value;
+    maghribTiming=value;
     notifyListeners();
   }
   void setIshaTime(String value){

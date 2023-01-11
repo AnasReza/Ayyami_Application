@@ -241,7 +241,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                           children: [
                             Container(
                               width: 558.w,
-                              height: 550.h,
+                              height: 120.h,
                               decoration: BoxDecoration(
                                 border: Border.all(
                                   color: AppColors.headingColor,
@@ -286,7 +286,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                       regulationExpanded = value;
                       regulationMessage = message;
                     });
-                  }),
+                  },islamicMonth: provider.hijriDateFormated),
                   SizedBox(height: 117.6.h),
                   Align(
                     alignment: Alignment.centerLeft,

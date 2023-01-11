@@ -73,15 +73,30 @@ class QuestionRecord {
     return firestore.update(map);
   }
 
-  Future<void> uploadMenstrualPeriodQuestion(String uid, String answer) {
-    var firestore = FirebaseFirestore.instance.collection('users').doc(uid);
-    Map<String, String> map = {'menstrual_period': answer};
-    return firestore.update(map);
+  Future<void> uploadMenstrualPeriodQuestion(String uid, Timestamp startTime, Timestamp endTime,
+      int days, int hours, int minutes, int seconds) {
+    var firestore = FirebaseFirestore.instance.collection('menses');
+
+    return firestore.add({
+      'start_date': startTime,
+      'end_time': endTime,
+      'days': days,
+      'hours': hours,
+      'minutes': minutes,
+      'seconds': seconds,
+      'uid': uid
+    }).then((value) {
+      FirebaseFirestore.instance.collection('tuhur').add({'start_date':endTime,'uid':uid});
+    });
   }
 
   Future<void> uploadPostNatalBleedingQuestion(String uid, String answer) {
     var firestore = FirebaseFirestore.instance.collection('users').doc(uid);
     Map<String, String> map = {'post_natal_bleeding': answer};
     return firestore.update(map);
+  }
+  Future<void> uploadLocation(String uid,String labelText,GeoPoint point) {
+    var firestore=FirebaseFirestore.instance.collection('users').doc();
+    return firestore.update({'coordinates':point,'location_name':labelText});
   }
 }

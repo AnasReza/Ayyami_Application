@@ -25,8 +25,9 @@ import 'app_text.dart';
 
 class TimerBox extends StatefulWidget {
   Function(bool mensis,String regulationMessage) mensis;
+  String islamicMonth;
 
-  TimerBox({Key? key, required this.mensis}) : super(key: key);
+  TimerBox({Key? key, required this.mensis,required this.islamicMonth}) : super(key: key);
 
   @override
   State<TimerBox> createState() => _TimerBoxState();
@@ -443,7 +444,7 @@ class _TimerBoxState extends State<TimerBox> with WidgetsBindingObserver {
               var tuhurProvider = Provider.of<TuhurProvider>(context, listen: false);
               UserProvider userProvider = Provider.of<UserProvider>(context, listen: false);
 
-              String showRegulation=mensesTrack.stopMensesTimer(mensesProvider, tuhurProvider, uid, userProvider,Timestamp.fromDate(startDate));
+              String showRegulation=mensesTrack.stopMensesTimer(mensesProvider, tuhurProvider, uid, userProvider,Timestamp.fromDate(startDate),widget.islamicMonth);
 
               widget.mensis(true,showRegulation);
               Navigator.pop(dialogContext);

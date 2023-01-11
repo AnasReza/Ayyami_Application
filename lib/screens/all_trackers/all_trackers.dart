@@ -68,7 +68,7 @@ class AllTrackersState extends State<AllTrackers> {
               ),
               Text('menstrual_bleeding'.tr,style: TextStyle(color: AppColors.headingColor,fontSize: 25,fontWeight: FontWeight.w700),),
               const SizedBox(height: 10,),
-              TimerBox(mensis: (value,message){}),
+              TimerBox(mensis: (value,message){},islamicMonth: ''),
 
               const SizedBox(
                 height: 60,

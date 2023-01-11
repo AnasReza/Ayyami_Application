@@ -93,7 +93,7 @@ class DialogDateTimeState extends State<DialogDateTime> {
                                   context: context,
                                   initialDate: now,
                                   firstDate: DateTime(2022),
-                                  lastDate: DateTime(2023))
+                                  lastDate: DateTime(2023,12))
                                   .then((value) {
                                 date = value!;
                                 DateFormat format = DateFormat('dd, MMMM, yyyy');

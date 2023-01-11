@@ -23,6 +23,7 @@ class _first_questionState extends State<first_question> {
 
   bool _BeginnerBeenPressed = false;
   bool _AccustomedBeenPressed = false;
+  String answer='';
 
   @override
   Widget build(BuildContext context) {
@@ -80,8 +81,51 @@ class _first_questionState extends State<first_question> {
                             String v1 = "Beginner Value";
                             print(_BeginnerBeenPressed);
                             print(v1);
+                            answer='Beginner';
                             setState(() {
-                              _BeginnerBeenPressed = !_BeginnerBeenPressed;
+                              _BeginnerBeenPressed = false;
+                            });
+                          },
+                          child: Ink(
+                            decoration: BoxDecoration(
+                              gradient: _BeginnerBeenPressed
+                                  ? const LinearGradient(
+                                  colors: [Color(0xFFF2F2F2), Color(0xFFF2F2F2)],
+                                  begin: Alignment.centerLeft,
+                                  end: Alignment.center)
+                                  : const LinearGradient(
+                                colors: [Color(0xffFFBBE6), Color(0xffC43CF3)],
+                              begin: Alignment.centerLeft,
+                              end: Alignment.center),
+                              borderRadius: BorderRadius.circular(25),
+                            ),
+                            child: Container(
+                                constraints: const BoxConstraints(
+                                  maxWidth: 150,
+                                  minHeight: 50,
+                                ),
+                                alignment: Alignment.center,
+                                child: Text(("Beginner").toUpperCase(),
+                                    style: TextStyle(
+                                        fontFamily: 'DMSans',
+                                        fontSize: 17,
+                                        fontWeight: FontWeight.w700,
+                                        color: _BeginnerBeenPressed ? const Color(0xFF1F3D73) : Colors.white))),
+                          ),
+                        )
+                      ],
+                    )),
+                    Container(
+                        child: Column(
+                      children: [
+                        InkWell(
+                          onTap: () {
+                            String v2 = "Accustomed Value";
+                            print(_BeginnerBeenPressed);
+                            print(v2);
+                            answer='Accustomed';
+                            setState(() {
+                              _BeginnerBeenPressed = true;
                             });
                           },
                           child: Ink(
@@ -103,53 +147,12 @@ class _first_questionState extends State<first_question> {
                                   minHeight: 50,
                                 ),
                                 alignment: Alignment.center,
-                                child: Text(("Beginner").toUpperCase(),
-                                    style: TextStyle(
-                                        fontFamily: 'DMSans',
-                                        fontSize: 17,
-                                        fontWeight: FontWeight.w700,
-                                        color: _BeginnerBeenPressed ? Colors.white : const Color(0xFF1F3D73)))),
-                          ),
-                        )
-                      ],
-                    )),
-                    Container(
-                        child: Column(
-                      children: [
-                        InkWell(
-                          onTap: () {
-                            String v2 = "Accustomed Value";
-                            print(_AccustomedBeenPressed);
-                            print(v2);
-                            setState(() {
-                              _AccustomedBeenPressed = !_AccustomedBeenPressed;
-                            });
-                          },
-                          child: Ink(
-                            decoration: BoxDecoration(
-                              gradient: _AccustomedBeenPressed
-                                  ? const LinearGradient(
-                                      colors: [Color(0xffFFBBE6), Color(0xffC43CF3)],
-                                      begin: Alignment.centerLeft,
-                                      end: Alignment.center)
-                                  : const LinearGradient(
-                                      colors: [Color(0xFFF2F2F2), Color(0xFFF2F2F2)],
-                                      begin: Alignment.centerLeft,
-                                      end: Alignment.center),
-                              borderRadius: BorderRadius.circular(25),
-                            ),
-                            child: Container(
-                                constraints: const BoxConstraints(
-                                  maxWidth: 150,
-                                  minHeight: 50,
-                                ),
-                                alignment: Alignment.center,
                                 child: Text(("Accustomed").toUpperCase(),
                                     style: TextStyle(
                                         fontFamily: 'DMSans',
                                         fontSize: 17,
                                         fontWeight: FontWeight.w700,
-                                        color: _AccustomedBeenPressed ? Colors.white : const Color(0xFF1F3D73)))),
+                                        color: _BeginnerBeenPressed ?  Colors.white: const Color(0xFF1F3D73)))),
                           ),
                         )
                       ],
@@ -163,19 +166,15 @@ class _first_questionState extends State<first_question> {
                   title: "Confirm",
                   onPressedButon: () {
                     Widget nextWidget;
-                    String answer = '';
-                    String q_id = DateTime.now().millisecondsSinceEpoch.toString();
 
-                    if (_BeginnerBeenPressed == true && _AccustomedBeenPressed == true) {
+                    if (answer.isEmpty) {
                       toast_notification().toast_message("Please select only one");
                       return;
                     }
 
-                    if (_BeginnerBeenPressed == true) {
-                      answer = 'Beginner';
+                    if (answer == 'Beginner') {
                       nextWidget = third_question(uid: widget.uid,);
                     } else  {
-                      answer = 'Accustomed';
                       nextWidget = second_question(uid: widget.uid,);
                     }
                     QuestionRecord().uploadBeginnerQuestion(widget.uid, answer).then((value) {

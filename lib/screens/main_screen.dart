@@ -4,17 +4,14 @@ import 'package:ayyami/screens/prayer/prayer_timing.dart';
 import 'package:ayyami/screens/profile/profile.dart';
 import 'package:ayyami/screens/settings/settings.dart';
 import 'package:ayyami/screens/supplications/supplications.dart';
-import 'package:ayyami/utils/prayer_notification.dart';
+
 import 'package:ayyami/widgets/side_bar.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:hijri/hijri_calendar.dart';
 import 'package:hive/hive.dart';
+
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
@@ -23,9 +20,8 @@ import '../navigation/custom_bottom_nav.dart';
 import '../navigation/custom_fab.dart';
 import '../providers/namaz_provider.dart';
 import '../providers/user_provider.dart';
+import '../utils/prayer_notification.dart';
 import 'home/home.dart';
-import 'package:timezone/data/latest.dart' as latest;
-import 'package:timezone/timezone.dart' as tz;
 
 class MainScreen extends StatefulWidget {
   @override
@@ -42,20 +38,9 @@ class MainScreenState extends State<MainScreen> {
   String fajr = '', sunrise = '', zuhar = '', asr = '', maghrib = '', isha = '';
   late DateTime fajrTime, sunriseTime, zuharTime, asrTime, maghribTime, ishaTime;
 
-  @override
-  void initState() {
-    // TODO: implement initState
-    bool once=bool.hasEnvironment(getNamazStart().toString());
-    if(!once||once==null){
-      getPrayerTiming();
-    }
-
-  }
-
-  void getPrayerTiming() {
-    saveNamazStart(true);
-    var userProvider = context.read<UserProvider>();
-    var prayerProvider = context.read<NamazProvider>();
+  void getPrayerTiming(BuildContext context) {
+    var userProvider = Provider.of<UserProvider>(context, listen: false);
+    var prayerProvider = Provider.of<NamazProvider>(context, listen: false);
     var currentPoints = userProvider.getCurrentPoint;
     final coordinates = Coordinates(currentPoints.latitude, currentPoints.longitude);
     final params = CalculationMethod.karachi.getParameters();
@@ -78,80 +63,89 @@ class MainScreenState extends State<MainScreen> {
     prayerProvider.setMaghribTime(DateFormat.jm().format(prayerTimes.maghrib));
     prayerProvider.setIshaTime(DateFormat.jm().format(prayerTimes.isha));
 
-    PrayerNotification().notificationTime(fajrTime, sunriseTime, zuharTime, asrTime, maghribTime, ishaTime);
-
+    bool once = bool.hasEnvironment(getNamazStart().toString());
+    print('$once boolean of namaz notification');
+    if (!once) {
+      saveNamazStart(true);
+      PrayerNotification().notificationTime(fajrTime, sunriseTime, zuharTime, asrTime, maghribTime, ishaTime);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      key: _key,
-      appBar: AppBar(
-        elevation: 0,
-        backgroundColor: Colors.white,
-        leading: Padding(
-          padding: EdgeInsets.only(left: 10),
-          child: InkWell(
-            onTap: () {
-              _key.currentState!.openDrawer();
-              // Navigator.push(context, MaterialPageRoute(builder: (context) => PrayerTiming()));
-            },
-            child: SvgPicture.asset(
-              AppImages.menuIcon,
-              width: 44.w,
-              height: 38.h,
+    return FutureBuilder<NamazProvider>(builder: (futureContext, snapshot) {
+      getPrayerTiming(context);
+      return Scaffold(
+        key: _key,
+        appBar: AppBar(
+          elevation: 0,
+          backgroundColor: Colors.white,
+          leading: Padding(
+            padding: EdgeInsets.only(left: 10),
+            child: InkWell(
+              onTap: () {
+                _key.currentState!.openDrawer();
+                // Navigator.push(context, MaterialPageRoute(builder: (context) => PrayerTiming()));
+              },
+              child: SvgPicture.asset(
+                AppImages.menuIcon,
+                width: 44.w,
+                height: 38.h,
+              ),
             ),
           ),
+          leadingWidth: 30,
+          title: SvgPicture.asset(
+            AppImages.logo,
+            width: 249.6.w,
+            height: 78.36.h,
+          ),
+          centerTitle: true,
+          // actions: [
+          //   InkWell(
+          //     onTap: () {
+          //       _key.currentState!.openDrawer();
+          //       // Navigator.push(context, MaterialPageRoute(builder: (context) => PrayerTiming()));
+          //     },
+          //     child: SvgPicture.asset(
+          //       AppImages.menuIcon,
+          //       width: 44.w,
+          //       height: 38.h,
+          //     ),
+          //   ),
+          // ],
         ),
-        leadingWidth: 30,
-        title: SvgPicture.asset(
-          AppImages.logo,
-          width: 249.6.w,
-          height: 78.36.h,
+        body: Container(
+          decoration: BoxDecoration(gradient: AppColors.backgroundGradient),
+          child: widgetList[widgetIndex],
         ),
-        centerTitle: true,
-        // actions: [
-        //   InkWell(
-        //     onTap: () {
-        //       _key.currentState!.openDrawer();
-        //       // Navigator.push(context, MaterialPageRoute(builder: (context) => PrayerTiming()));
-        //     },
-        //     child: SvgPicture.asset(
-        //       AppImages.menuIcon,
-        //       width: 44.w,
-        //       height: 38.h,
-        //     ),
-        //   ),
-        // ],
-      ),
-      body: Container(
-        decoration: BoxDecoration(gradient: AppColors.backgroundGradient),
-        child: widgetList[widgetIndex],
-      ),
-      bottomNavigationBar: CustomBottomNav(
-          cIndex: _cIndex,
-          tappingIndex: (index) {
-            setState(() {
-              widgetIndex = index;
-            });
-          }),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: FAB(tappingIndex: (index) {
-        setState(() {
-          widgetIndex = index;
-        });
-      }),
-      drawer: SideBar(),
-    );
+        bottomNavigationBar: CustomBottomNav(
+            cIndex: _cIndex,
+            tappingIndex: (index) {
+              setState(() {
+                widgetIndex = index;
+              });
+            }),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+        floatingActionButton: FAB(tappingIndex: (index) {
+          setState(() {
+            widgetIndex = index;
+          });
+        }),
+        drawer: SideBar(),
+      );
+    });
   }
 
   void saveNamazStart(bool check) async {
     var box = await Hive.openBox('aayami');
-    box.put('namaz_once', check);
+    box.put('namaz_once', check).then((value) {
+      print('data is saved');
+    });
   }
 
   dynamic getNamazStart() async {
     var box = await Hive.openBox('aayami');
-    return box.get('namaz_once');
+    return box.get('namaz_once', defaultValue: false);
   }
 }
