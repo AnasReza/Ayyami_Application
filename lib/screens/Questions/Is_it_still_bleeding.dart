@@ -1,10 +1,13 @@
 
 import 'package:ayyami/firebase_calls/questions_record.dart';
+import 'package:ayyami/providers/menses_provider.dart';
 import 'package:ayyami/screens/Questions/when_did_the_bleeding_stop.dart';
-import 'package:ayyami/screens/main_screen.dart';
+import 'package:ayyami/screens/Questions/where_are_you_from.dart';
+import 'package:ayyami/tracker/menses_tracker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 
 import '../../widgets/gradient_button.dart';
@@ -13,7 +16,8 @@ import '../../widgets/utils.dart';
 
 class isit_bleeding extends StatefulWidget {
   String uid;
-  isit_bleeding({required this.uid,super.key});
+  DateTime start_date;
+  isit_bleeding({required this.uid,required this.start_date,super.key});
 
   @override
   State<isit_bleeding> createState() => _isit_bleedingState();
@@ -178,23 +182,23 @@ class _isit_bleedingState extends State<isit_bleeding> {
                           .toast_message("Please select only one");
                       return;
                     }
-
                     if (_YesBeenPressed == true) {
-
-                      nextWidget=MainScreen();
-                      answer='Yes';
+                      var mensesProvider=Provider.of<MensesProvider>(context,listen: false);
+                      var now=DateTime.now();
+                      var diff=now.difference(widget.start_date);
+                      MensesTracker().startMensisTimerWithTime(mensesProvider, widget.uid, diff.inMilliseconds);
+                      nextWidget=LocationQuestion(uid: widget.uid,);
                     } else {
 
-                      nextWidget=bleeding_stop(uid: widget.uid,);
-                      answer='No';
-
+                      nextWidget=bleeding_stop(uid: widget.uid,start_date:widget.start_date);
                     }
-                    QuestionRecord().uploadIsItBleedingQuestion(widget.uid, answer).then((value){
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => nextWidget));
-                    });
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => nextWidget));
+                    // QuestionRecord().uploadIsItBleedingQuestion(widget.uid, answer).then((value){
+                    //
+                    // });
 
                   },
                 ),

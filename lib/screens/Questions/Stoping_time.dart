@@ -1,16 +1,21 @@
 import 'package:ayyami/firebase_calls/questions_record.dart';
-import 'package:ayyami/screens/main_screen.dart';
+import 'package:ayyami/screens/Questions/where_are_you_from.dart';
+import 'package:ayyami/tracker/tuhur_tracker.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_time_picker_spinner/flutter_time_picker_spinner.dart';
+import 'package:provider/provider.dart';
 
+import '../../providers/tuhur_provider.dart';
+import '../../utils/utils.dart';
 import '../../widgets/gradient_button.dart';
 
 class stopping_time extends StatefulWidget {
   String uid;
-
-  stopping_time({required this.uid, super.key});
+  DateTime start_date,end_date;
+  stopping_time({required this.uid,required this.start_date,required this.end_date , super.key});
 
   @override
   State<stopping_time> createState() => _stopping_timeState();
@@ -92,12 +97,27 @@ class _stopping_timeState extends State<stopping_time> {
                 child: GradientButton(
                   title: "Confirm",
                   onPressedButon: () {
-                    getTimeVal = '${_dateTime.hour}:${_dateTime.minute}:${_dateTime.second}:${_dateTime.timeZoneName}';
-
-                    QuestionRecord().uploadStopTimeQuestion(widget.uid, getTimeVal).then((value) {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => MainScreen()));
+                    var tuhurProvider=Provider.of<TuhurProvider>(context,listen: false);
+                    tuhurProvider.setTimerStart(true);
+                    var endDate=DateTime(widget.end_date.year,widget.end_date.month,widget.end_date.day,_dateTime.hour,_dateTime.minute,_dateTime.second);
+                    var diff = Utils.timeConverter(endDate.difference(widget.start_date));
+                    var startTimeStamp = Timestamp.fromDate(widget.start_date);
+                    var endTimeStamp = Timestamp.fromDate(endDate);
+                    int? days = diff['days'];
+                    int? hours = diff['hours'];
+                    int? minutes = diff['minutes'];
+                    int? seconds = diff['seconds'];
+                    QuestionRecord()
+                        .uploadMenstrualPeriodQuestion(
+                        widget.uid, startTimeStamp, endTimeStamp, days!, hours!, minutes!, seconds!,tuhurProvider)
+                        .then((value) {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => LocationQuestion(
+                                uid: widget.uid,
+                              )));
                     });
-                    print(_dateTime);
                   },
                 ),
               ),

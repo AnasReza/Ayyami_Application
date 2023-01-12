@@ -10,6 +10,9 @@ class TuhurRecord{
 
     return FirebaseFirestore.instance.collection('tuhur').add({'uid': uid, 'start_date': startTime,'non_menstrual_bleeding':false});
   }
+  static uploadTuhurStartSpecificTime(String uid,Timestamp startTime) {
+    return FirebaseFirestore.instance.collection('tuhur').add({'uid': uid, 'start_date': startTime,'non_menstrual_bleeding':false});
+  }
   static uploadTuhurEndTime(String docID,int days,int hours,int minutes,int seconds) {
     var endTime = Timestamp.now();
     var endDate = endTime.toDate();

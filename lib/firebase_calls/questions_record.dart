@@ -1,4 +1,9 @@
+import 'package:ayyami/providers/menses_provider.dart';
+import 'package:ayyami/providers/tuhur_provider.dart';
+import 'package:ayyami/tracker/tuhur_tracker.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+
+import '../tracker/menses_tracker.dart';
 
 class QuestionRecord {
   Future<void> uploadQuestion(String uid, String answer) {
@@ -74,9 +79,8 @@ class QuestionRecord {
   }
 
   Future<void> uploadMenstrualPeriodQuestion(String uid, Timestamp startTime, Timestamp endTime,
-      int days, int hours, int minutes, int seconds) {
+      int days, int hours, int minutes, int seconds,TuhurProvider tuhurProvider) {
     var firestore = FirebaseFirestore.instance.collection('menses');
-
     return firestore.add({
       'start_date': startTime,
       'end_time': endTime,
@@ -86,17 +90,31 @@ class QuestionRecord {
       'seconds': seconds,
       'uid': uid
     }).then((value) {
-      FirebaseFirestore.instance.collection('tuhur').add({'start_date':endTime,'uid':uid});
+      var endDate=endTime.toDate();
+      var diffTillNow=DateTime.now().difference(endDate);
+      tuhurProvider.setTimerStart(true);
+      TuhurTracker().startTuhurTimerWithSeconds(tuhurProvider, uid, diffTillNow.inMilliseconds,endTime);
     });
   }
+  Future<void> uploadMenstrualPeriodQuestionStartDate(String uid, Timestamp startTime,MensesProvider mensesProvider) {
+    var firestore = FirebaseFirestore.instance.collection('menses');
+    return firestore.add({
+      'start_date': startTime,
+      'uid': uid
+    }).then((value) {
+      var diffTillNow=DateTime.now().difference(startTime.toDate());
+      mensesProvider.setTimerStart(true);
+      MensesTracker().startMensisTimerWithTime(mensesProvider, uid, diffTillNow.inMilliseconds);
 
+    });
+  }
   Future<void> uploadPostNatalBleedingQuestion(String uid, String answer) {
     var firestore = FirebaseFirestore.instance.collection('users').doc(uid);
     Map<String, String> map = {'post_natal_bleeding': answer};
     return firestore.update(map);
   }
   Future<void> uploadLocation(String uid,String labelText,GeoPoint point) {
-    var firestore=FirebaseFirestore.instance.collection('users').doc();
+    var firestore=FirebaseFirestore.instance.collection('users').doc(uid);
     return firestore.update({'coordinates':point,'location_name':labelText});
   }
 }

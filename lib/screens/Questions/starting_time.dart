@@ -5,13 +5,14 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_time_picker_spinner/flutter_time_picker_spinner.dart';
 
-
 import '../../widgets/gradient_button.dart';
 import 'Is_it_still_bleeding.dart';
 
 class starting_time extends StatefulWidget {
   String uid;
-  starting_time({required this.uid,super.key});
+  DateTime start_date;
+
+  starting_time({required this.uid, required this.start_date, super.key});
 
   @override
   State<starting_time> createState() => _starting_timeState();
@@ -20,10 +21,9 @@ class starting_time extends StatefulWidget {
 class _starting_timeState extends State<starting_time> {
   final databaseRef = FirebaseDatabase.instance.ref("QuestionAnswers");
   final FirebaseAuth auth = FirebaseAuth.instance;
-  
+
   DateTime _dateTime = DateTime.now();
   String getTimeVal = "";
-
 
   @override
   Widget build(BuildContext context) {
@@ -83,7 +83,6 @@ class _starting_timeState extends State<starting_time> {
                     ),
                     onTimeChange: (time) {
                       setState(() {
-                        
                         _dateTime = time;
                       });
                     },
@@ -96,15 +95,19 @@ class _starting_timeState extends State<starting_time> {
                   title: "Confirm",
                   onPressedButon: () {
                     print(_dateTime);
-                     getTimeVal =  '${_dateTime.hour}:${_dateTime.minute}:${_dateTime.second}:${_dateTime.timeZoneName}';
-
-                    QuestionRecord().uploadStartTimeQuestion(widget.uid, getTimeVal).then((value){
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => isit_bleeding(uid: widget.uid,)));
-                    });
-
+                    getTimeVal = '${_dateTime.hour}:${_dateTime.minute}:${_dateTime.second}:${_dateTime.timeZoneName}';
+                    var startDate = DateTime(widget.start_date.year, widget.start_date.month, widget.start_date.day,
+                        _dateTime.hour, _dateTime.minute, _dateTime.second);
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => isit_bleeding(
+                              uid: widget.uid,
+                              start_date:startDate
+                            )));
+                    // QuestionRecord().uploadStartTimeQuestion(widget.uid, getTimeVal).then((value) {
+                    //
+                    // });
                   },
                 ),
               ),

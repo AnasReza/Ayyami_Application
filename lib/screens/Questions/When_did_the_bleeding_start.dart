@@ -73,7 +73,8 @@ class _third_questionState extends State<third_question> {
                       selectedDay = selectDay;
                       focusedDay = focusDay;
                     });
-                    print(focusedDay);
+                    print('$focusedDay  focusedDay' );
+                    print('$selectedDay  selectedDay');
                   },
                   //Calendar Style
                   calendarStyle: const CalendarStyle(
@@ -135,9 +136,19 @@ class _third_questionState extends State<third_question> {
                   onPressedButon: () {
                     getDate = '${focusedDay.day}-${focusedDay.month}-${focusedDay.year}';
 
-                    QuestionRecord().uploadWhenBleedingStartQuestion(widget.uid, getDate).then((value) {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => starting_time(uid: widget.uid,)));
-                    });
+                    if(focusedDay!=null){
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => starting_time(
+                                  uid: widget.uid,
+                                  start_date:focusedDay
+                              )));
+                    }
+
+                    // QuestionRecord().uploadWhenBleedingStartQuestion(widget.uid, getDate).then((value) {
+                    //
+                    // });
                   },
                 ),
               ),

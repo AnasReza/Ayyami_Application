@@ -9,8 +9,8 @@ import 'Stoping_time.dart';
 
 class bleeding_stop extends StatefulWidget {
   String uid;
-
-  bleeding_stop({required this.uid, super.key});
+DateTime start_date;
+  bleeding_stop({required this.uid,required this.start_date, super.key});
 
   @override
   State<bleeding_stop> createState() => _bleeding_stopState();
@@ -135,15 +135,15 @@ class _bleeding_stopState extends State<bleeding_stop> {
                   title: "Confirm",
                   onPressedButon: () {
                     getDate = '${focusedDay.day}-${focusedDay.month}-${focusedDay.year}';
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => stopping_time(
+                              uid: widget.uid,
+                              end_date:focusedDay,
+                              start_date:widget.start_date
+                            )));
 
-                    QuestionRecord().uploadWhenBleedingStopQuestion(widget.uid, getDate).then((value) {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => stopping_time(
-                                    uid: widget.uid,
-                                  )));
-                    });
                   },
                 ),
               ),

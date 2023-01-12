@@ -1,5 +1,5 @@
 
-import 'package:ayyami/screens/main_screen.dart';
+import 'package:ayyami/screens/Questions/where_are_you_from.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import "package:flutter/material.dart";
@@ -123,7 +123,7 @@ class _postNatal_CycleState extends State<postNatal_Cycle> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) =>  MainScreen()));
+                              builder: (context) =>  LocationQuestion(uid: widget.uid)));
                     });
 
                   },

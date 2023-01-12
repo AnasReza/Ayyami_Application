@@ -66,12 +66,11 @@ class LocationQuestionState extends State<LocationQuestion> {
               width: double.infinity,
               child: Row(
                 children: [
-                  SvgPicture.asset(AppImages.backIcon),
                   Expanded(
                     child: Align(
                       alignment: Alignment.center,
                       child: AppText(
-                        text: "change_location".tr,
+                        text: "where_are_you_from".tr,
                         fontSize: 45.sp,
                         fontWeight: FontWeight.w700,
                       ),

@@ -89,14 +89,20 @@ class _Splash_ScreenState extends State<Splash_Screen> {
         .listen((event) {
       var docList = event.docs;
       try{
-        Timestamp endTime = docList[0].get('end_time');
-        TuhurProvider tuhurPro=context.read<TuhurProvider>();
-        getLastTuhur(uid, tuhurPro);
+        if(docList.isNotEmpty){
+          Timestamp endTime = docList[0].get('end_time');
+          TuhurProvider tuhurPro=context.read<TuhurProvider>();
+          getLastTuhur(uid, tuhurPro);
+        }
+
       }catch(e){
-        Timestamp startTime=docList[0].get('start_time');
-        Timestamp now=Timestamp.now();
-        var diff=now.toDate().difference(startTime.toDate());
-        MensesTracker().startMensisTimerWithTime(pro, uid, diff.inMilliseconds);
+        if(docList.isNotEmpty){
+          Timestamp startTime=docList[0].get('start_time');
+          Timestamp now=Timestamp.now();
+          var diff=now.toDate().difference(startTime.toDate());
+          MensesTracker().startMensisTimerWithTime(pro, uid, diff.inMilliseconds);
+        }
+
       }
 
       print('${event.size} size');

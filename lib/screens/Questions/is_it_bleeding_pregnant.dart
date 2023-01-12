@@ -1,5 +1,6 @@
 import 'package:ayyami/firebase_calls/questions_record.dart';
-import 'package:ayyami/screens/main_screen.dart';
+import 'package:ayyami/screens/Questions/starting_time.dart';
+import 'package:ayyami/screens/Questions/where_are_you_from.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
@@ -159,7 +160,8 @@ class _is_it_bleeding_pregnantState extends State<is_it_bleeding_pregnant> {
                     if (_YesBeenPressed == true) {
 
                       answer = 'Yes';
-                      nextWidget = MainScreen();
+                      nextWidget = LocationQuestion(uid: widget.uid,);
+                      // nextWidget=starting_time(uid: widget.uid);
                     } else {
 
                       answer = 'No';

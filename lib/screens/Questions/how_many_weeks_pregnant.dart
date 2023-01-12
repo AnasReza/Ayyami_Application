@@ -1,5 +1,5 @@
 import 'package:ayyami/firebase_calls/questions_record.dart';
-import 'package:ayyami/screens/main_screen.dart';
+import 'package:ayyami/screens/Questions/where_are_you_from.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
@@ -106,15 +106,9 @@ class _weeks_of_pregnantState extends State<weeks_of_pregnant> {
                   onPressedButon: () {
                     String q_id = DateTime.now().millisecondsSinceEpoch.toString();
 
-                    // String uid = auth.currentUser!.uid;
-                    databaseRef.child(q_id).set({
-                      'Question': "How many weeks are you pregnant?",
-                      'Answer': counter,
-                      'Q_id': q_id,
-                      // 'User_id': uid
-                    });
+
                     QuestionRecord().uploadWeekPregnantQuestion(widget.uid, counter.toString()).then((value) {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => MainScreen()));
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => LocationQuestion(uid: widget.uid)));
                     });
                     print(counter);
                   },
