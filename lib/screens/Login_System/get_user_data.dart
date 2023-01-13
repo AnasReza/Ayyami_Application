@@ -33,24 +33,26 @@ class _set_passwordState extends State<set_password> {
   final ImagePicker picker = ImagePicker();
   File? imageData;
 
-  Future getImageFromCamera() async {
+  Future getImageFromCamera(BuildContext context) async {
     final img = await picker.pickImage(source: ImageSource.camera, imageQuality: 80);
 
     setState(() {
       if (img != null) {
         imageData = File(img.path);
+        Navigator.pop(context);
       } else {
         toast_notification().toast_message("Image not captured");
       }
     });
   }
 
-  Future getImageFromGallery() async {
+  Future getImageFromGallery(BuildContext context) async {
     final img = await picker.pickImage(source: ImageSource.gallery, imageQuality: 80);
 
     setState(() {
       if (img != null) {
         imageData = File(img.path);
+        Navigator.pop(context);
       } else {
         toast_notification().toast_message("Image not selected");
       }
@@ -59,7 +61,6 @@ class _set_passwordState extends State<set_password> {
 
   //Data get to firebase
   firebase_storage.FirebaseStorage storage = firebase_storage.FirebaseStorage.instance;
-  final databaseRef = FirebaseDatabase.instance.ref("Users");
   final userNameController = TextEditingController();
   final auth = FirebaseAuth.instance;
   bool loading = false;
@@ -104,7 +105,7 @@ class _set_passwordState extends State<set_password> {
 
                         showDialog(
                             context: context,
-                            builder: (BuildContext context) {
+                            builder: (BuildContext dialogContex) {
                               return Dialog(
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(4),
@@ -143,7 +144,7 @@ class _set_passwordState extends State<set_password> {
                                                                 color: Color(0xff1F3D73),
                                                               ),
                                                               onTap: () {
-                                                                getImageFromCamera();
+                                                                getImageFromCamera(dialogContex);
                                                               }),
                                                           const SizedBox(height: 5),
                                                           const Text(
@@ -172,7 +173,7 @@ class _set_passwordState extends State<set_password> {
                                                             onTap: () //Gallery OnTap
 
                                                                 {
-                                                              getImageFromGallery();
+                                                              getImageFromGallery(dialogContex);
                                                             },
                                                           ),
                                                           const SizedBox(height: 5),
@@ -302,7 +303,7 @@ class _set_passwordState extends State<set_password> {
                     String? uid = FirebaseAuth.instance.currentUser?.uid;
 
                     firebase_storage.Reference ref =
-                        firebase_storage.FirebaseStorage.instance.ref('/AyyamiApplication$uid');
+                        firebase_storage.FirebaseStorage.instance.ref('/$uid/dp-$uid');
 
                     firebase_storage.UploadTask uploadImage = ref.putFile(imageData!.absolute);
                     await Future.value(uploadImage);

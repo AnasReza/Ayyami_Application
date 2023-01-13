@@ -1,8 +1,11 @@
 // ignore_for_file: prefer_const_constructors_in_immutables
 
 import 'package:ayyami/constants/images.dart';
+import 'package:ayyami/providers/tuhur_provider.dart';
 import 'package:ayyami/providers/user_provider.dart';
 import 'package:ayyami/screens/prayer/prayer_timing.dart';
+import 'package:ayyami/tracker/menses_tracker.dart';
+import 'package:ayyami/tracker/tuhur_tracker.dart';
 import 'package:ayyami/widgets/app_text.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +17,7 @@ import 'package:provider/provider.dart';
 import '../../constants/colors.dart';
 import '../../navigation/custom_bottom_nav.dart';
 import '../../navigation/custom_fab.dart';
+import '../../providers/menses_provider.dart';
 import '../../providers/prayer_provider.dart';
 import '../../services/local_noti_service.dart';
 import '../../widgets/category_box.dart';
@@ -47,6 +51,8 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
     WidgetsBinding.instance.addObserver(this);
     getLastTuhur(uid, provider);
     getLastMenses(uid, provider);
+    startMensesAgain(uid, provider);
+    startTuhurAgain(uid, provider);
   }
 
   getLastTuhur(String uid, UserProvider pro) {
@@ -59,10 +65,11 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
       var docList = event.docs;
       for (int x = 0; x < docList.length; x++) {
         var doc = docList[x];
+        Timestamp startTime = doc.get('start_date');
         bool non_menstrual_bleeding = doc.get('non_menstrual_bleeding');
         if (!non_menstrual_bleeding) {
           try {
-            Timestamp startTime = doc.get('start_date');
+            Timestamp endTime=doc.get('end_time');
 
             int days = doc.get('days');
             int hour = doc.get('hours');
@@ -78,13 +85,51 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
             pro.setLastTuhurTime(days, hour, minute, seconds);
             print('${doc.id}=uid from menses collection');
             break;
-          } catch (e) {}
+          } catch (e) {
+          }
         }
       }
     });
+
   }
 
   getLastMenses(String uid, UserProvider pro) {
+
+    FirebaseFirestore.instance
+        .collection('menses')
+        .where('uid', isEqualTo: uid)
+        .orderBy('start_date', descending: true)
+        .snapshots()
+        .listen((event) {
+      var docList = event.docs;
+      for (var doc in docList) {
+        Timestamp startTime = doc.get('start_date');
+        try{
+          Timestamp endTime = doc.get('end_time');
+          DateTime startDate = startTime.toDate();
+          int days = doc.get('days');
+          int hour = doc.get('hours');
+          int minute = doc.get('minutes');
+          int seconds = doc.get('seconds');
+
+          DateFormat format = DateFormat('dd MMMM yyyy');
+          setState(() {
+            //change minutes and seconds to days and hours
+            lastMensesDays = doc.get('days');
+            lastMensesHours = doc.get('hours');
+            lastCycleDate = format.format(startDate);
+          });
+          pro.setLastMenses(startTime);
+          pro.setLastMensesEnd(endTime);
+          pro.setLastMensesTime(days, hour, minute, seconds);
+          print('${doc.id}=uid from menses collection');
+          break;
+        }catch(e){}
+
+      }
+    });
+  }
+  void startMensesAgain(String uid, UserProvider pro){
     FirebaseFirestore.instance
         .collection('menses')
         .where('uid', isEqualTo: uid)
@@ -95,24 +140,64 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
       var docList = event.docs;
       for (var doc in docList) {
         Timestamp startTime = doc.get('start_date');
-        Timestamp endTime = doc.get('end_time');
-        DateTime startDate = startTime.toDate();
-        int days = doc.get('days');
-        int hour = doc.get('hours');
-        int minute = doc.get('minutes');
-        int seconds = doc.get('seconds');
+        try{
+          Timestamp endTime = doc.get('end_time');
+          DateTime startDate = startTime.toDate();
+          int days = doc.get('days');
+          int hour = doc.get('hours');
+          int minute = doc.get('minutes');
+          int seconds = doc.get('seconds');
 
-        DateFormat format = DateFormat('dd MMMM yyyy');
-        setState(() {
-          //change minutes and seconds to days and hours
-          lastMensesDays = doc.get('days');
-          lastMensesHours = doc.get('hours');
-          lastCycleDate = format.format(startDate);
-        });
-        pro.setLastMenses(startTime);
-        pro.setLastMensesEnd(endTime);
-        pro.setLastMensesTime(days, hour, minute, seconds);
-        print('${doc.id}=uid from menses collection');
+          DateFormat format = DateFormat('dd MMMM yyyy');
+
+        }catch(e){
+          var mensesProvider=context.read<MensesProvider>();
+          var timerStart=mensesProvider.getTimerStart;
+          if(!timerStart){
+            mensesProvider.setTimerStart(true);
+            var now=DateTime.now();
+            var diff=now.difference(startTime.toDate());
+            MensesTracker().startMensesTimerAgain(mensesProvider, diff.inMilliseconds);}
+
+        }
+
+      }
+    });
+  }
+  void startTuhurAgain(String uid, UserProvider pro){
+
+    FirebaseFirestore.instance
+        .collection('tuhur')
+        .where('uid', isEqualTo: uid)
+        .orderBy('start_date', descending: true)
+        .snapshots()
+        .listen((event) {
+      var docList = event.docs;
+      for (int x = 0; x < docList.length; x++) {
+        var doc = docList[x];
+        Timestamp startTime = doc.get('start_date');
+        bool non_menstrual_bleeding = doc.get('non_menstrual_bleeding');
+        if (!non_menstrual_bleeding) {
+          try {
+            Timestamp endTime=doc.get('end_time');
+
+            int days = doc.get('days');
+            int hour = doc.get('hours');
+            int minute = doc.get('minutes');
+            int seconds = doc.get('seconds');
+
+            break;
+          } catch (e) {
+            var tuhurProvider=context.read<TuhurProvider>();
+            var timerStart=tuhurProvider.getTimerStart;
+            if(timerStart){
+              tuhurProvider.setTimerStart(true);
+              var now=DateTime.now();
+              var diff=now.difference(startTime.toDate());
+              TuhurTracker().startTuhurTimerAgain(tuhurProvider, diff.inMilliseconds);
+            }
+          }
+        }
       }
     });
   }

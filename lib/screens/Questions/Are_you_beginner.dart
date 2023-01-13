@@ -21,8 +21,7 @@ class _first_questionState extends State<first_question> {
   final databaseRef = FirebaseDatabase.instance.ref("QuestionAnswers");
   final FirebaseAuth auth = FirebaseAuth.instance;
 
-  bool _BeginnerBeenPressed = false;
-  bool _AccustomedBeenPressed = false;
+  int pressedInt=0;
   String answer='';
 
   @override
@@ -79,24 +78,24 @@ class _first_questionState extends State<first_question> {
                         InkWell(
                           onTap: () {
                             String v1 = "Beginner Value";
-                            print(_BeginnerBeenPressed);
+
                             print(v1);
                             answer='Beginner';
                             setState(() {
-                              _BeginnerBeenPressed = false;
+                              pressedInt=1;
                             });
                           },
                           child: Ink(
                             decoration: BoxDecoration(
-                              gradient: _BeginnerBeenPressed
+                              gradient: pressedInt==1
                                   ? const LinearGradient(
-                                  colors: [Color(0xFFF2F2F2), Color(0xFFF2F2F2)],
+                                  colors: [Color(0xffFFBBE6), Color(0xffC43CF3)],
                                   begin: Alignment.centerLeft,
                                   end: Alignment.center)
                                   : const LinearGradient(
-                                colors: [Color(0xffFFBBE6), Color(0xffC43CF3)],
-                              begin: Alignment.centerLeft,
-                              end: Alignment.center),
+                                  colors: [Color(0xFFF2F2F2), Color(0xFFF2F2F2)],
+                                  begin: Alignment.centerLeft,
+                                  end: Alignment.center),
                               borderRadius: BorderRadius.circular(25),
                             ),
                             child: Container(
@@ -110,7 +109,7 @@ class _first_questionState extends State<first_question> {
                                         fontFamily: 'DMSans',
                                         fontSize: 17,
                                         fontWeight: FontWeight.w700,
-                                        color: _BeginnerBeenPressed ? const Color(0xFF1F3D73) : Colors.white))),
+                                        color: pressedInt==1 ? Colors.white:const Color(0xFF1F3D73) ))),
                           ),
                         )
                       ],
@@ -121,16 +120,16 @@ class _first_questionState extends State<first_question> {
                         InkWell(
                           onTap: () {
                             String v2 = "Accustomed Value";
-                            print(_BeginnerBeenPressed);
+
                             print(v2);
                             answer='Accustomed';
                             setState(() {
-                              _BeginnerBeenPressed = true;
+                              pressedInt=2;
                             });
                           },
                           child: Ink(
                             decoration: BoxDecoration(
-                              gradient: _BeginnerBeenPressed
+                              gradient: pressedInt==2
                                   ? const LinearGradient(
                                       colors: [Color(0xffFFBBE6), Color(0xffC43CF3)],
                                       begin: Alignment.centerLeft,
@@ -152,7 +151,7 @@ class _first_questionState extends State<first_question> {
                                         fontFamily: 'DMSans',
                                         fontSize: 17,
                                         fontWeight: FontWeight.w700,
-                                        color: _BeginnerBeenPressed ?  Colors.white: const Color(0xFF1F3D73)))),
+                                        color: pressedInt==2 ?  Colors.white: const Color(0xFF1F3D73)))),
                           ),
                         )
                       ],
@@ -167,12 +166,12 @@ class _first_questionState extends State<first_question> {
                   onPressedButon: () {
                     Widget nextWidget;
 
-                    if (answer.isEmpty) {
-                      toast_notification().toast_message("Please select only one");
+                    if (pressedInt==0) {
+                      toast_notification().toast_message("Please select an option");
                       return;
                     }
 
-                    if (answer == 'Beginner') {
+                    if (pressedInt==1) {
                       nextWidget = third_question(uid: widget.uid,);
                     } else  {
                       nextWidget = second_question(uid: widget.uid,);
@@ -184,38 +183,38 @@ class _first_questionState extends State<first_question> {
                 ),
               ),
               SizedBox(height: 20),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    child: TextButton(
-                      onPressed: () {
-                        showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return MyDialog();
-                            });
-                      },
-                      style: TextButton.styleFrom(
-                        foregroundColor: Color(0xff1F3D73),
-                        textStyle: const TextStyle(
-                          fontFamily: 'DMSans',
-                          fontSize: 14.0,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                      child: Text("Skip to the tracker"),
-                    ),
-                  ),
-                  Container(
-                    child: const Icon(
-                      Icons.arrow_forward,
-                      size: 18,
-                      color: Color(0xFF1F3D73),
-                    ),
-                  )
-                ],
-              ),
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.center,
+              //   children: [
+              //     Container(
+              //       child: TextButton(
+              //         onPressed: () {
+              //           showDialog(
+              //               context: context,
+              //               builder: (BuildContext context) {
+              //                 return MyDialog();
+              //               });
+              //         },
+              //         style: TextButton.styleFrom(
+              //           foregroundColor: Color(0xff1F3D73),
+              //           textStyle: const TextStyle(
+              //             fontFamily: 'DMSans',
+              //             fontSize: 14.0,
+              //             fontWeight: FontWeight.w500,
+              //           ),
+              //         ),
+              //         child: Text("Skip to the tracker"),
+              //       ),
+              //     ),
+              //     Container(
+              //       child: const Icon(
+              //         Icons.arrow_forward,
+              //         size: 18,
+              //         color: Color(0xFF1F3D73),
+              //       ),
+              //     )
+              //   ],
+              // ),
             ],
           ),
         ),

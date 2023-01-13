@@ -6,7 +6,7 @@ import 'package:ayyami/providers/namaz_provider.dart';
 import 'package:ayyami/providers/prayer_provider.dart';
 import 'package:ayyami/providers/user_provider.dart';
 import 'package:ayyami/widgets/prayer_widget.dart';
-import 'package:background_fetch/background_fetch.dart';
+// import 'package:background_fetch/background_fetch.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -144,48 +144,48 @@ class _PrayerTimingState extends State<PrayerTiming> {
   //   // });
   // }
 
-  Future<void> initPlatformState() async {
-    // Configure BackgroundFetch.
-    int status = await BackgroundFetch.configure(
-        BackgroundFetchConfig(
-            minimumFetchInterval: 15,
-            forceAlarmManager: false,
-            stopOnTerminate: false,
-            startOnBoot: true,
-            enableHeadless: true,
-            requiresBatteryNotLow: false,
-            requiresCharging: false,
-            requiresStorageNotLow: false,
-            requiresDeviceIdle: false,
-            requiredNetworkType: NetworkType.ANY), (String taskId) async {
-      // <-- Event handler
-      // This is the fetch-event callback.
-      print("[BackgroundFetch] Event received $taskId");
-      setState(() {
-        _events.insert(0, new DateTime.now());
-      });
-      // IMPORTANT:  You must signal completion of your task or the OS can punish your app
-      // for taking too long in the background.
-      // BackgroundFetch.finish(taskId);
-    }, (String taskId) async {
-      // <-- Task timeout handler.
-      // This task has exceeded its allowed running-time.  You must stop what you're doing and immediately .finish(taskId)
-      print("[BackgroundFetch] TASK TIMEOUT taskId: $taskId");
-
-      // BackgroundFetch.finish(taskId);
-    });
-    print('[BackgroundFetch] configure success: $status');
-    setState(() {
-      _status = status;
-    });
-    // timer.secondTime.listen((event) { print(event.toString());});
-    // timer.onStartTimer();
-    startTimer();
-    // If the widget was removed from the tree while the asynchronous platform
-    // message was in flight, we want to discard the reply rather than calling
-    // setState to update our non-existent appearance.
-    // if (!mounted) return;
-  }
+  // Future<void> initPlatformState() async {
+  //   // Configure BackgroundFetch.
+  //   int status = await BackgroundFetch.configure(
+  //       BackgroundFetchConfig(
+  //           minimumFetchInterval: 15,
+  //           forceAlarmManager: false,
+  //           stopOnTerminate: false,
+  //           startOnBoot: true,
+  //           enableHeadless: true,
+  //           requiresBatteryNotLow: false,
+  //           requiresCharging: false,
+  //           requiresStorageNotLow: false,
+  //           requiresDeviceIdle: false,
+  //           requiredNetworkType: NetworkType.ANY), (String taskId) async {
+  //     // <-- Event handler
+  //     // This is the fetch-event callback.
+  //     print("[BackgroundFetch] Event received $taskId");
+  //     setState(() {
+  //       _events.insert(0, new DateTime.now());
+  //     });
+  //     // IMPORTANT:  You must signal completion of your task or the OS can punish your app
+  //     // for taking too long in the background.
+  //     // BackgroundFetch.finish(taskId);
+  //   }, (String taskId) async {
+  //     // <-- Task timeout handler.
+  //     // This task has exceeded its allowed running-time.  You must stop what you're doing and immediately .finish(taskId)
+  //     print("[BackgroundFetch] TASK TIMEOUT taskId: $taskId");
+  //
+  //     // BackgroundFetch.finish(taskId);
+  //   });
+  //   print('[BackgroundFetch] configure success: $status');
+  //   setState(() {
+  //     _status = status;
+  //   });
+  //   // timer.secondTime.listen((event) { print(event.toString());});
+  //   // timer.onStartTimer();
+  //   startTimer();
+  //   // If the widget was removed from the tree while the asynchronous platform
+  //   // message was in flight, we want to discard the reply rather than calling
+  //   // setState to update our non-existent appearance.
+  //   // if (!mounted) return;
+  // }
 
   static void startTimer() {
     var timer = Timer.periodic(Duration(seconds: 1), (timer) => addTime());

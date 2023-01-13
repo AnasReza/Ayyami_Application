@@ -1,4 +1,5 @@
 import 'package:ayyami/firebase_calls/questions_record.dart';
+import 'package:ayyami/screens/Questions/menstrual_period_start_date.dart';
 import 'package:ayyami/screens/Questions/starting_time.dart';
 import 'package:ayyami/screens/Questions/where_are_you_from.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -20,9 +21,7 @@ class is_it_bleeding_pregnant extends StatefulWidget {
 class _is_it_bleeding_pregnantState extends State<is_it_bleeding_pregnant> {
   final databaseRef = FirebaseDatabase.instance.ref("QuestionAnswers");
   final FirebaseAuth auth = FirebaseAuth.instance;
-
-  bool _YesBeenPressed = false;
-  bool _NoBeenPressed = false;
+  int pressedInt=0;
 
   @override
   Widget build(BuildContext context) {
@@ -66,23 +65,22 @@ class _is_it_bleeding_pregnantState extends State<is_it_bleeding_pregnant> {
                         InkWell(
                           onTap: () {
                             String v1 = "Yes Value";
-                            print(_YesBeenPressed);
+
                             print(v1);
                             setState(() {
-                              _YesBeenPressed = !_YesBeenPressed;
+                              pressedInt=1;
                             });
                           },
                           child: Ink(
                             decoration: BoxDecoration(
-                              gradient: _YesBeenPressed
-                                  ? const LinearGradient(
-                                      colors: [Color(0xffFFBBE6), Color(0xffC43CF3)],
-                                      begin: Alignment.centerLeft,
-                                      end: Alignment.center)
-                                  : const LinearGradient(
-                                      colors: [Color(0xFFF2F2F2), Color(0xFFF2F2F2)],
-                                      begin: Alignment.centerLeft,
-                                      end: Alignment.center),
+                              gradient: pressedInt==1
+                                  ?const LinearGradient(
+                                  colors: [Color(0xffFFBBE6), Color(0xffC43CF3)],
+                                  begin: Alignment.centerLeft,
+                                  end: Alignment.center): const LinearGradient(
+                                  colors: [Color(0xFFF2F2F2), Color(0xFFF2F2F2)],
+                                  begin: Alignment.centerLeft,
+                                  end: Alignment.center),
                               borderRadius: BorderRadius.circular(25),
                             ),
                             child: Container(
@@ -96,7 +94,7 @@ class _is_it_bleeding_pregnantState extends State<is_it_bleeding_pregnant> {
                                         fontFamily: 'DMSans',
                                         fontSize: 17,
                                         fontWeight: FontWeight.w700,
-                                        color: _YesBeenPressed ? Colors.white : const Color(0xFF1F3D73)))),
+                                        color: pressedInt==1 ? Colors.white : const Color(0xFF1F3D73)))),
                           ),
                         )
                       ],
@@ -107,15 +105,14 @@ class _is_it_bleeding_pregnantState extends State<is_it_bleeding_pregnant> {
                         InkWell(
                           onTap: () {
                             String v2 = "No Value";
-                            print(_NoBeenPressed);
                             print(v2);
                             setState(() {
-                              _NoBeenPressed = !_NoBeenPressed;
+                              pressedInt=2;
                             });
                           },
                           child: Ink(
                             decoration: BoxDecoration(
-                              gradient: _NoBeenPressed
+                              gradient: pressedInt==2
                                   ? const LinearGradient(
                                       colors: [Color(0xffFFBBE6), Color(0xffC43CF3)],
                                       begin: Alignment.centerLeft,
@@ -137,7 +134,7 @@ class _is_it_bleeding_pregnantState extends State<is_it_bleeding_pregnant> {
                                         fontFamily: 'DMSans',
                                         fontSize: 17,
                                         fontWeight: FontWeight.w700,
-                                        color: _NoBeenPressed ? Colors.white : const Color(0xFF1F3D73)))),
+                                        color: pressedInt==2 ? Colors.white : const Color(0xFF1F3D73)))),
                           ),
                         )
                       ],
@@ -153,15 +150,15 @@ class _is_it_bleeding_pregnantState extends State<is_it_bleeding_pregnant> {
                     String q_id = DateTime.now().millisecondsSinceEpoch.toString();
                     Widget nextWidget;
                     String answer = '';
-                    if (_YesBeenPressed == true && _NoBeenPressed == true) {
+                    if (pressedInt==0) {
                       toast_notification().toast_message("Please select only one");
                       return;
                     }
-                    if (_YesBeenPressed == true) {
+                    if (pressedInt==1) {
 
                       answer = 'Yes';
-                      nextWidget = LocationQuestion(uid: widget.uid,);
-                      // nextWidget=starting_time(uid: widget.uid);
+                      // nextWidget = LocationQuestion(uid: widget.uid,);
+                      nextWidget=MenstrualPeriodStartDate(uid: widget.uid);
                     } else {
 
                       answer = 'No';
@@ -174,38 +171,38 @@ class _is_it_bleeding_pregnantState extends State<is_it_bleeding_pregnant> {
                 ),
               ),
               SizedBox(height: 20),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    child: TextButton(
-                      onPressed: () {
-                        showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return MyDialog();
-                            });
-                      },
-                      style: TextButton.styleFrom(
-                        foregroundColor: Color(0xff1F3D73),
-                        textStyle: const TextStyle(
-                          fontFamily: 'DMSans',
-                          fontSize: 14.0,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                      child: Text("Skip to the tracker"),
-                    ),
-                  ),
-                  Container(
-                    child: const Icon(
-                      Icons.arrow_forward,
-                      size: 18,
-                      color: Color(0xFF1F3D73),
-                    ),
-                  )
-                ],
-              ),
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.center,
+              //   children: [
+              //     Container(
+              //       child: TextButton(
+              //         onPressed: () {
+              //           showDialog(
+              //               context: context,
+              //               builder: (BuildContext context) {
+              //                 return MyDialog();
+              //               });
+              //         },
+              //         style: TextButton.styleFrom(
+              //           foregroundColor: Color(0xff1F3D73),
+              //           textStyle: const TextStyle(
+              //             fontFamily: 'DMSans',
+              //             fontSize: 14.0,
+              //             fontWeight: FontWeight.w500,
+              //           ),
+              //         ),
+              //         child: Text("Skip to the tracker"),
+              //       ),
+              //     ),
+              //     Container(
+              //       child: const Icon(
+              //         Icons.arrow_forward,
+              //         size: 18,
+              //         color: Color(0xFF1F3D73),
+              //       ),
+              //     )
+              //   ],
+              // ),
             ],
           ),
         ),

@@ -14,6 +14,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:stop_watch_timer/stop_watch_timer.dart';
 
 import '../firebase_calls/user_record.dart';
 import '../providers/menses_provider.dart';
@@ -37,7 +38,7 @@ class _Splash_ScreenState extends State<Splash_Screen> {
     if (user != null) {
       String uid = user.uid;
       MensesProvider pro = context.read<MensesProvider>();
-      getLastMenses(uid, pro);
+      // getLastMenses(uid, pro);
     }
     Timer(Duration(seconds: 3), () {
       final hiveValue = getHive();
@@ -51,7 +52,7 @@ class _Splash_ScreenState extends State<Splash_Screen> {
           provider.setLocation('location_name');
           Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => MainScreen()));
         });
-        
+
       } else {
         Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => account_create()));
       }
@@ -100,7 +101,7 @@ class _Splash_ScreenState extends State<Splash_Screen> {
           Timestamp startTime=docList[0].get('start_time');
           Timestamp now=Timestamp.now();
           var diff=now.toDate().difference(startTime.toDate());
-          MensesTracker().startMensisTimerWithTime(pro, uid, diff.inMilliseconds);
+          // MensesTracker().startMensisTimerWithTime(pro, uid, diff.inMilliseconds,startTime);
         }
 
       }

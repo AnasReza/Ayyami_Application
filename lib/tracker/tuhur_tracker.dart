@@ -6,6 +6,7 @@ import 'package:stop_watch_timer/stop_watch_timer.dart';
 
 import '../providers/menses_provider.dart';
 import '../providers/tuhur_provider.dart';
+import '../utils/utils.dart';
 
 class TuhurTracker{
   int secondsCount = 0;
@@ -51,6 +52,15 @@ class TuhurTracker{
   }
   void startTuhurTimerWithSeconds(TuhurProvider tuhurProvider, String uid,
       int milliseconds,Timestamp startTime) {
+    var timeMap=Utils.timeConverter(Duration(milliseconds: milliseconds));
+    secondsCount=timeMap['seconds']!;
+    minutesCount=timeMap['minutes']!;
+    hoursCount=timeMap['hours']!;
+    daysCount=timeMap['days']!;
+    tuhurProvider.setDays(daysCount);
+    tuhurProvider.setHours(hoursCount);
+    tuhurProvider.setMin(minutesCount);
+    tuhurProvider.setSec(secondsCount);
     Future<DocumentReference<Map<String, dynamic>>> tuhur = TuhurRecord.uploadTuhurStartSpecificTime(uid,startTime);
     tuhur.then((value) {
       saveDocId(value.id);
@@ -86,6 +96,15 @@ class TuhurTracker{
   }
 
   void startTuhurTimerAgain(TuhurProvider tuhurProvider,int milliseconds){
+    var timeMap=Utils.timeConverter(Duration(milliseconds: milliseconds));
+    secondsCount=timeMap['seconds']!;
+    minutesCount=timeMap['minutes']!;
+    hoursCount=timeMap['hours']!;
+    daysCount=timeMap['days']!;
+    tuhurProvider.setDays(daysCount);
+    tuhurProvider.setHours(hoursCount);
+    tuhurProvider.setMin(minutesCount);
+    tuhurProvider.setSec(secondsCount);
     _stopWatch=StopWatchTimer(mode: StopWatchMode.countUp,presetMillisecond:milliseconds );
     _stopWatch.secondTime.listen((event) {
       print('$secondsCount==sec    $minutesCount==minutes');

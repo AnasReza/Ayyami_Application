@@ -77,6 +77,8 @@ class _TimerBoxState extends State<TimerBox> with WidgetsBindingObserver {
       bool isTimerStart = pro.getTimerStart;
 
       mensesProvider = pro;
+      print('${pro.getDays.toString()} days from menses timer ');
+      print('${pro.getHours.toString()} hours from menses timer ');
       return Stack(
         clipBehavior: Clip.none,
         children: [
@@ -115,7 +117,7 @@ class _TimerBoxState extends State<TimerBox> with WidgetsBindingObserver {
                   Column(
                     children: [
                       AppText(
-                        text: pro.days.toString(),
+                        text: pro.getDays.toString(),
                         color: AppColors.pink,
                         fontSize: 56.722694396972656.sp,
                         fontWeight: FontWeight.w700,
@@ -133,7 +135,7 @@ class _TimerBoxState extends State<TimerBox> with WidgetsBindingObserver {
                   Column(
                     children: [
                       AppText(
-                        text: pro.hours.toString(),
+                        text: pro.getHours.toString(),
                         color: AppColors.pink,
                         fontSize: 56.722694396972656.sp,
                         fontWeight: FontWeight.w700,

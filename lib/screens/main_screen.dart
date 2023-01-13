@@ -67,7 +67,7 @@ class MainScreenState extends State<MainScreen> {
     print('$once boolean of namaz notification');
     if (!once) {
       saveNamazStart(true);
-      PrayerNotification().notificationTime(fajrTime, sunriseTime, zuharTime, asrTime, maghribTime, ishaTime);
+      // PrayerNotification().notificationTime(fajrTime, sunriseTime, zuharTime, asrTime, maghribTime, ishaTime);
     }
   }
 

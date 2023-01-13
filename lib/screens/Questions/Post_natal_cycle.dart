@@ -130,38 +130,38 @@ class _postNatal_CycleState extends State<postNatal_Cycle> {
                 ),
               ),
               SizedBox(height: 20),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    child: TextButton(
-                      onPressed: () {
-                        showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return MyDialog();
-                            });
-                      },
-                      style: TextButton.styleFrom(
-                        foregroundColor: Color(0xff1F3D73),
-                        textStyle: const TextStyle(
-                          fontFamily: 'DMSans',
-                          fontSize: 14.0,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                      child: Text("Skip to the tracker"),
-                    ),
-                  ),
-                  Container(
-                    child: const Icon(
-                      Icons.arrow_forward,
-                      size: 18,
-                      color: Color(0xFF1F3D73),
-                    ),
-                  )
-                ],
-              ),
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.center,
+              //   children: [
+              //     Container(
+              //       child: TextButton(
+              //         onPressed: () {
+              //           showDialog(
+              //               context: context,
+              //               builder: (BuildContext context) {
+              //                 return MyDialog();
+              //               });
+              //         },
+              //         style: TextButton.styleFrom(
+              //           foregroundColor: Color(0xff1F3D73),
+              //           textStyle: const TextStyle(
+              //             fontFamily: 'DMSans',
+              //             fontSize: 14.0,
+              //             fontWeight: FontWeight.w500,
+              //           ),
+              //         ),
+              //         child: Text("Skip to the tracker"),
+              //       ),
+              //     ),
+              //     Container(
+              //       child: const Icon(
+              //         Icons.arrow_forward,
+              //         size: 18,
+              //         color: Color(0xFF1F3D73),
+              //       ),
+              //     )
+              //   ],
+              // ),
             ],
           ),
         ),

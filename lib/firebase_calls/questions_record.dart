@@ -92,8 +92,8 @@ class QuestionRecord {
     }).then((value) {
       var endDate=endTime.toDate();
       var diffTillNow=DateTime.now().difference(endDate);
-      tuhurProvider.setTimerStart(true);
-      TuhurTracker().startTuhurTimerWithSeconds(tuhurProvider, uid, diffTillNow.inMilliseconds,endTime);
+      // tuhurProvider.setTimerStart(true);
+      // TuhurTracker().startTuhurTimerWithSeconds(tuhurProvider, uid, diffTillNow.inMilliseconds,endTime);
     });
   }
   Future<void> uploadMenstrualPeriodQuestionStartDate(String uid, Timestamp startTime,MensesProvider mensesProvider) {
@@ -103,8 +103,9 @@ class QuestionRecord {
       'uid': uid
     }).then((value) {
       var diffTillNow=DateTime.now().difference(startTime.toDate());
-      mensesProvider.setTimerStart(true);
-      MensesTracker().startMensisTimerWithTime(mensesProvider, uid, diffTillNow.inMilliseconds);
+      print('${diffTillNow.inMilliseconds}   milliseconds from uploadMenstrualPeriodQuestionStartDate');
+       // mensesProvider.setTimerStart(true);
+       // MensesTracker().startMensisTimerWithTime(mensesProvider, uid, diffTillNow.inMilliseconds,startTime);
 
     });
   }

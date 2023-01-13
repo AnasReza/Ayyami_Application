@@ -62,9 +62,18 @@ class MensesTracker {
     _stopWatch.onStartTimer();
   }
 
-  void startMensisTimerWithTime(MensesProvider mensesProvider, String uid, int milliseconds) {
+  void startMensisTimerWithTime(MensesProvider mensesProvider, String uid, int milliseconds,Timestamp startTime) {
+
     _stopWatch = StopWatchTimer(mode: StopWatchMode.countUp, presetMillisecond: milliseconds);
-    var startTime = Timestamp.now();
+    var timeMap=Utils.timeConverter(Duration(milliseconds: milliseconds));
+    secondsCount=timeMap['seconds']!;
+    minutesCount=timeMap['minutes']!;
+    hoursCount=timeMap['hours']!;
+    daysCount=timeMap['days']!;
+    mensesProvider.setDays(daysCount);
+    mensesProvider.setHours(hoursCount);
+    mensesProvider.setMin(minutesCount);
+    mensesProvider.setSec(secondsCount);
     var menses = MensesRecord.uploadMensesStartTime(uid, startTime);
     menses.then((value) {
       saveDocId(value.id);
@@ -73,8 +82,10 @@ class MensesTracker {
       print('${value.id} record doc id');
     });
     _stopWatch.secondTime.listen((event) {
-      print('$secondsCount==sec    $minutesCount==minutes');
+      print('$secondsCount==sec    $minutesCount==minutes   $hoursCount==hours    $daysCount==days');
+
       secondsCount++;
+
       if (secondsCount > 59) {
         minutesCount++;
         if (minutesCount > 59) {
@@ -102,7 +113,42 @@ class MensesTracker {
     });
     _stopWatch.onStartTimer();
   }
-
+  void startMensesTimerAgain(MensesProvider mensesProvider,int milliseconds){
+    var timeMap=Utils.timeConverter(Duration(milliseconds: milliseconds));
+    secondsCount=timeMap['seconds']!;
+    minutesCount=timeMap['minutes']!;
+    hoursCount=timeMap['hours']!;
+    daysCount=timeMap['days']!;
+    mensesProvider.setDays(daysCount);
+    mensesProvider.setHours(hoursCount);
+    mensesProvider.setMin(minutesCount);
+    mensesProvider.setSec(secondsCount);
+    _stopWatch=StopWatchTimer(mode: StopWatchMode.countUp,presetMillisecond:milliseconds );
+    _stopWatch.secondTime.listen((event) {
+      print('$secondsCount==sec    $minutesCount==minutes');
+      secondsCount++;
+      if (secondsCount > 59) {
+        minutesCount++;
+        if (minutesCount > 59) {
+          hoursCount++;
+          if (hoursCount > 23) {
+            daysCount++;
+            // if (daysCount > 30) {
+            //   daysCount = 0;
+            // }
+            mensesProvider.setDays(daysCount);
+            hoursCount = 0;
+          }
+          mensesProvider.setHours(hoursCount);
+          minutesCount = 0;
+        }
+        mensesProvider.setMin(minutesCount);
+        secondsCount = 0;
+      }
+      mensesProvider.setSec(secondsCount);
+    });
+    _stopWatch.onStartTimer();
+  }
   String stopMensesTimer(MensesProvider mensesProvider, TuhurProvider tuhurProvider, String uid,
       UserProvider userProvider, Timestamp endTime, String islamicMonth) {
     String regulationMessage = '';
