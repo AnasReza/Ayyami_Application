@@ -6,9 +6,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:hive/hive.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 
 import '../../widgets/gradient_button.dart';
@@ -32,6 +34,7 @@ class _set_passwordState extends State<set_password> {
 
   final ImagePicker picker = ImagePicker();
   File? imageData;
+  String assetsPath="assets/images/demo_profile.png";
 
   Future getImageFromCamera(BuildContext context) async {
     final img = await picker.pickImage(source: ImageSource.camera, imageQuality: 80);
@@ -72,7 +75,6 @@ class _set_passwordState extends State<set_password> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-
     return Scaffold(
       backgroundColor: Color(0xffF5F5F5),
       body: Center(
@@ -219,8 +221,7 @@ class _set_passwordState extends State<set_password> {
                                         imageData!.absolute,
                                         fit: BoxFit.fitWidth,
                                       )
-                                    : Image.asset(
-                                        "assets/images/demo_profile.png",
+                                    : Image.asset(assetsPath,
                                         fit: BoxFit.cover,
                                       ),
                               ),
@@ -305,21 +306,45 @@ class _set_passwordState extends State<set_password> {
                     firebase_storage.Reference ref =
                         firebase_storage.FirebaseStorage.instance.ref('/$uid/dp-$uid');
 
-                    firebase_storage.UploadTask uploadImage = ref.putFile(imageData!.absolute);
-                    await Future.value(uploadImage);
-                    var newUrl = await ref.getDownloadURL();
+                    if(imageData==null){
+                       await rootBundle.load(assetsPath).then((bytes) async {
+                        final Uint8List list = bytes.buffer.asUint8List();
+                        firebase_storage.UploadTask uploadImage = ref.putData(list);
+                        await Future.value(uploadImage);
+                        var newUrl = await ref.getDownloadURL();
 
-                    FirebaseFirestore.instance.collection('users').doc(uid).set({
-                      'user_name': userNameController.text.toString(),
-                      'contact_no': widget.contact_number,
-                      "imgUrl": newUrl.toString(),
-                      'uid': uid
-                    }).then((value){
-                      final provider=Provider.of<UserProvider>(context,listen: false);
-                      provider.setUID(uid!);
-                      setHive(uid!);
-                      nextScreen(context, first_question(uid: uid,));
-                    });
+                        FirebaseFirestore.instance.collection('users').doc(uid).set({
+                          'user_name': userNameController.text.toString(),
+                          'contact_no': widget.contact_number,
+                          "imgUrl": newUrl,
+                          'uid': uid
+                        }).then((value){
+                          final provider=Provider.of<UserProvider>(context,listen: false);
+                          provider.setUID(uid!);
+                          setHive(uid!);
+                          nextScreen(context, first_question(uid: uid,));
+                        });
+                      });
+
+                    }else{
+                      firebase_storage.UploadTask uploadImage = ref.putFile(imageData!.absolute);
+                      await Future.value(uploadImage);
+                      var newUrl = await ref.getDownloadURL();
+
+
+                      FirebaseFirestore.instance.collection('users').doc(uid).set({
+                        'user_name': userNameController.text.toString(),
+                        'contact_no': widget.contact_number,
+                        "imgUrl": newUrl,
+                        'uid': uid
+                      }).then((value){
+                        final provider=Provider.of<UserProvider>(context,listen: false);
+                        provider.setUID(uid!);
+                        setHive(uid!);
+                        nextScreen(context, first_question(uid: uid,));
+                      });
+                    }
+
 
 
 
@@ -344,6 +369,14 @@ class _set_passwordState extends State<set_password> {
     var box=await Hive.openBox('aayami');
     box.put('uid', uid);
     box.put('login', true);
+  }
+
+  Future<File> getImageFileFromAssets(String assetsPath) async {
+    final byteData = await rootBundle.load(assetsPath);
+
+    final file = File('${(await getTemporaryDirectory()).path}/$assetsPath');
+    await file.writeAsBytes(byteData.buffer.asUint8List(byteData.offsetInBytes, byteData.lengthInBytes));
+    return file;
   }
 
 }
