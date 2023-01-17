@@ -55,6 +55,7 @@ dependencies:
   firebase_auth: ^4.1.2
   firebase_database: ^10.0.5
   firebase_core_platform_interface: ^4.5.2
+  firebase_messaging: ^14.2.1
 
   #  storage
   shared_preferences: ^2.0.15

@@ -439,14 +439,14 @@ class _TimerBoxState extends State<TimerBox> with WidgetsBindingObserver {
               int hour=time.hour;
               int minute=time.minute;
               String period=time.period.name;
-              DateTime startDate=DateTime.utc(year,month,day,hour,minute);
-              var dateString=DateFormat.yMEd().add_jms().format(startDate);
+              DateTime endDate=DateTime.utc(year,month,day,hour,minute);
+              var dateString=DateFormat.yMEd().add_jms().format(endDate);
               print('$dateString  == dateString');
 
               var tuhurProvider = Provider.of<TuhurProvider>(context, listen: false);
               UserProvider userProvider = Provider.of<UserProvider>(context, listen: false);
 
-              String showRegulation=mensesTrack.stopMensesTimer(mensesProvider, tuhurProvider, uid, userProvider,Timestamp.fromDate(startDate),widget.islamicMonth);
+              String showRegulation=mensesTrack.stopMensesTimer(mensesProvider, tuhurProvider, uid, userProvider,Timestamp.fromDate(endDate),widget.islamicMonth);
 
               widget.mensis(true,showRegulation);
               Navigator.pop(dialogContext);

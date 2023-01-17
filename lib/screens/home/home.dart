@@ -122,6 +122,8 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
           pro.setLastMenses(startTime);
           pro.setLastMensesEnd(endTime);
           pro.setLastMensesTime(days, hour, minute, seconds);
+          var mensesProvider=context.read<MensesProvider>();
+          mensesProvider.setStartTime(startTime);
           print('${doc.id}=uid from menses collection');
           break;
         }catch(e){}
