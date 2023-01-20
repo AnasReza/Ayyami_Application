@@ -344,7 +344,7 @@ class _PregnancyTimerBoxState extends State<PregnancyTimerBox> with WidgetsBindi
                   },);
                 });
               }else{
-                 PregnancyTracker().stopPregnancyTimer(pregProvider, Timestamp.fromDate(endDate),reasonValue);
+                 PregnancyTracker().stopPregnancyTimer(pregProvider, Timestamp.fromDate(endDate),'Given Birth');
                }
 
               Navigator.pop(dialogContext);
