@@ -16,6 +16,7 @@ import 'package:workmanager/workmanager.dart';
 import '../constants/colors.dart';
 import '../constants/images.dart';
 import '../providers/menses_provider.dart';
+import '../providers/post-natal_timer_provider.dart';
 import '../providers/user_provider.dart';
 import 'app_text.dart';
 
@@ -31,7 +32,7 @@ class PostNatalTimerBox extends StatefulWidget {
 class _PostNatalTimerBoxState extends State<PostNatalTimerBox> with WidgetsBindingObserver{
   static late String uid;
   static final int tuhur = 15;
-  static late MensesProvider pray;
+  static late PostNatalTimerProvider pray;
   static int secondsCount = 0;
   static int minutesCount = 0;
   static int hoursCount = 0;
@@ -65,7 +66,7 @@ class _PostNatalTimerBoxState extends State<PostNatalTimerBox> with WidgetsBindi
   }
   @override
   Widget build(BuildContext context) {
-    return Consumer<MensesProvider>(builder: (conTimer, pro, build) {
+    return Consumer<PostNatalTimerProvider>(builder: (conTimer, pro, build) {
       var userProvider = Provider.of<UserProvider>(context);
       uid = userProvider.getUid!;
       bool isTimerStart = pro.getTimerStart;
@@ -357,7 +358,7 @@ class _PostNatalTimerBoxState extends State<PostNatalTimerBox> with WidgetsBindi
                 ),
                 onTap: () {
                   if(mensesID.isNotEmpty){
-                    MensesRecord.uploadMensesEndTime(mensesID,0,0,0,0);
+                    // MensesRecord.uploadMensesEndTime(mensesID,0,0,0,0);
                     _stopWatch.onStopTimer();
                     _stopWatch.onResetTimer();
                     pray.setTimerStart(false);

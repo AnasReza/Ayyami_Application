@@ -1,7 +1,11 @@
 import 'dart:async';
 import 'dart:ui';
 
+import 'package:ayyami/dialog/misscrriage_dialog.dart';
 import 'package:ayyami/firebase_calls/menses_record.dart';
+import 'package:ayyami/providers/tuhur_provider.dart';
+import 'package:ayyami/tracker/menses_tracker.dart';
+import 'package:ayyami/tracker/pregnancy_tracker.dart';
 import 'package:ayyami/widgets/utils.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -9,13 +13,16 @@ import 'package:flutter_background_service/flutter_background_service.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:stop_watch_timer/stop_watch_timer.dart';
 import 'package:workmanager/workmanager.dart';
 
 import '../constants/colors.dart';
 import '../constants/images.dart';
+import '../dialog/timer_date_time.dart';
 import '../providers/menses_provider.dart';
+import '../providers/pregnancy_timer_provider.dart';
 import '../providers/user_provider.dart';
 import 'app_text.dart';
 
@@ -28,15 +35,16 @@ class PregnancyTimerBox extends StatefulWidget {
   State<PregnancyTimerBox> createState() => _PregnancyTimerBoxState();
 }
 
-class _PregnancyTimerBoxState extends State<PregnancyTimerBox> with WidgetsBindingObserver{
+class _PregnancyTimerBoxState extends State<PregnancyTimerBox> with WidgetsBindingObserver {
   static late String uid;
-  static final int tuhur = 15;
-  static late MensesProvider pray;
+
+  static late PregnancyProvider pray;
   static int secondsCount = 0;
   static int minutesCount = 0;
   static int hoursCount = 0;
   static int daysCount = 0;
-  static String mensesID='';
+  static int weeksCount = 0;
+  static String mensesID = '';
   static final _stopWatch = StopWatchTimer(mode: StopWatchMode.countUp);
 
   @override
@@ -45,10 +53,10 @@ class _PregnancyTimerBoxState extends State<PregnancyTimerBox> with WidgetsBindi
     super.initState();
   }
 
-@override
+  @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     super.didChangeAppLifecycleState(state);
-    switch(state){
+    switch (state) {
       case AppLifecycleState.resumed:
         print('Timer Box is resumed');
         break;
@@ -63,9 +71,10 @@ class _PregnancyTimerBoxState extends State<PregnancyTimerBox> with WidgetsBindi
         break;
     }
   }
+
   @override
   Widget build(BuildContext context) {
-    return Consumer<MensesProvider>(builder: (conTimer, pro, build) {
+    return Consumer<PregnancyProvider>(builder: (conTimer, pro, build) {
       var userProvider = Provider.of<UserProvider>(context);
       uid = userProvider.getUid!;
       bool isTimerStart = pro.getTimerStart;
@@ -105,6 +114,24 @@ class _PregnancyTimerBoxState extends State<PregnancyTimerBox> with WidgetsBindi
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
+                  /// Weeks
+                  Column(
+                    children: [
+                      AppText(
+                        text: pro.weeks.toString(),
+                        color: AppColors.pink,
+                        fontSize: 56.722694396972656.sp,
+                        fontWeight: FontWeight.w700,
+                      ),
+                      AppText(
+                        text: 'Weeks',
+                        color: AppColors.pink,
+                        fontSize: 28.sp,
+                        fontWeight: FontWeight.w700,
+                      )
+                    ],
+                  ),
+
                   /// Days
                   Column(
                     children: [
@@ -133,43 +160,7 @@ class _PregnancyTimerBoxState extends State<PregnancyTimerBox> with WidgetsBindi
                         fontWeight: FontWeight.w700,
                       ),
                       AppText(
-                        text: 'Hours',
-                        color: AppColors.pink,
-                        fontSize: 28.sp,
-                        fontWeight: FontWeight.w700,
-                      )
-                    ],
-                  ),
-
-                  /// Minutes
-                  Column(
-                    children: [
-                      AppText(
-                        text: pro.getmin.toString(),
-                        color: AppColors.pink,
-                        fontSize: 56.722694396972656.sp,
-                        fontWeight: FontWeight.w700,
-                      ),
-                      AppText(
-                        text: 'Min.',
-                        color: AppColors.pink,
-                        fontSize: 28.sp,
-                        fontWeight: FontWeight.w700,
-                      )
-                    ],
-                  ),
-
-                  /// Seconds
-                  Column(
-                    children: [
-                      AppText(
-                        text: pro.getSec.toString(),
-                        color: AppColors.pink,
-                        fontSize: 56.722694396972656.sp,
-                        fontWeight: FontWeight.w700,
-                      ),
-                      AppText(
-                        text: 'Sec.',
+                        text: 'Hours.',
                         color: AppColors.pink,
                         fontSize: 28.sp,
                         fontWeight: FontWeight.w700,
@@ -189,19 +180,9 @@ class _PregnancyTimerBoxState extends State<PregnancyTimerBox> with WidgetsBindi
             child: InkWell(
               onTap: () {
                 if (!isTimerStart) {
-                  if (tuhur >= 15) {
-                    //startService(pro);
-                    showStartDialog();
-                  } else {
-                    widget.mensis(true);
-                    pray.setTimerStart(false);
-                  }
-                } else {
-                  if (minutesCount <= 3) {
-                    toast_notification().toast_message('stop_mensus_timer_message'.tr);
-                  } else {
-                    showStopDialog();
-                  }
+                  showStartDialog();
+                }else{
+                  showStopDialog();
                 }
               },
               child: Container(
@@ -268,10 +249,10 @@ class _PregnancyTimerBoxState extends State<PregnancyTimerBox> with WidgetsBindi
   static void startMensisTimer() {
     print('mensis timer started');
 
-    Future<DocumentReference<Map<String, dynamic>>> menses=MensesRecord.uploadMensesStartTime(uid,Timestamp.now());
-    menses.then((value){
-     // saveDocId(value.id);
-      mensesID=value.id;
+    Future<DocumentReference<Map<String, dynamic>>> menses = MensesRecord.uploadMensesStartTime(uid, Timestamp.now());
+    menses.then((value) {
+      // saveDocId(value.id);
+      mensesID = value.id;
       print('${value.id} record doc id');
     });
 
@@ -310,33 +291,25 @@ class _PregnancyTimerBoxState extends State<PregnancyTimerBox> with WidgetsBindi
     showDialog(
         context: context,
         builder: (dialogContext) {
-          return AlertDialog(
-            title: Text(
-              'start_timer'.tr,
-            ),
-            content: Text('start_menses'.tr),
-            actions: [
-              InkWell(
-                child: Text(
-                  'yes'.tr,
-                ),
-                onTap: () {
-                  widget.mensis(false);
-                  pray.setTimerStart(true);
-                 // startService();
-                  startMensisTimer();
-                  Navigator.pop(dialogContext);
-                },
-              ),
-              InkWell(
-                child: Text(
-                  'no'.tr,
-                ),
-                onTap: () {
-                  Navigator.pop(dialogContext);
-                },
-              ),
-            ],
+          return DialogDateTime(
+            getDateTime: (date, time) {
+              int year = date.year;
+              int month = date.month;
+              int day = date.day;
+              int hour = time.hour;
+              int minute = time.minute;
+              String period = time.period.name;
+              DateTime startDate = DateTime.utc(year, month, day, hour, minute);
+              var dateString = DateFormat.yMEd().add_jms().format(startDate);
+              print('$dateString  == dateString');
+              var userProvider = Provider.of<UserProvider>(context, listen: false);
+              var provider = Provider.of<PregnancyProvider>(context, listen: false);
+              var tuhurProvider = Provider.of<TuhurProvider>(context, listen: false);
+
+              PregnancyTracker().startPregnancyTimer(
+                  userProvider, provider, userProvider.getUid!, tuhurProvider, Timestamp.fromDate(startDate));
+              Navigator.pop(dialogContext);
+            },
           );
         });
   }
@@ -345,47 +318,48 @@ class _PregnancyTimerBoxState extends State<PregnancyTimerBox> with WidgetsBindi
     showDialog(
         context: context,
         builder: (dialogContext) {
-          return AlertDialog(
-            title: Text(
-              'stop_timer'.tr,
-            ),
-            content: Text('stop_menses'.tr),
-            actions: [
-              InkWell(
-                child: Text(
-                  'yes'.tr,
-                ),
-                onTap: () {
-                  if(mensesID.isNotEmpty){
-                    MensesRecord.uploadMensesEndTime(mensesID,0,0,0,0);
-                    _stopWatch.onStopTimer();
-                    _stopWatch.onResetTimer();
-                    pray.setTimerStart(false);
-                    widget.mensis(true);
-                    Navigator.pop(dialogContext);
-                  }
+          return DialogDateTime(
+            getDateTime: (date, time) {
+              int year = date.year;
+              int month = date.month;
+              int day = date.day;
+              int hour = time.hour;
+              int minute = time.minute;
+              String period = time.period.name;
+              DateTime endDate = DateTime.utc(year, month, day, hour, minute);
+              var dateString = DateFormat.yMEd().add_jms().format(endDate);
+              print('$dateString  == dateString');
+              var tuhurProvider = Provider.of<TuhurProvider>(context, listen: false);
+              UserProvider userProvider = Provider.of<UserProvider>(context, listen: false);
+              var pregProvider = Provider.of<PregnancyProvider>(context, listen: false);
+              var mensesProvider = Provider.of<MensesProvider>(context, listen: false);
+              var startTime=pregProvider.getStartTime;
+              var diff=endDate.difference(startTime.toDate());
+               if(diff.inDays>=112&& diff.inDays<252){
+                showDialog(context: context, builder: (subContext){
+                  return MiscarraigeDialog(reason: (reasonValue){
+                    MensesTracker().startMensisTimer(mensesProvider, uid, tuhurProvider, Timestamp.now());
+                    PregnancyTracker().stopPregnancyTimer(pregProvider, Timestamp.fromDate(endDate),reasonValue);
+                    Navigator.pop(subContext);
+                  },);
+                });
+              }else{
+                 PregnancyTracker().stopPregnancyTimer(pregProvider, Timestamp.fromDate(endDate),reasonValue);
+               }
 
-                },
-              ),
-              InkWell(
-                child: Text(
-                  'no'.tr,
-                ),
-                onTap: () {
-                  Navigator.pop(dialogContext);
-                },
-              ),
-            ],
+              Navigator.pop(dialogContext);
+            },
           );
         });
   }
 
-  static void saveDocId(String id) async{
-    var box= await Hive.openBox('aayami_menses');
+  static void saveDocId(String id) async {
+    var box = await Hive.openBox('aayami_menses');
     box.put('menses_timer_doc_id', id);
   }
-  dynamic getDocID() async{
-    var box= await Hive.openBox('aayami_menses');
+
+  dynamic getDocID() async {
+    var box = await Hive.openBox('aayami_menses');
     return box.get('menses_timer_doc_id');
   }
 }

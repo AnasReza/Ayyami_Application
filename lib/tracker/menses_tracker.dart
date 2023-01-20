@@ -171,7 +171,7 @@ class MensesTracker {
       if (currentMensesStartDay.isAtSameMomentAs(assumptionStart!) &&
           currentMensesEndDay.isAtSameMomentAs(assumptionEnd!)) {
         // var diff = assumptionEnd.difference(assumptionStart);
-        uploadMensesEndTime(mensesID, daysCount, hoursCount, minutesCount, secondsCount, mensesProvider, tuhurProvider,
+        uploadMensesEndTime(Timestamp.fromDate(currentMensesEndDay),mensesID, daysCount, hoursCount, minutesCount, secondsCount, mensesProvider, tuhurProvider,
             userProvider.getUid!);
         String? beginner = userProvider.getBeginner;
         if (beginner == 'Beginner') {
@@ -242,7 +242,7 @@ class MensesTracker {
           //STOP THE MENSES TIMER AND ADD IT TO THE MENSES COLLECTION
 
           if(days<10){
-            uploadMensesEndTime(
+            uploadMensesEndTime(Timestamp.fromDate(currentMensesEndDay),
                 mensesID, days, hours, minutes, seconds, mensesProvider, tuhurProvider, userProvider.getUid!);
             String? beginner = userProvider.getBeginner;
             if (beginner == 'Beginner') {
@@ -276,11 +276,11 @@ class MensesTracker {
           }
           else{
             if(days==10){
-              uploadMensesEndTime(
+              uploadMensesEndTime(Timestamp.fromDate(currentMensesEndDay),
                   mensesID, days, hours, minutes, seconds, mensesProvider, tuhurProvider, userProvider.getUid!);
 
             }else{
-              uploadMensesEndTime(mensesID, 10, 0, 0, 0, mensesProvider, tuhurProvider, uid);
+              uploadMensesEndTime(Timestamp.fromDate(currentMensesEndDay),mensesID, 10, 0, 0, 0, mensesProvider, tuhurProvider, uid);
             }
           }
           String? beginner = userProvider.getBeginner;
@@ -354,7 +354,7 @@ class MensesTracker {
         }
         else {
           if(days<10){
-            uploadMensesEndTime(
+            uploadMensesEndTime(Timestamp.fromDate(assumptionEnd),
                 mensesID, days, hours, minutes, seconds, mensesProvider, tuhurProvider, userProvider.getUid!);
             String? beginner = userProvider.getBeginner;
             if (beginner == 'Beginner') {
@@ -388,11 +388,11 @@ class MensesTracker {
           }
           else{
             if(days==10){
-              uploadMensesEndTime(
+              uploadMensesEndTime(Timestamp.fromDate(assumptionEnd),
                   mensesID, days, hours, minutes, seconds, mensesProvider, tuhurProvider, userProvider.getUid!);
 
             }else{
-              uploadMensesEndTime(mensesID, 10, 0, 0, 0, mensesProvider, tuhurProvider, uid);
+              uploadMensesEndTime(Timestamp.fromDate(assumptionEnd),mensesID, 10, 0, 0, 0, mensesProvider, tuhurProvider, uid);
             }
           }
           String? beginner = userProvider.getBeginner;
@@ -463,7 +463,7 @@ class MensesTracker {
           }
         } else {
           if(days<10){
-            uploadMensesEndTime(
+            uploadMensesEndTime(Timestamp.fromDate(currentMensesEndDay),
                 mensesID, days, hours, minutes, seconds, mensesProvider, tuhurProvider, userProvider.getUid!);
             String? beginner = userProvider.getBeginner;
             if (beginner == 'Beginner') {
@@ -497,11 +497,11 @@ class MensesTracker {
           }
           else{
             if(days==10){
-              uploadMensesEndTime(
+              uploadMensesEndTime(Timestamp.fromDate(currentMensesEndDay),
                   mensesID, days, hours, minutes, seconds, mensesProvider, tuhurProvider, userProvider.getUid!);
 
             }else{
-              uploadMensesEndTime(mensesID, 10, 0, 0, 0, mensesProvider, tuhurProvider, uid);
+              uploadMensesEndTime(Timestamp.fromDate(currentMensesEndDay),mensesID, 10, 0, 0, 0, mensesProvider, tuhurProvider, uid);
             }
           }
           String? beginner = userProvider.getBeginner;
@@ -571,7 +571,7 @@ class MensesTracker {
           }
         } else {
           if(days<10){
-            uploadMensesEndTime(
+            uploadMensesEndTime(Timestamp.fromDate(assumptionEnd),
                 mensesID, days, hours, minutes, seconds, mensesProvider, tuhurProvider, userProvider.getUid!);
             String? beginner = userProvider.getBeginner;
             if (beginner == 'Beginner') {
@@ -605,11 +605,11 @@ class MensesTracker {
           }
           else{
             if(days==10){
-              uploadMensesEndTime(
+              uploadMensesEndTime(Timestamp.fromDate(assumptionEnd),
                   mensesID, days, hours, minutes, seconds, mensesProvider, tuhurProvider, userProvider.getUid!);
 
             }else{
-              uploadMensesEndTime(mensesID, 10, 0, 0, 0, mensesProvider, tuhurProvider, uid);
+              uploadMensesEndTime(Timestamp.fromDate(assumptionEnd),mensesID, 10, 0, 0, 0, mensesProvider, tuhurProvider, uid);
             }
           }
           String? beginner = userProvider.getBeginner;
@@ -680,7 +680,7 @@ class MensesTracker {
         }
         else {
           if(days<10){
-            uploadMensesEndTime(
+            uploadMensesEndTime(Timestamp.fromDate(currentMensesEndDay),
                 mensesID, days, hours, minutes, seconds, mensesProvider, tuhurProvider, userProvider.getUid!);
             String? beginner = userProvider.getBeginner;
             if (beginner == 'Beginner') {
@@ -714,11 +714,11 @@ class MensesTracker {
           }
           else{
             if(days==10){
-              uploadMensesEndTime(
+              uploadMensesEndTime(Timestamp.fromDate(currentMensesEndDay),
                   mensesID, days, hours, minutes, seconds, mensesProvider, tuhurProvider, userProvider.getUid!);
 
             }else{
-              uploadMensesEndTime(mensesID, 10, 0, 0, 0, mensesProvider, tuhurProvider, uid);
+              uploadMensesEndTime(Timestamp.fromDate(currentMensesEndDay),mensesID, 10, 0, 0, 0, mensesProvider, tuhurProvider, uid);
             }
           }
           String? beginner = userProvider.getBeginner;
@@ -789,7 +789,7 @@ class MensesTracker {
           }
         } else {
           if(days<10){
-            uploadMensesEndTime(
+            uploadMensesEndTime(Timestamp.fromDate(assumptionEnd),
                 mensesID, days, hours, minutes, seconds, mensesProvider, tuhurProvider, userProvider.getUid!);
             String? beginner = userProvider.getBeginner;
             if (beginner == 'Beginner') {
@@ -823,11 +823,11 @@ class MensesTracker {
           }
           else{
             if(days==10){
-              uploadMensesEndTime(
+              uploadMensesEndTime(Timestamp.fromDate(assumptionEnd),
                   mensesID, days, hours, minutes, seconds, mensesProvider, tuhurProvider, userProvider.getUid!);
 
             }else{
-              uploadMensesEndTime(mensesID, 10, 0, 0, 0, mensesProvider, tuhurProvider, uid);
+              uploadMensesEndTime(Timestamp.fromDate(assumptionEnd),mensesID, 10, 0, 0, 0, mensesProvider, tuhurProvider, uid);
             }
           }
           String? beginner = userProvider.getBeginner;
@@ -896,10 +896,10 @@ class MensesTracker {
             }
           }
         } else {
-          uploadMensesEndTime(
+          uploadMensesEndTime(Timestamp.fromDate(currentMensesEndDay),
               mensesID, days, hours, minutes, seconds, mensesProvider, tuhurProvider, userProvider.getUid!);
           if(days<10){
-            uploadMensesEndTime(
+            uploadMensesEndTime(Timestamp.fromDate(currentMensesEndDay),
                 mensesID, days, hours, minutes, seconds, mensesProvider, tuhurProvider, userProvider.getUid!);
             String? beginner = userProvider.getBeginner;
             if (beginner == 'Beginner') {
@@ -933,7 +933,7 @@ class MensesTracker {
           }
           else{
             if(days==10){
-              uploadMensesEndTime(
+              uploadMensesEndTime(Timestamp.fromDate(currentMensesEndDay),
                   mensesID, days, hours, minutes, seconds, mensesProvider, tuhurProvider, userProvider.getUid!);
               String? beginner = userProvider.getBeginner;
               if (beginner == 'Beginner') {
@@ -966,7 +966,7 @@ class MensesTracker {
               }
 
             }else{
-              uploadMensesEndTime(mensesID, 10, 0, 0, 0, mensesProvider, tuhurProvider, uid);
+              uploadMensesEndTime(Timestamp.fromDate(currentMensesEndDay),mensesID, 10, 0, 0, 0, mensesProvider, tuhurProvider, uid);
               String? beginner = userProvider.getBeginner;
               if (beginner == 'Beginner') {
                 if (islamicMonth.contains('Rama')) {
@@ -1043,13 +1043,13 @@ class MensesTracker {
               }
             }
           } else {
-            uploadMensesEndTime(mensesID, currentDays, currentHours, currentMinutes, currentSeconds, mensesProvider,
+            uploadMensesEndTime(Timestamp.fromDate(assumptionEnd),mensesID, currentDays, currentHours, currentMinutes, currentSeconds, mensesProvider,
                 tuhurProvider, userProvider.getUid!);
             regulationMessage = 'after_3_before_10'.tr;
           }
         } else {
           if(days<10){
-            uploadMensesEndTime(
+            uploadMensesEndTime(Timestamp.fromDate(currentMensesEndDay),
                 mensesID, days, hours, minutes, seconds, mensesProvider, tuhurProvider, userProvider.getUid!);
             String? beginner = userProvider.getBeginner;
             if (beginner == 'Beginner') {
@@ -1083,11 +1083,11 @@ class MensesTracker {
           }
           else{
             if(days==10){
-              uploadMensesEndTime(
+              uploadMensesEndTime(Timestamp.fromDate(assumptionEnd),
                   mensesID, days, hours, minutes, seconds, mensesProvider, tuhurProvider, userProvider.getUid!);
 
             }else{
-              uploadMensesEndTime(mensesID, 10, 0, 0, 0, mensesProvider, tuhurProvider, uid);
+              uploadMensesEndTime(Timestamp.fromDate(assumptionEnd),mensesID, 10, 0, 0, 0, mensesProvider, tuhurProvider, uid);
             }
           }
           String? beginner = userProvider.getBeginner;
@@ -1134,7 +1134,7 @@ class MensesTracker {
 
       }
       else if(days>3&&days<10){
-        uploadMensesEndTime(
+        uploadMensesEndTime(currentEnd,
             mensesID, days, hours!, minutes!, seconds!, mensesProvider, tuhurProvider, userProvider.getUid!);
         String? beginner = userProvider.getBeginner;
         if (beginner == 'Beginner') {
@@ -1167,7 +1167,7 @@ class MensesTracker {
         }
       }
       else if(days==10){
-        uploadMensesEndTime(
+        uploadMensesEndTime(currentEnd,
             mensesID, days, hours!, minutes!, seconds!, mensesProvider, tuhurProvider, userProvider.getUid!);
         String? beginner = userProvider.getBeginner;
         if (beginner == 'Beginner') {
@@ -1200,7 +1200,7 @@ class MensesTracker {
         }
       }
       else if(days>10){
-        uploadMensesEndTime(
+        uploadMensesEndTime(currentEnd,
             mensesID, days, 0, 0, 0, mensesProvider, tuhurProvider, userProvider.getUid!);
         String? beginner = userProvider.getBeginner;
         if (beginner == 'Beginner') {
@@ -1248,10 +1248,10 @@ class MensesTracker {
     _stopWatch.onResetTimer();
   }
 
-  void uploadMensesEndTime(String mensesID, int daysCount, int hoursCount, int minutesCount, int secondsCount,
+  void uploadMensesEndTime(Timestamp endTime,String mensesID, int daysCount, int hoursCount, int minutesCount, int secondsCount,
       MensesProvider mensesProvider, TuhurProvider tuhurProvider, String uid) {
     tuhurTracker.startTuhurTimer(tuhurProvider, uid);
-    MensesRecord.uploadMensesEndTime(mensesID, daysCount, hoursCount, minutesCount, secondsCount);
+    MensesRecord.uploadMensesEndTime(endTime,mensesID, daysCount, hoursCount, minutesCount, secondsCount);
     mensesProvider.setTimerStart(false);
     mensesProvider.setDays(0);
     mensesProvider.setHours(0);
