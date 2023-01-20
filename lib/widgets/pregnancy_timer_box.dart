@@ -352,14 +352,4 @@ class _PregnancyTimerBoxState extends State<PregnancyTimerBox> with WidgetsBindi
           );
         });
   }
-
-  static void saveDocId(String id) async {
-    var box = await Hive.openBox('aayami_menses');
-    box.put('menses_timer_doc_id', id);
-  }
-
-  dynamic getDocID() async {
-    var box = await Hive.openBox('aayami_menses');
-    return box.get('menses_timer_doc_id');
-  }
 }
