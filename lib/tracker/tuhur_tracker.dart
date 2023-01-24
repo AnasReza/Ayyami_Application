@@ -18,7 +18,7 @@ class TuhurTracker{
 
   void startTuhurTimer(TuhurProvider tuhurProvider, String uid,int from,bool isMenstrual) {
     tuhurProvider.setFrom(from);
-    Future<DocumentReference<Map<String, dynamic>>> tuhur = TuhurRecord.uploadTuhurStartTime(uid,from);
+    Future<DocumentReference<Map<String, dynamic>>> tuhur = TuhurRecord.uploadTuhurStartTime(uid,from,isMenstrual);
     tuhur.then((value) {
       saveDocId(value.id);
 
@@ -26,50 +26,6 @@ class TuhurTracker{
       print('${value.id} record doc id');
     });
 
-    _stopWatch.secondTime.listen((event) {
-      print('$secondsCount==sec    $minutesCount==minutes');
-      secondsCount++;
-      if (secondsCount > 59) {
-        minutesCount++;
-        if (minutesCount > 59) {
-          hoursCount++;
-          if (hoursCount > 23) {
-            daysCount++;
-            // if (daysCount > 30) {
-            //   daysCount = 0;
-            // }
-            tuhurProvider.setDays(daysCount);
-            hoursCount = 0;
-          }
-          tuhurProvider.setHours(hoursCount);
-          minutesCount = 0;
-        }
-        tuhurProvider.setMin(minutesCount);
-        secondsCount = 0;
-      }
-      tuhurProvider.setSec(secondsCount);
-    });
-    _stopWatch.onStartTimer();
-  }
-  void startTuhurTimerWithSeconds(TuhurProvider tuhurProvider, String uid,
-      int milliseconds,Timestamp startTime) {
-    var timeMap=Utils.timeConverter(Duration(milliseconds: milliseconds));
-    secondsCount=timeMap['seconds']!;
-    minutesCount=timeMap['minutes']!;
-    hoursCount=timeMap['hours']!;
-    daysCount=timeMap['days']!;
-    tuhurProvider.setDays(daysCount);
-    tuhurProvider.setHours(hoursCount);
-    tuhurProvider.setMin(minutesCount);
-    tuhurProvider.setSec(secondsCount);
-    Future<DocumentReference<Map<String, dynamic>>> tuhur = TuhurRecord.uploadTuhurStartSpecificTime(uid,startTime);
-    tuhur.then((value) {
-      saveDocId(value.id);
-
-      tuhurProvider.setTuhurID(value.id);
-      print('${value.id} record doc id');
-    });
-  _stopWatch=StopWatchTimer(mode: StopWatchMode.countUp,presetMillisecond:milliseconds );
     _stopWatch.secondTime.listen((event) {
       print('$secondsCount==sec    $minutesCount==minutes');
       secondsCount++;
