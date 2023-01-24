@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 
 class TuhurProvider extends ChangeNotifier{
+  int from=-1;
   int seconds = 0;
   int minutes = 0;
   int hours = 0;
@@ -13,6 +14,7 @@ class TuhurProvider extends ChangeNotifier{
   int get getmin => minutes;
   int get getHours => hours;
   int get getDays => days;
+  int get getFrom => from;
 
   bool get getTimerStart => isTimerStart;
   String get getTuhurID => tuhurID;
@@ -39,7 +41,10 @@ class TuhurProvider extends ChangeNotifier{
     days=value;
     notifyListeners();
   }
-
+  setFrom(int value){
+    from=value;
+    notifyListeners();
+  }
   setTimerStart(bool value) {
     isTimerStart = value;
     notifyListeners();

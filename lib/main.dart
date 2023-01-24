@@ -31,7 +31,7 @@ void main() async {
       ChangeNotifierProvider(create: (_) => MensesProvider()),
       ChangeNotifierProvider(create: (_) => PregnancyProvider()),
       ChangeNotifierProvider(create: (_) => LikoriaTimerProvider()),
-      ChangeNotifierProvider(create: (_) => PostNatalTimerProvider()),
+      ChangeNotifierProvider(create: (_) => PostNatalProvider()),
       ChangeNotifierProvider(create: (_) => TuhurProvider()),
       ChangeNotifierProvider(create: (_) => NamazProvider()),
     ],

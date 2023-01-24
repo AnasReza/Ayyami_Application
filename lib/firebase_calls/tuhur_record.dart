@@ -5,10 +5,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import '../providers/tuhur_provider.dart';
 
 class TuhurRecord{
-  static uploadTuhurStartTime(String uid) {
+  static uploadTuhurStartTime(String uid,int from) {
     var startTime = Timestamp.now();
 
-    return FirebaseFirestore.instance.collection('tuhur').add({'uid': uid, 'start_date': startTime,'non_menstrual_bleeding':false});
+    return FirebaseFirestore.instance.collection('tuhur').add({'uid': uid, 'start_date': startTime,'non_menstrual_bleeding':false,'from':from});
   }
   static uploadTuhurStartSpecificTime(String uid,Timestamp startTime) {
     return FirebaseFirestore.instance.collection('tuhur').add({'uid': uid, 'start_date': startTime,'non_menstrual_bleeding':false});

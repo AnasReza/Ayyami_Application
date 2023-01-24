@@ -1,6 +1,8 @@
 import 'package:ayyami/constants/colors.dart';
+import 'package:ayyami/providers/post-natal_timer_provider.dart';
 import 'package:ayyami/providers/pregnancy_timer_provider.dart';
 import 'package:ayyami/providers/user_provider.dart';
+import 'package:ayyami/tracker/post-natal_tracker.dart';
 import 'package:ayyami/tracker/pregnancy_tracker.dart';
 import 'package:ayyami/widgets/likoria_timer_box.dart';
 import 'package:ayyami/widgets/post_natal_timer_box.dart';
@@ -28,6 +30,7 @@ class AllTrackersState extends State<AllTrackers> {
     // TODO: implement initState
     super.initState();
     getPregnancyDetails();
+    getPostNatalDetails();
   }
 
   getPregnancyDetails() {
@@ -55,7 +58,31 @@ class AllTrackersState extends State<AllTrackers> {
           }
     });
   }
+  getPostNatalDetails(){
+    var userProvider = context.read<UserProvider>();
+    var postNatalProvider = context.read<PostNatalProvider>();
+    FirebaseFirestore.instance
+        .collection('post-natal')
+        .where('uid', isEqualTo: userProvider.getUid)
+        .orderBy('start_date', descending: true)
+        .snapshots()
+        .listen((event) {
+      var docList=event.docs;
+      Timestamp startTime;
+      for(var doc in docList){
+        startTime=doc.get('start_date');
+        try{
+          Timestamp endTime = doc.get('end_time');
 
+        }catch(e){
+          postNatalProvider.setTimerStart(true);
+          postNatalProvider.setStartTime(startTime);
+          var diff=DateTime.now().difference(startTime.toDate());
+          PostNatalTracker().startPostNatalAgain(postNatalProvider, diff.inMilliseconds);
+        }
+      }
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(

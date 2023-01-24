@@ -3,8 +3,10 @@ import 'dart:ui';
 
 import 'package:ayyami/dialog/misscrriage_dialog.dart';
 import 'package:ayyami/firebase_calls/menses_record.dart';
+import 'package:ayyami/providers/post-natal_timer_provider.dart';
 import 'package:ayyami/providers/tuhur_provider.dart';
 import 'package:ayyami/tracker/menses_tracker.dart';
+import 'package:ayyami/tracker/post-natal_tracker.dart';
 import 'package:ayyami/tracker/pregnancy_tracker.dart';
 import 'package:ayyami/widgets/utils.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -335,7 +337,7 @@ class _PregnancyTimerBoxState extends State<PregnancyTimerBox> with WidgetsBindi
               var mensesProvider = Provider.of<MensesProvider>(context, listen: false);
               var startTime=pregProvider.getStartTime;
               var diff=endDate.difference(startTime.toDate());
-               if(diff.inDays>=112&& diff.inDays<252){
+               if(diff.inDays<252){
                 showDialog(context: context, builder: (subContext){
                   return MiscarraigeDialog(reason: (reasonValue){
                     MensesTracker().startMensisTimer(mensesProvider, uid, tuhurProvider, Timestamp.now());
@@ -344,7 +346,9 @@ class _PregnancyTimerBoxState extends State<PregnancyTimerBox> with WidgetsBindi
                   },);
                 });
               }else{
+                 var postNatalProvider = Provider.of<PostNatalProvider>(context, listen: false);
                  PregnancyTracker().stopPregnancyTimer(pregProvider, Timestamp.fromDate(endDate),'Given Birth');
+                 PostNatalTracker().startPostNatalTimer(uid, postNatalProvider);
                }
 
               Navigator.pop(dialogContext);

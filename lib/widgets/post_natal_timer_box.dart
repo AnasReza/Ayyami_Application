@@ -2,6 +2,9 @@ import 'dart:async';
 import 'dart:ui';
 
 import 'package:ayyami/firebase_calls/menses_record.dart';
+import 'package:ayyami/providers/pregnancy_timer_provider.dart';
+import 'package:ayyami/providers/tuhur_provider.dart';
+import 'package:ayyami/tracker/tuhur_tracker.dart';
 import 'package:ayyami/widgets/utils.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -9,12 +12,14 @@ import 'package:flutter_background_service/flutter_background_service.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:stop_watch_timer/stop_watch_timer.dart';
 import 'package:workmanager/workmanager.dart';
 
 import '../constants/colors.dart';
 import '../constants/images.dart';
+import '../dialog/timer_date_time.dart';
 import '../providers/menses_provider.dart';
 import '../providers/post-natal_timer_provider.dart';
 import '../providers/user_provider.dart';
@@ -29,15 +34,15 @@ class PostNatalTimerBox extends StatefulWidget {
   State<PostNatalTimerBox> createState() => _PostNatalTimerBoxState();
 }
 
-class _PostNatalTimerBoxState extends State<PostNatalTimerBox> with WidgetsBindingObserver{
+class _PostNatalTimerBoxState extends State<PostNatalTimerBox> with WidgetsBindingObserver {
   static late String uid;
   static final int tuhur = 15;
-  static late PostNatalTimerProvider pray;
+  static late PostNatalProvider pray;
   static int secondsCount = 0;
   static int minutesCount = 0;
   static int hoursCount = 0;
   static int daysCount = 0;
-  static String mensesID='';
+  static String mensesID = '';
   static final _stopWatch = StopWatchTimer(mode: StopWatchMode.countUp);
 
   @override
@@ -46,10 +51,10 @@ class _PostNatalTimerBoxState extends State<PostNatalTimerBox> with WidgetsBindi
     super.initState();
   }
 
-@override
+  @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     super.didChangeAppLifecycleState(state);
-    switch(state){
+    switch (state) {
       case AppLifecycleState.resumed:
         print('Timer Box is resumed');
         break;
@@ -64,12 +69,15 @@ class _PostNatalTimerBoxState extends State<PostNatalTimerBox> with WidgetsBindi
         break;
     }
   }
+
   @override
   Widget build(BuildContext context) {
-    return Consumer<PostNatalTimerProvider>(builder: (conTimer, pro, build) {
+    return Consumer<PostNatalProvider>(builder: (conTimer, pro, build) {
       var userProvider = Provider.of<UserProvider>(context);
+      var pregProvider = Provider.of<PregnancyProvider>(context);
       uid = userProvider.getUid!;
       bool isTimerStart = pro.getTimerStart;
+      bool pregStart = pregProvider.getTimerStart;
 
       pray = pro;
       return Stack(
@@ -190,19 +198,14 @@ class _PostNatalTimerBoxState extends State<PostNatalTimerBox> with WidgetsBindi
             child: InkWell(
               onTap: () {
                 if (!isTimerStart) {
-                  if (tuhur >= 15) {
-                    //startService(pro);
-                    showStartDialog();
+                  if (!pregStart) {
+                    toast_notification().toast_message('post_natal_message'.tr);
                   } else {
-                    widget.mensis(true);
-                    pray.setTimerStart(false);
+                    toast_notification().toast_message('post_natal_automatically'.tr);
                   }
+
                 } else {
-                  if (minutesCount <= 3) {
-                    toast_notification().toast_message('stop_mensus_timer_message'.tr);
-                  } else {
-                    showStopDialog();
-                  }
+                  showStopDialog();
                 }
               },
               child: Container(
@@ -269,10 +272,10 @@ class _PostNatalTimerBoxState extends State<PostNatalTimerBox> with WidgetsBindi
   static void startMensisTimer() {
     print('mensis timer started');
 
-    Future<DocumentReference<Map<String, dynamic>>> menses=MensesRecord.uploadMensesStartTime(uid,Timestamp.now());
-    menses.then((value){
-     // saveDocId(value.id);
-      mensesID=value.id;
+    Future<DocumentReference<Map<String, dynamic>>> menses = MensesRecord.uploadMensesStartTime(uid, Timestamp.now());
+    menses.then((value) {
+      // saveDocId(value.id);
+      mensesID = value.id;
       print('${value.id} record doc id');
     });
 
@@ -311,33 +314,25 @@ class _PostNatalTimerBoxState extends State<PostNatalTimerBox> with WidgetsBindi
     showDialog(
         context: context,
         builder: (dialogContext) {
-          return AlertDialog(
-            title: Text(
-              'start_timer'.tr,
-            ),
-            content: Text('start_menses'.tr),
-            actions: [
-              InkWell(
-                child: Text(
-                  'yes'.tr,
-                ),
-                onTap: () {
-                  widget.mensis(false);
-                  pray.setTimerStart(true);
-                 // startService();
-                  startMensisTimer();
-                  Navigator.pop(dialogContext);
-                },
-              ),
-              InkWell(
-                child: Text(
-                  'no'.tr,
-                ),
-                onTap: () {
-                  Navigator.pop(dialogContext);
-                },
-              ),
-            ],
+          return DialogDateTime(
+            getDateTime: (date, time) {
+              int year = date.year;
+              int month = date.month;
+              int day = date.day;
+              int hour = time.hour;
+              int minute = time.minute;
+              String period = time.period.name;
+              DateTime startDate = DateTime.utc(year, month, day, hour, minute);
+              var dateString = DateFormat.yMEd().add_jms().format(startDate);
+              print('$dateString  == dateString');
+              // var userProvider = Provider.of<UserProvider>(context, listen: false);
+              // var provider = Provider.of<PregnancyProvider>(context, listen: false);
+              // var tuhurProvider = Provider.of<TuhurProvider>(context, listen: false);
+              //
+              // PregnancyTracker().startPregnancyTimer(
+              //     userProvider, provider, userProvider.getUid!, tuhurProvider, Timestamp.fromDate(startDate));
+              Navigator.pop(dialogContext);
+            },
           );
         });
   }
@@ -346,47 +341,38 @@ class _PostNatalTimerBoxState extends State<PostNatalTimerBox> with WidgetsBindi
     showDialog(
         context: context,
         builder: (dialogContext) {
-          return AlertDialog(
-            title: Text(
-              'stop_timer'.tr,
-            ),
-            content: Text('stop_menses'.tr),
-            actions: [
-              InkWell(
-                child: Text(
-                  'yes'.tr,
-                ),
-                onTap: () {
-                  if(mensesID.isNotEmpty){
-                    // MensesRecord.uploadMensesEndTime(mensesID,0,0,0,0);
-                    _stopWatch.onStopTimer();
-                    _stopWatch.onResetTimer();
-                    pray.setTimerStart(false);
-                    widget.mensis(true);
-                    Navigator.pop(dialogContext);
-                  }
-
-                },
-              ),
-              InkWell(
-                child: Text(
-                  'no'.tr,
-                ),
-                onTap: () {
-                  Navigator.pop(dialogContext);
-                },
-              ),
-            ],
+          return DialogDateTime(
+            getDateTime: (date, time) {
+              bool isMenstrual=false;
+              int year = date.year;
+              int month = date.month;
+              int day = date.day;
+              int hour = time.hour;
+              int minute = time.minute;
+              String period = time.period.name;
+              DateTime endDate = DateTime.utc(year, month, day, hour, minute);
+              var dateString = DateFormat.yMEd().add_jms().format(endDate);
+              print('$dateString  == dateString');
+              var tuhurProvider= Provider.of<TuhurProvider>(context,listen: false);
+              var postNatalProvider= Provider.of<PostNatalProvider>(context,listen: false);
+              var postNatalStartTime=postNatalProvider.getStartTime;
+              var postNatalDiff=endDate.difference(postNatalStartTime.toDate());
+              if(postNatalDiff.inDays>40){
+                isMenstrual=true;
+              }else{
+                isMenstrual=false;
+              }
+              TuhurTracker().startTuhurTimer(tuhurProvider, uid,1,isMenstrual);
+              // var userProvider = Provider.of<UserProvider>(context, listen: false);
+              // var provider = Provider.of<PregnancyProvider>(context, listen: false);
+              // var tuhurProvider = Provider.of<TuhurProvider>(context, listen: false);
+              //
+              // PregnancyTracker().startPregnancyTimer(
+              //     userProvider, provider, userProvider.getUid!, tuhurProvider, Timestamp.fromDate(startDate));
+              Navigator.pop(dialogContext);
+            },
           );
         });
   }
 
-  static void saveDocId(String id) async{
-    var box= await Hive.openBox('aayami_menses');
-    box.put('menses_timer_doc_id', id);
-  }
-  dynamic getDocID() async{
-    var box= await Hive.openBox('aayami_menses');
-    return box.get('menses_timer_doc_id');
-  }
 }

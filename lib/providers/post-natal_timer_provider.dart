@@ -1,11 +1,14 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-class PostNatalTimerProvider extends ChangeNotifier {
+class PostNatalProvider extends ChangeNotifier {
   int seconds = 0;
   int minutes = 0;
   int hours = 0;
   int days = 0;
   bool isTimerStart = false;
+  late Timestamp startTime;
+  String postNatalID='';
 
   int get getSec => seconds;
 
@@ -14,6 +17,8 @@ class PostNatalTimerProvider extends ChangeNotifier {
   int get getDays => days;
 
   bool get getTimerStart => isTimerStart;
+  String get getpostNatalID=> postNatalID;
+  Timestamp get getStartTime => startTime;
 
   setSec(int value) {
     seconds = value;
@@ -35,6 +40,14 @@ class PostNatalTimerProvider extends ChangeNotifier {
 
   setTimerStart(bool value) {
     isTimerStart = value;
+    notifyListeners();
+  }
+  setStartTime(Timestamp value) {
+    startTime = value;
+    notifyListeners();
+  }
+  setPostNatalID(String value) {
+    postNatalID = value;
     notifyListeners();
   }
 }

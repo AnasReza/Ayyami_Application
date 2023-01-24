@@ -16,8 +16,9 @@ class TuhurTracker{
 
   late var _stopWatch = StopWatchTimer(mode: StopWatchMode.countUp);
 
-  void startTuhurTimer(TuhurProvider tuhurProvider, String uid) {
-    Future<DocumentReference<Map<String, dynamic>>> tuhur = TuhurRecord.uploadTuhurStartTime(uid);
+  void startTuhurTimer(TuhurProvider tuhurProvider, String uid,int from,bool isMenstrual) {
+    tuhurProvider.setFrom(from);
+    Future<DocumentReference<Map<String, dynamic>>> tuhur = TuhurRecord.uploadTuhurStartTime(uid,from);
     tuhur.then((value) {
       saveDocId(value.id);
 
