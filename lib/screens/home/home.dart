@@ -122,8 +122,10 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
           pro.setLastMenses(startTime);
           pro.setLastMensesEnd(endTime);
           pro.setLastMensesTime(days, hour, minute, seconds);
+
           var mensesProvider=context.read<MensesProvider>();
           mensesProvider.setStartTime(startTime);
+          mensesProvider.setMensesID(doc.id);
           print('${doc.id}=uid from menses collection');
           break;
         }catch(e){}
@@ -178,6 +180,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
       for (int x = 0; x < docList.length; x++) {
         var doc = docList[x];
         Timestamp startTime = doc.get('start_date');
+        int tuhurFrom=doc.get('from');
         bool non_menstrual_bleeding = doc.get('non_menstrual_bleeding');
         if (!non_menstrual_bleeding) {
           try {
@@ -192,8 +195,10 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
           } catch (e) {
             var tuhurProvider=context.read<TuhurProvider>();
             var timerStart=tuhurProvider.getTimerStart;
-            if(timerStart){
+            if(!timerStart){
+              tuhurProvider.setTuhurID(doc.id);
               tuhurProvider.setTimerStart(true);
+              tuhurProvider.setFrom(tuhurFrom);
               var now=DateTime.now();
               var diff=now.difference(startTime.toDate());
               TuhurTracker().startTuhurTimerAgain(tuhurProvider, diff.inMilliseconds);

@@ -25,7 +25,7 @@ class MensesTracker {
     // var startTime = Timestamp.now();
     var menses = MensesRecord.uploadMensesStartTime(uid, startTime);
     menses.then((value) {
-      saveDocId(value.id);
+      Utils.saveDocMensesId(value.id);
       mensesProvider.setMensesID(value.id);
       mensesProvider.setStartTime(startTime);
       tuhurTracker.stopTuhurTimer(tuhurProvider);
@@ -76,7 +76,7 @@ class MensesTracker {
     mensesProvider.setSec(secondsCount);
     var menses = MensesRecord.uploadMensesStartTime(uid, startTime);
     menses.then((value) {
-      saveDocId(value.id);
+      Utils.saveDocMensesId(value.id);
       mensesProvider.setMensesID(value.id);
       mensesProvider.setStartTime(startTime);
       print('${value.id} record doc id');
@@ -1279,13 +1279,9 @@ class MensesTracker {
     return {'start': menses_should_start, 'end': menses_should_end};
   }
 
-  static void saveDocId(String id) async {
-    var box = await Hive.openBox('aayami_menses');
-    box.put('menses_timer_doc_id', id);
+  void startLastMensesAgain(String mensesID,){
+
   }
 
-  dynamic getDocID() async {
-    var box = await Hive.openBox('aayami_menses');
-    return box.get('menses_timer_doc_id');
-  }
+
 }

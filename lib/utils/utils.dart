@@ -1,3 +1,5 @@
+import 'package:hive/hive.dart';
+
 class Utils{
   static Map<String, int> timeConverter(Duration diff){
 
@@ -18,5 +20,33 @@ class Utils{
     var minutes = diff.inMinutes % 60;
     var seconds=diff.inSeconds % 60;
     return {'weeks':weeks,'days':days,'hours':hours,'minutes':minutes,'seconds':seconds};
+  }
+
+  static void saveDocMensesId(String id) async {
+    var box = await Hive.openBox('aayami_menses');
+    box.put('menses_timer_doc_id', id);
+  }
+
+  static dynamic getDocMensesID() async {
+    var box = await Hive.openBox('aayami_menses');
+    return box.get('menses_timer_doc_id');
+  }
+  static void saveDocTuhurId(String id) async {
+    var box = await Hive.openBox('aayami_tuhur');
+    box.put('tuhur_timer_doc_id', id);
+  }
+
+  static dynamic getDocTuhurID() async {
+    var box = await Hive.openBox('aayami_tuhur');
+    return box.get('tuhur_timer_doc_id');
+  }
+  static void saveDocPostalNatalId(String id) async {
+    var box = await Hive.openBox('aayami_post-natal');
+    box.put('post-natal_timer_doc_id', id);
+  }
+
+  static dynamic getDocPostalNatalID() async {
+    var box = await Hive.openBox('aayami_post-natal');
+    return box.get('post-natal_timer_doc_id');
   }
 }

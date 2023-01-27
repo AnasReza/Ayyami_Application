@@ -73,7 +73,8 @@ class AllTrackersState extends State<AllTrackers> {
         startTime=doc.get('start_date');
         try{
           Timestamp endTime = doc.get('end_time');
-
+          postNatalProvider.setPostNatalID(doc.id);
+          break;
         }catch(e){
           postNatalProvider.setTimerStart(true);
           postNatalProvider.setStartTime(startTime);

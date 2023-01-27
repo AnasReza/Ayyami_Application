@@ -1,4 +1,5 @@
 import 'package:ayyami/firebase_calls/tuhur_record.dart';
+import 'package:ayyami/providers/post-natal_timer_provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:hive/hive.dart';
@@ -20,7 +21,7 @@ class TuhurTracker{
     tuhurProvider.setFrom(from);
     Future<DocumentReference<Map<String, dynamic>>> tuhur = TuhurRecord.uploadTuhurStartTime(uid,from,isMenstrual);
     tuhur.then((value) {
-      saveDocId(value.id);
+      Utils.saveDocTuhurId(value.id);
 
       tuhurProvider.setTuhurID(value.id);
       print('${value.id} record doc id');
@@ -101,14 +102,17 @@ class TuhurTracker{
     _stopWatch.onStopTimer();
     _stopWatch.onResetTimer();
   }
-  static void saveDocId(String id) async {
-    var box = await Hive.openBox('aayami_tuhur');
-    box.put('tuhur_timer_doc_id', id);
+
+  void stopTimerWithDeletion(String mensesID, String postNatalID, MensesProvider mensesProvider, TuhurProvider tuhurProvider,PostNatalProvider postNatalProvider) {
+    TuhurRecord.deleteTuhurID(mensesID,postNatalID,tuhurProvider,mensesProvider,postNatalProvider);
+    tuhurProvider.setTimerStart(false);
+    tuhurProvider.setDays(0);
+    tuhurProvider.setHours(0);
+    tuhurProvider.setMin(0);
+    tuhurProvider.setSec(0);
+    _stopWatch.onStopTimer();
+    _stopWatch.onResetTimer();
   }
 
-  dynamic getDocID() async {
-    var box = await Hive.openBox('aayami_tuhur');
-    return box.get('tuhur_timer_doc_id');
-  }
 
 }

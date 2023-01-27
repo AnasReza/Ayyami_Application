@@ -2,8 +2,10 @@ import 'dart:async';
 import 'dart:ui';
 
 import 'package:ayyami/firebase_calls/menses_record.dart';
+import 'package:ayyami/firebase_calls/tuhur_record.dart';
 import 'package:ayyami/providers/pregnancy_timer_provider.dart';
 import 'package:ayyami/providers/tuhur_provider.dart';
+import 'package:ayyami/tracker/pregnancy_tracker.dart';
 import 'package:ayyami/tracker/tuhur_tracker.dart';
 import 'package:ayyami/widgets/utils.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -325,12 +327,16 @@ class _PostNatalTimerBoxState extends State<PostNatalTimerBox> with WidgetsBindi
               DateTime startDate = DateTime.utc(year, month, day, hour, minute);
               var dateString = DateFormat.yMEd().add_jms().format(startDate);
               print('$dateString  == dateString');
-              // var userProvider = Provider.of<UserProvider>(context, listen: false);
-              // var provider = Provider.of<PregnancyProvider>(context, listen: false);
-              // var tuhurProvider = Provider.of<TuhurProvider>(context, listen: false);
-              //
-              // PregnancyTracker().startPregnancyTimer(
-              //     userProvider, provider, userProvider.getUid!, tuhurProvider, Timestamp.fromDate(startDate));
+              var pregProvider=Provider.of<PregnancyProvider>(context,listen: false);
+              bool isPregStart=pregProvider.isTimerStart;
+              if(isPregStart){
+                toast_notification().toast_message('post_natal_automatically'.tr);
+              }else{
+                var postNatalProvider=Provider.of<PostNatalProvider>(context,listen: false);
+                var tuhurProvider=Provider.of<TuhurProvider>(context,listen: false);
+                var postNatalID=postNatalProvider.getpostNatalID;
+                TuhurRecord.deleteTuhurID('', postNatalID, tuhurProvider, MensesProvider(), postNatalProvider);
+              }
               Navigator.pop(dialogContext);
             },
           );
@@ -363,12 +369,7 @@ class _PostNatalTimerBoxState extends State<PostNatalTimerBox> with WidgetsBindi
                 isMenstrual=false;
               }
               TuhurTracker().startTuhurTimer(tuhurProvider, uid,1,isMenstrual);
-              // var userProvider = Provider.of<UserProvider>(context, listen: false);
-              // var provider = Provider.of<PregnancyProvider>(context, listen: false);
-              // var tuhurProvider = Provider.of<TuhurProvider>(context, listen: false);
-              //
-              // PregnancyTracker().startPregnancyTimer(
-              //     userProvider, provider, userProvider.getUid!, tuhurProvider, Timestamp.fromDate(startDate));
+
               Navigator.pop(dialogContext);
             },
           );

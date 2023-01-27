@@ -1,6 +1,9 @@
 import 'package:ayyami/firebase_calls/tuhur_record.dart';
+import 'package:ayyami/providers/menses_provider.dart';
 import 'package:ayyami/providers/tuhur_provider.dart';
+import 'package:ayyami/tracker/menses_tracker.dart';
 import 'package:ayyami/tracker/tuhur_tracker.dart';
+import 'package:ayyami/utils/utils.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:hive/hive.dart';
 
@@ -26,26 +29,23 @@ class MensesRecord {
 
   static void deleteMensesID(String mensesID,TuhurProvider tuhurProvider) {
     FirebaseFirestore.instance.collection('menses').doc(mensesID).delete().then((value) {
-      var tuhurID=getDocTuhurID();
+      var tuhurID=Utils.getDocTuhurID();
       TuhurRecord.startLastTuhurAgain(tuhurID,tuhurProvider);
     });
   }
-  static void saveDocMensesId(String id) async {
-    var box = await Hive.openBox('aayami_menses');
-    box.put('menses_timer_doc_id', id);
+  static void startLastMensesAgain(String mensesID, MensesProvider mensesProvider){
+    var firestore= FirebaseFirestore.instance.collection('menses').doc(mensesID);
+    firestore.update({'end_time':FieldValue.delete()}).then((value){
+      firestore.get().then((value){
+        Timestamp startTime = value.get('start_time');
+        var now = Timestamp.now();
+        var diff = now.toDate().difference(startTime.toDate());
+        var map=Utils.timeConverter(diff);
+        MensesTracker().startMensesTimerAgain(mensesProvider, diff.inMilliseconds);
+
+      });
+    });
+
   }
 
- static dynamic getDocMensesID() async {
-    var box = await Hive.openBox('aayami_menses');
-    return box.get('menses_timer_doc_id');
-  }
-  static void saveDocTuhurId(String id) async {
-    var box = await Hive.openBox('aayami_tuhur');
-    box.put('tuhur_timer_doc_id', id);
-  }
-
-  static dynamic getDocTuhurID() async {
-    var box = await Hive.openBox('aayami_mtuhur');
-    return box.get('tuhur_timer_doc_id');
-  }
 }

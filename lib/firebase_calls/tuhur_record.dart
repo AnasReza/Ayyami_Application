@@ -1,7 +1,13 @@
+import 'package:ayyami/firebase_calls/menses_record.dart';
+import 'package:ayyami/firebase_calls/post-natal_record.dart';
+import 'package:ayyami/providers/post-natal_timer_provider.dart';
+import 'package:ayyami/tracker/menses_tracker.dart';
 import 'package:ayyami/tracker/tuhur_tracker.dart';
 import 'package:ayyami/utils/utils.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:hive/hive.dart';
 
+import '../providers/menses_provider.dart';
 import '../providers/tuhur_provider.dart';
 
 class TuhurRecord{
@@ -39,5 +45,35 @@ class TuhurRecord{
        TuhurTracker().startTuhurTimerAgain(tuhurProvider, diff.inMilliseconds);
       });
     });
+  }
+  static void deleteTuhurID(String mensesID,String postNatalID,TuhurProvider tuhurProvider,MensesProvider mensesProvider,PostNatalProvider postNatalProvider) {
+    FirebaseFirestore.instance.collection('tuhur').doc(tuhurProvider.getTuhurID).delete().then((value) {
+      int from=tuhurProvider.getFrom;
+      if(from==0){
+        //MENSES START
+        MensesRecord.startLastMensesAgain(mensesID, mensesProvider);
+      }else{
+        // POST NATAL START
+        PostNatalRecord().startLastPOstNatalAgain(postNatalID,postNatalProvider);
+      }
+    });
+  }
+  static void saveDocMensesId(String id) async {
+    var box = await Hive.openBox('aayami_menses');
+    box.put('menses_timer_doc_id', id);
+  }
+
+  static dynamic getDocMensesID() async {
+    var box = await Hive.openBox('aayami_menses');
+    return box.get('menses_timer_doc_id');
+  }
+  static void saveDocTuhurId(String id) async {
+    var box = await Hive.openBox('aayami_tuhur');
+    box.put('tuhur_timer_doc_id', id);
+  }
+
+  static dynamic getDocTuhurID() async {
+    var box = await Hive.openBox('aayami_tuhur');
+    return box.get('tuhur_timer_doc_id');
   }
 }

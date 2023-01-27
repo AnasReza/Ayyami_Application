@@ -2,8 +2,11 @@ import 'dart:async';
 import 'dart:ui';
 
 import 'package:ayyami/firebase_calls/menses_record.dart';
+import 'package:ayyami/providers/post-natal_timer_provider.dart';
 import 'package:ayyami/providers/tuhur_provider.dart';
 import 'package:ayyami/tracker/menses_tracker.dart';
+import 'package:ayyami/tracker/tuhur_tracker.dart';
+import 'package:ayyami/utils/utils.dart';
 import 'package:ayyami/widgets/utils.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -24,10 +27,10 @@ import '../providers/user_provider.dart';
 import 'app_text.dart';
 
 class TimerBox extends StatefulWidget {
-  Function(bool mensis,String regulationMessage) mensis;
+  Function(bool mensis, String regulationMessage) mensis;
   String islamicMonth;
 
-  TimerBox({Key? key, required this.mensis,required this.islamicMonth}) : super(key: key);
+  TimerBox({Key? key, required this.mensis, required this.islamicMonth}) : super(key: key);
 
   @override
   State<TimerBox> createState() => _TimerBoxState();
@@ -41,7 +44,6 @@ class _TimerBoxState extends State<TimerBox> with WidgetsBindingObserver {
   static int minutesCount = 0;
   static int hoursCount = 0;
   static int daysCount = 0;
-  static final _stopWatch = StopWatchTimer(mode: StopWatchMode.countUp);
   MensesTracker mensesTrack = MensesTracker();
 
   @override
@@ -72,9 +74,11 @@ class _TimerBoxState extends State<TimerBox> with WidgetsBindingObserver {
   @override
   Widget build(BuildContext context) {
     return Consumer<MensesProvider>(builder: (conTimer, pro, build) {
-      var userProvider = Provider.of<UserProvider>(context);
+      var userProvider = Provider.of<UserProvider>(context, listen: false);
+      var tuhurProvider = Provider.of<TuhurProvider>(context, listen: false);
       uid = userProvider.getUid!;
       bool isTimerStart = pro.getTimerStart;
+      bool isTuhurStart = tuhurProvider.getTimerStart;
 
       mensesProvider = pro;
       print('${pro.getDays.toString()} days from menses timer ');
@@ -198,25 +202,34 @@ class _TimerBoxState extends State<TimerBox> with WidgetsBindingObserver {
               onTap: () {
                 bool start = calculateLastMenses();
                 print('$start  start');
-
+                int tuhurDays = tuhurProvider.getDays;
+                int tuhurFrom=tuhurProvider.getFrom;
                 if (!isTimerStart) {
-                  if (tuhurMinimum >= 15) {
-                    if (start) {
-                      showStartDialog();
-                    } else {
-                      widget.mensis(true,'');
-                      mensesProvider.setTimerStart(false);
+                  if(isTuhurStart){
+                    if(tuhurFrom==0){
+                      if (tuhurDays >= tuhurMinimum) {
+                        if (start) {
+                          showStartDialog();
+                        } else {
+                          widget.mensis(true, '');
+                          mensesProvider.setTimerStart(false);
+                        }
+                      } else {
+                        var mensesID=Utils.getDocMensesID();
+                        TuhurTracker().stopTimerWithDeletion(mensesID, "", mensesProvider, tuhurProvider, PostNatalProvider());
+                        widget.mensis(true, '');
+                        mensesProvider.setTimerStart(false);
+                      }
+                    }else{
+                      toast_notification().toast_message('should_post-natal_again'.tr);
                     }
-                  } else {
-                    widget.mensis(true,'');
-                    mensesProvider.setTimerStart(false);
+
+                  }else{
+                    toast_notification().toast_message('should_tuhur_start'.tr);
                   }
+                  
                 } else {
-                  if (minutesCount >= 3) {
-                    toast_notification().toast_message('stop_mensus_timer_message'.tr);
-                  } else {
-                    showStopDialog();
-                  }
+                  showStopDialog();
                 }
               },
               child: Container(
@@ -300,94 +313,27 @@ class _TimerBoxState extends State<TimerBox> with WidgetsBindingObserver {
     return Duration(days: days, hours: hours, minutes: minutes);
   }
 
-  void startService() async {
-    print('service started');
-    final service = FlutterBackgroundService();
-    await service.configure(
-      androidConfiguration: AndroidConfiguration(
-        autoStart: false,
-        onStart: onStart,
-        isForegroundMode: true,
-      ),
-      iosConfiguration: IosConfiguration(autoStart: true, onForeground: onStart),
-    );
-    service.startService();
-  }
-
-  @pragma('vm:entry-point')
-  static void onStart(ServiceInstance service) {
-    DartPluginRegistrant.ensureInitialized();
-
-    // if (pro.isTimerStart) {
-    //   pro.stopTimer();
-    // } else {
-    //   pro.startTimer();
-    // }
-    startMensisTimer();
-
-    // print('${stopwatch.elapsedMilliseconds}==millisecond');
-    // Timer.periodic(Duration(seconds: 30), (timer) {
-    //   print('Time is over');
-    //
-    //   print('${timer.tick}  ==sec');
-    //   print('${stopwatch.elapsedMilliseconds}==millisecond');
-    // });
-  }
-
-  static void startMensisTimer() {
-    print('mensis timer started');
-    _stopWatch.secondTime.listen((event) {
-      print('$secondsCount==sec    $minutesCount==minutes');
-      secondsCount++;
-      if (secondsCount > 59) {
-        minutesCount++;
-        if (minutesCount > 59) {
-          hoursCount++;
-          if (hoursCount > 23) {
-            daysCount++;
-            if (daysCount > 30) {
-              daysCount = 0;
-            }
-            mensesProvider.setDays(daysCount);
-            hoursCount = 0;
-          }
-          mensesProvider.setHours(hoursCount);
-          minutesCount = 0;
-        } else if (minutesCount == 10) {
-          _stopWatch.onStopTimer();
-          _stopWatch.onResetTimer();
-        }
-
-        mensesProvider.setMin(minutesCount);
-        secondsCount = 0;
-      }
-
-      mensesProvider.setSec(secondsCount);
-    });
-    _stopWatch.onStartTimer();
-  }
-
   void showStartDialog() {
     showDialog(
         context: context,
         builder: (dialogContext) {
           return DialogDateTime(
             getDateTime: (date, time) {
-              int year=date.year;
-              int month=date.month;
-              int day=date.day;
-              int hour=time.hour;
-              int minute=time.minute;
-              String period=time.period.name;
-              DateTime startDate=DateTime.utc(year,month,day,hour,minute);
-              var dateString=DateFormat.yMEd().add_jms().format(startDate);
+              int year = date.year;
+              int month = date.month;
+              int day = date.day;
+              int hour = time.hour;
+              int minute = time.minute;
+              String period = time.period.name;
+              DateTime startDate = DateTime.utc(year, month, day, hour, minute);
+              var dateString = DateFormat.yMEd().add_jms().format(startDate);
               print('$dateString  == dateString');
 
               var tuhurProvider = Provider.of<TuhurProvider>(context, listen: false);
-              widget.mensis(false,'');
+              widget.mensis(false, '');
               mensesProvider.setTimerStart(true);
               // startService();
-              mensesTrack.startMensisTimer(mensesProvider, uid, tuhurProvider,Timestamp.fromDate(startDate));
+              mensesTrack.startMensisTimer(mensesProvider, uid, tuhurProvider, Timestamp.fromDate(startDate));
               Navigator.pop(dialogContext);
             },
           );
@@ -400,27 +346,27 @@ class _TimerBoxState extends State<TimerBox> with WidgetsBindingObserver {
         builder: (dialogContext) {
           return DialogDateTime(
             getDateTime: (date, time) {
-              int year=date.year;
-              int month=date.month;
-              int day=date.day;
-              int hour=time.hour;
-              int minute=time.minute;
-              String period=time.period.name;
-              DateTime endDate=DateTime.utc(year,month,day,hour,minute);
-              var dateString=DateFormat.yMEd().add_jms().format(endDate);
+              int year = date.year;
+              int month = date.month;
+              int day = date.day;
+              int hour = time.hour;
+              int minute = time.minute;
+              String period = time.period.name;
+              DateTime endDate = DateTime.utc(year, month, day, hour, minute);
+              var dateString = DateFormat.yMEd().add_jms().format(endDate);
               print('$dateString  == dateString');
 
               var tuhurProvider = Provider.of<TuhurProvider>(context, listen: false);
               UserProvider userProvider = Provider.of<UserProvider>(context, listen: false);
 
-              String showRegulation=mensesTrack.stopMensesTimer(mensesProvider, tuhurProvider, uid, userProvider,Timestamp.fromDate(endDate),widget.islamicMonth);
+              String showRegulation = mensesTrack.stopMensesTimer(
+                  mensesProvider, tuhurProvider, uid, userProvider, Timestamp.fromDate(endDate), widget.islamicMonth);
 
-              widget.mensis(true,showRegulation);
+              widget.mensis(true, showRegulation);
               Navigator.pop(dialogContext);
             },
           );
         });
-
   }
 
   static void saveDocId(String id) async {
