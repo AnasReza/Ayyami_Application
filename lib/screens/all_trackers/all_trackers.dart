@@ -1,5 +1,7 @@
 import 'package:ayyami/constants/colors.dart';
+import 'package:ayyami/constants/dark_mode_colors.dart';
 import 'package:ayyami/providers/post-natal_timer_provider.dart';
+import 'package:ayyami/providers/prayer_provider.dart';
 import 'package:ayyami/providers/pregnancy_timer_provider.dart';
 import 'package:ayyami/providers/user_provider.dart';
 import 'package:ayyami/tracker/post-natal_tracker.dart';
@@ -16,6 +18,7 @@ import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
 import '../../constants/images.dart';
+import '../../dialog/likoria_color_dialog.dart';
 
 class AllTrackers extends StatefulWidget {
   @override
@@ -86,87 +89,97 @@ class AllTrackersState extends State<AllTrackers> {
   }
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        title: SvgPicture.asset(
-          AppImages.logo,
-          width: 249.6.w,
-          height: 78.4.h,
+    return Consumer<UserProvider>(builder: (c,provider,child){
+      var prayerProvider=Provider.of<PrayerProvider>(context,listen: false);
+      var darkMode=provider.getIsDarkMode;
+      return Scaffold(
+        appBar: AppBar(
+          backgroundColor: darkMode?AppDarkColors.white:AppColors.white,
+          elevation: 0,
+          title: SvgPicture.asset(
+            darkMode?AppImages.logo_white:AppImages.logo,
+            width: 249.6.w,
+            height: 78.4.h,
+          ),
+          centerTitle: true,
+          leading: Padding(
+            padding: EdgeInsets.only(left: 30),
+            child: InkWell(
+              onTap: () => Navigator.of(context).pop(),
+              child: SvgPicture.asset(
+                AppImages.backIcon,
+                width: 49.w,
+                height: 34.h,
+                color: darkMode?Colors.white:AppColors.headingColor,
+              ),
+            ),
+          ),
+          leadingWidth: 60,
         ),
-        centerTitle: true,
-        leading: Padding(
+        body: Container(
+          width: double.infinity,
           padding: EdgeInsets.only(left: 30),
-          child: InkWell(
-            onTap: () => Navigator.of(context).pop(),
-            child: SvgPicture.asset(
-              AppImages.backIcon,
-              width: 49.w,
-              height: 34.h,
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(
+                  height: 30,
+                ),
+                Text(
+                  'pregnancy'.tr,
+                  style: TextStyle(color: darkMode?AppDarkColors.headingColor:AppColors.headingColor, fontSize: 25, fontWeight: FontWeight.w700,),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                PregnancyTimerBox(),
+                const SizedBox(
+                  height: 60,
+                ),
+                Text(
+                  'likoria'.tr,
+                  style: TextStyle(color: darkMode?AppDarkColors.headingColor:AppColors.headingColor, fontSize: 25, fontWeight: FontWeight.w700),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                LikoriaTimerBox(showDialog: (show){
+                  if(show){
+                    /// SHOW COLO DIALOG
+                    showDialog(context: context, builder: (dialogContext){return LikoriaColorDialog(darkMode:darkMode);});
+                  }
+                }),
+                const SizedBox(
+                  height: 60,
+                ),
+                Text(
+                  'menstrual_bleeding'.tr,
+                  style: TextStyle(color: darkMode?AppDarkColors.headingColor:AppColors.headingColor, fontSize: 25, fontWeight: FontWeight.w700),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                TimerBox(mensis: (value, message) {}, islamicMonth: prayerProvider.hijriDateFormated),
+                const SizedBox(
+                  height: 60,
+                ),
+                Text(
+                  'post-natal_bleeding'.tr,
+                  style: TextStyle(color: darkMode?AppDarkColors.headingColor:AppColors.headingColor, fontSize: 25, fontWeight: FontWeight.w700),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                PostNatalTimerBox(),
+                const SizedBox(
+                  height: 30,
+                )
+              ],
             ),
           ),
         ),
-        leadingWidth: 60,
-      ),
-      body: Container(
-        width: double.infinity,
-        padding: EdgeInsets.only(left: 30),
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(
-                height: 30,
-              ),
-              Text(
-                'pregnancy'.tr,
-                style: TextStyle(color: AppColors.headingColor, fontSize: 25, fontWeight: FontWeight.w700),
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              PregnancyTimerBox(mensis: (value) {}),
-              const SizedBox(
-                height: 60,
-              ),
-              Text(
-                'likoria'.tr,
-                style: TextStyle(color: AppColors.headingColor, fontSize: 25, fontWeight: FontWeight.w700),
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              LikoriaTimerBox(mensis: (value) {}),
-              const SizedBox(
-                height: 60,
-              ),
-              Text(
-                'menstrual_bleeding'.tr,
-                style: TextStyle(color: AppColors.headingColor, fontSize: 25, fontWeight: FontWeight.w700),
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              TimerBox(mensis: (value, message) {}, islamicMonth: ''),
-              const SizedBox(
-                height: 60,
-              ),
-              Text(
-                'post-natal_bleeding'.tr,
-                style: TextStyle(color: AppColors.headingColor, fontSize: 25, fontWeight: FontWeight.w700),
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              PostNatalTimerBox(mensis: (value) {}),
-              const SizedBox(
-                height: 30,
-              )
-            ],
-          ),
-        ),
-      ),
-    );
+      );
+    },);
   }
 }

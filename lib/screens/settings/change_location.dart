@@ -1,4 +1,5 @@
 import 'package:ayyami/constants/colors.dart';
+import 'package:ayyami/constants/dark_mode_colors.dart';
 import 'package:ayyami/firebase_calls/user_record.dart';
 import 'package:ayyami/providers/user_provider.dart';
 import 'package:ayyami/widgets/gradient_button.dart';
@@ -27,125 +28,131 @@ class ChangeLocationState extends State<ChangeLocation> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        backgroundColor: Colors.white,
-        title: SvgPicture.asset(
-          AppImages.logo,
-          width: 249.6.w,
-          height: 78.36.h,
-        ),
-        centerTitle: true,
-        // actions: [
-        //   InkWell(
-        //     onTap: () {
-        //       _key.currentState!.openDrawer();
-        //       // Navigator.push(context, MaterialPageRoute(builder: (context) => PrayerTiming()));
-        //     },
-        //     child: SvgPicture.asset(
-        //       AppImages.menuIcon,
-        //       width: 44.w,
-        //       height: 38.h,
-        //     ),
-        //   ),
-        // ],
-      ),
-      body: Container(
-        decoration: BoxDecoration(gradient: AppColors.backgroundGradient),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SizedBox(
-              width: double.infinity,
-              child: Row(
-                children: [
-                  SvgPicture.asset(AppImages.backIcon),
-                  Expanded(
-                    child: Align(
-                      alignment: Alignment.center,
-                      child: AppText(
-                        text: "change_location".tr,
-                        fontSize: 45.sp,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(
-              height: 30,
-            ),
-            AppText(
-              text: "your_location".tr,
-              fontSize: 36.sp,
-              fontWeight: FontWeight.w700,
-              color: AppColors.grey,
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            Row(
-              children: [
-                SvgPicture.asset(AppImages.locationIcon),
-                const SizedBox(
-                  width: 20,
-                ),
-                Expanded(
-                  child: TextField(
-                    decoration: InputDecoration(
-                      border: InputBorder.none,
-                      isDense: true,
-                      label: AppText(text: labelText, fontSize: 18, fontWeight: FontWeight.w700),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            const Divider(color: AppColors.grey, thickness: 0.5, height: 15.0),
-            const SizedBox(height: 20,),
-            GestureDetector(child: Row(
-              children: [
-                SvgPicture.asset(AppImages.locateIcon, width: 30, height: 30,),
-                const SizedBox(
-                  width: 20,
-                ),
-                const AppText(text: 'Locate Me', fontSize: 18, fontWeight: FontWeight.w700,),
-              ],
-            ), onTap: () {
-              _determinePosition().then((value) async {
-                print('${value.latitude}==Latitude     ${value.longitude}==longitude');
-                currentPoint=GeoPoint(value.latitude, value.longitude);
-                await placemarkFromCoordinates(value.latitude, value.longitude).then((value) {
-                  print('${value.length}==length');
-                  print('${value.first.name}==name');
-                  print('${value.first.locality}==locality');
-                  print('${value.first.country}==country');
-                  setState(() {
-                    labelText = '${value.first.locality}, ${value.first.country}';
-                  });
-                });
-              });
-            },),
-            const SizedBox(height: 30,),
-            GradientButton(title: 'save'.tr, onPressedButon: () {
-              if (currentPoint != null) {
-                var provider=Provider.of<UserProvider>(context,listen: false);
-                String? uid=provider.getUid;
-                UsersRecord().updateLocation(uid!, labelText, currentPoint).then((value){
-                  provider.setLocation(labelText);
-                  provider.setCurrentPoint(currentPoint);
-                  Navigator.pop(context);
-                });
-              }
 
-            }),
+   return Consumer<UserProvider>(builder: (c,provider,child){
+     bool darkMode=provider.getIsDarkMode;
+     return Scaffold(
+       appBar: AppBar(
+         elevation: 0,
+         backgroundColor: darkMode?AppDarkColors.white:Colors.white,
+         title: SvgPicture.asset(
+           darkMode?AppImages.logo_white:AppImages.logo,
+           width: 249.6.w,
+           height: 78.36.h,
+         ),
+         centerTitle: true,
+         // actions: [
+         //   InkWell(
+         //     onTap: () {
+         //       _key.currentState!.openDrawer();
+         //       // Navigator.push(context, MaterialPageRoute(builder: (context) => PrayerTiming()));
+         //     },
+         //     child: SvgPicture.asset(
+         //       AppImages.menuIcon,
+         //       width: 44.w,
+         //       height: 38.h,
+         //     ),
+         //   ),
+         // ],
+       ),
+       body: Container(
+         decoration: BoxDecoration(gradient: darkMode?AppDarkColors.backgroundGradient:AppColors.backgroundGradient),
+         child: Column(
+           crossAxisAlignment: CrossAxisAlignment.start,
+           children: [
+             SizedBox(
+               width: double.infinity,
+               child: Row(
+                 children: [
+                   SvgPicture.asset(AppImages.backIcon,color: darkMode?AppDarkColors.headingColor:AppColors.headingColor,),
+                   Expanded(
+                     child: Align(
+                       alignment: Alignment.center,
+                       child: AppText(
+                         text: "change_location".tr,
+                         fontSize: 45.sp,
+                         fontWeight: FontWeight.w700,
+                         color: darkMode?AppDarkColors.headingColor:AppColors.headingColor,
+                       ),
+                     ),
+                   ),
+                 ],
+               ),
+             ),
+             const SizedBox(
+               height: 30,
+             ),
+             AppText(
+               text: "your_location".tr,
+               fontSize: 36.sp,
+               fontWeight: FontWeight.w700,
+               color: darkMode?AppDarkColors.headingColor:AppColors.headingColor,
 
-          ],
-        ),
-      ),
-    );
+             ),
+             const SizedBox(
+               height: 20,
+             ),
+             Row(
+               children: [
+                 SvgPicture.asset(AppImages.locationIcon,color: darkMode?AppDarkColors.headingColor:AppColors.headingColor,),
+                 const SizedBox(
+                   width: 20,
+                 ),
+                 Expanded(
+                   child: TextField(
+                     decoration: InputDecoration(
+                       border: InputBorder.none,
+                       isDense: true,
+                       label: AppText(text: labelText, fontSize: 18, fontWeight: FontWeight.w700,color:darkMode?AppDarkColors.headingColor:AppColors.headingColor,),
+                     ),
+                   ),
+                 ),
+               ],
+             ),
+             const Divider(color: AppColors.grey, thickness: 0.5, height: 15.0),
+             const SizedBox(height: 20,),
+             GestureDetector(child: Row(
+               children: [
+                 SvgPicture.asset(AppImages.locateIcon, width: 30, height: 30,color: darkMode?AppDarkColors.headingColor:AppColors.headingColor,),
+                 const SizedBox(
+                   width: 20,
+                 ),
+                 AppText(text: 'Locate Me', fontSize: 18, fontWeight: FontWeight.w700,color: darkMode?AppDarkColors.headingColor:AppColors.headingColor,),
+               ],
+             ), onTap: () {
+               _determinePosition().then((value) async {
+                 print('${value.latitude}==Latitude     ${value.longitude}==longitude');
+                 currentPoint=GeoPoint(value.latitude, value.longitude);
+                 await placemarkFromCoordinates(value.latitude, value.longitude).then((value) {
+                   print('${value.length}==length');
+                   print('${value.first.name}==name');
+                   print('${value.first.locality}==locality');
+                   print('${value.first.country}==country');
+                   setState(() {
+                     labelText = '${value.first.locality}, ${value.first.country}';
+                   });
+                 });
+               });
+             },),
+             const SizedBox(height: 30,),
+             GradientButton(title: 'save'.tr, onPressedButon: () {
+               if (currentPoint != null) {
+                 var provider=Provider.of<UserProvider>(context,listen: false);
+                 String? uid=provider.getUid;
+                 UsersRecord().updateLocation(uid!, labelText, currentPoint).then((value){
+                   provider.setLocation(labelText);
+                   provider.setCurrentPoint(currentPoint);
+                   Navigator.pop(context);
+                 });
+               }
+
+             }),
+
+           ],
+         ),
+       ),
+     );
+   });
   }
 
   Future<Position> _determinePosition() async {

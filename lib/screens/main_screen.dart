@@ -15,6 +15,7 @@ import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
+import '../constants/dark_mode_colors.dart';
 import '../constants/images.dart';
 import '../navigation/custom_bottom_nav.dart';
 import '../navigation/custom_fab.dart';
@@ -73,13 +74,14 @@ class MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<NamazProvider>(builder: (futureContext, snapshot) {
+    return Consumer<UserProvider>(builder: (c,provider,child){
       getPrayerTiming(context);
+      var darkMode=provider.getIsDarkMode;
       return Scaffold(
         key: _key,
         appBar: AppBar(
           elevation: 0,
-          backgroundColor: Colors.white,
+          backgroundColor:darkMode?AppDarkColors.white: Colors.white,
           leading: Padding(
             padding: EdgeInsets.only(left: 10),
             child: InkWell(
@@ -91,12 +93,13 @@ class MainScreenState extends State<MainScreen> {
                 AppImages.menuIcon,
                 width: 44.w,
                 height: 38.h,
+                color: darkMode?Colors.white:AppColors.grey,
               ),
             ),
           ),
           leadingWidth: 30,
           title: SvgPicture.asset(
-            AppImages.logo,
+            darkMode?AppImages.logo_white:AppImages.logo,
             width: 249.6.w,
             height: 78.36.h,
           ),
@@ -116,10 +119,11 @@ class MainScreenState extends State<MainScreen> {
           // ],
         ),
         body: Container(
-          decoration: BoxDecoration(gradient: AppColors.backgroundGradient),
+          decoration: BoxDecoration(gradient: darkMode?AppDarkColors.backgroundGradient:AppColors.backgroundGradient),
           child: widgetList[widgetIndex],
         ),
         bottomNavigationBar: CustomBottomNav(
+          darkMode:darkMode,
             cIndex: _cIndex,
             tappingIndex: (index) {
               setState(() {
@@ -134,7 +138,7 @@ class MainScreenState extends State<MainScreen> {
         }),
         drawer: SideBar(),
       );
-    });
+    },);
   }
 
   void saveNamazStart(bool check) async {

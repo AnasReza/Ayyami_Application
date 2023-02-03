@@ -15,10 +15,12 @@ class ExpandedReminderContainer extends StatefulWidget {
   ExpandedReminderContainer({
     Key? key,
     required this.regulationExpanded,
+    required this.darkMode,
   }) : super(key: key);
 
   bool regulationExpanded = true;
   bool isSwitched = false;
+  bool darkMode;
 
   @override
   State<ExpandedReminderContainer> createState() =>
@@ -74,7 +76,7 @@ class _ExpandedReminderContainerState extends State<ExpandedReminderContainer> {
                                     value = widget.isSwitched;
                                   });
                                 }),
-                                activeColor: AppColors.black)
+                                activeColor: AppColors.black,darkMode: widget.darkMode,)
                           ],
                         ),
                         InkWell(
@@ -109,7 +111,7 @@ class _ExpandedReminderContainerState extends State<ExpandedReminderContainer> {
                                   children: List.generate(child.medicinesLsit.length, (index) =>
                                       Padding(
                                         padding: const EdgeInsets.symmetric(horizontal: 8.0,),
-                                        child: MedicineContainer(medicineTime: child.medicinesLsit[index].timing,medicinetitle: child.medicinesLsit[index].medicalTile,),
+                                        child: MedicineContainer(medicineTime: child.medicinesLsit[index].timing,medicinetitle: child.medicinesLsit[index].medicalTile,darkMode: widget.darkMode,),
                                       ))
                                 ),
                               ),
@@ -123,7 +125,7 @@ class _ExpandedReminderContainerState extends State<ExpandedReminderContainer> {
                                       title: Text("Add Medicine"),
                                       content: SizedBox(
                                         height: 200,
-                                        child: AddMedicine()
+                                        child: AddMedicine(darkMode:widget.darkMode)
                                       ),
                                     );
                                   });

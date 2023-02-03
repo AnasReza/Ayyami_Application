@@ -5,8 +5,8 @@ import '../constants/colors.dart';
 
 class SupplicationView extends StatelessWidget {
   String heading, times, dua, description;
-
-  SupplicationView(this.heading, this.dua, this.times, this.description, {super.key});
+  bool darkMode;
+  SupplicationView(this.darkMode,this.heading, this.dua, this.times, this.description, {super.key});
 
   @override
   Widget build(BuildContext context) {

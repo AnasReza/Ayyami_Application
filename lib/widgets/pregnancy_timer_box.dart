@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:ui';
 
+import 'package:ayyami/constants/dark_mode_colors.dart';
 import 'package:ayyami/dialog/misscrriage_dialog.dart';
 import 'package:ayyami/firebase_calls/menses_record.dart';
 import 'package:ayyami/providers/post-natal_timer_provider.dart';
@@ -29,49 +30,23 @@ import '../providers/user_provider.dart';
 import 'app_text.dart';
 
 class PregnancyTimerBox extends StatefulWidget {
-  Function(bool mensis) mensis;
 
-  PregnancyTimerBox({Key? key, required this.mensis}) : super(key: key);
+
+  PregnancyTimerBox({Key? key}) : super(key: key);
 
   @override
   State<PregnancyTimerBox> createState() => _PregnancyTimerBoxState();
 }
 
-class _PregnancyTimerBoxState extends State<PregnancyTimerBox> with WidgetsBindingObserver {
+class _PregnancyTimerBoxState extends State<PregnancyTimerBox> {
   static late String uid;
+  bool darkMode=false;
 
-  static late PregnancyProvider pray;
-  static int secondsCount = 0;
-  static int minutesCount = 0;
-  static int hoursCount = 0;
-  static int daysCount = 0;
-  static int weeksCount = 0;
-  static String mensesID = '';
-  static final _stopWatch = StopWatchTimer(mode: StopWatchMode.countUp);
+
 
   @override
   void initState() {
-    WidgetsBinding.instance.addObserver(this);
     super.initState();
-  }
-
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    super.didChangeAppLifecycleState(state);
-    switch (state) {
-      case AppLifecycleState.resumed:
-        print('Timer Box is resumed');
-        break;
-      case AppLifecycleState.inactive:
-        print('Timer Box is inactive');
-        break;
-      case AppLifecycleState.paused:
-        print('Timer Box is paused');
-        break;
-      case AppLifecycleState.detached:
-        print('Timer Box is detached');
-        break;
-    }
   }
 
   @override
@@ -80,8 +55,8 @@ class _PregnancyTimerBoxState extends State<PregnancyTimerBox> with WidgetsBindi
       var userProvider = Provider.of<UserProvider>(context);
       uid = userProvider.getUid!;
       bool isTimerStart = pro.getTimerStart;
+      darkMode=userProvider.getIsDarkMode;
 
-      pray = pro;
       return Stack(
         clipBehavior: Clip.none,
         children: [
@@ -90,10 +65,10 @@ class _PregnancyTimerBoxState extends State<PregnancyTimerBox> with WidgetsBindi
             width: 579.w,
             height: 205.h,
             decoration: BoxDecoration(
-              color: AppColors.white,
+              color: darkMode?AppDarkColors.lightGreyBoxColor:AppColors.white,
               borderRadius: BorderRadius.circular(18.r),
               border: Border.all(
-                color: AppColors.headingColor,
+                color: darkMode?AppDarkColors.headingColor:AppColors.headingColor,
                 width: 5.w,
               ),
               boxShadow: const [
@@ -214,80 +189,6 @@ class _PregnancyTimerBoxState extends State<PregnancyTimerBox> with WidgetsBindi
     });
   }
 
-  void startService() async {
-    print('service started');
-    final service = FlutterBackgroundService();
-    await service.configure(
-      androidConfiguration: AndroidConfiguration(
-        autoStart: false,
-        onStart: onStart,
-        isForegroundMode: true,
-      ),
-      iosConfiguration: IosConfiguration(autoStart: true, onForeground: onStart),
-    );
-    service.startService();
-  }
-
-  @pragma('vm:entry-point')
-  static void onStart(ServiceInstance service) {
-    DartPluginRegistrant.ensureInitialized();
-
-    // if (pro.isTimerStart) {
-    //   pro.stopTimer();
-    // } else {
-    //   pro.startTimer();
-    // }
-    startMensisTimer();
-
-    // print('${stopwatch.elapsedMilliseconds}==millisecond');
-    // Timer.periodic(Duration(seconds: 30), (timer) {
-    //   print('Time is over');
-    //
-    //   print('${timer.tick}  ==sec');
-    //   print('${stopwatch.elapsedMilliseconds}==millisecond');
-    // });
-  }
-
-  static void startMensisTimer() {
-    print('mensis timer started');
-
-    Future<DocumentReference<Map<String, dynamic>>> menses = MensesRecord.uploadMensesStartTime(uid, Timestamp.now());
-    menses.then((value) {
-      // saveDocId(value.id);
-      mensesID = value.id;
-      print('${value.id} record doc id');
-    });
-
-    _stopWatch.secondTime.listen((event) {
-      print('$secondsCount==sec    $minutesCount==minutes');
-      secondsCount++;
-      if (secondsCount > 59) {
-        minutesCount++;
-        if (minutesCount > 59) {
-          hoursCount++;
-          if (hoursCount > 23) {
-            daysCount++;
-            if (daysCount > 30) {
-              daysCount = 0;
-            }
-            pray.setDays(daysCount);
-            hoursCount = 0;
-          }
-          pray.setHours(hoursCount);
-          minutesCount = 0;
-        } else if (minutesCount == 10) {
-          _stopWatch.onStopTimer();
-          _stopWatch.onResetTimer();
-        }
-
-        pray.setMin(minutesCount);
-        secondsCount = 0;
-      }
-
-      pray.setSec(secondsCount);
-    });
-    _stopWatch.onStartTimer();
-  }
 
   void showStartDialog() {
     showDialog(
@@ -312,6 +213,7 @@ class _PregnancyTimerBoxState extends State<PregnancyTimerBox> with WidgetsBindi
                   userProvider, provider, userProvider.getUid!, tuhurProvider, Timestamp.fromDate(startDate));
               Navigator.pop(dialogContext);
             },
+            darkMode: darkMode,
           );
         });
   }
@@ -343,7 +245,7 @@ class _PregnancyTimerBoxState extends State<PregnancyTimerBox> with WidgetsBindi
                     MensesTracker().startMensisTimer(mensesProvider, uid, tuhurProvider, Timestamp.now());
                     PregnancyTracker().stopPregnancyTimer(pregProvider, Timestamp.fromDate(endDate),reasonValue);
                     Navigator.pop(subContext);
-                  },);
+                  },darkMode:darkMode,);
                 });
               }else{
                  var postNatalProvider = Provider.of<PostNatalProvider>(context, listen: false);
@@ -353,6 +255,7 @@ class _PregnancyTimerBoxState extends State<PregnancyTimerBox> with WidgetsBindi
 
               Navigator.pop(dialogContext);
             },
+            darkMode: darkMode,
           );
         });
   }

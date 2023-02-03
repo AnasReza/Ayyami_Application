@@ -48,6 +48,12 @@ class _Splash_ScreenState extends State<Splash_Screen> {
         UsersRecord().getUsersData(uid).then((value){
           var provider = Provider.of<UserProvider>(context, listen: false);
           provider.setUID(value.id);
+          if(hiveValue['dark_mode']==null){
+            provider.setDarkMode(false);
+          }else{
+            provider.setDarkMode(hiveValue['dark_mode']);
+          }
+
           provider.setCurrentPoint(value.get('coordinates'));
           provider.setLocation('location_name');
           Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => MainScreen()));
@@ -120,16 +126,19 @@ class _Splash_ScreenState extends State<Splash_Screen> {
   Map<String, dynamic> getHive() {
     String uid;
     bool login;
+    bool darkMode;
     try {
       var box = Hive.box('aayami');
       uid = box.get('uid');
       login = box.get('login');
+      darkMode = box.get('dark_mode');
     } catch (e) {
       uid = '';
       login = false;
+      darkMode=false;
     }
 
-    return {'uid': uid, 'login': login};
+    return {'uid': uid, 'login': login,'darkMode':darkMode};
   }
 
   @override

@@ -7,9 +7,11 @@ import '../constants/colors.dart';
 class ReminderSwitchContainerWidget extends StatefulWidget {
   bool isSwitched = false;
   String title;
+  bool darkMode;
   ReminderSwitchContainerWidget({
     required this.isSwitched,
     required this.title,
+    required this.darkMode,
     Key? key,
   }) : super(key: key);
 
@@ -61,6 +63,7 @@ class _ReminderSwitchContainerWidgetState
               });
             }),
             activeColor: AppColors.black,
+            darkMode: widget.darkMode,
           )
         ],
       ),

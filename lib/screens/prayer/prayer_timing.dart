@@ -204,92 +204,92 @@ class _PrayerTimingState extends State<PrayerTiming> {
   @override
   Widget build(BuildContext context) {
     return Consumer<NamazProvider>(builder: (consumerContext,provider,child){
-      return Scaffold(
-        body: Container(
-          child: Padding(
-            padding: EdgeInsets.only(
-              left: 70.w,
-              right: 70.w,
-              top: 80.h,
-            ),
-            child: Consumer<PrayerProvider>(
-              builder: (context, child, data) {
-                return SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      // IconButton(onPressed: (){
-                      //   Navigator.push(context, MaterialPageRoute(builder: (context) => CalenderPage()));
-                      // }, icon: Icon(Icons.date_range)),
-                      // Align(
-                      //   alignment: Alignment.center,
-                      //   child: SvgPicture.asset(
-                      //     AppImages.logo,
-                      //     width: 249.6.w,
-                      //     height: 78.4.h,
-                      //   ),
-                      // ),
-                      SizedBox(height: 70.6.h),
-                      AppText(
-                        text: "Prayer Times",
-                        fontSize: 45.sp,
-                        fontWeight: FontWeight.w700,
-                      ),
-                      SizedBox(
-                        height: 20.h,
-                      ),
-                      AppText(
-                        textAlign: TextAlign.center,
-                        text: "$gorgeonTodayDateFormated\n$hijriDateFormated",
-                        fontSize: 16.sp,
-                        fontWeight: FontWeight.w400,
-                      ),
-                      SizedBox(
-                        height: 50.h,
-                      ),
-                      PrayerWidget(
-                        name: 'Fajar',
-                        time: provider.getFajrTime,
-                      ),
-                      SizedBox(
-                        height: 50.h,
-                      ),
-                      PrayerWidget(
-                        name: 'Sunrise',
-                        time: provider.getSunriseTime,
-                      ),
-                      SizedBox(
-                        height: 50.h,
-                      ),
-                      PrayerWidget(
-                        name: 'Dhuhr',
-                        time: provider.getDuhurTime,
-                      ),
-                      SizedBox(
-                        height: 50.h,
-                      ),
-                      PrayerWidget(
-                        name: 'Asar',
-                        time: provider.getAsrTime,
-                      ),
-                      SizedBox(
-                        height: 50.h,
-                      ),
-                      PrayerWidget(
-                        name: 'Maghrib',
-                        time: provider.getMaghribTime,
-                      ),
-                      SizedBox(
-                        height: 50.h,
-                      ),
-                      PrayerWidget(
-                        name: 'Isha',
-                        time: provider.getIshaTime,
-                      ),
-                    ],
-                  ),
-                );
-              },
-            ),
+      var userProvider=Provider.of<UserProvider>(context,listen: false);
+      var darkMode=userProvider.getIsDarkMode;
+      return Padding(
+        padding: EdgeInsets.only(
+          left: 70.w,
+          right: 70.w,
+          top: 80.h,
+        ),
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              // IconButton(onPressed: (){
+              //   Navigator.push(context, MaterialPageRoute(builder: (context) => CalenderPage()));
+              // }, icon: Icon(Icons.date_range)),
+              // Align(
+              //   alignment: Alignment.center,
+              //   child: SvgPicture.asset(
+              //     AppImages.logo,
+              //     width: 249.6.w,
+              //     height: 78.4.h,
+              //   ),
+              // ),
+              SizedBox(height: 70.6.h),
+              AppText(
+                text: "Prayer Times",
+                fontSize: 45.sp,
+                fontWeight: FontWeight.w700,
+              ),
+              SizedBox(
+                height: 20.h,
+              ),
+              AppText(
+                textAlign: TextAlign.center,
+                text: "$gorgeonTodayDateFormated\n$hijriDateFormated",
+                fontSize: 16.sp,
+                fontWeight: FontWeight.w400,
+              ),
+              SizedBox(
+                height: 50.h,
+              ),
+              PrayerWidget(
+                name: 'Fajar',
+                time: provider.getFajrTime,
+                darkMode: darkMode,
+              ),
+              SizedBox(
+                height: 50.h,
+              ),
+              PrayerWidget(
+                name: 'Sunrise',
+                time: provider.getSunriseTime,
+                darkMode: darkMode,
+              ),
+              SizedBox(
+                height: 50.h,
+              ),
+              PrayerWidget(
+                name: 'Dhuhr',
+                time: provider.getDuhurTime,
+                darkMode: darkMode,
+              ),
+              SizedBox(
+                height: 50.h,
+              ),
+              PrayerWidget(
+                name: 'Asar',
+                time: provider.getAsrTime,
+                darkMode: darkMode,
+              ),
+              SizedBox(
+                height: 50.h,
+              ),
+              PrayerWidget(
+                name: 'Maghrib',
+                time: provider.getMaghribTime,
+                darkMode: darkMode,
+              ),
+              SizedBox(
+                height: 50.h,
+              ),
+              PrayerWidget(
+                name: 'Isha',
+                time: provider.getIshaTime,
+                darkMode: darkMode,
+              ),
+            ],
           ),
         ),
       );

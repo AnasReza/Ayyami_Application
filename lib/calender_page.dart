@@ -11,10 +11,12 @@ import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'constants/colors.dart';
+import 'constants/dark_mode_colors.dart';
 import 'constants/images.dart';
 class CalenderPage extends StatefulWidget {
-  const CalenderPage({Key? key}) : super(key: key);
+  CalenderPage({required this.darkMode,Key? key}) : super(key: key);
 
+  bool darkMode;
   @override
   State<CalenderPage> createState() => _CalenderPageState();
 }
@@ -29,7 +31,7 @@ class _CalenderPageState extends State<CalenderPage> {
       body: Container(
         height: getHeight(context),
         decoration:  BoxDecoration(
-          gradient: AppColors.backgroundGradient,
+          gradient: widget.darkMode?AppDarkColors.backgroundGradient:AppColors.backgroundGradient,
         ),
         child: SafeArea(
           child: Padding(
@@ -51,13 +53,14 @@ class _CalenderPageState extends State<CalenderPage> {
                               AppImages.backIcon,
                               width: 49.w,
                               height: 34.h,
+                              color: widget.darkMode?AppDarkColors.headingColor:AppColors.headingColor,
                             ),
                           ),
                           SizedBox(width: 110.w),
                           Align(
                             alignment: Alignment.center,
                             child: SvgPicture.asset(
-                              AppImages.logo,
+                              widget.darkMode?AppImages.logo_white:AppImages.logo,
                               width: 249.6.w,
                               height: 78.4.h,
                             ),
@@ -72,6 +75,7 @@ class _CalenderPageState extends State<CalenderPage> {
                             text: "Gregorian",
                             fontSize: 25.sp,
                             fontWeight: FontWeight.w700,
+                            color: widget.darkMode?AppDarkColors.headingColor:AppColors.headingColor,
                           ),
                           SizedBox(width: 30.6.h),
                           CustomSwitch1(
@@ -80,12 +84,14 @@ class _CalenderPageState extends State<CalenderPage> {
                               provider.setHijriCalender(value);
                             }),
                             activeColor: AppColors.black,
+                            darkMode: widget.darkMode,
                           ),
                           SizedBox(width: 30.6.h),
                           AppText(
                             text: "Hijri",
                             fontSize: 25.sp,
                             fontWeight: FontWeight.w700,
+                            color: widget.darkMode?AppDarkColors.headingColor:AppColors.headingColor,
                           ),
                         ],
                       ),

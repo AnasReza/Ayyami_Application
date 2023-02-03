@@ -1,3 +1,4 @@
+import 'package:ayyami/constants/dark_mode_colors.dart';
 import 'package:ayyami/constants/images.dart';
 import 'package:ayyami/widgets/app_text.dart';
 import 'package:flutter/material.dart';
@@ -11,10 +12,12 @@ class PrayerWidget extends StatefulWidget {
     Key? key,
     required this.name,
     required this.time,
+    required this.darkMode
   }) : super(key: key);
 
   final String name;
   final String time;
+  bool darkMode;
 
 
   @override
@@ -28,9 +31,9 @@ class _PrayerWidgetState extends State<PrayerWidget> {
       width: 558.w,
       height: 104.h,
       decoration: BoxDecoration(
-        color: AppColors.lightGreyBoxColor,
+        color: widget.darkMode?AppDarkColors.lightGreyBoxColor:AppColors.lightGreyBoxColor,
         border: Border.all(
-          color: AppColors.headingColor,
+          color: widget.darkMode?AppDarkColors.headingColor:AppColors.headingColor,
           width: 1.w,
         ),
         borderRadius: BorderRadius.circular(18.r),
@@ -64,7 +67,7 @@ class _PrayerWidgetState extends State<PrayerWidget> {
                 fontSize: 28.sp,
                 fontWeight: FontWeight.w700),
             SizedBox(width: 30.w),
-            Image.asset(AppImages.bellIcon,height: 20,)
+            Image.asset(AppImages.bellIcon,height: 20,color: widget.darkMode?AppDarkColors.headingColor:AppColors.headingColor,)
           ],
         ),
       ),

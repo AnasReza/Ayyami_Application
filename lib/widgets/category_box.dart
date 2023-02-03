@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 
 import '../constants/colors.dart';
+import '../constants/dark_mode_colors.dart';
 
 class CategoryBox extends StatefulWidget {
   CategoryBox(
@@ -15,12 +16,12 @@ class CategoryBox extends StatefulWidget {
       required this.checkbox,
       required this.isSelected,
       required this.showDate,
-      required this.comingSoon})
+      required this.comingSoon,required this.darkMode,})
       : super(key: key);
 
   final String categoryName;
   final int days, hours;
-  bool checkbox, isSelected, showDate, comingSoon;
+  bool checkbox, isSelected, showDate, comingSoon,darkMode;
 
   @override
   State<CategoryBox> createState() => _CategoryBoxState();
@@ -38,9 +39,9 @@ class _CategoryBoxState extends State<CategoryBox> {
                 width: double.infinity,
                 height: 104.h,
                 decoration: BoxDecoration(
-                  color: AppColors.lightGreyBoxColor,
+                  color: widget.darkMode?AppDarkColors.lightGreyBoxColor:AppColors.lightGreyBoxColor,
                   border: Border.all(
-                    color: AppColors.headingColor,
+                    color: widget.darkMode?AppDarkColors.headingColor:AppColors.headingColor,
                     width: 1.w,
                   ),
                   borderRadius: BorderRadius.circular(18.r),
@@ -84,8 +85,8 @@ class _CategoryBoxState extends State<CategoryBox> {
                           ? Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                AppText(text: widget.days.toString(), fontSize: 28.sp, fontWeight: FontWeight.w700),
-                                AppText(text: "Days", fontSize: 16.sp, fontWeight: FontWeight.w400),
+                                AppText(text: widget.days.toString(), fontSize: 28.sp, fontWeight: FontWeight.w700,color: widget.darkMode?AppDarkColors.headingColor:AppColors.headingColor,),
+                                AppText(text: "Days", fontSize: 16.sp, fontWeight: FontWeight.w400,color: widget.darkMode?AppDarkColors.headingColor:AppColors.headingColor,),
                               ],
                             )
                           : Container(),
@@ -94,8 +95,8 @@ class _CategoryBoxState extends State<CategoryBox> {
                           ? Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                AppText(text: widget.hours.toString(), fontSize: 28.sp, fontWeight: FontWeight.w700),
-                                AppText(text: "Hours", fontSize: 16.sp, fontWeight: FontWeight.w400),
+                                AppText(text: widget.hours.toString(), fontSize: 28.sp, fontWeight: FontWeight.w700,color: widget.darkMode?AppDarkColors.headingColor:AppColors.headingColor,),
+                                AppText(text: "Hours", fontSize: 16.sp, fontWeight: FontWeight.w400,color: widget.darkMode?AppDarkColors.headingColor:AppColors.headingColor,),
                               ],
                             )
                           : Container(),
@@ -104,16 +105,19 @@ class _CategoryBoxState extends State<CategoryBox> {
                         AppImages.forwardIcon,
                         width: 46.w,
                         height: 25.h,
+                        color: widget.darkMode?Colors.white:Colors.black,
                       ),
                       SvgPicture.asset(
                         AppImages.forwardIcon,
                         width: 46.w,
                         height: 25.h,
+                        color: widget.darkMode?Colors.white:Colors.black,
                       ),
                       SvgPicture.asset(
                         AppImages.forwardIcon,
                         width: 46.w,
                         height: 25.h,
+                        color: widget.darkMode?Colors.white:Colors.black,
                       ),
                     ],
                   ),
@@ -168,9 +172,9 @@ class _CategoryBoxState extends State<CategoryBox> {
             width: double.infinity,
             height: 104.h,
             decoration: BoxDecoration(
-              color: AppColors.lightGreyBoxColor,
+              color: widget.darkMode?AppDarkColors.lightGreyBoxColor:AppColors.lightGreyBoxColor,
               border: Border.all(
-                color: AppColors.headingColor,
+                color: widget.darkMode?AppDarkColors.headingColor:AppColors.headingColor,
                 width: 1.w,
               ),
               borderRadius: BorderRadius.circular(18.r),
@@ -195,6 +199,7 @@ class _CategoryBoxState extends State<CategoryBox> {
                         text: widget.categoryName,
                         fontSize: 25.sp,
                         fontWeight: FontWeight.w700,
+                        color: widget.darkMode?AppDarkColors.headingColor:AppColors.headingColor,
                       ),
                       widget.comingSoon
                           ? Container(
@@ -213,8 +218,8 @@ class _CategoryBoxState extends State<CategoryBox> {
                       ? Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            AppText(text: widget.days.toString(), fontSize: 28.sp, fontWeight: FontWeight.w700),
-                            AppText(text: "Days", fontSize: 16.sp, fontWeight: FontWeight.w400),
+                            AppText(text: widget.days.toString(), fontSize: 28.sp, fontWeight: FontWeight.w700,color: widget.darkMode?AppDarkColors.headingColor:AppColors.headingColor,),
+                            AppText(text: "Days", fontSize: 16.sp, fontWeight: FontWeight.w400,color: widget.darkMode?AppDarkColors.headingColor:AppColors.headingColor,),
                           ],
                         )
                       : Container(),
@@ -223,8 +228,8 @@ class _CategoryBoxState extends State<CategoryBox> {
                       ? Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            AppText(text: widget.hours.toString(), fontSize: 28.sp, fontWeight: FontWeight.w700),
-                            AppText(text: "Hours", fontSize: 16.sp, fontWeight: FontWeight.w400),
+                            AppText(text: widget.hours.toString(), fontSize: 28.sp, fontWeight: FontWeight.w700,color: widget.darkMode?AppDarkColors.headingColor:AppColors.headingColor,),
+                            AppText(text: "Hours", fontSize: 16.sp, fontWeight: FontWeight.w400,color: widget.darkMode?AppDarkColors.headingColor:AppColors.headingColor,),
                           ],
                         )
                       : Container(),
@@ -233,16 +238,19 @@ class _CategoryBoxState extends State<CategoryBox> {
                     AppImages.forwardIcon,
                     width: 46.w,
                     height: 25.h,
+                    color: widget.darkMode?AppDarkColors.headingColor:AppColors.headingColor,
                   ),
                   SvgPicture.asset(
                     AppImages.forwardIcon,
                     width: 46.w,
                     height: 25.h,
+                    color: widget.darkMode?AppDarkColors.headingColor:AppColors.headingColor,
                   ),
                   SvgPicture.asset(
                     AppImages.forwardIcon,
                     width: 46.w,
                     height: 25.h,
+                    color: widget.darkMode?AppDarkColors.headingColor:AppColors.headingColor,
                   ),
                 ],
               ),

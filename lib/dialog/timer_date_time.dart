@@ -1,4 +1,5 @@
 import 'package:ayyami/constants/colors.dart';
+import 'package:ayyami/constants/dark_mode_colors.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -7,8 +8,9 @@ import 'package:intl/intl.dart';
 
 class DialogDateTime extends StatefulWidget {
   Function(DateTime date, TimeOfDay time) getDateTime;
+  bool darkMode;
 
-  DialogDateTime({required this.getDateTime, super.key});
+  DialogDateTime({required this.getDateTime,required this.darkMode, super.key});
 
   @override
   State<StatefulWidget> createState() {
@@ -40,14 +42,14 @@ class DialogDateTimeState extends State<DialogDateTime> {
                       margin: const EdgeInsets.only(top: 50),
                       padding: const EdgeInsets.only(top: 70, left: 10, right: 10),
                       decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10), gradient: AppColors.backgroundGradient),
+                          borderRadius: BorderRadius.circular(10), gradient: widget.darkMode?AppDarkColors.backgroundGradient:AppColors.backgroundGradient),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
                             'select_date_time'.tr,
-                            style: const TextStyle(
-                                color: AppColors.headingColor, fontWeight: FontWeight.w700, fontSize: 18),
+                            style: TextStyle(
+                                color: widget.darkMode?AppDarkColors.headingColor:AppColors.headingColor, fontWeight: FontWeight.w700, fontSize: 18),
                           ),
                           const SizedBox(
                             height: 20,
@@ -58,8 +60,8 @@ class DialogDateTimeState extends State<DialogDateTime> {
                               children: [
                                 Text(
                                   'select_date'.tr,
-                                  style: const TextStyle(
-                                    color: AppColors.headingColor,
+                                  style: TextStyle(
+                                    color: widget.darkMode?AppDarkColors.headingColor:AppColors.headingColor,
                                     fontSize: 13,
                                     fontWeight: FontWeight.w700,
                                   ),
@@ -72,12 +74,12 @@ class DialogDateTimeState extends State<DialogDateTime> {
                                   decoration: InputDecoration(
                                     label: Text(
                                       pickedDate,
-                                      style: const TextStyle(color: AppColors.headingColor, fontSize: 15),
+                                      style: TextStyle(color: widget.darkMode?AppDarkColors.headingColor:AppColors.headingColor, fontSize: 15),
                                     ),
                                     isDense: true,
                                     filled: true,
-                                    fillColor: const Color(0xFFFFFFFF),
-                                    prefixIcon: const Icon(Icons.calendar_month, color: AppColors.headingColor),
+                                    fillColor: widget.darkMode?AppDarkColors.lightGreyBoxColor:AppColors.lightGreyBoxColor,
+                                    prefixIcon:  Icon(Icons.calendar_month, color: widget.darkMode?AppDarkColors.headingColor:AppColors.headingColor,),
                                     border: const OutlineInputBorder(
                                       borderRadius: BorderRadius.all(
                                         Radius.circular(30),
@@ -93,7 +95,7 @@ class DialogDateTimeState extends State<DialogDateTime> {
                                   context: context,
                                   initialDate: now,
                                   firstDate: DateTime(2022),
-                                  lastDate: DateTime(2023,12))
+                                  lastDate: DateTime(2023,12),)
                                   .then((value) {
                                 date = value!;
                                 DateFormat format = DateFormat('dd, MMMM, yyyy');
@@ -113,8 +115,8 @@ class DialogDateTimeState extends State<DialogDateTime> {
                               children: [
                                 Text(
                                   'select_time'.tr,
-                                  style: const TextStyle(
-                                    color: AppColors.headingColor,
+                                  style:  TextStyle(
+                                    color: widget.darkMode?AppDarkColors.headingColor:AppColors.headingColor,
                                     fontSize: 13,
                                     fontWeight: FontWeight.w700,
                                   ),
@@ -127,12 +129,12 @@ class DialogDateTimeState extends State<DialogDateTime> {
                                   decoration: InputDecoration(
                                     label: Text(
                                       pickedTime,
-                                      style: const TextStyle(color: AppColors.headingColor, fontSize: 15),
+                                      style:  TextStyle(color: widget.darkMode?AppDarkColors.headingColor:AppColors.headingColor, fontSize: 15),
                                     ),
                                     isDense: true,
                                     filled: true,
-                                    fillColor: Color(0xFFFFFFFF),
-                                    prefixIcon: Icon(Icons.alarm, color: AppColors.headingColor),
+                                    fillColor: widget.darkMode?AppDarkColors.headingColor:AppColors.headingColor,
+                                    prefixIcon: Icon(Icons.alarm, color: widget.darkMode?AppDarkColors.headingColor:AppColors.headingColor,),
                                     border: OutlineInputBorder(
                                       borderRadius: BorderRadius.all(
                                         Radius.circular(30),
@@ -185,6 +187,7 @@ class DialogDateTimeState extends State<DialogDateTime> {
                   'assets/images/dialog_calender.png',
                   width: 100,
                   height: 100,
+                  color: widget.darkMode?AppDarkColors.headingColor:AppColors.headingColor,
                 ),
               ],
             ),

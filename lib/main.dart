@@ -8,7 +8,7 @@ import 'package:ayyami/providers/menses_provider.dart';
 import 'package:ayyami/providers/tuhur_provider.dart';
 import 'package:ayyami/providers/user_provider.dart';
 import 'package:ayyami/screens/Splash_screen.dart';
-import 'package:ayyami/screens/history.dart';
+import 'package:ayyami/screens/history/history.dart';
 import 'package:ayyami/screens/main_screen.dart';
 import 'package:ayyami/screens/medicine_reminder.dart';
 import 'package:ayyami/translation/app_translation.dart';

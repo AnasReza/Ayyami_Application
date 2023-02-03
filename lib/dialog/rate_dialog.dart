@@ -1,10 +1,14 @@
 import 'package:ayyami/constants/colors.dart';
+import 'package:ayyami/constants/dark_mode_colors.dart';
 import 'package:ayyami/constants/images.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
 class RateDialog extends StatelessWidget {
+  bool darkMode;
+  RateDialog({required this.darkMode});
+
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -22,13 +26,13 @@ class RateDialog extends StatelessWidget {
                   margin: EdgeInsets.only(top: 50),
                   padding: EdgeInsets.only(top: 70),
                   decoration:
-                      BoxDecoration(gradient: AppColors.backgroundGradient, borderRadius: BorderRadius.circular(10)),
+                      BoxDecoration(gradient: darkMode?AppDarkColors.backgroundGradient:AppColors.backgroundGradient, borderRadius: BorderRadius.circular(10)),
                   child: Column(
                     children: [
                       Text(
                         'like_using'.tr,
                         style:
-                            const TextStyle(color: AppColors.headingColor, fontWeight: FontWeight.w700, fontSize: 25),
+                             TextStyle(color: darkMode?AppDarkColors.headingColor:AppColors.headingColor, fontWeight: FontWeight.w700, fontSize: 25),
                       ),
                       const SizedBox(
                         height: 20,
@@ -36,7 +40,7 @@ class RateDialog extends StatelessWidget {
                       Text(
                         'recommend_rating'.tr,
                         style:
-                            const TextStyle(color: AppColors.headingColor, fontWeight: FontWeight.w700, fontSize: 14),
+                            TextStyle(color: darkMode?AppDarkColors.headingColor:AppColors.headingColor, fontWeight: FontWeight.w700, fontSize: 14),
                       ),
                       const SizedBox(
                         height: 50,

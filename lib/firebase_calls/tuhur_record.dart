@@ -9,6 +9,7 @@ import 'package:hive/hive.dart';
 
 import '../providers/menses_provider.dart';
 import '../providers/tuhur_provider.dart';
+import '../providers/user_provider.dart';
 
 class TuhurRecord{
   static uploadTuhurStartTime(String uid,int from,bool isMenstrual) {
@@ -58,6 +59,43 @@ class TuhurRecord{
       }
     });
   }
+
+  getLastTuhur(UserProvider pro,Function(List<QueryDocumentSnapshot<Map<String, dynamic>>>) listReturn) {
+    List<QueryDocumentSnapshot<Map<String, dynamic>>> docList=[];
+    FirebaseFirestore.instance
+        .collection('tuhur')
+        .where('uid', isEqualTo: pro.getUid)
+        .orderBy('start_date', descending: true)
+        .snapshots()
+        .listen((event) {
+          docList = event.docs;
+          print('${docList.length} from tuhur record');
+          listReturn(docList);
+      // for (int x = 0; x < docList.length; x++) {
+      //   var doc = docList[x];
+      //   Timestamp startTime = doc.get('start_date');
+      //   bool non_menstrual_bleeding = doc.get('non_menstrual_bleeding');
+      //   if (!non_menstrual_bleeding) {
+      //     try {
+      //       Timestamp endTime=doc.get('end_time');
+      //
+      //       int days = doc.get('days');
+      //       int hour = doc.get('hours');
+      //       int minute = doc.get('minutes');
+      //       int seconds = doc.get('seconds');
+      //       print('${doc.id}==menses');
+      //       pro.setLastTuhur(startTime);
+      //       pro.setLastTuhurTime(days, hour, minute, seconds);
+      //       print('${doc.id}=uid from menses collection');
+      //       break;
+      //     } catch (e) {
+      //     }
+      //   }
+      // }
+    });
+
+  }
+
   static void saveDocMensesId(String id) async {
     var box = await Hive.openBox('aayami_menses');
     box.put('menses_timer_doc_id', id);
@@ -76,4 +114,5 @@ class TuhurRecord{
     var box = await Hive.openBox('aayami_tuhur');
     return box.get('tuhur_timer_doc_id');
   }
+
 }

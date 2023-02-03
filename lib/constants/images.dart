@@ -37,8 +37,10 @@ class AppImages {
 
   ///DIALOGS
   static const String rateIcon = "assets/images/rate.png";
+  static const String colorIcon = "assets/images/likoria_color.png";
 
   /// General App Assets
   static const String logo = "assets/svg/app_logo.svg";
+  static const String logo_white = "assets/svg/app_logo_white.svg";
   static const String rectBtnGradientColor = "assets/base.png";
 }

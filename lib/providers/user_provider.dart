@@ -8,6 +8,7 @@ class UserProvider extends ChangeNotifier{
   String? married;
   late GeoPoint currentPoint;
   bool? login;
+  bool isDarkMode=false;
   late Timestamp lastMenses;
   late Timestamp lastMensesEnd;
   late Timestamp lastTuhur;
@@ -20,6 +21,7 @@ class UserProvider extends ChangeNotifier{
   String? get getMarried=> married;
   GeoPoint get getCurrentPoint=> currentPoint;
   bool? get getLogin=>login;
+  bool get getIsDarkMode=>isDarkMode;
   Timestamp get getLastMenses => lastMenses;
   Timestamp get getLastMensesEnd => lastMensesEnd;
   Timestamp get getLastTuhur => lastTuhur;
@@ -74,6 +76,9 @@ class UserProvider extends ChangeNotifier{
     currentPoint=value;
     notifyListeners();
   }
-
+  setDarkMode(bool value){
+    isDarkMode=value;
+    notifyListeners();
+  }
 
 }

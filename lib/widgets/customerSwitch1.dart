@@ -6,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CustomSwitch1 extends StatefulWidget {
   final bool value;
+  final bool darkMode;
   final ValueChanged<bool> onChanged;
   final Color activeColor;
   final Color inactiveColor;
@@ -18,6 +19,7 @@ class CustomSwitch1 extends StatefulWidget {
       {required this.value,
       required this.onChanged,
       required this.activeColor,
+        required this.darkMode,
       this.inactiveColor = Colors.grey,
       this.activeText = '',
       this.inactiveText = '',

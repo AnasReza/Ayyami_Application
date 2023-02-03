@@ -8,18 +8,21 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 
 import '../constants/colors.dart';
+import '../constants/dark_mode_colors.dart';
 import '../constants/images.dart';
 import '../screens/prayer/prayer_timing.dart';
 
 class CustomBottomNav extends StatelessWidget {
-  const CustomBottomNav({
+  CustomBottomNav({
     Key? key,
     required int cIndex,
-    required this.tappingIndex
+    required this.tappingIndex,
+    required this.darkMode,
   })  : _cIndex = cIndex,
         super(key: key);
 
   final int _cIndex;
+  bool darkMode;
   final Function(int tappingIndex) tappingIndex;
 
   @override
@@ -34,7 +37,7 @@ class CustomBottomNav extends StatelessWidget {
           topRight: Radius.circular(35.r),
         ),
         border: Border.all(
-          color: AppColors.headingColor,
+          color: darkMode ? Colors.white : AppColors.headingColor,
           width: 1.w,
           // strokeAlign: StrokeAlign.inside,
         ),
@@ -50,22 +53,24 @@ class CustomBottomNav extends StatelessWidget {
       child: BottomNavigationBar(
         currentIndex: _cIndex,
         type: BottomNavigationBarType.fixed,
-        selectedItemColor: AppColors.headingColor,
-        unselectedItemColor: AppColors.headingColor,
+        selectedItemColor: darkMode ? AppDarkColors.headingColor : AppColors.headingColor,
+        unselectedItemColor: darkMode ? AppDarkColors.headingColor : AppColors.headingColor,
+        backgroundColor: darkMode?AppDarkColors.darkNav:Colors.white,
         items: [
           BottomNavigationBarItem(
-              icon: Column(
-                children: [
-                  SvgPicture.asset(
-                    AppImages.profileBtn,
-                    width: 42.w,
-                    height: 34.h,
-                    color: AppColors.headingColor,
-                  ),
-                  SizedBox(height: 9.h),
-                ],
-              ),
-              label: 'Profile'),
+            icon: Column(
+              children: [
+                SvgPicture.asset(
+                  AppImages.profileBtn,
+                  width: 42.w,
+                  height: 34.h,
+                  color: darkMode ? AppDarkColors.headingColor : AppColors.headingColor,
+                ),
+                SizedBox(height: 9.h),
+              ],
+            ),
+            label: 'Profile',
+          ),
           BottomNavigationBarItem(
               icon: Column(
                 children: [
@@ -73,7 +78,7 @@ class CustomBottomNav extends StatelessWidget {
                     AppImages.supplicationsBtn,
                     width: 42.w,
                     height: 34.h,
-                    color: AppColors.headingColor,
+                    color: darkMode ? AppDarkColors.headingColor : AppColors.headingColor,
                   ),
                   SizedBox(height: 9.h),
                 ],
@@ -86,7 +91,7 @@ class CustomBottomNav extends StatelessWidget {
                     AppImages.prayerBtn,
                     width: 42.w,
                     height: 34.h,
-                    color: AppColors.headingColor,
+                    color: darkMode ? AppDarkColors.headingColor : AppColors.headingColor,
                   ),
                   SizedBox(height: 9.h),
                 ],
@@ -99,7 +104,7 @@ class CustomBottomNav extends StatelessWidget {
                     AppImages.settingsBtn,
                     width: 42.w,
                     height: 34.h,
-                    color: AppColors.headingColor,
+                    color: darkMode ? AppDarkColors.headingColor : AppColors.headingColor,
                   ),
                   SizedBox(height: 9.h),
                 ],
@@ -117,10 +122,10 @@ class CustomBottomNav extends StatelessWidget {
             // Navigator.of(context).pushNamed(remindersRoute);
             // nextScreen(context, Supplications());
           } else if (index == 2) {
-            tappingIndex(index+1);
+            tappingIndex(index + 1);
             // nextScreen(context, PrayerTiming());
           } else if (index == 3) {
-            tappingIndex(index+1);
+            tappingIndex(index + 1);
             // nextScreen(context, Settings());
           }
         },

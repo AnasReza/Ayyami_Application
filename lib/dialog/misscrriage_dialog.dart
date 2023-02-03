@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 
+import '../constants/colors.dart';
+import '../constants/dark_mode_colors.dart';
 import '../widgets/gradient_button.dart';
 import '../widgets/utils.dart';
 
 class MiscarraigeDialog extends StatefulWidget{
   late Function(String) reason;
+  bool darkMode;
 
-  MiscarraigeDialog({super.key,required this.reason});
+  MiscarraigeDialog({super.key,required this.reason,required this.darkMode});
 
   @override
   State<StatefulWidget> createState() {
@@ -30,22 +33,22 @@ class MiscarraigeDialogState extends State<MiscarraigeDialog>{
                  Container(
                    height: 150,
                    width: 200,
-                   child: Image.asset("assets/images/icon_name.png"),
+                   child: Image.asset("assets/images/icon_name.png",color:  widget.darkMode?AppDarkColors.headingColor:AppColors.headingColor,),
                  ),
                  SizedBox(height: 45),
                  Container(
                    height: 130,
                    width: 180,
-                   child: Image.asset("assets/images/question_one_icon.png"),
+                   child: Image.asset("assets/images/question_one_icon.png",color:  widget.darkMode?AppDarkColors.headingColor:AppColors.headingColor,),
                  ),
                  SizedBox(height: 45),
                  Container(
-                   child: const Text(
+                   child:  Text(
                      "You have stopped the pregnancy tracker before 9 months. Please tell us is it Miscarriage or DNC?",
                      style: TextStyle(
                          fontSize: 30.0,
                          fontFamily: 'DMSans',
-                         color: Color(0xff1F3D73),
+                         color: widget.darkMode?Colors.white:const Color(0xff1F3D73),
                          fontWeight: FontWeight.w700,
                          letterSpacing: 1),
                    ),

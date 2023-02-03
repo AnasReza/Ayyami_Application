@@ -49,4 +49,13 @@ class Utils{
     var box = await Hive.openBox('aayami_post-natal');
     return box.get('post-natal_timer_doc_id');
   }
+  static void saveAppData(dynamic id,String dataName) async {
+    var box = await Hive.openBox('aayami');
+    box.put(dataName, id);
+  }
+
+  static dynamic getAppData(String dataName) async {
+    var box = await Hive.openBox('aayami');
+    return box.get(dataName);
+  }
 }

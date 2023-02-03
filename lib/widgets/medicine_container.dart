@@ -1,3 +1,5 @@
+import 'package:ayyami/constants/colors.dart';
+import 'package:ayyami/constants/dark_mode_colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -8,10 +10,13 @@ import '../constants/images.dart';
 class MedicineContainer extends StatelessWidget {
   final String medicinetitle;
   final String medicineTime;
-  const MedicineContainer({
+  bool darkMode;
+
+  MedicineContainer({
     Key? key,
     required this.medicineTime,
-    required this.medicinetitle
+    required this.medicinetitle,
+    required this.darkMode
   }) : super(key: key);
 
   @override
@@ -21,7 +26,7 @@ class MedicineContainer extends StatelessWidget {
       width: 180.w,
       height: 240.h,
       decoration: BoxDecoration(
-        color: const Color(0xffd9d9d9),
+        gradient: darkMode?AppDarkColors.backgroundGradient:AppColors.backgroundGradient,
         borderRadius: BorderRadius.circular(21.r),
       ),
       child: Center(
@@ -39,6 +44,7 @@ class MedicineContainer extends StatelessWidget {
                     AppImages.edit_icon,
                     height: 32.h,
                     width: 32.w,
+                    color: darkMode?AppDarkColors.headingColor:AppColors.headingColor,
                   ),
                 ),
               ],
@@ -49,7 +55,7 @@ class MedicineContainer extends StatelessWidget {
             Text(
               medicineTime,
               style: TextStyle(
-                color: const Color(0xff1f3d73),
+                color: darkMode?AppDarkColors.headingColor:AppColors.headingColor,
                 fontSize: 24.sp,
                 fontWeight: FontWeight.w400,
                 fontStyle: FontStyle.normal,
@@ -58,7 +64,7 @@ class MedicineContainer extends StatelessWidget {
             ),
             Text(medicinetitle,
                 style: TextStyle(
-                  color: const Color(0xff1f3d73),
+                  color: darkMode?AppDarkColors.headingColor:AppColors.headingColor,
                   fontSize: 32.sp,
                   fontWeight: FontWeight.w700,
                   fontStyle: FontStyle.normal,

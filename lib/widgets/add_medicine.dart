@@ -1,3 +1,4 @@
+import 'package:ayyami/constants/dark_mode_colors.dart';
 import 'package:ayyami/providers/prayer_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -5,8 +6,9 @@ import 'package:provider/provider.dart';
 
 import '../models/medicine_model.dart';
 class AddMedicine extends StatefulWidget {
-  const AddMedicine({Key? key}) : super(key: key);
+  AddMedicine({Key? key,required this.darkMode}) : super(key: key);
 
+  bool darkMode;
   @override
   State<AddMedicine> createState() => _AddMedicineState();
 }
@@ -71,10 +73,10 @@ class _AddMedicineState extends State<AddMedicine> {
                 width: double.infinity,
                 height: 82.h,
                 decoration: BoxDecoration(
-                    color: const Color(0xffd9d9d9),
+                    color:  const Color(0xffd9d9d9),
                     borderRadius: BorderRadius.circular(8.r)),
                 child: Center(
-                    child: Text("Add Medicine")
+                    child: Text("Add Medicine",style: TextStyle(color: widget.darkMode?AppDarkColors.headingColor:AppDarkColors.headingColor),)
                 ),
               ),
             )

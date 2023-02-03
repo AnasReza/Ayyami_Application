@@ -20,6 +20,7 @@ import 'package:stop_watch_timer/stop_watch_timer.dart';
 import 'package:workmanager/workmanager.dart';
 
 import '../constants/colors.dart';
+import '../constants/dark_mode_colors.dart';
 import '../constants/images.dart';
 import '../dialog/timer_date_time.dart';
 import '../providers/menses_provider.dart';
@@ -30,13 +31,14 @@ class TimerBox extends StatefulWidget {
   Function(bool mensis, String regulationMessage) mensis;
   String islamicMonth;
 
+
   TimerBox({Key? key, required this.mensis, required this.islamicMonth}) : super(key: key);
 
   @override
   State<TimerBox> createState() => _TimerBoxState();
 }
 
-class _TimerBoxState extends State<TimerBox> with WidgetsBindingObserver {
+class _TimerBoxState extends State<TimerBox> {
   static late String uid;
   static int tuhurMinimum = 15;
   static late MensesProvider mensesProvider;
@@ -45,30 +47,11 @@ class _TimerBoxState extends State<TimerBox> with WidgetsBindingObserver {
   static int hoursCount = 0;
   static int daysCount = 0;
   MensesTracker mensesTrack = MensesTracker();
+  bool darkMode=false;
 
   @override
   void initState() {
-    WidgetsBinding.instance.addObserver(this);
     super.initState();
-  }
-
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    super.didChangeAppLifecycleState(state);
-    switch (state) {
-      case AppLifecycleState.resumed:
-        print('Timer Box is resumed');
-        break;
-      case AppLifecycleState.inactive:
-        print('Timer Box is inactive');
-        break;
-      case AppLifecycleState.paused:
-        print('Timer Box is paused');
-        break;
-      case AppLifecycleState.detached:
-        print('Timer Box is detached');
-        break;
-    }
   }
 
   @override
@@ -79,6 +62,7 @@ class _TimerBoxState extends State<TimerBox> with WidgetsBindingObserver {
       uid = userProvider.getUid!;
       bool isTimerStart = pro.getTimerStart;
       bool isTuhurStart = tuhurProvider.getTimerStart;
+      darkMode=userProvider.getIsDarkMode;
 
       mensesProvider = pro;
       print('${pro.getDays.toString()} days from menses timer ');
@@ -91,10 +75,10 @@ class _TimerBoxState extends State<TimerBox> with WidgetsBindingObserver {
             width: 579.w,
             height: 205.h,
             decoration: BoxDecoration(
-              color: AppColors.white,
+              color: darkMode?AppDarkColors.white:AppColors.white,
               borderRadius: BorderRadius.circular(18.r),
               border: Border.all(
-                color: AppColors.headingColor,
+                color:darkMode?AppDarkColors.headingColor:AppColors.headingColor,
                 width: 5.w,
               ),
               boxShadow: const [
@@ -336,6 +320,7 @@ class _TimerBoxState extends State<TimerBox> with WidgetsBindingObserver {
               mensesTrack.startMensisTimer(mensesProvider, uid, tuhurProvider, Timestamp.fromDate(startDate));
               Navigator.pop(dialogContext);
             },
+            darkMode: darkMode,
           );
         });
   }
@@ -365,6 +350,7 @@ class _TimerBoxState extends State<TimerBox> with WidgetsBindingObserver {
               widget.mensis(true, showRegulation);
               Navigator.pop(dialogContext);
             },
+            darkMode: darkMode,
           );
         });
   }

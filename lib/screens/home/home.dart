@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors_in_immutables
 
+import 'package:ayyami/constants/dark_mode_colors.dart';
 import 'package:ayyami/constants/images.dart';
 import 'package:ayyami/providers/tuhur_provider.dart';
 import 'package:ayyami/providers/user_provider.dart';
@@ -69,7 +70,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
         bool non_menstrual_bleeding = doc.get('non_menstrual_bleeding');
         if (!non_menstrual_bleeding) {
           try {
-            Timestamp endTime=doc.get('end_time');
+            Timestamp endTime = doc.get('end_time');
 
             int days = doc.get('days');
             int hour = doc.get('hours');
@@ -85,16 +86,13 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
             pro.setLastTuhurTime(days, hour, minute, seconds);
             print('${doc.id}=uid from menses collection');
             break;
-          } catch (e) {
-          }
+          } catch (e) {}
         }
       }
     });
-
   }
 
   getLastMenses(String uid, UserProvider pro) {
-
     FirebaseFirestore.instance
         .collection('menses')
         .where('uid', isEqualTo: uid)
@@ -104,7 +102,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
       var docList = event.docs;
       for (var doc in docList) {
         Timestamp startTime = doc.get('start_date');
-        try{
+        try {
           Timestamp endTime = doc.get('end_time');
           DateTime startDate = startTime.toDate();
           int days = doc.get('days');
@@ -123,17 +121,17 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
           pro.setLastMensesEnd(endTime);
           pro.setLastMensesTime(days, hour, minute, seconds);
 
-          var mensesProvider=context.read<MensesProvider>();
+          var mensesProvider = context.read<MensesProvider>();
           mensesProvider.setStartTime(startTime);
           mensesProvider.setMensesID(doc.id);
           print('${doc.id}=uid from menses collection');
           break;
-        }catch(e){}
-
+        } catch (e) {}
       }
     });
   }
-  void startMensesAgain(String uid, UserProvider pro){
+
+  void startMensesAgain(String uid, UserProvider pro) {
     FirebaseFirestore.instance
         .collection('menses')
         .where('uid', isEqualTo: uid)
@@ -144,7 +142,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
       var docList = event.docs;
       for (var doc in docList) {
         Timestamp startTime = doc.get('start_date');
-        try{
+        try {
           Timestamp endTime = doc.get('end_time');
           DateTime startDate = startTime.toDate();
           int days = doc.get('days');
@@ -153,23 +151,21 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
           int seconds = doc.get('seconds');
 
           DateFormat format = DateFormat('dd MMMM yyyy');
-
-        }catch(e){
-          var mensesProvider=context.read<MensesProvider>();
-          var timerStart=mensesProvider.getTimerStart;
-          if(!timerStart){
+        } catch (e) {
+          var mensesProvider = context.read<MensesProvider>();
+          var timerStart = mensesProvider.getTimerStart;
+          if (!timerStart) {
             mensesProvider.setTimerStart(true);
-            var now=DateTime.now();
-            var diff=now.difference(startTime.toDate());
-            MensesTracker().startMensesTimerAgain(mensesProvider, diff.inMilliseconds);}
-
+            var now = DateTime.now();
+            var diff = now.difference(startTime.toDate());
+            MensesTracker().startMensesTimerAgain(mensesProvider, diff.inMilliseconds);
+          }
         }
-
       }
     });
   }
-  void startTuhurAgain(String uid, UserProvider pro){
 
+  void startTuhurAgain(String uid, UserProvider pro) {
     FirebaseFirestore.instance
         .collection('tuhur')
         .where('uid', isEqualTo: uid)
@@ -180,11 +176,11 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
       for (int x = 0; x < docList.length; x++) {
         var doc = docList[x];
         Timestamp startTime = doc.get('start_date');
-        int tuhurFrom=doc.get('from');
+        int tuhurFrom = doc.get('from');
         bool non_menstrual_bleeding = doc.get('non_menstrual_bleeding');
         if (!non_menstrual_bleeding) {
           try {
-            Timestamp endTime=doc.get('end_time');
+            Timestamp endTime = doc.get('end_time');
 
             int days = doc.get('days');
             int hour = doc.get('hours');
@@ -193,14 +189,14 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
 
             break;
           } catch (e) {
-            var tuhurProvider=context.read<TuhurProvider>();
-            var timerStart=tuhurProvider.getTimerStart;
-            if(!timerStart){
+            var tuhurProvider = context.read<TuhurProvider>();
+            var timerStart = tuhurProvider.getTimerStart;
+            if (!timerStart) {
               tuhurProvider.setTuhurID(doc.id);
               tuhurProvider.setTimerStart(true);
               tuhurProvider.setFrom(tuhurFrom);
-              var now=DateTime.now();
-              var diff=now.difference(startTime.toDate());
+              var now = DateTime.now();
+              var diff = now.difference(startTime.toDate());
               TuhurTracker().startTuhurTimerAgain(tuhurProvider, diff.inMilliseconds);
             }
           }
@@ -233,191 +229,192 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
   Widget build(BuildContext context) {
     return Consumer<UserProvider>(builder: (consumerContext, userProvider, child) {
       final provider = context.read<PrayerProvider>();
-      return Scaffold(
-        // bottomNavigationBar: CustomBottomNav(cIndex: _cIndex),
-        // floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        // floatingActionButton: const FAB(),
-        backgroundColor: AppColors.white,
-        body: SafeArea(
-          child: Container(
-            child: Padding(
-              padding: EdgeInsets.only(
-                left: 70.w,
-                right: 70.w,
-                top: 21.h,
+      var darkMode = userProvider.getIsDarkMode;
+      return Container(
+        height: double.infinity,
+        child: Padding(
+          padding: EdgeInsets.only(
+            left: 70.w,
+            right: 70.w,
+            top: 21.h,
+          ),
+          child: SingleChildScrollView(
+            child: Column(children: [
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //   children: [
+              //     SvgPicture.asset(
+              //       AppImages.logo,
+              //       width: 249.6.w,
+              //       height: 78.36.h,
+              //     ),
+              //     InkWell(
+              //       onTap: () {
+              //         Navigator.push(context, MaterialPageRoute(builder: (context) => PrayerTiming()));
+              //       },
+              //       child: SvgPicture.asset(
+              //         AppImages.menuIcon,
+              //         width: 44.w,
+              //         height: 38.h,
+              //       ),
+              //     ),
+              //   ],
+              // ),
+              Padding(
+                padding: EdgeInsets.only(left: 440.w, top: 60.h),
+                child: AppText(
+                  text: "${provider.gorgeonTodayDateFormated}\n${provider.hijriDateFormated}",
+                  fontSize: 16.sp,
+                  fontWeight: FontWeight.w400,
+                  color: darkMode?AppDarkColors.headingColor:AppColors.headingColor,
+                ),
               ),
-              child: SingleChildScrollView(
-                child: Column(children: [
-                  // Row(
-                  //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  //   children: [
-                  //     SvgPicture.asset(
-                  //       AppImages.logo,
-                  //       width: 249.6.w,
-                  //       height: 78.36.h,
-                  //     ),
-                  //     InkWell(
-                  //       onTap: () {
-                  //         Navigator.push(context, MaterialPageRoute(builder: (context) => PrayerTiming()));
-                  //       },
-                  //       child: SvgPicture.asset(
-                  //         AppImages.menuIcon,
-                  //         width: 44.w,
-                  //         height: 38.h,
-                  //       ),
-                  //     ),
-                  //   ],
-                  // ),
-                  Padding(
-                    padding: EdgeInsets.only(left: 440.w, top: 60.h),
-                    child: AppText(
-                      text: "${provider.gorgeonTodayDateFormated}\n${provider.hijriDateFormated}",
-                      fontSize: 16.sp,
-                      fontWeight: FontWeight.w400,
-                    ),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: AppText(
+                  text: "  Menstrual bleeding",
+                  fontSize: 30.sp,
+                  fontWeight: FontWeight.w700,
+                  color: darkMode?AppDarkColors.headingColor:AppColors.headingColor,
+                ),
+              ),
+              SizedBox(height: 14.h),
+              Container(
+                width: 558.w,
+                height: 65.h,
+                decoration: BoxDecoration(
+                  color: AppColors.headingColor,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(10.0.r),
+                    topRight: Radius.circular(10.0.r),
                   ),
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: AppText(
-                      text: "  Menstrual bleeding",
-                      fontSize: 30.sp,
-                      fontWeight: FontWeight.w700,
-                    ),
+                ),
+                child: Padding(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 29.w,
+                    vertical: 15.h,
                   ),
-                  SizedBox(height: 14.h),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      AppText(
+                        text: "Recent Regulation",
+                        color: AppColors.white,
+                        fontSize: 28.sp,
+                        fontWeight: FontWeight.w700,
+                      ),
+                      InkWell(
+                        onTap: () {
+                          setState(() {
+                            // regulationExpanded = !regulationExpanded;
+                          });
+                        },
+                        child: SvgPicture.asset(
+                          regulationExpanded ? AppImages.upIcon : AppImages.downIcon,
+                          // width: 17.6.w,
+                          // height: 8.8.h,
+                          color: AppColors.white,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+
+              regulationExpanded
+                  ? Column(
+                children: [
                   Container(
                     width: 558.w,
-                    height: 65.h,
+                    height: 120.h,
                     decoration: BoxDecoration(
-                      color: AppColors.headingColor,
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(10.0.r),
-                        topRight: Radius.circular(10.0.r),
+                      border: Border.all(
+                        color: AppColors.headingColor,
+                        width: 1.w,
                       ),
+                      color: AppColors.white,
+                      boxShadow: const [
+                        BoxShadow(
+                          color: Color(0x1e1f3d73),
+                          offset: Offset(0, 12),
+                          blurRadius: 40,
+                          spreadRadius: 0,
+                        )
+                      ],
                     ),
                     child: Padding(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 29.w,
-                        vertical: 15.h,
-                      ),
+                      padding: EdgeInsets.only(left: 30.w, right: 5.w, top: 10),
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          AppText(
-                            text: "Recent Regulation",
-                            color: AppColors.white,
-                            fontSize: 28.sp,
-                            fontWeight: FontWeight.w700,
-                          ),
-                          InkWell(
-                            onTap: () {
-                              setState(() {
-                                // regulationExpanded = !regulationExpanded;
-                              });
-                            },
-                            child: SvgPicture.asset(
-                              regulationExpanded ? AppImages.upIcon : AppImages.downIcon,
-                              // width: 17.6.w,
-                              // height: 8.8.h,
-                              color: AppColors.white,
-                            ),
-                          ),
+                          SvgPicture.asset(AppImages.safeIcon),
+                          SizedBox(width: 25.8.w),
+                          Container(
+                              width: MediaQuery.of(context).size.width * 0.63,
+                              child: SingleChildScrollView(
+                                child: AppText(
+                                  text: regulationMessage,
+                                  fontSize: 20.sp,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              )),
                         ],
                       ),
                     ),
                   ),
-
-                  regulationExpanded
-                      ? Column(
-                          children: [
-                            Container(
-                              width: 558.w,
-                              height: 120.h,
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                  color: AppColors.headingColor,
-                                  width: 1.w,
-                                ),
-                                color: AppColors.white,
-                                boxShadow: const [
-                                  BoxShadow(
-                                    color: Color(0x1e1f3d73),
-                                    offset: Offset(0, 12),
-                                    blurRadius: 40,
-                                    spreadRadius: 0,
-                                  )
-                                ],
-                              ),
-                              child: Padding(
-                                padding: EdgeInsets.only(left: 30.w, right: 5.w,top: 10),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-
-                                    SvgPicture.asset(AppImages.safeIcon),
-                                    SizedBox(width: 25.8.w),
-                                    Container(
-                                      width: MediaQuery.of(context).size.width * 0.63,
-                                      child: SingleChildScrollView(child: AppText(
-                                        text: regulationMessage,
-                                        fontSize: 20.sp,
-                                        fontWeight: FontWeight.w700,
-                                      ),)
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ],
-                        )
-                      : Container(),
-                  TimerBox(mensis: (value, message) {
+                ],
+              )
+                  : Container(),
+              TimerBox(
+                  mensis: (value, message) {
                     setState(() {
                       regulationExpanded = value;
                       regulationMessage = message;
                     });
-                  },islamicMonth: provider.hijriDateFormated),
-                  SizedBox(height: 117.6.h),
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: AppText(
-                      text: "  Last Cycle",
-                      fontSize: 30.sp,
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                  SizedBox(height: 20.h),
-                  AppText(
-                    text: lastCycleDate,
-                    fontSize: 20.sp,
-                    fontWeight: FontWeight.w400,
-                    color: AppColors.grey,
-                  ),
-                  SizedBox(height: 15.h),
-                  CategoryBox(
-                    categoryName: 'Tuhur',
-                    days: lastTuhurDays,
-                    hours: lastTuhurHours,
-                    checkbox: false,
-                    showDate: true,
-                    isSelected: false,
-                    comingSoon: false,
-                  ),
-                  SizedBox(height: 41.h),
-                  CategoryBox(
-                    categoryName: 'Mensis',
-                    days: lastMensesDays,
-                    hours: lastMensesHours,
-                    checkbox: false,
-                    showDate: true,
-                    comingSoon: false,
-                    isSelected: false,
-                  ),
-                ]),
+                  },
+                  islamicMonth: provider.hijriDateFormated),
+              SizedBox(height: 117.6.h),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: AppText(
+                  text: "  Last Cycle",
+                  fontSize: 30.sp,
+                  fontWeight: FontWeight.w700,
+                  color: darkMode?AppDarkColors.headingColor:AppColors.headingColor,
+                ),
               ),
-            ),
+              SizedBox(height: 20.h),
+              AppText(
+                text: lastCycleDate,
+                fontSize: 20.sp,
+                fontWeight: FontWeight.w400,
+                color: AppColors.grey,
+              ),
+              SizedBox(height: 15.h),
+              CategoryBox(
+                categoryName: 'Tuhur',
+                days: lastTuhurDays,
+                hours: lastTuhurHours,
+                checkbox: false,
+                showDate: true,
+                isSelected: false,
+                comingSoon: false,
+                darkMode: darkMode,
+              ),
+              SizedBox(height: 41.h),
+              CategoryBox(
+                categoryName: 'Mensis',
+                days: lastMensesDays,
+                hours: lastMensesHours,
+                checkbox: false,
+                showDate: true,
+                comingSoon: false,
+                isSelected: false,
+                darkMode: darkMode,
+              ),
+            ]),
           ),
         ),
       );

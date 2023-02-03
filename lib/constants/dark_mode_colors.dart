@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
 
-class AppColors {
-  static Color white = Color(0xFFFFFFFF).withOpacity(1.0);
+class AppDarkColors{
+  static Color white = Color(0xff15191B).withOpacity(1.0);
 
-  static const Color headingColor = Color(0xff1F3D73);
+  static const Color headingColor = Colors.white;
+  static Color darkNav = const Color(0xff22252D).withOpacity(1.0);
 
   static const Color black = Colors.black;
 
   static const Color grey = Color(0xff828282);
-  static const Color lightGreyBoxColor = Color(0xffF2F2F2);
+  static const Color lightGreyBoxColor = Color(0xff21252D);
   static const Color greyBoxColor = Color(0xffD9D9D9);
 
   static Color pink = Color(0xffC43CF3).withOpacity(1.0);
-  static const Color lightPink = Color(0xffD88DBC);
+  static const Color lightPink = Color(0xff291022);
   static const Color pinkShade = Color(0xffffbbe6);
 
   static const Color yellow = Color(0xfff0e68c);
