@@ -1,9 +1,11 @@
 import 'package:ayyami/constants/colors.dart';
 import 'package:ayyami/constants/dark_mode_colors.dart';
+import 'package:ayyami/providers/likoria_timer_provider.dart';
 import 'package:ayyami/providers/post-natal_timer_provider.dart';
 import 'package:ayyami/providers/prayer_provider.dart';
 import 'package:ayyami/providers/pregnancy_timer_provider.dart';
 import 'package:ayyami/providers/user_provider.dart';
+import 'package:ayyami/tracker/likoria_tracker.dart';
 import 'package:ayyami/tracker/post-natal_tracker.dart';
 import 'package:ayyami/tracker/pregnancy_tracker.dart';
 import 'package:ayyami/widgets/likoria_timer_box.dart';
@@ -34,8 +36,33 @@ class AllTrackersState extends State<AllTrackers> {
     super.initState();
     getPregnancyDetails();
     getPostNatalDetails();
+    getLikoriaDetails();
   }
+  getLikoriaDetails(){
+    var userProvider = context.read<UserProvider>();
+    var likoriaProvider = context.read<LikoriaTimerProvider>();
+    FirebaseFirestore.instance
+        .collection('likoria')
+        .where('uid', isEqualTo: userProvider.getUid)
+        .orderBy('start_date', descending: true)
+        .snapshots()
+        .listen((event) {
+      var docList=event.docs;
+      Timestamp startTime;
+      for(var doc in docList){
+        startTime=doc.get('start_date');
+        try{
+          Timestamp endTime = doc.get('end_time');
 
+        }catch(e){
+          likoriaProvider.setTimerStart(true);
+          likoriaProvider.setStartTime(startTime);
+          var diff=DateTime.now().difference(startTime.toDate());
+          LikoriaTracker().startLikoriaTimerAgain(likoriaProvider, diff.inMilliseconds);
+        }
+      }
+    });
+  }
   getPregnancyDetails() {
     var userProvider = context.read<UserProvider>();
     var pregProvider = context.read<PregnancyProvider>();

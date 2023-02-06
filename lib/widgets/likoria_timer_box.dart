@@ -2,7 +2,10 @@ import 'dart:async';
 import 'dart:ui';
 
 import 'package:ayyami/constants/dark_mode_colors.dart';
+import 'package:ayyami/firebase_calls/likoria_record.dart';
 import 'package:ayyami/firebase_calls/menses_record.dart';
+import 'package:ayyami/providers/likoria_timer_provider.dart';
+import 'package:ayyami/providers/tuhur_provider.dart';
 import 'package:ayyami/widgets/utils.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -11,12 +14,14 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:stop_watch_timer/stop_watch_timer.dart';
 import 'package:workmanager/workmanager.dart';
 
 import '../constants/colors.dart';
 import '../constants/images.dart';
+import '../dialog/timer_date_time.dart';
 import '../providers/menses_provider.dart';
 import '../providers/user_provider.dart';
 import 'app_text.dart';
@@ -33,14 +38,8 @@ class LikoriaTimerBox extends StatefulWidget {
 
 class _LikoriaTimerBoxState extends State<LikoriaTimerBox>  {
   static late String uid;
-  static final int tuhur = 15;
-  static late MensesProvider pray;
-  static int secondsCount = 0;
-  static int minutesCount = 0;
-  static int hoursCount = 0;
-  static int daysCount = 0;
-  static String mensesID = '';
-  static final _stopWatch = StopWatchTimer(mode: StopWatchMode.countUp);
+  bool darkMode=false;
+
 
   @override
   void initState() {
@@ -49,13 +48,13 @@ class _LikoriaTimerBoxState extends State<LikoriaTimerBox>  {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<MensesProvider>(builder: (conTimer, pro, build) {
+    return Consumer<LikoriaTimerProvider>(builder: (conTimer, pro, child) {
       var userProvider = Provider.of<UserProvider>(context);
+      var tuhurProvider = Provider.of<TuhurProvider>(context,listen: false);
       uid = userProvider.getUid!;
       bool isTimerStart = pro.getTimerStart;
-      var darkMode=userProvider.getIsDarkMode;
+      darkMode=userProvider.getIsDarkMode;
 
-      pray = pro;
       return Stack(
         clipBehavior: Clip.none,
         children: [
@@ -189,20 +188,18 @@ class _LikoriaTimerBoxState extends State<LikoriaTimerBox>  {
             top: 234.h,
             child: InkWell(
               onTap: () {
-                if (!isTimerStart) {
-                  if (tuhur >= 15) {
-                    //startService(pro);
-                    showStartDialog();
-                  } else {
-                    pray.setTimerStart(false);
-                  }
-                } else {
-                  if (minutesCount <= 3) {
-                    toast_notification().toast_message('stop_mensus_timer_message'.tr);
+                if(pro.isSelected){
+                  if (!isTimerStart) {
+                    if(tuhurProvider.isTimerStart){
+                      showStartDialog();
+                    }
                   } else {
                     showStopDialog();
                   }
+                }else{
+                  toast_notification().toast_message('likoria_color_selected'.tr);
                 }
+                
               },
               child: Container(
                 width: 307.w,
@@ -235,33 +232,25 @@ class _LikoriaTimerBoxState extends State<LikoriaTimerBox>  {
     showDialog(
         context: context,
         builder: (dialogContext) {
-          return AlertDialog(
-            title: Text(
-              'start_timer'.tr,
-            ),
-            content: Text('start_menses'.tr),
-            actions: [
-              InkWell(
-                child: Text(
-                  'yes'.tr,
-                ),
-                onTap: () {
+          return DialogDateTime(
+            getDateTime: (date, time) {
+              int year = date.year;
+              int month = date.month;
+              int day = date.day;
+              int hour = time.hour;
+              int minute = time.minute;
+              String period = time.period.name;
+              DateTime startDate = DateTime.utc(year, month, day, hour, minute);
+              var dateString = DateFormat.yMEd().add_jms().format(startDate);
+              print('$dateString  == dateString');
+              var provider= Provider.of<LikoriaTimerProvider>(context,listen: false);
 
-                  pray.setTimerStart(true);
-                  // startService();
-                  //  startMensisTimer();
-                  Navigator.pop(dialogContext);
-                },
-              ),
-              InkWell(
-                child: Text(
-                  'no'.tr,
-                ),
-                onTap: () {
-                  Navigator.pop(dialogContext);
-                },
-              ),
-            ],
+              var colorSelected=provider.selectedColor;
+
+              LikoriaRecord().uploadLikoriaStartTime(uid, Timestamp.fromDate(startDate),colorSelected.value);
+              Navigator.pop(dialogContext);
+            },
+            darkMode: darkMode,
           );
         });
   }
@@ -270,46 +259,27 @@ class _LikoriaTimerBoxState extends State<LikoriaTimerBox>  {
     showDialog(
         context: context,
         builder: (dialogContext) {
-          return AlertDialog(
-            title: Text(
-              'stop_timer'.tr,
-            ),
-            content: Text('stop_menses'.tr),
-            actions: [
-              InkWell(
-                child: Text(
-                  'yes'.tr,
-                ),
-                onTap: () {
-                  if (mensesID.isNotEmpty) {
-                    // MensesRecord.uploadMensesEndTime(mensesID,0,0,0,0);
-                    _stopWatch.onStopTimer();
-                    _stopWatch.onResetTimer();
-                    pray.setTimerStart(false);
-                    Navigator.pop(dialogContext);
-                  }
-                },
-              ),
-              InkWell(
-                child: Text(
-                  'no'.tr,
-                ),
-                onTap: () {
-                  Navigator.pop(dialogContext);
-                },
-              ),
-            ],
+          return DialogDateTime(
+            getDateTime: (date, time) {
+              int year = date.year;
+              int month = date.month;
+              int day = date.day;
+              int hour = time.hour;
+              int minute = time.minute;
+              String period = time.period.name;
+              DateTime startDate = DateTime.utc(year, month, day, hour, minute);
+              var dateString = DateFormat.yMEd().add_jms().format(startDate);
+              print('$dateString  == dateString');
+              var provider= Provider.of<LikoriaTimerProvider>(context,listen: false);
+
+              var colorSelected=provider.selectedColor;
+
+              LikoriaRecord().uploadLikoriaStartTime(uid, Timestamp.fromDate(startDate),colorSelected.value);
+              Navigator.pop(dialogContext);
+            },
+            darkMode: darkMode,
           );
         });
   }
 
-  static void saveDocId(String id) async {
-    var box = await Hive.openBox('aayami_menses');
-    box.put('menses_timer_doc_id', id);
-  }
-
-  dynamic getDocID() async {
-    var box = await Hive.openBox('aayami_menses');
-    return box.get('menses_timer_doc_id');
-  }
 }

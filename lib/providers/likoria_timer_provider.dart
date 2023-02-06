@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class LikoriaTimerProvider extends ChangeNotifier {
@@ -6,6 +7,10 @@ class LikoriaTimerProvider extends ChangeNotifier {
   int hours = 0;
   int days = 0;
   bool isTimerStart = false;
+  bool isSelected = false;
+  String id='';
+  Color selectedColor=Colors.white;
+  Timestamp startTime=Timestamp(0, 0);
 
   int get getSec => seconds;
 
@@ -14,6 +19,10 @@ class LikoriaTimerProvider extends ChangeNotifier {
   int get getDays => days;
 
   bool get getTimerStart => isTimerStart;
+  bool get getisSelected => isSelected;
+  String get getID => id;
+  Color get getSelectedColor => selectedColor;
+  Timestamp get getStartTime => startTime;
 
   setSec(int value) {
     seconds = value;
@@ -35,6 +44,22 @@ class LikoriaTimerProvider extends ChangeNotifier {
 
   setTimerStart(bool value) {
     isTimerStart = value;
+    notifyListeners();
+  }
+  setID(String value) {
+    id = value;
+    notifyListeners();
+  }
+  setIsSelected(bool value) {
+    isSelected = value;
+    notifyListeners();
+  }
+  setSelectedColor(Color value) {
+    selectedColor = value;
+    notifyListeners();
+  }
+  setStartTime(Timestamp value) {
+    startTime = value;
     notifyListeners();
   }
 }

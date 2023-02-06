@@ -58,4 +58,13 @@ class Utils{
     var box = await Hive.openBox('aayami');
     return box.get(dataName);
   }
+  static void saveDocLikoriaId(String id) async {
+    var box = await Hive.openBox('aayami_likoria');
+    box.put('tuhur_timer_doc_id', id);
+  }
+
+  static dynamic getDoclikoriaID() async {
+    var box = await Hive.openBox('aayami_likoria');
+    return box.get('likoria_timer_doc_id');
+  }
 }

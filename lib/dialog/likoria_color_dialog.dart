@@ -1,13 +1,16 @@
 import 'package:ayyami/constants/dark_mode_colors.dart';
+import 'package:ayyami/providers/likoria_timer_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:provider/provider.dart';
 
 import '../constants/colors.dart';
 import '../constants/images.dart';
 
 class LikoriaColorDialog extends StatefulWidget {
   bool darkMode;
+
   LikoriaColorDialog({required this.darkMode});
 
   @override
@@ -34,15 +37,16 @@ class LikoriaColorDialogState extends State<LikoriaColorDialog> {
                 child: Container(
                   margin: EdgeInsets.only(top: 50),
                   padding: EdgeInsets.only(top: 70),
-                  decoration:
-                      BoxDecoration(gradient: widget.darkMode?AppDarkColors.backgroundGradient:AppColors.backgroundGradient, borderRadius: BorderRadius.circular(10)),
+                  decoration: BoxDecoration(
+                      gradient: widget.darkMode ? AppDarkColors.backgroundGradient : AppColors.backgroundGradient,
+                      borderRadius: BorderRadius.circular(10)),
                   child: Column(
                     children: [
                       Text(
                         'likoria_color'.tr,
                         style: TextStyle(
                             decoration: TextDecoration.none,
-                            color: widget.darkMode?AppDarkColors.headingColor:AppColors.headingColor,
+                            color: widget.darkMode ? AppDarkColors.headingColor : AppColors.headingColor,
                             fontWeight: FontWeight.w700,
                             fontSize: 14),
                       ),
@@ -54,34 +58,43 @@ class LikoriaColorDialogState extends State<LikoriaColorDialog> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: likoriaNames.map((e) {
-                            return Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Container(
-                                  margin: const EdgeInsets.only(right: 10),
-                                  width: 50,
-                                  height: 45,
-                                  decoration: BoxDecoration(
-                                      color: AppColors.likoriaMap[e],
-                                      borderRadius: BorderRadius.circular(10),
-                                      border: Border.all(color:  widget.darkMode?AppDarkColors.headingColor:AppColors.headingColor, width: 1)),
-                                ),
-                                const SizedBox(
-                                  height: 10,
-                                ),
-                                Text(
-                                  e,
-                                  style: TextStyle(
+                            return GestureDetector(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Container(
+                                    margin: const EdgeInsets.only(right: 10),
+                                    width: 50,
+                                    height: 45,
+                                    decoration: BoxDecoration(
+                                        color: AppColors.likoriaMap[e],
+                                        borderRadius: BorderRadius.circular(10),
+                                        border: Border.all(
+                                            color:
+                                                widget.darkMode ? AppDarkColors.headingColor : AppColors.headingColor,
+                                            width: 1)),
+                                  ),
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
+                                  Text(
+                                    e,
+                                    style: TextStyle(
                                       decoration: TextDecoration.none,
-                                      color:  widget.darkMode?AppDarkColors.headingColor:AppColors.headingColor,
+                                      color: widget.darkMode ? AppDarkColors.headingColor : AppColors.headingColor,
                                       fontSize: 10,
                                       fontWeight: FontWeight.w400,
-                                  ),
-                                  textAlign: TextAlign.center,
-
-                                )
-                              ],
+                                    ),
+                                    textAlign: TextAlign.center,
+                                  )
+                                ],
+                              ),
+                              onTap: () {
+                                var provider = Provider.of<LikoriaTimerProvider>(context, listen: false);
+                                provider.setIsSelected(true);
+                                provider.setSelectedColor(AppColors.likoriaMap[e]!);
+                              },
                             );
                           }).toList(),
                         ),
@@ -98,7 +111,7 @@ class LikoriaColorDialogState extends State<LikoriaColorDialog> {
                               borderRadius:
                                   BorderRadius.only(bottomLeft: Radius.circular(10), bottomRight: Radius.circular(10))),
                           child: Text(
-                            'start_timer'.tr,
+                            'close'.tr,
                             style: TextStyle(
                                 decoration: TextDecoration.none,
                                 color: AppColors.white,

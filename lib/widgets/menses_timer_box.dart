@@ -341,13 +341,7 @@ class _TimerBoxState extends State<TimerBox> {
               var dateString = DateFormat.yMEd().add_jms().format(endDate);
               print('$dateString  == dateString');
 
-              var tuhurProvider = Provider.of<TuhurProvider>(context, listen: false);
-              UserProvider userProvider = Provider.of<UserProvider>(context, listen: false);
 
-              String showRegulation = mensesTrack.stopMensesTimer(
-                  mensesProvider, tuhurProvider, uid, userProvider, Timestamp.fromDate(endDate), widget.islamicMonth);
-
-              widget.mensis(true, showRegulation);
               Navigator.pop(dialogContext);
             },
             darkMode: darkMode,
