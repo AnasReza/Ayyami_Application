@@ -34,6 +34,7 @@ class AppImages {
   static const String trackerIcon = "assets/svg/tracker.svg";
   static const String suggestIcon = "assets/svg/suggest.svg";
   static const String deobandIcon = "assets/images/deoband.png";
+  static const String bookIcon = "assets/svg/book.svg";
 
   ///DIALOGS
   static const String rateIcon = "assets/images/rate.png";

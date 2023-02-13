@@ -32,7 +32,6 @@ class MensesTracker {
       print('${value.id} record doc id');
     });
     _stopWatch.secondTime.listen((event) {
-      print('$secondsCount==sec    $minutesCount==minutes');
       secondsCount++;
       if (secondsCount > 59) {
         minutesCount++;
@@ -82,8 +81,6 @@ class MensesTracker {
       print('${value.id} record doc id');
     });
     _stopWatch.secondTime.listen((event) {
-      print('$secondsCount==sec    $minutesCount==minutes   $hoursCount==hours    $daysCount==days');
-
       secondsCount++;
 
       if (secondsCount > 59) {
@@ -125,7 +122,6 @@ class MensesTracker {
     mensesProvider.setSec(secondsCount);
     _stopWatch=StopWatchTimer(mode: StopWatchMode.countUp,presetMillisecond:milliseconds );
     _stopWatch.secondTime.listen((event) {
-      print('$secondsCount==sec    $minutesCount==minutes');
       secondsCount++;
       if (secondsCount > 59) {
         minutesCount++;

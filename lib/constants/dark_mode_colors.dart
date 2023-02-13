@@ -10,7 +10,7 @@ class AppDarkColors{
 
   static const Color grey = Color(0xff828282);
   static const Color lightGreyBoxColor = Color(0xff21252D);
-  static const Color greyBoxColor = Color(0xffD9D9D9);
+  static const Color greyBoxColor = Color(0xff787878);
 
   static Color pink = Color(0xffC43CF3).withOpacity(1.0);
   static const Color lightPink = Color(0xff291022);

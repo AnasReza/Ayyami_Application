@@ -97,7 +97,7 @@ class _changeLanguageState extends State<changeLanguage> {
                                     border: Border.all(
                                       color: AppColors.headingColor,
                                       width: 1.5.w,
-                                      strokeAlign: StrokeAlign.inside,
+                                      // strokeAlign: StrokeAlign.inside,
                                     ),
                                     gradient: AppColors.bgPinkishGradient,
                                     boxShadow: const [
@@ -113,7 +113,7 @@ class _changeLanguageState extends State<changeLanguage> {
                                     border: Border.all(
                                       color: AppColors.headingColor,
                                       width: 1.5.w,
-                                      strokeAlign: StrokeAlign.inside,
+                                      // strokeAlign: StrokeAlign.inside,
                                     ),
                                     color: AppColors.white,
                                     boxShadow: const [
@@ -157,7 +157,7 @@ class _changeLanguageState extends State<changeLanguage> {
                                     border: Border.all(
                                       color: AppColors.headingColor,
                                       width: 1.5.w,
-                                      strokeAlign: StrokeAlign.inside,
+                                      // strokeAlign: StrokeAlign.inside,
                                     ),
                                     gradient: AppColors.bgPinkishGradient,
                                     boxShadow: const [
@@ -173,7 +173,7 @@ class _changeLanguageState extends State<changeLanguage> {
                                     border: Border.all(
                                       color: AppColors.headingColor,
                                       width: 1.5.w,
-                                      strokeAlign: StrokeAlign.inside,
+                                      // strokeAlign: StrokeAlign.inside,
                                     ),
                                     color: AppColors.white,
                                     boxShadow: const [

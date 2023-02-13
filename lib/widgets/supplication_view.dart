@@ -1,3 +1,4 @@
+import 'package:ayyami/constants/dark_mode_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -6,20 +7,23 @@ import '../constants/colors.dart';
 class SupplicationView extends StatelessWidget {
   String heading, times, dua, description;
   bool darkMode;
-  SupplicationView(this.darkMode,this.heading, this.dua, this.times, this.description, {super.key});
+
+  SupplicationView(this.darkMode, this.heading, this.dua, this.times, this.description, {super.key});
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        const SizedBox(height: 20,),
+        const SizedBox(
+          height: 20,
+        ),
         Container(
           padding: EdgeInsets.all(10),
           width: double.infinity,
           decoration: BoxDecoration(
-            color: AppColors.lightGreyBoxColor,
+            color: darkMode ? AppDarkColors.lightGreyBoxColor : AppColors.lightGreyBoxColor,
             border: Border.all(
-              color: AppColors.headingColor,
+              color: darkMode ? AppDarkColors.headingColor : AppColors.headingColor,
               width: 1.w,
             ),
             borderRadius: BorderRadius.circular(18.r),
@@ -31,10 +35,12 @@ class SupplicationView extends StatelessWidget {
             children: [
               Text(
                 heading,
-                style: const TextStyle(color: AppColors.headingColor, fontSize: 20, fontWeight: FontWeight.w700),
+                style: TextStyle(
+                    color: darkMode ? AppDarkColors.headingColor : AppColors.headingColor,
+                    fontSize: 20,
+                    fontWeight: FontWeight.w700),
                 textAlign: TextAlign.end,
               ),
-             
               Container(
                 padding: EdgeInsets.all(5),
                 decoration: BoxDecoration(
@@ -43,7 +49,11 @@ class SupplicationView extends StatelessWidget {
                 ),
                 child: Text(
                   '$times Times',
-                  style: const TextStyle(color: AppColors.headingColor, fontWeight: FontWeight.w700, fontSize: 13,fontFamily: 'Al Qalam Quran Majeed Web'),
+                  style: TextStyle(
+                      color: darkMode ? AppDarkColors.headingColor : AppColors.headingColor,
+                      fontWeight: FontWeight.w700,
+                      fontSize: 13,
+                      fontFamily: 'Al Qalam Quran Majeed Web'),
                 ),
               )
             ],
@@ -54,10 +64,16 @@ class SupplicationView extends StatelessWidget {
         ),
         Text(
           dua,
-          style: TextStyle(color: AppColors.headingColor, fontSize: 20, fontWeight: FontWeight.w400),
+          style: TextStyle(
+              color: darkMode ? AppDarkColors.headingColor : AppColors.headingColor,
+              fontSize: 20,
+              fontWeight: FontWeight.w400,
+              fontFamily: 'Al Qalam Quran Majeed Web'),
           textAlign: TextAlign.end,
         ),
-        const SizedBox(height: 30,),
+        const SizedBox(
+          height: 30,
+        ),
       ],
     );
   }

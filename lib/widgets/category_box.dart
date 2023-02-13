@@ -141,7 +141,7 @@ class _CategoryBoxState extends State<CategoryBox> {
                             border: Border.all(
                               color: AppColors.headingColor,
                               width: 1.5.w,
-                              strokeAlign: StrokeAlign.inside,
+                              // strokeAlign: StrokeAlign.inside,
                             ),
                             gradient: AppColors.bgPinkishGradient,
                             boxShadow: const [
@@ -154,7 +154,7 @@ class _CategoryBoxState extends State<CategoryBox> {
                             border: Border.all(
                               color: AppColors.headingColor,
                               width: 1.5.w,
-                              strokeAlign: StrokeAlign.inside,
+                              // strokeAlign: StrokeAlign.inside,
                             ),
                             color: AppColors.white,
                             boxShadow: const [

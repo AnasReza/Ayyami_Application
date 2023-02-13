@@ -156,7 +156,7 @@ class _AddMedicineReminderState extends State<AddMedicineReminder> {
                               border: Border.all(
                                 color: darkMode?AppDarkColors.headingColor:AppColors.headingColor,
                                 width: 1.5.w,
-                                strokeAlign: StrokeAlign.inside,
+                                // strokeAlign: StrokeAlign.inside,
                               ),
                               gradient: AppColors.bgPinkishGradient,
                               boxShadow: const [
@@ -172,7 +172,7 @@ class _AddMedicineReminderState extends State<AddMedicineReminder> {
                               border: Border.all(
                                 color: AppColors.headingColor,
                                 width: 1.5.w,
-                                strokeAlign: StrokeAlign.inside,
+                                // strokeAlign: StrokeAlign.inside,
                               ),
                               color: AppColors.white,
                               boxShadow: const [
@@ -213,7 +213,7 @@ class _AddMedicineReminderState extends State<AddMedicineReminder> {
                               border: Border.all(
                                 color: AppColors.headingColor,
                                 width: 1.5.w,
-                                strokeAlign: StrokeAlign.inside,
+                                // strokeAlign: StrokeAlign.inside,
                               ),
                               gradient: AppColors.bgPinkishGradient,
                               boxShadow: const [
@@ -229,7 +229,7 @@ class _AddMedicineReminderState extends State<AddMedicineReminder> {
                               border: Border.all(
                                 color: AppColors.headingColor,
                                 width: 1.5.w,
-                                strokeAlign: StrokeAlign.inside,
+                                // strokeAlign: StrokeAlign.inside,
                               ),
                               color: AppColors.white,
                               boxShadow: const [
@@ -268,7 +268,7 @@ class _AddMedicineReminderState extends State<AddMedicineReminder> {
                               border: Border.all(
                                 color: AppColors.headingColor,
                                 width: 1.5.w,
-                                strokeAlign: StrokeAlign.inside,
+                                // strokeAlign: StrokeAlign.inside,
                               ),
                               gradient: AppColors.bgPinkishGradient,
                               boxShadow: const [
@@ -284,7 +284,7 @@ class _AddMedicineReminderState extends State<AddMedicineReminder> {
                               border: Border.all(
                                 color: AppColors.headingColor,
                                 width: 1.5.w,
-                                strokeAlign: StrokeAlign.inside,
+                                // strokeAlign: StrokeA/lign.inside,
                               ),
                               color: AppColors.white,
                               boxShadow: const [

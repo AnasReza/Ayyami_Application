@@ -1,24 +1,23 @@
-import 'package:ayyami/constants/colors.dart';
-import 'package:ayyami/constants/const.dart';
-import 'package:ayyami/constants/dark_mode_colors.dart';
-import 'package:ayyami/providers/user_provider.dart';
-import 'package:ayyami/widgets/supplication_view.dart';
+import 'package:ayyami/constants/surah_text.dart';
+import 'package:ayyami/widgets/surah_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 
+import '../../constants/colors.dart';
+import '../../constants/dark_mode_colors.dart';
 import '../../constants/images.dart';
+import '../../providers/user_provider.dart';
 
-class SupplicationsDetails extends StatelessWidget {
-  String prayerTime = '';
-
-  SupplicationsDetails(this.prayerTime, {super.key});
+class SurahDetails extends StatelessWidget{
+  String prayerTime,heading;
+   SurahDetails(this.prayerTime,this.heading,{super.key});
 
   @override
   Widget build(BuildContext context) {
     return Consumer<UserProvider>(builder: (c, provider, child) {
-      var list = getDuaMap(prayerTime);
+      var surah = SurahText().getSurah(prayerTime);
       var darkMode = provider.getIsDarkMode;
       return Scaffold(
         appBar: AppBar(
@@ -33,14 +32,11 @@ class SupplicationsDetails extends StatelessWidget {
         ),
         body: Container(
           margin: EdgeInsets.only(left: 20, right: 20),
-          child: ListView.builder(
-              itemCount: list?.length,
-              itemBuilder: (listContext, index) {
-                return SupplicationView(darkMode, list![index]['heading']!, list![index]['dua']!,
-                    list![index]['times']!, list![index]['description']!);
-              }),
+          decoration: BoxDecoration(gradient: darkMode?AppDarkColors.backgroundGradient:AppColors.backgroundGradient),
+          child: SingleChildScrollView(child: SurahView(darkMode, surah!, heading),)
         ),
       );
     });
   }
+
 }
