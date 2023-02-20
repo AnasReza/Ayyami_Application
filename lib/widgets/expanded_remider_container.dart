@@ -16,11 +16,13 @@ class ExpandedReminderContainer extends StatefulWidget {
     Key? key,
     required this.regulationExpanded,
     required this.darkMode,
+    required this.text,
   }) : super(key: key);
 
   bool regulationExpanded = true;
   bool isSwitched = false;
   bool darkMode;
+  Map<String, String> text;
 
   @override
   State<ExpandedReminderContainer> createState() =>
@@ -125,7 +127,7 @@ class _ExpandedReminderContainerState extends State<ExpandedReminderContainer> {
                                       title: Text("Add Medicine"),
                                       content: SizedBox(
                                         height: 200,
-                                        child: AddMedicine(darkMode:widget.darkMode)
+                                        child: AddMedicine(darkMode:widget.darkMode,text: widget.text,)
                                       ),
                                     );
                                   });

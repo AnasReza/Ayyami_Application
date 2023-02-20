@@ -21,6 +21,7 @@ import 'package:provider/provider.dart';
 
 import '../../constants/images.dart';
 import '../../dialog/likoria_color_dialog.dart';
+import '../../translation/app_translation.dart';
 
 class AllTrackers extends StatefulWidget {
   @override
@@ -119,6 +120,8 @@ class AllTrackersState extends State<AllTrackers> {
     return Consumer<UserProvider>(builder: (c,provider,child){
       var prayerProvider=Provider.of<PrayerProvider>(context,listen: false);
       var darkMode=provider.getIsDarkMode;
+      var lang=provider.getLanguage;
+      var text=AppTranslate().textLanguage[lang];
       return Scaffold(
         appBar: AppBar(
           backgroundColor: darkMode?AppDarkColors.white:AppColors.white,
@@ -154,7 +157,7 @@ class AllTrackersState extends State<AllTrackers> {
                   height: 30,
                 ),
                 Text(
-                  'pregnancy'.tr,
+                  text!['pregnancy']!,
                   style: TextStyle(color: darkMode?AppDarkColors.headingColor:AppColors.headingColor, fontSize: 25, fontWeight: FontWeight.w700,),
                 ),
                 const SizedBox(
@@ -165,7 +168,7 @@ class AllTrackersState extends State<AllTrackers> {
                   height: 60,
                 ),
                 Text(
-                  'likoria'.tr,
+                  text!['likoria']!,
                   style: TextStyle(color: darkMode?AppDarkColors.headingColor:AppColors.headingColor, fontSize: 25, fontWeight: FontWeight.w700),
                 ),
                 const SizedBox(
@@ -181,7 +184,7 @@ class AllTrackersState extends State<AllTrackers> {
                   height: 60,
                 ),
                 Text(
-                  'menstrual_bleeding'.tr,
+                 text!['menstrual_bleeding']!,
                   style: TextStyle(color: darkMode?AppDarkColors.headingColor:AppColors.headingColor, fontSize: 25, fontWeight: FontWeight.w700),
                 ),
                 const SizedBox(
@@ -192,7 +195,7 @@ class AllTrackersState extends State<AllTrackers> {
                   height: 60,
                 ),
                 Text(
-                  'post-natal_bleeding'.tr,
+                  text!['post-natal_bleeding']!,
                   style: TextStyle(color: darkMode?AppDarkColors.headingColor:AppColors.headingColor, fontSize: 25, fontWeight: FontWeight.w700),
                 ),
                 const SizedBox(

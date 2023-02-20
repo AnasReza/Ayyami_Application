@@ -60,19 +60,14 @@ class SurahViewState extends State<SurahView> {
         const SizedBox(
           height: 20,
         ),
-        PinchZoom(
-          child: Text(
-            widget.surah,
-            style: TextStyle(
-                color: widget.darkMode ? AppDarkColors.headingColor : AppColors.headingColor,
-                fontSize: _fontSize,
-                fontWeight: FontWeight.w400,
-                fontFamily: 'Al Qalam Quran Majeed Web'),
-            textAlign: TextAlign.end,
-          ),
-          onZoomStart: (){
-
-          },
+        Text(
+          widget.surah,
+          style: TextStyle(
+              color: widget.darkMode ? AppDarkColors.headingColor : AppColors.headingColor,
+              fontSize: _fontSize,
+              fontWeight: FontWeight.w400,
+              fontFamily: 'Al Qalam Quran Majeed Web'),
+          textAlign: TextAlign.end,
         ),
         const SizedBox(
           height: 30,

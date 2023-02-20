@@ -1,7 +1,9 @@
 import 'dart:async';
+import 'package:ayyami/constants/const.dart';
 import 'package:ayyami/providers/tuhur_provider.dart';
 import 'package:ayyami/providers/user_provider.dart';
 import 'package:ayyami/screens/main_screen.dart';
+import 'package:ayyami/screens/settings/choose_language.dart';
 import 'package:ayyami/tracker/menses_tracker.dart';
 import 'package:ayyami/tracker/tuhur_tracker.dart';
 import 'package:ayyami/utils/utils.dart';
@@ -45,22 +47,31 @@ class _Splash_ScreenState extends State<Splash_Screen> {
       bool login = hiveValue['login'];
       String uid = hiveValue['uid'];
       if (login) {
-        UsersRecord().getUsersData(uid).then((value){
+        UsersRecord().getUsersData(uid).then((value) {
           var provider = Provider.of<UserProvider>(context, listen: false);
           provider.setUID(value.id);
-          if(hiveValue['dark_mode']==null){
+          try {
+            provider.setDarkMode(value.get('dark_mode'));
+          } catch (e) {
             provider.setDarkMode(false);
-          }else{
-            provider.setDarkMode(hiveValue['dark_mode']);
+          }
+          try {
+            provider.setLanguage(value.get('language'));
+          } catch (e) {
+            provider.setLanguage('en');
           }
 
+          // if(hiveValue['dark_mode']==null){
+          //   provider.setDarkMode(false);
+          // }else{
+          //   provider.setDarkMode(hiveValue['dark_mode']);
+          // }
           provider.setCurrentPoint(value.get('coordinates'));
           provider.setLocation('location_name');
           Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => MainScreen()));
         });
-
       } else {
-        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => account_create()));
+        nextScreen(context, ChooseLanguage());
       }
     });
   }
@@ -78,9 +89,9 @@ class _Splash_ScreenState extends State<Splash_Screen> {
         // print('${doc.id}=uid from menses collection');
         // break;
       } catch (e) {
-        Timestamp startTime=docList[0].get('start_time');
-        Timestamp now=Timestamp.now();
-        var diff=now.toDate().difference(startTime.toDate());
+        Timestamp startTime = docList[0].get('start_time');
+        Timestamp now = Timestamp.now();
+        var diff = now.toDate().difference(startTime.toDate());
         TuhurTracker().startTuhurTimerAgain(pro, diff.inMilliseconds);
       }
     });
@@ -95,21 +106,19 @@ class _Splash_ScreenState extends State<Splash_Screen> {
         .snapshots()
         .listen((event) {
       var docList = event.docs;
-      try{
-        if(docList.isNotEmpty){
+      try {
+        if (docList.isNotEmpty) {
           Timestamp endTime = docList[0].get('end_time');
-          TuhurProvider tuhurPro=context.read<TuhurProvider>();
+          TuhurProvider tuhurPro = context.read<TuhurProvider>();
           getLastTuhur(uid, tuhurPro);
         }
-
-      }catch(e){
-        if(docList.isNotEmpty){
-          Timestamp startTime=docList[0].get('start_time');
-          Timestamp now=Timestamp.now();
-          var diff=now.toDate().difference(startTime.toDate());
+      } catch (e) {
+        if (docList.isNotEmpty) {
+          Timestamp startTime = docList[0].get('start_time');
+          Timestamp now = Timestamp.now();
+          var diff = now.toDate().difference(startTime.toDate());
           // MensesTracker().startMensisTimerWithTime(pro, uid, diff.inMilliseconds,startTime);
         }
-
       }
 
       print('${event.size} size');
@@ -135,10 +144,10 @@ class _Splash_ScreenState extends State<Splash_Screen> {
     } catch (e) {
       uid = '';
       login = false;
-      darkMode=false;
+      darkMode = false;
     }
 
-    return {'uid': uid, 'login': login,'darkMode':darkMode};
+    return {'uid': uid, 'login': login, 'darkMode': darkMode};
   }
 
   @override

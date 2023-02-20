@@ -10,6 +10,7 @@ import '../constants/images.dart';
 import '../models/medicine_model.dart';
 import '../providers/prayer_provider.dart';
 import '../providers/user_provider.dart';
+import '../translation/app_translation.dart';
 import '../widgets/app_text.dart';
 import '../widgets/utils.dart';
 import 'medicine_reminder.dart';
@@ -33,6 +34,9 @@ class _AddMedicineReminderState extends State<AddMedicineReminder> {
     return Consumer<UserProvider>(builder: (c,userProvider,child){
       final provider = Provider.of<PrayerProvider>(context,listen: false);
       bool darkMode=userProvider.getIsDarkMode;
+      var lang=userProvider.getLanguage;
+      var text=AppTranslate().textLanguage[lang];
+
       return Scaffold(
         body: Container(
           height: getHeight(context),
@@ -72,7 +76,7 @@ class _AddMedicineReminderState extends State<AddMedicineReminder> {
                         ),
                         SizedBox(width: 55),
                         AppText(
-                          text: 'Add medicine',
+                          text: text!['add_medicine']!,
                           fontFamily: 'DMSans',
                           fontWeight: FontWeight.w700,
                           color: darkMode?AppDarkColors.headingColor:AppColors.headingColor,
@@ -83,7 +87,7 @@ class _AddMedicineReminderState extends State<AddMedicineReminder> {
                     Container(
                       alignment: Alignment.centerLeft,
                       child:  AppText(
-                        text: 'Medicine Name',
+                        text: text['medicine_name']!,
                         fontFamily: 'DMSans',
                         fontWeight: FontWeight.w500,
                         fontSize: 22,
@@ -115,12 +119,12 @@ class _AddMedicineReminderState extends State<AddMedicineReminder> {
                                     color: AppColors.headingColor),
                                 decoration:  InputDecoration(
                                   border: InputBorder.none,
-                                  hintText: "Add Medicine",
+                                  hintText: text['add_medicine']!,
                                   hintStyle: TextStyle(color: darkMode?AppDarkColors.headingColor:AppColors.headingColor,),
                                 ),
                                 validator: (value) {
                                   if (value!.isEmpty) {
-                                    return "Enter Medincine Name";
+                                    return text['enter_medicine_name']!;
                                   } else {
                                     return null;
                                   }
@@ -186,8 +190,8 @@ class _AddMedicineReminderState extends State<AddMedicineReminder> {
                           ),
                         ),
                         const SizedBox(width: 10),
-                        const Text(
-                          "Morning",
+                        Text(
+                          text['morning']!,
                           style: TextStyle(
                             fontSize: 18,
                             color: Color(0xFF8F92A1),
@@ -243,8 +247,8 @@ class _AddMedicineReminderState extends State<AddMedicineReminder> {
                           ),
                         ),
                         const SizedBox(width: 10),
-                        const Text(
-                          "Evening",
+                        Text(
+                          text['Evening']!,
                           style: TextStyle(
                             fontSize: 18,
                             color: Color(0xFF8F92A1),
@@ -298,8 +302,8 @@ class _AddMedicineReminderState extends State<AddMedicineReminder> {
                           ),
                         ),
                         const SizedBox(width: 10),
-                        const Text(
-                          "Night",
+                        Text(
+                          text['night']!,
                           style: TextStyle(
                             fontSize: 18,
                             color: Color(0xFF8F92A1),
@@ -316,25 +320,25 @@ class _AddMedicineReminderState extends State<AddMedicineReminder> {
                                 eveningSelected == true &&
                                 nightSelected == true) {
                               toast_notification()
-                                  .toast_message("Please select only one");
+                                  .toast_message(text['select_only_one']!);
                               return;
                             }
 
                             if (morningSelected == true && eveningSelected == true) {
                               toast_notification()
-                                  .toast_message("Please select only one");
+                                  .toast_message(text['select_only_one']!);
                               return;
                             }
 
                             if (morningSelected == true && nightSelected == true) {
                               toast_notification()
-                                  .toast_message("Please select only one");
+                                  .toast_message(text['select_only_one']!);
                               return;
                             }
 
                             if (eveningSelected == true && nightSelected == true) {
                               toast_notification()
-                                  .toast_message("Please select only one");
+                                  .toast_message(text['select_only_one']!);
                               return;
                             }
 
@@ -392,7 +396,7 @@ class _AddMedicineReminderState extends State<AddMedicineReminder> {
                               ),
                               alignment: Alignment.center,
                               child: Text(
-                                "Add Medicine".toUpperCase(),
+                                text['add_medicine']!,
                                 style: const TextStyle(
                                   fontFamily: 'DMSans',
                                   fontWeight: FontWeight.w700,

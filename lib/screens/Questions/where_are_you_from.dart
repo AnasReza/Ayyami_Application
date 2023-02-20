@@ -13,6 +13,7 @@ import 'package:provider/provider.dart';
 
 import '../../constants/images.dart';
 import '../../firebase_calls/questions_record.dart';
+import '../../translation/app_translation.dart';
 import '../../widgets/app_text.dart';
 import '../main_screen.dart';
 
@@ -33,127 +34,132 @@ class LocationQuestionState extends State<LocationQuestion> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        backgroundColor: Colors.white,
-        title: SvgPicture.asset(
-          AppImages.logo,
-          width: 249.6.w,
-          height: 78.36.h,
+    return Consumer<UserProvider>(builder: (c,provider,child){
+      var lang=provider.getLanguage;
+      var text=AppTranslate().textLanguage[lang];
+
+      return Scaffold(
+        appBar: AppBar(
+          elevation: 0,
+          backgroundColor: Colors.white,
+          title: SvgPicture.asset(
+            AppImages.logo,
+            width: 249.6.w,
+            height: 78.36.h,
+          ),
+          centerTitle: true,
+          // actions: [
+          //   InkWell(
+          //     onTap: () {
+          //       _key.currentState!.openDrawer();
+          //       // Navigator.push(context, MaterialPageRoute(builder: (context) => PrayerTiming()));
+          //     },
+          //     child: SvgPicture.asset(
+          //       AppImages.menuIcon,
+          //       width: 44.w,
+          //       height: 38.h,
+          //     ),
+          //   ),
+          // ],
         ),
-        centerTitle: true,
-        // actions: [
-        //   InkWell(
-        //     onTap: () {
-        //       _key.currentState!.openDrawer();
-        //       // Navigator.push(context, MaterialPageRoute(builder: (context) => PrayerTiming()));
-        //     },
-        //     child: SvgPicture.asset(
-        //       AppImages.menuIcon,
-        //       width: 44.w,
-        //       height: 38.h,
-        //     ),
-        //   ),
-        // ],
-      ),
-      body: Container(
-        decoration: BoxDecoration(gradient: AppColors.backgroundGradient),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SizedBox(
-              width: double.infinity,
-              child: Row(
+        body: Container(
+          decoration: BoxDecoration(gradient: AppColors.backgroundGradient),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(
+                width: double.infinity,
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Align(
+                        alignment: Alignment.center,
+                        child: AppText(
+                          text: text!['where_are_you_from']!,
+                          fontSize: 45.sp,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(
+                height: 30,
+              ),
+              AppText(
+                text: text['your_location']!,
+                fontSize: 36.sp,
+                fontWeight: FontWeight.w700,
+                color: AppColors.grey,
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              Row(
                 children: [
+                  SvgPicture.asset(AppImages.locationIcon),
+                  const SizedBox(
+                    width: 20,
+                  ),
                   Expanded(
-                    child: Align(
-                      alignment: Alignment.center,
-                      child: AppText(
-                        text: "where_are_you_from".tr,
-                        fontSize: 45.sp,
-                        fontWeight: FontWeight.w700,
+                    child: TextField(
+                      decoration: InputDecoration(
+                        border: InputBorder.none,
+                        isDense: true,
+                        label: AppText(text: labelText, fontSize: 18, fontWeight: FontWeight.w700),
                       ),
                     ),
                   ),
                 ],
               ),
-            ),
-            const SizedBox(
-              height: 30,
-            ),
-            AppText(
-              text: "your_location".tr,
-              fontSize: 36.sp,
-              fontWeight: FontWeight.w700,
-              color: AppColors.grey,
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            Row(
-              children: [
-                SvgPicture.asset(AppImages.locationIcon),
-                const SizedBox(
-                  width: 20,
-                ),
-                Expanded(
-                  child: TextField(
-                    decoration: InputDecoration(
-                      border: InputBorder.none,
-                      isDense: true,
-                      label: AppText(text: labelText, fontSize: 18, fontWeight: FontWeight.w700),
-                    ),
+              const Divider(color: AppColors.grey, thickness: 0.5, height: 15.0),
+              const SizedBox(height: 20,),
+              GestureDetector(child: Row(
+                children: [
+                  SvgPicture.asset(AppImages.locateIcon, width: 30, height: 30,),
+                  const SizedBox(
+                    width: 20,
                   ),
-                ),
-              ],
-            ),
-            const Divider(color: AppColors.grey, thickness: 0.5, height: 15.0),
-            const SizedBox(height: 20,),
-            GestureDetector(child: Row(
-              children: [
-                SvgPicture.asset(AppImages.locateIcon, width: 30, height: 30,),
-                const SizedBox(
-                  width: 20,
-                ),
-                const AppText(text: 'Locate Me', fontSize: 18, fontWeight: FontWeight.w700,),
-              ],
-            ), onTap: () {
-              _determinePosition().then((value) async {
-                print('${value.latitude}==Latitude     ${value.longitude}==longitude');
-                currentPoint=GeoPoint(value.latitude, value.longitude);
-                await placemarkFromCoordinates(value.latitude, value.longitude).then((value) {
-                  print('${value.length}==length');
-                  print('${value.first.name}==name');
-                  print('${value.first.locality}==locality');
-                  print('${value.first.country}==country');
-                  setState(() {
-                    labelText = '${value.first.locality}, ${value.first.country}';
+                  AppText(text: text['locate_me']!, fontSize: 18, fontWeight: FontWeight.w700,),
+                ],
+              ), onTap: () {
+                _determinePosition().then((value) async {
+                  print('${value.latitude}==Latitude     ${value.longitude}==longitude');
+                  currentPoint=GeoPoint(value.latitude, value.longitude);
+                  await placemarkFromCoordinates(value.latitude, value.longitude).then((value) {
+                    print('${value.length}==length');
+                    print('${value.first.name}==name');
+                    print('${value.first.locality}==locality');
+                    print('${value.first.country}==country');
+                    setState(() {
+                      labelText = '${value.first.locality}, ${value.first.country}';
+                    });
                   });
                 });
-              });
-            },),
-            const SizedBox(height: 30,),
-            GradientButton(title: 'save'.tr, onPressedButon: () {
+              },),
+              const SizedBox(height: 30,),
+              GradientButton(title: text['save']!, onPressedButon: () {
 
-              if (currentPoint != null) {
-                var provider=Provider.of<UserProvider>(context,listen: false);
-                QuestionRecord().uploadLocation(widget.uid,labelText,currentPoint).then((value){
-                  provider.setCurrentPoint(currentPoint);
-                  provider.setLocation(labelText);
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => MainScreen()));
+                if (currentPoint != null) {
+                  var provider=Provider.of<UserProvider>(context,listen: false);
+                  QuestionRecord().uploadLocation(widget.uid,labelText,currentPoint).then((value){
+                    provider.setCurrentPoint(currentPoint);
+                    provider.setLocation(labelText);
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => MainScreen()));
 
-                });
+                  });
 
-              }
+                }
 
-            }),
+              }),
 
-          ],
+            ],
+          ),
         ),
-      ),
-    );
+      );
+    });
   }
 
   Future<Position> _determinePosition() async {

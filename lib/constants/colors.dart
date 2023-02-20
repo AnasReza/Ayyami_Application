@@ -40,7 +40,12 @@ class AppColors {
     begin: Alignment(180, 778.878),
     end: Alignment(540, 778.878),
   );
-
+  static LinearGradient transparentGradient = const LinearGradient(
+    colors: [Colors.transparent, Colors.transparent],
+    stops: [0, 1],
+    begin: Alignment(180, 778.878),
+    end: Alignment(540, 778.878),
+  );
   static LinearGradient bgPinkishGradient = LinearGradient(
     colors: [pinkShade, pink],
     stops: [0, 1],

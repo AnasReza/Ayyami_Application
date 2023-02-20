@@ -68,7 +68,7 @@ class MyApp extends StatelessWidget {
             child: GetMaterialApp(
               debugShowCheckedModeBanner: false,
               navigatorKey: Get.key,
-              translations: AppTranslate(),
+              // translations: AppTranslate(),
               locale: const Locale('en', 'US'),
               fallbackLocale: const Locale('en', 'US'),
               title: 'Ayyami',

@@ -13,6 +13,7 @@ import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 
+import '../../translation/app_translation.dart';
 import '../../widgets/gradient_button.dart';
 import '../../widgets/utils.dart';
 import '../main_screen.dart';
@@ -75,243 +76,266 @@ class _set_passwordState extends State<set_password> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return Scaffold(
-      backgroundColor: Color(0xffF5F5F5),
-      body: Center(
-        child: SingleChildScrollView(
-          child: Container(
-            child: Column(children: [
-              Container(
-                height: 150,
-                width: 230,
-                child: Image.asset("assets/images/logo.png"),
-              ),
-              SizedBox(height: 40),
-              Container(
-                child: Form(
-                  key: formKey, //Key for Form Start
-                  child: Column(children: [
-                    const Text(
-                      "Set Profile Data",
-                      style: TextStyle(
-                        fontSize: 25.0,
-                        fontFamily: 'DMSans',
-                        color: Color(0xff1F3D73),
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                    SizedBox(height: 40),
-                    InkWell(
-                      onTap: () {
-                        //----Dialog Start-----
+    return Consumer<UserProvider>(builder: (c,provider,child){
+      var lang=provider.getLanguage;
+      var text=AppTranslate().textLanguage[lang];
 
-                        showDialog(
-                            context: context,
-                            builder: (BuildContext dialogContex) {
-                              return Dialog(
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(4),
-                                  ),
-                                  child: Stack(
-                                    clipBehavior: Clip.none,
-                                    alignment: Alignment.topCenter,
-                                    children: [
-                                      Container(
-                                        height: 250,
-                                        child: Column(
-                                          children: [
-                                            const Padding(padding: EdgeInsets.symmetric(vertical: 30)),
-                                            const Text(
-                                              "Choose",
-                                              style: TextStyle(
-                                                fontSize: 24.0,
-                                                fontFamily: 'DMSans',
-                                                color: Color(0xff1F3D73),
-                                                fontWeight: FontWeight.w700,
+      return Scaffold(
+        backgroundColor: const Color(0xffF5F5F5),
+        body: Center(
+          child: SingleChildScrollView(
+            child: Container(
+              child: Column(children: [
+                Container(
+                  height: 150,
+                  width: 230,
+                  child: Image.asset("assets/images/logo.png"),
+                ),
+                const SizedBox(height: 40),
+                Container(
+                  child: Form(
+                    key: formKey, //Key for Form Start
+                    child: Column(children: [
+                       Text(
+                        text!['Set Profile Data']!,
+                        style: const TextStyle(
+                          fontSize: 25.0,
+                          fontFamily: 'DMSans',
+                          color: Color(0xff1F3D73),
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                      const SizedBox(height: 40),
+                      InkWell(
+                        onTap: () {
+                          //----Dialog Start-----
+
+                          showDialog(
+                              context: context,
+                              builder: (BuildContext dialogContex) {
+                                return Dialog(
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(4),
+                                    ),
+                                    child: Stack(
+                                      clipBehavior: Clip.none,
+                                      alignment: Alignment.topCenter,
+                                      children: [
+                                        Container(
+                                          height: 250,
+                                          child: Column(
+                                            children: [
+                                              const Padding(padding: EdgeInsets.symmetric(vertical: 30)),
+                                              Text(
+                                                text['Choose']!,
+                                                style: const TextStyle(
+                                                  fontSize: 24.0,
+                                                  fontFamily: 'DMSans',
+                                                  color: Color(0xff1F3D73),
+                                                  fontWeight: FontWeight.w700,
+                                                ),
                                               ),
-                                            ),
-                                            SizedBox(height: 30),
-                                            Padding(
-                                                padding: const EdgeInsets.fromLTRB(30, 0, 10, 10),
-                                                child: Row(
-                                                  children: [
-                                                    Container(
-                                                      padding: const EdgeInsets.symmetric(horizontal: 30),
-                                                      child: Column(
-                                                        children: [
-                                                          InkWell(
+                                              const SizedBox(height: 30),
+                                              Padding(
+                                                  padding: const EdgeInsets.fromLTRB(30, 0, 10, 10),
+                                                  child: Row(
+                                                    children: [
+                                                      Container(
+                                                        padding: const EdgeInsets.symmetric(horizontal: 30),
+                                                        child: Column(
+                                                          children: [
+                                                            InkWell(
+                                                                child: const Icon(
+                                                                  Icons.camera_alt,
+                                                                  size: 40,
+                                                                  color: Color(0xff1F3D73),
+                                                                ),
+                                                                onTap: () {
+                                                                  getImageFromCamera(dialogContex);
+                                                                }),
+                                                            const SizedBox(height: 5),
+                                                            Text(
+                                                              text['camera']!,
+                                                              style: TextStyle(
+                                                                fontSize: 18.0,
+                                                                fontFamily: 'DMSans',
+                                                                color: Color(0xff1F3D73),
+                                                                fontWeight: FontWeight.w400,
+                                                              ),
+                                                            )
+                                                          ],
+                                                        ),
+                                                      ),
+                                                      const SizedBox(width: 40),
+                                                      Container(
+                                                        padding: const EdgeInsets.symmetric(horizontal: 0),
+                                                        child: Column(
+                                                          children: [
+                                                            InkWell(
                                                               child: const Icon(
-                                                                Icons.camera_alt,
+                                                                Icons.image,
                                                                 size: 40,
                                                                 color: Color(0xff1F3D73),
                                                               ),
-                                                              onTap: () {
-                                                                getImageFromCamera(dialogContex);
-                                                              }),
-                                                          const SizedBox(height: 5),
-                                                          const Text(
-                                                            "Camera",
-                                                            style: TextStyle(
-                                                              fontSize: 18.0,
-                                                              fontFamily: 'DMSans',
-                                                              color: Color(0xff1F3D73),
-                                                              fontWeight: FontWeight.w400,
-                                                            ),
-                                                          )
-                                                        ],
-                                                      ),
-                                                    ),
-                                                    const SizedBox(width: 40),
-                                                    Container(
-                                                      padding: const EdgeInsets.symmetric(horizontal: 0),
-                                                      child: Column(
-                                                        children: [
-                                                          InkWell(
-                                                            child: const Icon(
-                                                              Icons.image,
-                                                              size: 40,
-                                                              color: Color(0xff1F3D73),
-                                                            ),
-                                                            onTap: () //Gallery OnTap
+                                                              onTap: () //Gallery OnTap
 
-                                                                {
-                                                              getImageFromGallery(dialogContex);
-                                                            },
-                                                          ),
-                                                          const SizedBox(height: 5),
-                                                          const Text(
-                                                            "Gallery",
-                                                            style: TextStyle(
-                                                              fontSize: 18.0,
-                                                              fontFamily: 'DMSans',
-                                                              color: Color(0xff1F3D73),
-                                                              fontWeight: FontWeight.w400,
+                                                              {
+                                                                getImageFromGallery(dialogContex);
+                                                              },
                                                             ),
-                                                          )
-                                                        ],
+                                                            const SizedBox(height: 5),
+                                                            Text(
+                                                              text['gallery']!,
+                                                              style: TextStyle(
+                                                                fontSize: 18.0,
+                                                                fontFamily: 'DMSans',
+                                                                color: Color(0xff1F3D73),
+                                                                fontWeight: FontWeight.w400,
+                                                              ),
+                                                            )
+                                                          ],
+                                                        ),
                                                       ),
-                                                    ),
-                                                  ],
-                                                )),
-                                          ],
+                                                    ],
+                                                  )),
+                                            ],
+                                          ),
                                         ),
-                                      ),
-                                      Positioned(
-                                        top: -65,
-                                        child: Image.asset(
-                                          'assets/images/dialog_icon.png',
-                                          height: 100,
-                                          width: 100,
-                                        ),
-                                      )
-                                    ],
-                                  ));
-                            });
-                      }, //----Dialog End-----
-                      child: Stack(
-                        children: <Widget>[
-                          CircleAvatar(
-                            backgroundColor: Colors.transparent,
-                            radius: 100,
-                            child: ClipOval(
-                              child: SizedBox.fromSize(
-                                size: Size.fromRadius(90),
-                                child: imageData != null
-                                    ? Image.file(
-                                        imageData!.absolute,
-                                        fit: BoxFit.fitWidth,
-                                      )
-                                    : Image.asset(assetsPath,
-                                        fit: BoxFit.cover,
-                                      ),
+                                        Positioned(
+                                          top: -65,
+                                          child: Image.asset(
+                                            'assets/images/dialog_icon.png',
+                                            height: 100,
+                                            width: 100,
+                                          ),
+                                        )
+                                      ],
+                                    ));
+                              });
+                        }, //----Dialog End-----
+                        child: Stack(
+                          children: <Widget>[
+                            CircleAvatar(
+                              backgroundColor: Colors.transparent,
+                              radius: 100,
+                              child: ClipOval(
+                                child: SizedBox.fromSize(
+                                  size: const Size.fromRadius(90),
+                                  child: imageData != null
+                                      ? Image.file(
+                                    imageData!.absolute,
+                                    fit: BoxFit.fitWidth,
+                                  )
+                                      : Image.asset(assetsPath,
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
                               ),
                             ),
-                          ),
-                          Positioned(
-                            left: 15,
-                            top: -5,
-                            child: Container(
-                              height: 40,
-                              width: 40,
-                              decoration: const BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.all(Radius.circular(40)),
+                            Positioned(
+                              left: 15,
+                              top: -5,
+                              child: Container(
+                                height: 40,
+                                width: 40,
+                                decoration: const BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.all(Radius.circular(40)),
+                                ),
+                                child: Image.asset("assets/images/camera.png"),
                               ),
-                              child: Image.asset("assets/images/camera.png"),
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                    SizedBox(height: 40),
-                    const Padding(
-                      padding: const EdgeInsets.only(right: 220),
-                      child: Text(
-                        "Username",
-                        style: TextStyle(
-                          fontFamily: 'DMSans',
-                          fontSize: 22.0,
-                          fontWeight: FontWeight.w500,
-                          color: Color(0xff8F92A1),
+                            )
+                          ],
                         ),
                       ),
-                    ),
-                    SizedBox(height: 8),
-                    Padding(
-                      padding: const EdgeInsets.only(right: 46, left: 46),
-                      child: TextFormField(
-                          keyboardType: TextInputType.text,
-                          controller: userNameController,
-                          style: const TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
+                      const SizedBox(height: 40),
+                       Padding(
+                        padding: const EdgeInsets.only(right: 220),
+                        child: Text(
+                          text['username']!,
+                          style: TextStyle(
+                            fontFamily: 'DMSans',
+                            fontSize: 22.0,
+                            fontWeight: FontWeight.w500,
+                            color: Color(0xff8F92A1),
                           ),
-                          decoration: const InputDecoration(
-                            border: InputBorder.none,
-                            hintText: "",
-                            icon: Icon(
-                              Icons.person_outline,
-                              color: Color(0xff171717),
-                              size: 25,
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      Padding(
+                        padding: const EdgeInsets.only(right: 46, left: 46),
+                        child: TextFormField(
+                            keyboardType: TextInputType.text,
+                            controller: userNameController,
+                            style: const TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
                             ),
-                          ),
-                          validator: (value) {
-                            if (value!.isEmpty) {
-                              return "Enter your Name";
-                            } else {
-                              return null;
-                            }
-                          }),
-                    ),
-                  ]),
+                            decoration: const InputDecoration(
+                              border: InputBorder.none,
+                              hintText: "",
+                              icon: Icon(
+                                Icons.person_outline,
+                                color: Color(0xff171717),
+                                size: 25,
+                              ),
+                            ),
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return text['enter_name'];
+                              } else {
+                                return null;
+                              }
+                            }),
+                      ),
+                    ]),
+                  ),
                 ),
-              ),
-              const Divider(
-                color: Color(0xff8F92A1),
-                thickness: 1,
-                indent: 35,
-                endIndent: 35,
-              ),
-              SizedBox(height: 25),
-              GradientButton(
-                title: "Sign In",
-                loading: loading,
-                onPressedButon: () async {
-                  if (formKey.currentState!.validate()) {
-                    setState(() {
-                      loading = true;
-                    });
-                    String? uid = FirebaseAuth.instance.currentUser?.uid;
+                const Divider(
+                  color: Color(0xff8F92A1),
+                  thickness: 1,
+                  indent: 35,
+                  endIndent: 35,
+                ),
+                const SizedBox(height: 25),
+                GradientButton(
+                  title: text['sign_in']!,
+                  loading: loading,
+                  onPressedButon: () async {
+                    if (formKey.currentState!.validate()) {
+                      setState(() {
+                        loading = true;
+                      });
+                      String? uid = FirebaseAuth.instance.currentUser?.uid;
 
-                    firebase_storage.Reference ref =
-                        firebase_storage.FirebaseStorage.instance.ref('/$uid/dp-$uid');
+                      firebase_storage.Reference ref =
+                      firebase_storage.FirebaseStorage.instance.ref('/$uid/dp-$uid');
 
-                    if(imageData==null){
-                       await rootBundle.load(assetsPath).then((bytes) async {
-                        final Uint8List list = bytes.buffer.asUint8List();
-                        firebase_storage.UploadTask uploadImage = ref.putData(list);
+                      if(imageData==null){
+                        await rootBundle.load(assetsPath).then((bytes) async {
+                          final Uint8List list = bytes.buffer.asUint8List();
+                          firebase_storage.UploadTask uploadImage = ref.putData(list);
+                          await Future.value(uploadImage);
+                          var newUrl = await ref.getDownloadURL();
+
+                          FirebaseFirestore.instance.collection('users').doc(uid).set({
+                            'user_name': userNameController.text.toString(),
+                            'contact_no': widget.contact_number,
+                            "imgUrl": newUrl,
+                            'uid': uid
+                          }).then((value){
+                            final provider=Provider.of<UserProvider>(context,listen: false);
+                            provider.setUID(uid!);
+                            setHive(uid!);
+                            nextScreen(context, first_question(uid: uid,));
+                          });
+                        });
+
+                      }else{
+                        firebase_storage.UploadTask uploadImage = ref.putFile(imageData!.absolute);
                         await Future.value(uploadImage);
                         var newUrl = await ref.getDownloadURL();
+
 
                         FirebaseFirestore.instance.collection('users').doc(uid).set({
                           'user_name': userNameController.text.toString(),
@@ -324,46 +348,28 @@ class _set_passwordState extends State<set_password> {
                           setHive(uid!);
                           nextScreen(context, first_question(uid: uid,));
                         });
-                      });
-
-                    }else{
-                      firebase_storage.UploadTask uploadImage = ref.putFile(imageData!.absolute);
-                      await Future.value(uploadImage);
-                      var newUrl = await ref.getDownloadURL();
+                      }
 
 
-                      FirebaseFirestore.instance.collection('users').doc(uid).set({
-                        'user_name': userNameController.text.toString(),
-                        'contact_no': widget.contact_number,
-                        "imgUrl": newUrl,
-                        'uid': uid
-                      }).then((value){
-                        final provider=Provider.of<UserProvider>(context,listen: false);
-                        provider.setUID(uid!);
-                        setHive(uid!);
-                        nextScreen(context, first_question(uid: uid,));
+
+
+                      // Navigator.push(
+                      //     context,
+                      //     MaterialPageRoute(
+                      //         builder: (context) => first_question()));
+                    } else {
+                      setState(() {
+                        loading = false;
                       });
                     }
-
-
-
-
-                    // Navigator.push(
-                    //     context,
-                    //     MaterialPageRoute(
-                    //         builder: (context) => first_question()));
-                  } else {
-                    setState(() {
-                      loading = false;
-                    });
-                  }
-                },
-              )
-            ]),
+                  },
+                )
+              ]),
+            ),
           ),
         ),
-      ),
-    );
+      );
+    },);
   }
   void setHive(String uid) async{
     var box=await Hive.openBox('aayami');

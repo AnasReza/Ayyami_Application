@@ -71,11 +71,13 @@ class CategoryBoxWithSwitchState extends State<CategoryBoxWithSwitch> {
             )),
             SizedBox(width: 20.w),
             CustomSwitch1(
-                value: widget.darkMode,
-                onChanged: (value) {
-                  widget.onchange(value);
-                },
-                activeColor: AppColors.black,darkMode: widget.darkMode,)
+              value: widget.darkMode,
+              onChanged: (value) {
+                widget.onchange(value);
+              },
+              activeColor: AppColors.black,
+              darkMode: widget.darkMode,
+            )
           ],
         ),
       ),

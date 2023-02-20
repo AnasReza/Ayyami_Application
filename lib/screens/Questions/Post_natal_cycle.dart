@@ -1,10 +1,13 @@
 
+import 'package:ayyami/providers/user_provider.dart';
 import 'package:ayyami/screens/Questions/where_are_you_from.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import "package:flutter/material.dart";
+import 'package:provider/provider.dart';
 
 import '../../firebase_calls/questions_record.dart';
+import '../../translation/app_translation.dart';
 import '../../widgets/gradient_button.dart';
 
 
@@ -39,133 +42,128 @@ class _postNatal_CycleState extends State<postNatal_Cycle> {
 
   @override
   Widget build(BuildContext context) {
-   return Scaffold(
+  return Consumer<UserProvider>(builder: (c,provider,child){
+    var lang=provider.getLanguage;
+    var text=AppTranslate().textLanguage[lang];
+
+    return Scaffold(
       backgroundColor: Color(0xffF5F5F5),
       body: Center(
           child: SingleChildScrollView(
-        child: Container(
-          child: Column(
-            children: [
-              Container(
-                height: 140,
-                width: 200,
-                child: Image.asset("assets/images/icon_name.png"),
-              ),
-              SizedBox(height: 5),
-              Container(
-                height: 130,
-                width: 180,
-                child: Image.asset("assets/images/question_one_icon.png"),
-              ),
-              SizedBox(height: 45),
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 45),
-                child: const Text(
-                  "What was you last post-natal cycle?",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                      fontSize: 28.0,
-                      fontFamily: 'DMSans',
-                      color: Color(0xff1F3D73),
-                      fontWeight: FontWeight.w700,
-                      letterSpacing: 1),
-                ),
-              ),
-              const SizedBox(height: 50),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-
+            child: Container(
+              child: Column(
                 children: [
-                  InkWell(
-                    
-                    child:  Image.asset("assets/images/left_arrow.png"),
-                    onTap: (){
-                      _decrementCount();
-                    }
+                  Container(
+                    height: 140,
+                    width: 200,
+                    child: Image.asset("assets/images/icon_name.png"),
+                  ),
+                  SizedBox(height: 5),
+                  Container(
+                    height: 130,
+                    width: 180,
+                    child: Image.asset("assets/images/question_one_icon.png"),
+                  ),
+                  SizedBox(height: 45),
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 45),
+                    child: Text(
+                      text!['Post_natal_cycle']!,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          fontSize: 28.0,
+                          fontFamily: 'DMSans',
+                          color: Color(0xff1F3D73),
+                          fontWeight: FontWeight.w700,
+                          letterSpacing: 1),
                     ),
-                   const SizedBox(width:60),
-                    Text("$counter",
-                     style: const TextStyle(
-                      fontSize: 35,
-                      fontFamily: 'DMSans',
-                      color: Color(0xff1F3D73),
-                      fontWeight: FontWeight.w700,
+                  ),
+                  const SizedBox(height: 50),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+
+                    children: [
+                      InkWell(
+
+                          child:  Image.asset("assets/images/left_arrow.png"),
+                          onTap: (){
+                            _decrementCount();
+                          }
+                      ),
+                      const SizedBox(width:60),
+                      Text("$counter",
+                        style: const TextStyle(
+                          fontSize: 35,
+                          fontFamily: 'DMSans',
+                          color: Color(0xff1F3D73),
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                      const  SizedBox(width:60),
+                      InkWell(
+                          child:  Image.asset("assets/images/right_arrow.png"),
+                          onTap: (){
+                            _incrementCount();
+                          }
+                      ),
+
+                    ],
+                  ),
+                  SizedBox(height: 45),
+                  Container(
+                    child: GradientButton(
+                      title: text['confirm']!,
+                      onPressedButon: () {
+                        print(counter);
+                        QuestionRecord().uploadPostNatalBleedingQuestion(widget.uid, counter.toString()).then((value){
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>  LocationQuestion(uid: widget.uid)));
+                        });
+
+                      },
                     ),
-                    ),
-                   const  SizedBox(width:60),
-                    InkWell(
-                    child:  Image.asset("assets/images/right_arrow.png"),
-                    onTap: (){
-                      _incrementCount();
-                    }
-                    ),
-                      
-          ],
+                  ),
+                  SizedBox(height: 20),
+                  // Row(
+                  //   mainAxisAlignment: MainAxisAlignment.center,
+                  //   children: [
+                  //     Container(
+                  //       child: TextButton(
+                  //         onPressed: () {
+                  //           showDialog(
+                  //               context: context,
+                  //               builder: (BuildContext context) {
+                  //                 return MyDialog();
+                  //               });
+                  //         },
+                  //         style: TextButton.styleFrom(
+                  //           foregroundColor: Color(0xff1F3D73),
+                  //           textStyle: const TextStyle(
+                  //             fontFamily: 'DMSans',
+                  //             fontSize: 14.0,
+                  //             fontWeight: FontWeight.w500,
+                  //           ),
+                  //         ),
+                  //         child: Text("Skip to the tracker"),
+                  //       ),
+                  //     ),
+                  //     Container(
+                  //       child: const Icon(
+                  //         Icons.arrow_forward,
+                  //         size: 18,
+                  //         color: Color(0xFF1F3D73),
+                  //       ),
+                  //     )
+                  //   ],
+                  // ),
+                ],
               ),
-              SizedBox(height: 45),
-              Container(
-                child: GradientButton(
-                  title: "Confirm",
-                  onPressedButon: () {
-
-                    String q_id = DateTime.now().millisecondsSinceEpoch.toString();
-
-                     // String uid = auth.currentUser!.uid;
-                      databaseRef.child(q_id).set({
-                        'Question': "What was your last post-natal cycle?",
-                        'Answer': counter,
-                        'Q_id': q_id,
-                        // 'User_id': uid
-                      });
-                    print(counter);
-                    QuestionRecord().uploadPostNatalBleedingQuestion(widget.uid, counter.toString()).then((value){
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>  LocationQuestion(uid: widget.uid)));
-                    });
-
-                  },
-                ),
-              ),
-              SizedBox(height: 20),
-              // Row(
-              //   mainAxisAlignment: MainAxisAlignment.center,
-              //   children: [
-              //     Container(
-              //       child: TextButton(
-              //         onPressed: () {
-              //           showDialog(
-              //               context: context,
-              //               builder: (BuildContext context) {
-              //                 return MyDialog();
-              //               });
-              //         },
-              //         style: TextButton.styleFrom(
-              //           foregroundColor: Color(0xff1F3D73),
-              //           textStyle: const TextStyle(
-              //             fontFamily: 'DMSans',
-              //             fontSize: 14.0,
-              //             fontWeight: FontWeight.w500,
-              //           ),
-              //         ),
-              //         child: Text("Skip to the tracker"),
-              //       ),
-              //     ),
-              //     Container(
-              //       child: const Icon(
-              //         Icons.arrow_forward,
-              //         size: 18,
-              //         color: Color(0xFF1F3D73),
-              //       ),
-              //     )
-              //   ],
-              // ),
-            ],
-          ),
-        ),
-      )),
+            ),
+          )),
     );
+  });
   }
 }

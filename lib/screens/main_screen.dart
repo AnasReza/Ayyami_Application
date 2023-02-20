@@ -21,6 +21,7 @@ import '../navigation/custom_bottom_nav.dart';
 import '../navigation/custom_fab.dart';
 import '../providers/namaz_provider.dart';
 import '../providers/user_provider.dart';
+import '../translation/app_translation.dart';
 import '../utils/prayer_notification.dart';
 import 'home/home.dart';
 
@@ -74,71 +75,87 @@ class MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<UserProvider>(builder: (c,provider,child){
-      getPrayerTiming(context);
-      var darkMode=provider.getIsDarkMode;
-      return Scaffold(
-        key: _key,
-        appBar: AppBar(
-          elevation: 0,
-          backgroundColor:darkMode?AppDarkColors.white: Colors.white,
-          leading: Padding(
-            padding: EdgeInsets.only(left: 10),
-            child: InkWell(
-              onTap: () {
-                _key.currentState!.openDrawer();
-                // Navigator.push(context, MaterialPageRoute(builder: (context) => PrayerTiming()));
-              },
-              child: SvgPicture.asset(
-                AppImages.menuIcon,
-                width: 44.w,
-                height: 38.h,
-                color: darkMode?Colors.white:AppColors.grey,
+    return Consumer<UserProvider>(
+      builder: (c, provider, child) {
+        getPrayerTiming(context);
+        var darkMode = provider.getIsDarkMode;
+        var lang = provider.getLanguage;
+        var text = AppTranslate().textLanguage[lang];
+        List<String> textList = [
+          text!['add_members']!,
+          text!['calender']!,
+          text!['reminders']!,
+          text!['tracker']!,
+          text!['cycle_history']!,
+          text!['ask_mufti']!
+        ];
+        String invite=text['invite']!;
+        String about=text['about_us_text']!;
+        String logout=text['logout']!;
+        return Scaffold(
+          key: _key,
+          appBar: AppBar(
+            elevation: 0,
+            backgroundColor: darkMode ? AppDarkColors.white : Colors.white,
+            leading: Padding(
+              padding: EdgeInsets.only(left: 10),
+              child: InkWell(
+                onTap: () {
+                  _key.currentState!.openDrawer();
+                  // Navigator.push(context, MaterialPageRoute(builder: (context) => PrayerTiming()));
+                },
+                child: SvgPicture.asset(
+                  AppImages.menuIcon,
+                  width: 44.w,
+                  height: 38.h,
+                  color: darkMode ? Colors.white : AppColors.grey,
+                ),
               ),
             ),
+            leadingWidth: 30,
+            title: SvgPicture.asset(
+              darkMode ? AppImages.logo_white : AppImages.logo,
+              width: 249.6.w,
+              height: 78.36.h,
+            ),
+            centerTitle: true,
+            // actions: [
+            //   InkWell(
+            //     onTap: () {
+            //       _key.currentState!.openDrawer();
+            //       // Navigator.push(context, MaterialPageRoute(builder: (context) => PrayerTiming()));
+            //     },
+            //     child: SvgPicture.asset(
+            //       AppImages.menuIcon,
+            //       width: 44.w,
+            //       height: 38.h,
+            //     ),
+            //   ),
+            // ],
           ),
-          leadingWidth: 30,
-          title: SvgPicture.asset(
-            darkMode?AppImages.logo_white:AppImages.logo,
-            width: 249.6.w,
-            height: 78.36.h,
+          body: Container(
+            decoration:
+                BoxDecoration(gradient: darkMode ? AppDarkColors.backgroundGradient : AppColors.backgroundGradient),
+            child: widgetList[widgetIndex],
           ),
-          centerTitle: true,
-          // actions: [
-          //   InkWell(
-          //     onTap: () {
-          //       _key.currentState!.openDrawer();
-          //       // Navigator.push(context, MaterialPageRoute(builder: (context) => PrayerTiming()));
-          //     },
-          //     child: SvgPicture.asset(
-          //       AppImages.menuIcon,
-          //       width: 44.w,
-          //       height: 38.h,
-          //     ),
-          //   ),
-          // ],
-        ),
-        body: Container(
-          decoration: BoxDecoration(gradient: darkMode?AppDarkColors.backgroundGradient:AppColors.backgroundGradient),
-          child: widgetList[widgetIndex],
-        ),
-        bottomNavigationBar: CustomBottomNav(
-          darkMode:darkMode,
-            cIndex: _cIndex,
-            tappingIndex: (index) {
-              setState(() {
-                widgetIndex = index;
-              });
-            }),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        floatingActionButton: FAB(tappingIndex: (index) {
-          setState(() {
-            widgetIndex = index;
-          });
-        }),
-        drawer: SideBar(),
-      );
-    },);
+          bottomNavigationBar: CustomBottomNav(
+              darkMode: darkMode,
+              cIndex: _cIndex,
+              tappingIndex: (index) {
+                setState(() {
+                  widgetIndex = index;
+                });
+              }),
+          floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+          floatingActionButton: FAB(tappingIndex: (index) {
+            setState(() {
+              widgetIndex = index;
+            });
+          }),
+          drawer: SideBar(textList,invite,about,logout),
+        );
+      },
+    );
   }
 
   void saveNamazStart(bool check) async {

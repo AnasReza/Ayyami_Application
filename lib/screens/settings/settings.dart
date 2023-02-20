@@ -2,6 +2,7 @@ import 'package:ayyami/constants/colors.dart';
 import 'package:ayyami/constants/const.dart';
 import 'package:ayyami/providers/user_provider.dart';
 import 'package:ayyami/screens/settings/change_location.dart';
+import 'package:ayyami/translation/app_translation.dart';
 import 'package:ayyami/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -10,9 +11,11 @@ import 'package:provider/provider.dart';
 
 import '../../constants/dark_mode_colors.dart';
 import '../../dialog/rate_dialog.dart';
+import '../../firebase_calls/user_record.dart';
 import '../../widgets/app_text.dart';
 import '../../widgets/category_box with_switch.dart';
 import '../../widgets/category_box.dart';
+import 'choose_language.dart';
 
 class SettingsApp extends StatefulWidget {
   @override
@@ -26,16 +29,18 @@ class SettingsState extends State<SettingsApp> {
   Widget build(BuildContext context) {
     return Consumer<UserProvider>(builder: (c, provider, child) {
       var darkMode = provider.getIsDarkMode;
+      var lang = provider.getLanguage;
+      var text = AppTranslate().textLanguage[lang];
       return Center(
         child: SingleChildScrollView(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               AppText(
-                text: "Settings",
+                text: text!['settings']!,
                 fontSize: 45.sp,
                 fontWeight: FontWeight.w700,
-                color: darkMode?AppDarkColors.headingColor:AppColors.headingColor,
+                color: darkMode ? AppDarkColors.headingColor : AppColors.headingColor,
               ),
               SizedBox(
                 height: 20,
@@ -43,14 +48,14 @@ class SettingsState extends State<SettingsApp> {
               //CHANGE LOCATION
               GestureDetector(
                 child: CategoryBox(
-                  categoryName: 'change_location'.tr,
+                  categoryName: text!['change_location']!,
                   days: 21,
                   hours: 12,
                   checkbox: false,
                   isSelected: false,
                   comingSoon: false,
                   showDate: false,
-                  darkMode:darkMode,
+                  darkMode: darkMode,
                 ),
                 onTap: () {
                   nextScreen(context, ChangeLocation());
@@ -60,55 +65,63 @@ class SettingsState extends State<SettingsApp> {
                 height: 20,
               ),
               //CHANGE Language
-              CategoryBox(
-                categoryName: 'change_language'.tr,
-                days: 21,
-                hours: 12,
-                checkbox: false,
-                isSelected: false,
-                comingSoon: false,
-                showDate: false,
-                darkMode:darkMode,
+              GestureDetector(
+                child: CategoryBox(
+                  categoryName: text!['change_language']!,
+                  days: 21,
+                  hours: 12,
+                  checkbox: false,
+                  isSelected: false,
+                  comingSoon: false,
+                  showDate: false,
+                  darkMode: darkMode,
+                ),
+                onTap: () {
+                  nextScreen(context, ChooseLanguage());
+                },
               ),
+
               const SizedBox(
                 height: 20,
               ),
               //CGANGE THEME
               CategoryBox(
-                categoryName: 'change_theme'.tr,
+                categoryName: text!['change_theme']!,
                 days: 21,
                 hours: 12,
                 checkbox: false,
                 comingSoon: true,
                 isSelected: false,
                 showDate: false,
-                darkMode:darkMode,
+                darkMode: darkMode,
               ),
               const SizedBox(
                 height: 20,
               ),
               //TRACKER FACE
               CategoryBox(
-                categoryName: 'change_tracker_face'.tr,
+                categoryName: text!['change_tracker_face']!,
                 days: 21,
                 hours: 12,
                 checkbox: false,
                 isSelected: false,
                 comingSoon: true,
                 showDate: false,
-                darkMode:darkMode,
+                darkMode: darkMode,
               ),
               const SizedBox(
                 height: 20,
               ),
               //DARK MODE
               CategoryBoxWithSwitch(
-                categoryName: 'dark_mode'.tr,
+                categoryName: text!['dark_mode']!,
                 darkMode: darkMode,
                 comingSoon: false,
                 onchange: (onChangeValue) {
+
                   provider.setDarkMode(onChangeValue);
                   Utils.saveAppData(onChangeValue, 'dark_mode');
+                  UsersRecord().updateDarkMode(provider.getUid!, onChangeValue);
                 },
               ),
 
@@ -117,14 +130,14 @@ class SettingsState extends State<SettingsApp> {
               ),
               //BUY PREMIUM
               CategoryBox(
-                categoryName: 'buy_premium'.tr,
+                categoryName: text!['buy_premium']!,
                 days: 21,
                 hours: 12,
                 checkbox: false,
                 isSelected: false,
                 comingSoon: false,
                 showDate: false,
-                darkMode:darkMode,
+                darkMode: darkMode,
               ),
               const SizedBox(
                 height: 20,
@@ -132,22 +145,22 @@ class SettingsState extends State<SettingsApp> {
               //RATE APP
               GestureDetector(
                 child: CategoryBox(
-                  categoryName: 'rate_app'.tr,
+                  categoryName: text!['rate_app']!,
                   days: 21,
                   hours: 12,
                   checkbox: false,
                   isSelected: false,
-                  comingSoon: false,
+                  comingSoon: true,
                   showDate: false,
-                  darkMode:darkMode,
+                  darkMode: darkMode,
                 ),
                 onTap: () {
-                  showDialog(
-                      context: context,
-                      builder: (dialogContext) {
-                        return RateDialog(darkMode:darkMode);
-                      },
-                      useSafeArea: true);
+                  // showDialog(
+                  //     context: context,
+                  //     builder: (dialogContext) {
+                  //       return RateDialog(darkMode:darkMode);
+                  //     },
+                  //     useSafeArea: true);
                 },
               ),
 

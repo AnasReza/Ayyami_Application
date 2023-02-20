@@ -21,6 +21,7 @@ import '../../navigation/custom_fab.dart';
 import '../../providers/menses_provider.dart';
 import '../../providers/prayer_provider.dart';
 import '../../services/local_noti_service.dart';
+import '../../translation/app_translation.dart';
 import '../../widgets/category_box.dart';
 import '../../widgets/menses_timer_box.dart';
 
@@ -230,6 +231,8 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
     return Consumer<UserProvider>(builder: (consumerContext, userProvider, child) {
       final provider = context.read<PrayerProvider>();
       var darkMode = userProvider.getIsDarkMode;
+      var lang=userProvider.getLanguage;
+      var text=AppTranslate().textLanguage[lang];
       return Container(
         height: double.infinity,
         child: Padding(
@@ -272,7 +275,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
               Align(
                 alignment: Alignment.centerLeft,
                 child: AppText(
-                  text: "  Menstrual bleeding",
+                  text: text!['menstrual_bleeding']!,
                   fontSize: 30.sp,
                   fontWeight: FontWeight.w700,
                   color: darkMode?AppDarkColors.headingColor:AppColors.headingColor,
@@ -299,7 +302,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       AppText(
-                        text: "Recent Regulation",
+                        text: text['recent_regulation']!,
                         color: AppColors.white,
                         fontSize: 28.sp,
                         fontWeight: FontWeight.w700,
@@ -379,7 +382,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
               Align(
                 alignment: Alignment.centerLeft,
                 child: AppText(
-                  text: "  Last Cycle",
+                  text:text['last_cycle']!,
                   fontSize: 30.sp,
                   fontWeight: FontWeight.w700,
                   color: darkMode?AppDarkColors.headingColor:AppColors.headingColor,
@@ -394,7 +397,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
               ),
               SizedBox(height: 15.h),
               CategoryBox(
-                categoryName: 'Tuhur',
+                categoryName: text['tuhur']!,
                 days: lastTuhurDays,
                 hours: lastTuhurHours,
                 checkbox: false,
@@ -405,7 +408,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
               ),
               SizedBox(height: 41.h),
               CategoryBox(
-                categoryName: 'Mensis',
+                categoryName: text['menses']!,
                 days: lastMensesDays,
                 hours: lastMensesHours,
                 checkbox: false,

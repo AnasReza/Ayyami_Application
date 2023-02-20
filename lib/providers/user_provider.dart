@@ -2,10 +2,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class UserProvider extends ChangeNotifier{
-  String? uid;
+  String uid='';
   String? location;
   String? beginner;
   String? married;
+  String language='en';
   late GeoPoint currentPoint;
   bool? login;
   bool isDarkMode=false;
@@ -15,7 +16,8 @@ class UserProvider extends ChangeNotifier{
   late Map<String, int> lastMensesTime;
   Map<String, int>? lastTuhurTime;
 
-  String? get getUid=> uid;
+  String get getUid=> uid;
+  String? get getLanguage=> language;
   String? get getLocation=> location;
   String? get getBeginner=> beginner;
   String? get getMarried=> married;
@@ -61,6 +63,10 @@ class UserProvider extends ChangeNotifier{
 
   setUID(String value){
     uid=value;
+    notifyListeners();
+  }
+  setLanguage(String value){
+    language=value;
     notifyListeners();
   }
   setLogin(bool value){

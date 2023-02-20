@@ -13,6 +13,7 @@ import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
 import '../../constants/images.dart';
+import '../../translation/app_translation.dart';
 import '../../widgets/app_text.dart';
 
 class ChangeLocation extends StatefulWidget {
@@ -31,6 +32,9 @@ class ChangeLocationState extends State<ChangeLocation> {
 
    return Consumer<UserProvider>(builder: (c,provider,child){
      bool darkMode=provider.getIsDarkMode;
+     var lang=provider.getLanguage;
+     var text=AppTranslate().textLanguage[lang];
+
      return Scaffold(
        appBar: AppBar(
          elevation: 0,
@@ -69,7 +73,7 @@ class ChangeLocationState extends State<ChangeLocation> {
                      child: Align(
                        alignment: Alignment.center,
                        child: AppText(
-                         text: "change_location".tr,
+                         text: text!['change_location']!,
                          fontSize: 45.sp,
                          fontWeight: FontWeight.w700,
                          color: darkMode?AppDarkColors.headingColor:AppColors.headingColor,
@@ -83,7 +87,7 @@ class ChangeLocationState extends State<ChangeLocation> {
                height: 30,
              ),
              AppText(
-               text: "your_location".tr,
+               text: text['your_location']!,
                fontSize: 36.sp,
                fontWeight: FontWeight.w700,
                color: darkMode?AppDarkColors.headingColor:AppColors.headingColor,
@@ -117,7 +121,7 @@ class ChangeLocationState extends State<ChangeLocation> {
                  const SizedBox(
                    width: 20,
                  ),
-                 AppText(text: 'Locate Me', fontSize: 18, fontWeight: FontWeight.w700,color: darkMode?AppDarkColors.headingColor:AppColors.headingColor,),
+                 AppText(text: text['locate_me']!, fontSize: 18, fontWeight: FontWeight.w700,color: darkMode?AppDarkColors.headingColor:AppColors.headingColor,),
                ],
              ), onTap: () {
                _determinePosition().then((value) async {
@@ -135,7 +139,7 @@ class ChangeLocationState extends State<ChangeLocation> {
                });
              },),
              const SizedBox(height: 30,),
-             GradientButton(title: 'save'.tr, onPressedButon: () {
+             GradientButton(title: text['save']!, onPressedButon: () {
                if (currentPoint != null) {
                  var provider=Provider.of<UserProvider>(context,listen: false);
                  String? uid=provider.getUid;

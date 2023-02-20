@@ -10,6 +10,7 @@ import 'package:provider/provider.dart';
 import '../../constants/colors.dart';
 import '../../constants/dark_mode_colors.dart';
 import '../../constants/images.dart';
+import '../../translation/app_translation.dart';
 import '../../widgets/app_text.dart';
 import '../../widgets/question_answer_view.dart';
 
@@ -108,6 +109,9 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     return Consumer<UserProvider>(builder: (c,provider,child){
       var darkMode=provider.getIsDarkMode;
+      var lang=provider.getLanguage;
+      var text=AppTranslate().textLanguage[lang];
+
       return Padding(
         padding: EdgeInsets.only(
           left: 70.w,
@@ -127,7 +131,7 @@ class _ProfilePageState extends State<ProfilePage> {
               // ),
               SizedBox(height: 70.6.h),
               AppText(
-                text: "Profile",
+                text: text!['profile']!,
                 fontSize: 45.sp,
                 fontWeight: FontWeight.w700,
                 color: darkMode?AppDarkColors.headingColor:AppColors.headingColor,
@@ -213,7 +217,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    AppText(text: "Name", fontSize: 16.sp,color: darkMode?AppDarkColors.headingColor:AppColors.headingColor,),
+                                    AppText(text: text['name']!, fontSize: 16.sp,color: darkMode?AppDarkColors.headingColor:AppColors.headingColor,),
                                     const SizedBox(
                                       height: 5,
                                     ),
@@ -245,7 +249,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              AppText(text: "Phone", fontSize: 16.sp,color: darkMode?AppDarkColors.headingColor:AppColors.headingColor,),
+                              AppText(text: text['phone']!, fontSize: 16.sp,color: darkMode?AppDarkColors.headingColor:AppColors.headingColor,),
                               const SizedBox(
                                 height: 5,
                               ),
@@ -290,7 +294,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           AppText(
-                            text: "Questions",
+                            text: text['questions']!,
                             fontSize: 25.sp,
                             fontWeight: FontWeight.bold,
                             color:darkMode?AppDarkColors.headingColor:AppColors.headingColor,
@@ -299,19 +303,19 @@ class _ProfilePageState extends State<ProfilePage> {
                         ],
                       ),
 
-                      QuestionAnswerView(question: 'Are_you_Beginner'.tr, answer: beginner,darkMode: darkMode),
-                      QuestionAnswerView(question: 'Are_you_Married'.tr, answer: married_unmarried,darkMode: darkMode),
-                      QuestionAnswerView(question: 'Are_you_pregnant'.tr, answer: are_pregnant,darkMode: darkMode),
-                      QuestionAnswerView(question: 'which_pregnant'.tr, answer: which_pregnancy,darkMode: darkMode),
-                      QuestionAnswerView(question: 'how_many_weeks_pregnant'.tr, answer: week_pregnant,darkMode: darkMode),
-                      QuestionAnswerView(question: 'is_it_bleeding_pregnant'.tr, answer: bleeding_pregnant,darkMode: darkMode),
-                      QuestionAnswerView(question: 'menstrual_period'.tr, answer: menstrual_period,darkMode: darkMode),
-                      QuestionAnswerView(question: 'is_it_bleeding'.tr, answer: is_it_bleeding,darkMode: darkMode),
-                      QuestionAnswerView(question: 'Post_natal_cycle'.tr, answer: post_natal_bleeding,darkMode: darkMode),
-                      QuestionAnswerView(question: 'starting_time'.tr, answer: start_time,darkMode: darkMode),
-                      QuestionAnswerView(question: 'Stoping_time'.tr, answer: stop_time,darkMode: darkMode),
-                      QuestionAnswerView(question: 'When_did_the_bleeding_start'.tr, answer: when_bleeding_start,darkMode: darkMode),
-                      QuestionAnswerView(question: 'When_did_the_bleeding_stop'.tr, answer: when_bleeding_stop,darkMode: darkMode),
+                      QuestionAnswerView(question: text['Are_you_Beginner']!, answer: beginner,darkMode: darkMode),
+                      QuestionAnswerView(question: text['Are_you_Married']!, answer: married_unmarried,darkMode: darkMode),
+                      QuestionAnswerView(question: text['Are_you_pregnant']!, answer: are_pregnant,darkMode: darkMode),
+                      QuestionAnswerView(question: text['which_pregnancy']!, answer: which_pregnancy,darkMode: darkMode),
+                      QuestionAnswerView(question: text['how_many_weeks_pregnant']!, answer: week_pregnant,darkMode: darkMode),
+                      QuestionAnswerView(question: text['is_it_bleeding_pregnant']!, answer: bleeding_pregnant,darkMode: darkMode),
+                      QuestionAnswerView(question: text['menstrual_period']!, answer: menstrual_period,darkMode: darkMode),
+                      QuestionAnswerView(question: text['is_it_bleeding']!, answer: is_it_bleeding,darkMode: darkMode),
+                      QuestionAnswerView(question: text['Post_natal_cycle']!, answer: post_natal_bleeding,darkMode: darkMode),
+                      QuestionAnswerView(question: text['starting_time']!, answer: start_time,darkMode: darkMode),
+                      QuestionAnswerView(question: text['Stoping_time']!, answer: stop_time,darkMode: darkMode),
+                      QuestionAnswerView(question: text['When_did_the_bleeding_start']!, answer: when_bleeding_start,darkMode: darkMode),
+                      QuestionAnswerView(question: text['When_did_the_bleeding_stop']!, answer: when_bleeding_stop,darkMode: darkMode),
 
                     ],
                   ),

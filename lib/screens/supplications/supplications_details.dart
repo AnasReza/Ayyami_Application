@@ -9,6 +9,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 
 import '../../constants/images.dart';
+import '../../translation/app_translation.dart';
 
 class SupplicationsDetails extends StatelessWidget {
   String prayerTime = '';
@@ -18,8 +19,12 @@ class SupplicationsDetails extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer<UserProvider>(builder: (c, provider, child) {
-      var list = getDuaMap(prayerTime);
+
       var darkMode = provider.getIsDarkMode;
+      var lang = provider.getLanguage;
+      var text = AppTranslate().textLanguage[lang];
+      var list = getDuaMap(prayerTime,lang!);
+
       return Scaffold(
         appBar: AppBar(
           backgroundColor: darkMode ? AppDarkColors.white : AppColors.white,

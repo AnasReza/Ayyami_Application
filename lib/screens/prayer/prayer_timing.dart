@@ -17,6 +17,7 @@ import 'package:hijri/hijri_calendar.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:stop_watch_timer/stop_watch_timer.dart';
+import '../../translation/app_translation.dart';
 import '../../widgets/app_text.dart';
 import 'package:timezone/data/latest.dart' as latest;
 import 'package:timezone/timezone.dart' as tz;
@@ -206,6 +207,9 @@ class _PrayerTimingState extends State<PrayerTiming> {
     return Consumer<NamazProvider>(builder: (consumerContext,provider,child){
       var userProvider=Provider.of<UserProvider>(context,listen: false);
       var darkMode=userProvider.getIsDarkMode;
+      var lang=userProvider.getLanguage;
+      var text=AppTranslate().textLanguage[lang];
+
       return Padding(
         padding: EdgeInsets.only(
           left: 70.w,
@@ -228,7 +232,7 @@ class _PrayerTimingState extends State<PrayerTiming> {
               // ),
               SizedBox(height: 70.6.h),
               AppText(
-                text: "Prayer Times",
+                text: text!['prayer_times']!,
                 fontSize: 45.sp,
                 fontWeight: FontWeight.w700,
               ),
@@ -245,7 +249,7 @@ class _PrayerTimingState extends State<PrayerTiming> {
                 height: 50.h,
               ),
               PrayerWidget(
-                name: 'Fajar',
+                name: text['fajar']!,
                 time: provider.getFajrTime,
                 darkMode: darkMode,
               ),
@@ -253,7 +257,7 @@ class _PrayerTimingState extends State<PrayerTiming> {
                 height: 50.h,
               ),
               PrayerWidget(
-                name: 'Sunrise',
+                name: text['sunrise']!,
                 time: provider.getSunriseTime,
                 darkMode: darkMode,
               ),
@@ -261,7 +265,7 @@ class _PrayerTimingState extends State<PrayerTiming> {
                 height: 50.h,
               ),
               PrayerWidget(
-                name: 'Dhuhr',
+                name: text['duhur']!,
                 time: provider.getDuhurTime,
                 darkMode: darkMode,
               ),
@@ -269,7 +273,7 @@ class _PrayerTimingState extends State<PrayerTiming> {
                 height: 50.h,
               ),
               PrayerWidget(
-                name: 'Asar',
+                name: text['asar']!,
                 time: provider.getAsrTime,
                 darkMode: darkMode,
               ),
@@ -277,7 +281,7 @@ class _PrayerTimingState extends State<PrayerTiming> {
                 height: 50.h,
               ),
               PrayerWidget(
-                name: 'Maghrib',
+                name: text['maghrib']!,
                 time: provider.getMaghribTime,
                 darkMode: darkMode,
               ),
@@ -285,7 +289,7 @@ class _PrayerTimingState extends State<PrayerTiming> {
                 height: 50.h,
               ),
               PrayerWidget(
-                name: 'Isha',
+                name: text['isha']!,
                 time: provider.getIshaTime,
                 darkMode: darkMode,
               ),

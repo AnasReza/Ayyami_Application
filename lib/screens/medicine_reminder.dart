@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 
 import '../constants/colors.dart';
 import '../constants/images.dart';
+import '../translation/app_translation.dart';
 import '../widgets/app_text.dart';
 import '../widgets/customerSwitch1.dart';
 import '../widgets/expanded_remider_container.dart';
@@ -28,6 +29,9 @@ class _MedicineReminderScreenState extends State<MedicineReminderScreen> {
   Widget build(BuildContext context) {
     return Consumer<UserProvider>(builder: (c,provider,child){
       var darkMode=provider.getIsDarkMode;
+      var lang=provider.getLanguage;
+      var text=AppTranslate().textLanguage[lang];
+
       return Scaffold(
         body: Container(
           decoration: BoxDecoration(
@@ -64,7 +68,7 @@ class _MedicineReminderScreenState extends State<MedicineReminderScreen> {
                       ),
                       SizedBox(width: 150.w),
                       AppText(
-                        text: "Reminders",
+                        text: text!['reminders']!,
                         fontSize: 45.sp,
                         fontWeight: FontWeight.w700,
                         color: darkMode?AppDarkColors.headingColor:AppColors.headingColor,
@@ -75,7 +79,7 @@ class _MedicineReminderScreenState extends State<MedicineReminderScreen> {
                   SizedBox(
                     height: 50.h,
                   ),
-                  ExpandedReminderContainer(
+                  ExpandedReminderContainer(text: text,
                       regulationExpanded: regulationExpanded,darkMode: darkMode,),
                   SizedBox(
                     height: 54.h,
@@ -106,7 +110,7 @@ class _MedicineReminderScreenState extends State<MedicineReminderScreen> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              "Sadqa Reminder",
+                              text['sadqa_reminder']!,
                               style: TextStyle(
                                 color: darkMode?AppDarkColors.headingColor:AppColors.headingColor,
                                 fontSize: 32.sp,
@@ -144,7 +148,7 @@ class _MedicineReminderScreenState extends State<MedicineReminderScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             AppText(
-                              text: "Saqda amount",
+                              text: text['saqda_amount']!,
                               fontSize: 18.sp,
                               fontWeight: FontWeight.w400,
                               color: darkMode?AppDarkColors.headingColor:AppColors.headingColor,
@@ -195,7 +199,7 @@ class _MedicineReminderScreenState extends State<MedicineReminderScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          "Sadqa Reminder",
+                          text['sadqa_reminder']!,
                           style: TextStyle(
                             color: darkMode?AppDarkColors.headingColor:AppColors.headingColor,
                             fontSize: 32.sp,
@@ -222,19 +226,19 @@ class _MedicineReminderScreenState extends State<MedicineReminderScreen> {
                   ),
                   SizedBox(height: 71.h),
                   ReminderSwitchContainerWidget(
-                    title: "Cycle Reminder",
+                    title: text['cycle_reminder']!,
                     isSwitched: false,
                     darkMode: darkMode,
                   ),
                   SizedBox(height: 48.h),
                   ReminderSwitchContainerWidget(
-                    title: "Prayer Reminder",
+                    title: text['prayer_reminder']!,
                     isSwitched: false,
                     darkMode: darkMode,
                   ),
                   SizedBox(height: 48.h),
                   ReminderSwitchContainerWidget(
-                    title: "Supplication Reminder",
+                    title: text['supplication_reminder']!,
                     isSwitched: false,
                     darkMode: darkMode,
                   ),

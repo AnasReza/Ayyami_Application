@@ -11,7 +11,8 @@ import '../../constants/images.dart';
 import '../../providers/user_provider.dart';
 
 class SurahDetails extends StatelessWidget{
-  String prayerTime,heading;
+  String prayerTime;
+  List<String> heading;
    SurahDetails(this.prayerTime,this.heading,{super.key});
 
   @override
@@ -33,7 +34,9 @@ class SurahDetails extends StatelessWidget{
         body: Container(
           margin: EdgeInsets.only(left: 20, right: 20),
           decoration: BoxDecoration(gradient: darkMode?AppDarkColors.backgroundGradient:AppColors.backgroundGradient),
-          child: SingleChildScrollView(child: SurahView(darkMode, surah!, heading),)
+          child: ListView.builder(itemCount: surah!.length,itemBuilder: (listContext,index){
+            return SurahView(darkMode, surah![index]['surah']!, heading[index]);
+          })
         ),
       );
     });

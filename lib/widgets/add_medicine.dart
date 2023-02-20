@@ -6,9 +6,10 @@ import 'package:provider/provider.dart';
 
 import '../models/medicine_model.dart';
 class AddMedicine extends StatefulWidget {
-  AddMedicine({Key? key,required this.darkMode}) : super(key: key);
+  AddMedicine({Key? key,required this.darkMode,required this.text}) : super(key: key);
 
   bool darkMode;
+  Map<String, String> text;
   @override
   State<AddMedicine> createState() => _AddMedicineState();
 }
@@ -30,8 +31,8 @@ class _AddMedicineState extends State<AddMedicine> {
               padding: const EdgeInsets.only(left: 8.0),
               child: TextField(
                 controller: medicineTitle,
-                decoration: const InputDecoration(
-                    hintText: "Medicine Name",
+                decoration: InputDecoration(
+                    hintText: widget.text['medicine_name']!,
                     border: InputBorder.none
                 ),
               ),
@@ -76,7 +77,7 @@ class _AddMedicineState extends State<AddMedicine> {
                     color:  const Color(0xffd9d9d9),
                     borderRadius: BorderRadius.circular(8.r)),
                 child: Center(
-                    child: Text("Add Medicine",style: TextStyle(color: widget.darkMode?AppDarkColors.headingColor:AppDarkColors.headingColor),)
+                    child: Text(widget.text['add_medicine']!,style: TextStyle(color: widget.darkMode?AppDarkColors.headingColor:AppDarkColors.headingColor),)
                 ),
               ),
             )
