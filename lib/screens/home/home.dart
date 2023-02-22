@@ -156,7 +156,9 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
           var mensesProvider = context.read<MensesProvider>();
           var timerStart = mensesProvider.getTimerStart;
           if (!timerStart) {
+            mensesProvider.setMensesID(doc.id);
             mensesProvider.setTimerStart(true);
+            mensesProvider.setStartTime(startTime);
             var now = DateTime.now();
             var diff = now.difference(startTime.toDate());
             MensesTracker().startMensesTimerAgain(mensesProvider, diff.inMilliseconds);
@@ -196,6 +198,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
               tuhurProvider.setTuhurID(doc.id);
               tuhurProvider.setTimerStart(true);
               tuhurProvider.setFrom(tuhurFrom);
+              tuhurProvider.setStartTime(startTime);
               var now = DateTime.now();
               var diff = now.difference(startTime.toDate());
               TuhurTracker().startTuhurTimerAgain(tuhurProvider, diff.inMilliseconds);

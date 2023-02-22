@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 
 class TuhurProvider extends ChangeNotifier{
@@ -8,6 +9,7 @@ class TuhurProvider extends ChangeNotifier{
   int days = 0;
   bool isTimerStart = false;
   String tuhurID='';
+  late Timestamp startTime;
 
   int get getSec => seconds;
 
@@ -18,6 +20,12 @@ class TuhurProvider extends ChangeNotifier{
 
   bool get getTimerStart => isTimerStart;
   String get getTuhurID => tuhurID;
+  Timestamp get getStartTime => startTime;
+
+  setStartTime(Timestamp value){
+    startTime=value;
+    notifyListeners();
+  }
 
   setTuhurID(String value){
     tuhurID=value;

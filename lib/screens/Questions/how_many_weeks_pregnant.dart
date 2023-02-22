@@ -1,6 +1,8 @@
+import 'package:ayyami/firebase_calls/pregnancy_record.dart';
 import 'package:ayyami/firebase_calls/questions_record.dart';
 import 'package:ayyami/providers/user_provider.dart';
 import 'package:ayyami/screens/Questions/where_are_you_from.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
@@ -111,10 +113,10 @@ class _weeks_of_pregnantState extends State<weeks_of_pregnant> {
                       child: GradientButton(
                         title: text['confirm']!,
                         onPressedButon: () {
-                          String q_id = DateTime.now().millisecondsSinceEpoch.toString();
-
-
-                          QuestionRecord().uploadWeekPregnantQuestion(widget.uid, counter.toString()).then((value) {
+                          int week=counter;
+                          var dur=Duration(days: week*7);
+                          var startDate=DateTime.now().subtract(dur);
+                          PregnancyRecord().uploadPregnancyStart(widget.uid, Timestamp.fromDate(startDate)).then((value){
                             Navigator.push(context, MaterialPageRoute(builder: (context) => LocationQuestion(uid: widget.uid)));
                           });
                           print(counter);

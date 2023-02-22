@@ -26,6 +26,7 @@ import '../dialog/timer_date_time.dart';
 import '../providers/menses_provider.dart';
 import '../providers/post-natal_timer_provider.dart';
 import '../providers/user_provider.dart';
+import '../translation/app_translation.dart';
 import 'app_text.dart';
 
 class PostNatalTimerBox extends StatefulWidget {
@@ -55,7 +56,8 @@ class _PostNatalTimerBoxState extends State<PostNatalTimerBox> {
       bool isTimerStart = pro.getTimerStart;
       bool pregStart = pregProvider.getTimerStart;
       darkMode = userProvider.getIsDarkMode;
-
+      var lang=userProvider.getLanguage;
+      var text=AppTranslate().textLanguage[lang];
       return Stack(
         clipBehavior: Clip.none,
         children: [
@@ -94,7 +96,7 @@ class _PostNatalTimerBoxState extends State<PostNatalTimerBox> {
                   Column(
                     children: [
                       AppText(
-                        text: pro.days.toString(),
+                        text: isTimerStart?pro.days.toString():'0',
                         color: AppColors.pink,
                         fontSize: 56.722694396972656.sp,
                         fontWeight: FontWeight.w700,
@@ -112,7 +114,7 @@ class _PostNatalTimerBoxState extends State<PostNatalTimerBox> {
                   Column(
                     children: [
                       AppText(
-                        text: pro.hours.toString(),
+                        text: isTimerStart?pro.hours.toString():'0',
                         color: AppColors.pink,
                         fontSize: 56.722694396972656.sp,
                         fontWeight: FontWeight.w700,
@@ -130,7 +132,7 @@ class _PostNatalTimerBoxState extends State<PostNatalTimerBox> {
                   Column(
                     children: [
                       AppText(
-                        text: pro.getmin.toString(),
+                        text: isTimerStart?pro.getmin.toString():'0',
                         color: AppColors.pink,
                         fontSize: 56.722694396972656.sp,
                         fontWeight: FontWeight.w700,
@@ -148,7 +150,7 @@ class _PostNatalTimerBoxState extends State<PostNatalTimerBox> {
                   Column(
                     children: [
                       AppText(
-                        text: pro.getSec.toString(),
+                        text: isTimerStart?pro.getSec.toString():'0',
                         color: AppColors.pink,
                         fontSize: 56.722694396972656.sp,
                         fontWeight: FontWeight.w700,
@@ -180,7 +182,7 @@ class _PostNatalTimerBoxState extends State<PostNatalTimerBox> {
                     toast_notification().toast_message('post_natal_automatically'.tr);
                   }
                 } else {
-                  showStopDialog();
+                  showStopDialog(text!);
                 }
               },
               child: Container(
@@ -228,7 +230,7 @@ class _PostNatalTimerBoxState extends State<PostNatalTimerBox> {
     }
   }
 
-  void showStopDialog() {
+  void showStopDialog(Map<String, String> text) {
     showDialog(
         context: context,
         builder: (dialogContext) {
@@ -258,6 +260,7 @@ class _PostNatalTimerBoxState extends State<PostNatalTimerBox> {
               Navigator.pop(dialogContext);
             },
             darkMode: darkMode,
+            text: text,
           );
         });
   }

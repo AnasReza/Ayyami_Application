@@ -67,17 +67,15 @@ class RadioItem extends StatelessWidget {
         children: <Widget>[
           Container(
             margin: const EdgeInsets.only(left: 10.0),
-            child: Text(_item.text),
+            child: Text(_item.text,style: TextStyle( color: darkMode ? AppDarkColors.headingColor : AppColors.headingColor,fontSize: 22,fontWeight: FontWeight.w700),),
           ),
           Container(
             height: 50.0,
             width: 50.0,
             decoration: BoxDecoration(
-              gradient: _item.isSelected
-                  ? AppColors.backgroundGradient
-                  : AppColors.transparentGradient,
+              gradient: _item.isSelected ? darkMode?AppDarkColors.bgPinkishGradient:AppColors.bgPinkishGradient : AppColors.transparentGradient,
               border: Border.all(width: 1.0, color: darkMode ? AppDarkColors.headingColor : AppColors.headingColor),
-              borderRadius: const BorderRadius.all(Radius.circular(2.0)),
+              borderRadius: const BorderRadius.all(Radius.circular(5.0)),
             ),
           ),
         ],

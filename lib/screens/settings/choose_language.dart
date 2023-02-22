@@ -1,5 +1,6 @@
 import 'package:ayyami/firebase_calls/user_record.dart';
 import 'package:ayyami/widgets/custom_radio.dart';
+import 'package:ayyami/widgets/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -16,12 +17,10 @@ import '../../widgets/gradient_button.dart';
 import '../Login_System/account_create.dart';
 
 class ChooseLanguage extends StatefulWidget {
-
   @override
   State<StatefulWidget> createState() {
     return ChooseLanguageState();
   }
-
 }
 
 class ChooseLanguageState extends State<ChooseLanguage> {
@@ -31,8 +30,8 @@ class ChooseLanguageState extends State<ChooseLanguage> {
     return Consumer<UserProvider>(builder: (c, provider, child) {
       String uid = provider.getUid;
       bool darkMode = provider.getIsDarkMode;
-      var lang=provider.getLanguage;
-      var text=AppTranslate().textLanguage[lang];
+      var lang = provider.getLanguage;
+      var text = AppTranslate().textLanguage[lang];
       return Scaffold(
         appBar: AppBar(
           elevation: 0,
@@ -43,11 +42,11 @@ class ChooseLanguageState extends State<ChooseLanguage> {
             height: 78.36.h,
           ),
           centerTitle: true,
-
         ),
         body: Container(
-          decoration: BoxDecoration(
-              gradient: darkMode ? AppDarkColors.backgroundGradient : AppColors.backgroundGradient),
+          padding: EdgeInsets.only(left: 30,right: 30),
+          decoration:
+              BoxDecoration(gradient: darkMode ? AppDarkColors.backgroundGradient : AppColors.backgroundGradient),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -56,7 +55,9 @@ class ChooseLanguageState extends State<ChooseLanguage> {
                 child: Row(
                   children: [
                     SvgPicture.asset(
-                      AppImages.backIcon, color: darkMode ? AppDarkColors.headingColor : AppColors.headingColor,),
+                      AppImages.backIcon,
+                      color: darkMode ? AppDarkColors.headingColor : AppColors.headingColor,
+                    ),
                     Expanded(
                       child: Align(
                         alignment: Alignment.center,
@@ -79,34 +80,37 @@ class ChooseLanguageState extends State<ChooseLanguage> {
                 fontSize: 36.sp,
                 fontWeight: FontWeight.w700,
                 color: darkMode ? AppDarkColors.headingColor : AppColors.headingColor,
-
               ),
               const SizedBox(
                 height: 20,
               ),
-              Container(height: 500, child: CustomRadio(darkMode, (value) {
-                print('$value   language selected');
-                languageSelected = value;
-              }),),
-
-              const SizedBox(height: 30,),
-              GradientButton(title: text!['save']!, onPressedButon: () {
-                if (languageSelected.isNotEmpty) {
-
-                  provider.setLanguage(languageSelected);
-                  if(uid.isNotEmpty){
-                    UsersRecord().updateLanguage(uid!, languageSelected);
-                  }else{
-                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const account_create()));
-                  }
-
-                }
-              }),
+              Container(
+                height: 500,
+                child: CustomRadio(darkMode, (value) {
+                  print('$value-language selected123');
+                  languageSelected = value;
+                }),
+              ),
+              const SizedBox(
+                height: 30,
+              ),
+              GradientButton(
+                  title: text!['save']!,
+                  onPressedButon: () {
+                    if (languageSelected.isNotEmpty) {
+                      provider.setLanguage(languageSelected);
+                      if (uid.isNotEmpty) {
+                        UsersRecord().updateLanguage(uid!, languageSelected);
+                      } else {
+                        Navigator.pushReplacement(
+                            context, MaterialPageRoute(builder: (context) => const account_create()));
+                      }
+                    }
+                  }),
             ],
           ),
         ),
       );
     });
   }
-
 }

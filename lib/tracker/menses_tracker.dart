@@ -1126,10 +1126,7 @@ class MensesTracker {
       var hours=diffMap['hours'];
       var minutes=diffMap['minutes'];
       var seconds=diffMap['seconds'];
-      if(days!<3){
-
-      }
-      else if(days>3&&days<10){
+      if(days!>0&&days<10){
         uploadMensesEndTime(currentEnd,
             mensesID, days, hours!, minutes!, seconds!, mensesProvider, tuhurProvider, userProvider.getUid!,false);
         String? beginner = userProvider.getBeginner;

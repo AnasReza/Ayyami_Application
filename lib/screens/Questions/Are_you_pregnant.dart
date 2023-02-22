@@ -52,7 +52,7 @@ class _pregnant_questionState extends State<pregnant_question> {
                     SizedBox(height: 40),
                     Container(
                       child: Text(
-                        text!['Are_you_Pregnant']!,
+                        text!['Are_you_pregnant']!,
                         style: TextStyle(
                             fontSize: 30.0,
                             fontFamily: 'DMSans',

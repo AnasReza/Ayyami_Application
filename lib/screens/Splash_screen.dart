@@ -46,6 +46,7 @@ class _Splash_ScreenState extends State<Splash_Screen> {
       final hiveValue = getHive();
       bool login = hiveValue['login'];
       String uid = hiveValue['uid'];
+      print('$login login from hive in splash screen');
       if (login) {
         UsersRecord().getUsersData(uid).then((value) {
           var provider = Provider.of<UserProvider>(context, listen: false);
@@ -135,19 +136,17 @@ class _Splash_ScreenState extends State<Splash_Screen> {
   Map<String, dynamic> getHive() {
     String uid;
     bool login;
-    bool darkMode;
     try {
       var box = Hive.box('aayami');
       uid = box.get('uid');
       login = box.get('login');
-      darkMode = box.get('dark_mode');
     } catch (e) {
+      print('${e.toString()} error from splash screen');
       uid = '';
       login = false;
-      darkMode = false;
     }
 
-    return {'uid': uid, 'login': login, 'darkMode': darkMode};
+    return {'uid': uid, 'login': login,};
   }
 
   @override

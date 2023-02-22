@@ -63,7 +63,7 @@ class _account_createState extends State<account_create> {
                       padding: const EdgeInsets.symmetric(horizontal: 45),
                       alignment: Alignment.centerLeft,
                       child: Text(
-                        text['Phone Number']!,
+                        text['phone_number']!,
                         style: const TextStyle(
                           fontFamily: 'DMSans',
                           fontSize: 22.0,

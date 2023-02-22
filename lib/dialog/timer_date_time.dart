@@ -9,8 +9,9 @@ import 'package:intl/intl.dart';
 class DialogDateTime extends StatefulWidget {
   Function(DateTime date, TimeOfDay time) getDateTime;
   bool darkMode;
+  Map<String, String> text;
 
-  DialogDateTime({required this.getDateTime,required this.darkMode, super.key});
+  DialogDateTime({required this.getDateTime,required this.darkMode,required this.text, super.key});
 
   @override
   State<StatefulWidget> createState() {
@@ -47,7 +48,7 @@ class DialogDateTimeState extends State<DialogDateTime> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            'select_date_time'.tr,
+                            widget.text!['select_date_time']!,
                             style: TextStyle(
                                 color: widget.darkMode?AppDarkColors.headingColor:AppColors.headingColor, fontWeight: FontWeight.w700, fontSize: 18),
                           ),
@@ -59,7 +60,7 @@ class DialogDateTimeState extends State<DialogDateTime> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  'select_date'.tr,
+                                  widget.text['select_date']!,
                                   style: TextStyle(
                                     color: widget.darkMode?AppDarkColors.headingColor:AppColors.headingColor,
                                     fontSize: 13,
@@ -114,7 +115,7 @@ class DialogDateTimeState extends State<DialogDateTime> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  'select_time'.tr,
+                                  widget.text['select_time']!,
                                   style:  TextStyle(
                                     color: widget.darkMode?AppDarkColors.headingColor:AppColors.headingColor,
                                     fontSize: 13,
@@ -133,7 +134,7 @@ class DialogDateTimeState extends State<DialogDateTime> {
                                     ),
                                     isDense: true,
                                     filled: true,
-                                    fillColor: widget.darkMode?AppDarkColors.headingColor:AppColors.headingColor,
+                                    fillColor: widget.darkMode?AppDarkColors.lightGreyBoxColor:AppColors.lightGreyBoxColor,
                                     prefixIcon: Icon(Icons.alarm, color: widget.darkMode?AppDarkColors.headingColor:AppColors.headingColor,),
                                     border: OutlineInputBorder(
                                       borderRadius: BorderRadius.all(
@@ -171,7 +172,7 @@ class DialogDateTimeState extends State<DialogDateTime> {
                                   borderRadius: const BorderRadius.only(
                                       bottomLeft: Radius.circular(10), bottomRight: Radius.circular(10))),
                               child: Text(
-                                'confirm'.tr,
+                                widget.text['confirm']!,
                                 style: TextStyle(color: AppColors.white, fontWeight: FontWeight.w700, fontSize: 20),
                                 textAlign: TextAlign.center,
                               ),
@@ -187,7 +188,7 @@ class DialogDateTimeState extends State<DialogDateTime> {
                   'assets/images/dialog_calender.png',
                   width: 100,
                   height: 100,
-                  color: widget.darkMode?AppDarkColors.headingColor:AppColors.headingColor,
+
                 ),
               ],
             ),

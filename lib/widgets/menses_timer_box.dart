@@ -25,6 +25,7 @@ import '../constants/images.dart';
 import '../dialog/timer_date_time.dart';
 import '../providers/menses_provider.dart';
 import '../providers/user_provider.dart';
+import '../translation/app_translation.dart';
 import 'app_text.dart';
 
 class TimerBox extends StatefulWidget {
@@ -47,7 +48,7 @@ class _TimerBoxState extends State<TimerBox> {
   static int hoursCount = 0;
   static int daysCount = 0;
   MensesTracker mensesTrack = MensesTracker();
-  bool darkMode=false;
+  bool darkMode = false;
 
   @override
   void initState() {
@@ -60,25 +61,26 @@ class _TimerBoxState extends State<TimerBox> {
       var userProvider = Provider.of<UserProvider>(context, listen: false);
       var tuhurProvider = Provider.of<TuhurProvider>(context, listen: false);
       uid = userProvider.getUid!;
-      bool isTimerStart = pro.getTimerStart;
+      bool isMensesStart = pro.getTimerStart;
       bool isTuhurStart = tuhurProvider.getTimerStart;
-      darkMode=userProvider.getIsDarkMode;
-
+      darkMode = userProvider.getIsDarkMode;
+      var lang = userProvider.getLanguage;
+      var text = AppTranslate().textLanguage[lang];
       mensesProvider = pro;
-      print('${pro.getDays.toString()} days from menses timer ');
-      print('${pro.getHours.toString()} hours from menses timer ');
+
       return Stack(
         clipBehavior: Clip.none,
         children: [
+
           /// Timer Container
           Container(
             width: 579.w,
             height: 205.h,
             decoration: BoxDecoration(
-              color: darkMode?AppDarkColors.white:AppColors.white,
+              color: darkMode ? AppDarkColors.white : AppColors.white,
               borderRadius: BorderRadius.circular(18.r),
               border: Border.all(
-                color:darkMode?AppDarkColors.headingColor:AppColors.headingColor,
+                color: darkMode ? AppDarkColors.headingColor : AppColors.headingColor,
                 width: 5.w,
               ),
               boxShadow: const [
@@ -101,11 +103,12 @@ class _TimerBoxState extends State<TimerBox> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
+
                   /// Days
                   Column(
                     children: [
                       AppText(
-                        text: pro.getDays.toString(),
+                        text: isMensesStart?pro.getDays.toString():'0',
                         color: AppColors.pink,
                         fontSize: 56.722694396972656.sp,
                         fontWeight: FontWeight.w700,
@@ -123,7 +126,7 @@ class _TimerBoxState extends State<TimerBox> {
                   Column(
                     children: [
                       AppText(
-                        text: pro.getHours.toString(),
+                        text: isMensesStart?pro.getHours.toString():'0',
                         color: AppColors.pink,
                         fontSize: 56.722694396972656.sp,
                         fontWeight: FontWeight.w700,
@@ -141,7 +144,7 @@ class _TimerBoxState extends State<TimerBox> {
                   Column(
                     children: [
                       AppText(
-                        text: pro.getmin.toString(),
+                        text: isMensesStart?pro.getmin.toString():'0',
                         color: AppColors.pink,
                         fontSize: 56.722694396972656.sp,
                         fontWeight: FontWeight.w700,
@@ -159,7 +162,7 @@ class _TimerBoxState extends State<TimerBox> {
                   Column(
                     children: [
                       AppText(
-                        text: pro.getSec.toString(),
+                        text: isMensesStart?pro.getSec.toString():'0',
                         color: AppColors.pink,
                         fontSize: 56.722694396972656.sp,
                         fontWeight: FontWeight.w700,
@@ -187,33 +190,32 @@ class _TimerBoxState extends State<TimerBox> {
                 bool start = calculateLastMenses();
                 print('$start  start');
                 int tuhurDays = tuhurProvider.getDays;
-                int tuhurFrom=tuhurProvider.getFrom;
-                if (!isTimerStart) {
-                  if(isTuhurStart){
-                    if(tuhurFrom==0){
+                int tuhurFrom = tuhurProvider.getFrom;
+                if (!isMensesStart) {
+                  if (isTuhurStart) {
+                    if (tuhurFrom == 0) {
                       if (tuhurDays >= tuhurMinimum) {
                         if (start) {
-                          showStartDialog();
+                          showStartDialog(text!);
                         } else {
                           widget.mensis(true, '');
                           mensesProvider.setTimerStart(false);
                         }
                       } else {
-                        var mensesID=Utils.getDocMensesID();
-                        TuhurTracker().stopTimerWithDeletion(mensesID, "", mensesProvider, tuhurProvider, PostNatalProvider());
+                        var mensesID = Utils.getDocMensesID();
+                        TuhurTracker().stopTimerWithDeletion(
+                            mensesID, "", mensesProvider, tuhurProvider, PostNatalProvider());
                         widget.mensis(true, '');
                         mensesProvider.setTimerStart(false);
                       }
-                    }else{
+                    } else {
                       toast_notification().toast_message('should_post-natal_again'.tr);
                     }
-
-                  }else{
+                  } else {
                     toast_notification().toast_message('should_tuhur_start'.tr);
                   }
-                  
                 } else {
-                  showStopDialog();
+                  showStopDialog(text!);
                 }
               },
               child: Container(
@@ -229,7 +231,7 @@ class _TimerBoxState extends State<TimerBox> {
                 ),
                 child: Center(
                   child: AppText(
-                    text: isTimerStart ? "STOP TIMER" : "START TIMER",
+                    text: isMensesStart ? "STOP TIMER" : "START TIMER",
                     color: AppColors.white,
                     fontSize: 26.36170196533203.sp,
                     fontWeight: FontWeight.w700,
@@ -297,12 +299,13 @@ class _TimerBoxState extends State<TimerBox> {
     return Duration(days: days, hours: hours, minutes: minutes);
   }
 
-  void showStartDialog() {
+  void showStartDialog(Map<String, String> text) {
     showDialog(
         context: context,
         builder: (dialogContext) {
           return DialogDateTime(
             getDateTime: (date, time) {
+              print('from start dialog');
               int year = date.year;
               int month = date.month;
               int day = date.day;
@@ -321,16 +324,18 @@ class _TimerBoxState extends State<TimerBox> {
               Navigator.pop(dialogContext);
             },
             darkMode: darkMode,
+            text: text,
           );
         });
   }
 
-  void showStopDialog() {
+  void showStopDialog(Map<String, String> text) {
     showDialog(
         context: context,
         builder: (dialogContext) {
           return DialogDateTime(
             getDateTime: (date, time) {
+              print('from stop dialog');
               int year = date.year;
               int month = date.month;
               int day = date.day;
@@ -340,11 +345,15 @@ class _TimerBoxState extends State<TimerBox> {
               DateTime endDate = DateTime.utc(year, month, day, hour, minute);
               var dateString = DateFormat.yMEd().add_jms().format(endDate);
               print('$dateString  == dateString');
-
-
+              var mensesProvider = Provider.of<MensesProvider>(context, listen: false);
+              var tuhurProvider = Provider.of<TuhurProvider>(context, listen: false);
+              var userProvider = Provider.of<UserProvider>(context, listen: false);
+              MensesTracker().stopMensesTimer(
+                  mensesProvider, tuhurProvider, uid, userProvider, Timestamp.fromDate(endDate), widget.islamicMonth);
               Navigator.pop(dialogContext);
             },
             darkMode: darkMode,
+            text: text,
           );
         });
   }

@@ -148,7 +148,7 @@ class _MedicineReminderScreenState extends State<MedicineReminderScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             AppText(
-                              text: text['saqda_amount']!,
+                              text: text['sadqa_amount']!,
                               fontSize: 18.sp,
                               fontWeight: FontWeight.w400,
                               color: darkMode?AppDarkColors.headingColor:AppColors.headingColor,

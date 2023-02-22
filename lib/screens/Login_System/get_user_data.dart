@@ -97,7 +97,7 @@ class _set_passwordState extends State<set_password> {
                     key: formKey, //Key for Form Start
                     child: Column(children: [
                        Text(
-                        text!['Set Profile Data']!,
+                        text!['set_profile_data']!,
                         style: const TextStyle(
                           fontSize: 25.0,
                           fontFamily: 'DMSans',
@@ -127,7 +127,7 @@ class _set_passwordState extends State<set_password> {
                                             children: [
                                               const Padding(padding: EdgeInsets.symmetric(vertical: 30)),
                                               Text(
-                                                text['Choose']!,
+                                                text['choose']!,
                                                 style: const TextStyle(
                                                   fontSize: 24.0,
                                                   fontFamily: 'DMSans',

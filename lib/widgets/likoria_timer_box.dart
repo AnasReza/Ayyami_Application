@@ -6,6 +6,7 @@ import 'package:ayyami/firebase_calls/likoria_record.dart';
 import 'package:ayyami/firebase_calls/menses_record.dart';
 import 'package:ayyami/providers/likoria_timer_provider.dart';
 import 'package:ayyami/providers/tuhur_provider.dart';
+import 'package:ayyami/translation/app_translation.dart';
 import 'package:ayyami/widgets/utils.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -54,6 +55,8 @@ class _LikoriaTimerBoxState extends State<LikoriaTimerBox>  {
       uid = userProvider.getUid!;
       bool isTimerStart = pro.getTimerStart;
       darkMode=userProvider.getIsDarkMode;
+      var lang=userProvider.getLanguage;
+      var text=AppTranslate().textLanguage[lang];
 
       return Stack(
         clipBehavior: Clip.none,
@@ -108,7 +111,7 @@ class _LikoriaTimerBoxState extends State<LikoriaTimerBox>  {
                         Column(
                           children: [
                             AppText(
-                              text: pro.days.toString(),
+                              text:isTimerStart?pro.days.toString():'0',
                               color: AppColors.pink,
                               fontSize: 56.722694396972656.sp,
                               fontWeight: FontWeight.w700,
@@ -126,7 +129,7 @@ class _LikoriaTimerBoxState extends State<LikoriaTimerBox>  {
                         Column(
                           children: [
                             AppText(
-                              text: pro.hours.toString(),
+                              text: isTimerStart?pro.hours.toString():'0',
                               color: AppColors.pink,
                               fontSize: 56.722694396972656.sp,
                               fontWeight: FontWeight.w700,
@@ -144,7 +147,7 @@ class _LikoriaTimerBoxState extends State<LikoriaTimerBox>  {
                         Column(
                           children: [
                             AppText(
-                              text: pro.getmin.toString(),
+                              text: isTimerStart?pro.getmin.toString():'0',
                               color: AppColors.pink,
                               fontSize: 56.722694396972656.sp,
                               fontWeight: FontWeight.w700,
@@ -162,7 +165,7 @@ class _LikoriaTimerBoxState extends State<LikoriaTimerBox>  {
                         Column(
                           children: [
                             AppText(
-                              text: pro.getSec.toString(),
+                              text: isTimerStart?pro.getSec.toString():'0',
                               color: AppColors.pink,
                               fontSize: 56.722694396972656.sp,
                               fontWeight: FontWeight.w700,
@@ -191,13 +194,13 @@ class _LikoriaTimerBoxState extends State<LikoriaTimerBox>  {
                 if(pro.isSelected){
                   if (!isTimerStart) {
                     if(tuhurProvider.isTimerStart){
-                      showStartDialog();
+                      showStartDialog(text!);
                     }
                   } else {
-                    showStopDialog();
+                    showStopDialog(text!);
                   }
                 }else{
-                  toast_notification().toast_message('likoria_color_selected'.tr);
+                  toast_notification().toast_message(text!['likoria_color_selected']!);
                 }
                 
               },
@@ -228,7 +231,7 @@ class _LikoriaTimerBoxState extends State<LikoriaTimerBox>  {
     });
   }
 
-  void showStartDialog() {
+  void showStartDialog(Map<String, String> text) {
     showDialog(
         context: context,
         builder: (dialogContext) {
@@ -251,11 +254,12 @@ class _LikoriaTimerBoxState extends State<LikoriaTimerBox>  {
               Navigator.pop(dialogContext);
             },
             darkMode: darkMode,
+            text: text,
           );
         });
   }
 
-  void showStopDialog() {
+  void showStopDialog(Map<String, String> text) {
     showDialog(
         context: context,
         builder: (dialogContext) {
@@ -278,6 +282,7 @@ class _LikoriaTimerBoxState extends State<LikoriaTimerBox>  {
               Navigator.pop(dialogContext);
             },
             darkMode: darkMode,
+            text: text,
           );
         });
   }

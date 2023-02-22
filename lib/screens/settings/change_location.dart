@@ -60,6 +60,7 @@ class ChangeLocationState extends State<ChangeLocation> {
          // ],
        ),
        body: Container(
+         padding: EdgeInsets.only(left: 30,right: 30),
          decoration: BoxDecoration(gradient: darkMode?AppDarkColors.backgroundGradient:AppColors.backgroundGradient),
          child: Column(
            crossAxisAlignment: CrossAxisAlignment.start,

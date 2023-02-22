@@ -27,6 +27,7 @@ import '../dialog/timer_date_time.dart';
 import '../providers/menses_provider.dart';
 import '../providers/pregnancy_timer_provider.dart';
 import '../providers/user_provider.dart';
+import '../translation/app_translation.dart';
 import 'app_text.dart';
 
 class PregnancyTimerBox extends StatefulWidget {
@@ -56,7 +57,8 @@ class _PregnancyTimerBoxState extends State<PregnancyTimerBox> {
       uid = userProvider.getUid!;
       bool isTimerStart = pro.getTimerStart;
       darkMode=userProvider.getIsDarkMode;
-
+      var lang=userProvider.getLanguage;
+      var text=AppTranslate().textLanguage[lang];
       return Stack(
         clipBehavior: Clip.none,
         children: [
@@ -95,7 +97,7 @@ class _PregnancyTimerBoxState extends State<PregnancyTimerBox> {
                   Column(
                     children: [
                       AppText(
-                        text: pro.weeks.toString(),
+                        text: isTimerStart?pro.weeks.toString():'0',
                         color: AppColors.pink,
                         fontSize: 56.722694396972656.sp,
                         fontWeight: FontWeight.w700,
@@ -113,7 +115,7 @@ class _PregnancyTimerBoxState extends State<PregnancyTimerBox> {
                   Column(
                     children: [
                       AppText(
-                        text: pro.days.toString(),
+                        text: isTimerStart?pro.days.toString():'0',
                         color: AppColors.pink,
                         fontSize: 56.722694396972656.sp,
                         fontWeight: FontWeight.w700,
@@ -131,7 +133,7 @@ class _PregnancyTimerBoxState extends State<PregnancyTimerBox> {
                   Column(
                     children: [
                       AppText(
-                        text: pro.hours.toString(),
+                        text: isTimerStart?pro.hours.toString():'0',
                         color: AppColors.pink,
                         fontSize: 56.722694396972656.sp,
                         fontWeight: FontWeight.w700,
@@ -157,9 +159,9 @@ class _PregnancyTimerBoxState extends State<PregnancyTimerBox> {
             child: InkWell(
               onTap: () {
                 if (!isTimerStart) {
-                  showStartDialog();
+                  showStartDialog(text!);
                 }else{
-                  showStopDialog();
+                  showStopDialog(text!);
                 }
               },
               child: Container(
@@ -190,7 +192,7 @@ class _PregnancyTimerBoxState extends State<PregnancyTimerBox> {
   }
 
 
-  void showStartDialog() {
+  void showStartDialog(Map<String,String> text) {
     showDialog(
         context: context,
         builder: (dialogContext) {
@@ -214,11 +216,12 @@ class _PregnancyTimerBoxState extends State<PregnancyTimerBox> {
               Navigator.pop(dialogContext);
             },
             darkMode: darkMode,
+            text: text,
           );
         });
   }
 
-  void showStopDialog() {
+  void showStopDialog(Map<String,String> text) {
     showDialog(
         context: context,
         builder: (dialogContext) {
@@ -256,6 +259,7 @@ class _PregnancyTimerBoxState extends State<PregnancyTimerBox> {
               Navigator.pop(dialogContext);
             },
             darkMode: darkMode,
+            text: text,
           );
         });
   }
