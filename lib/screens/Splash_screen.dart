@@ -52,7 +52,7 @@ class _Splash_ScreenState extends State<Splash_Screen> {
           var provider = Provider.of<UserProvider>(context, listen: false);
           provider.setUID(value.id);
           try {
-            provider.setDarkMode(value.get('dark_mode'));
+            provider.setDarkMode(value.get('dark-mode'));
           } catch (e) {
             provider.setDarkMode(false);
           }

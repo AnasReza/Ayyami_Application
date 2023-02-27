@@ -3,6 +3,7 @@ import 'package:ayyami/constants/colors.dart';
 import 'package:ayyami/constants/const.dart';
 import 'package:ayyami/providers/user_provider.dart';
 import 'package:ayyami/screens/all_trackers/all_trackers.dart';
+import 'package:ayyami/screens/medicine_reminder.dart';
 import 'package:ayyami/widgets/side_bar_bottom_view.dart';
 import 'package:ayyami/widgets/side_bar_box.dart';
 import 'package:flutter/material.dart';
@@ -27,16 +28,17 @@ class SideBar extends StatelessWidget {
     AppImages.historyIcon,
     AppImages.askIcon
   ];
-  String invite,about_us,logout;
+  String invite, about_us, logout;
   bool showComingSoon = false;
 
-  SideBar(this.textList,this.invite,this.about_us,this.logout, {super.key});
+  SideBar(this.textList, this.invite, this.about_us, this.logout, {super.key});
 
   @override
   Widget build(BuildContext context) {
     return Consumer<UserProvider>(
       builder: (consContext, provider, child) {
         var darkMode = provider.getIsDarkMode;
+        var lang=provider.getLanguage;
         return SafeArea(
             child: Container(
           width: MediaQuery.of(context).size.width * 0.8,
@@ -56,6 +58,7 @@ class SideBar extends StatelessWidget {
                 const SizedBox(
                   height: 20,
                 ),
+
                 GridView.builder(
                   shrinkWrap: true,
                   itemCount: textList.length,
@@ -68,7 +71,7 @@ class SideBar extends StatelessWidget {
                       showComingSoon = false;
                     }
                     return GestureDetector(
-                      child: SideBarBox(textList[index], imageList[index], showComingSoon, darkMode),
+                      child: SideBarBox(textList[index], imageList[index], showComingSoon, darkMode,lang!),
                       onTap: () {
                         switch (index) {
                           case 0:
@@ -84,7 +87,8 @@ class SideBar extends StatelessWidget {
                             break;
                           case 2:
                             print('Reminders');
-                            Navigator.pushNamed(context, remindersRoute);
+                            // Navigator.pushNamed(context, remindersRoute);
+                            nextScreen(context, MedicineReminderScreen());
                             break;
                           case 3:
                             nextScreen(context, AllTrackers());

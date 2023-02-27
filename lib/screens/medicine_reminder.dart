@@ -26,6 +26,13 @@ class _MedicineReminderScreenState extends State<MedicineReminderScreen> {
   bool saqdaToggle = false;
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    print('Reminder class');
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Consumer<UserProvider>(builder: (c,provider,child){
       var darkMode=provider.getIsDarkMode;
@@ -34,6 +41,7 @@ class _MedicineReminderScreenState extends State<MedicineReminderScreen> {
 
       return Scaffold(
         body: Container(
+          height: double.infinity,
           decoration: BoxDecoration(
             gradient: darkMode?AppDarkColors.backgroundGradient:AppColors.backgroundGradient,
           ),

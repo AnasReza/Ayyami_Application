@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:ui';
 
 import 'package:adhan/adhan.dart';
+import 'package:ayyami/constants/dark_mode_colors.dart';
 import 'package:ayyami/providers/namaz_provider.dart';
 import 'package:ayyami/providers/prayer_provider.dart';
 import 'package:ayyami/providers/user_provider.dart';
@@ -210,7 +211,9 @@ class _PrayerTimingState extends State<PrayerTiming> {
       var lang=userProvider.getLanguage;
       var text=AppTranslate().textLanguage[lang];
 
-      return Padding(
+      return Container(
+        width: double.infinity,
+        height: double.infinity,
         padding: EdgeInsets.only(
           left: 70.w,
           right: 70.w,
@@ -219,28 +222,19 @@ class _PrayerTimingState extends State<PrayerTiming> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              // IconButton(onPressed: (){
-              //   Navigator.push(context, MaterialPageRoute(builder: (context) => CalenderPage()));
-              // }, icon: Icon(Icons.date_range)),
-              // Align(
-              //   alignment: Alignment.center,
-              //   child: SvgPicture.asset(
-              //     AppImages.logo,
-              //     width: 249.6.w,
-              //     height: 78.4.h,
-              //   ),
-              // ),
+
               SizedBox(height: 70.6.h),
               AppText(
                 text: text!['prayer_times']!,
                 fontSize: 45.sp,
-                fontWeight: FontWeight.w700,
+                fontWeight: FontWeight.w700,color: darkMode?AppDarkColors.headingColor:AppDarkColors.headingColor,
               ),
               SizedBox(
                 height: 20.h,
               ),
               AppText(
                 textAlign: TextAlign.center,
+                color: darkMode?AppDarkColors.headingColor:AppDarkColors.headingColor,
                 text: "$gorgeonTodayDateFormated\n$hijriDateFormated",
                 fontSize: 16.sp,
                 fontWeight: FontWeight.w400,

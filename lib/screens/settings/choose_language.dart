@@ -54,10 +54,13 @@ class ChooseLanguageState extends State<ChooseLanguage> {
                 width: double.infinity,
                 child: Row(
                   children: [
-                    SvgPicture.asset(
+                    GestureDetector(child:SvgPicture.asset(
                       AppImages.backIcon,
                       color: darkMode ? AppDarkColors.headingColor : AppColors.headingColor,
-                    ),
+                    ),onTap: (){
+                      Navigator.pop(context);
+                    },),
+
                     Expanded(
                       child: Align(
                         alignment: Alignment.center,

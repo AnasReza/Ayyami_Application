@@ -149,6 +149,7 @@ class AllTrackersState extends State<AllTrackers> {
         body: Container(
           width: double.infinity,
           padding: EdgeInsets.only(left: 30),
+          decoration: BoxDecoration(gradient: darkMode?AppDarkColors.backgroundGradient:AppColors.backgroundGradient),
           child: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -177,7 +178,7 @@ class AllTrackersState extends State<AllTrackers> {
                 LikoriaTimerBox(showDialog: (show){
                   if(show){
                     /// SHOW COLO DIALOG
-                    showDialog(context: context, builder: (dialogContext){return LikoriaColorDialog(darkMode:darkMode);});
+                    showDialog(context: context, builder: (dialogContext){return LikoriaColorDialog(darkMode:darkMode,text: text,);});
                   }
                 }),
                 const SizedBox(

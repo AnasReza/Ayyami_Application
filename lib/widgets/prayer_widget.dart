@@ -60,12 +60,13 @@ class _PrayerWidgetState extends State<PrayerWidget> {
                 text: widget.name,
                 fontSize: 25.sp,
                 fontWeight: FontWeight.w700,
+                color: widget.darkMode?AppDarkColors.headingColor:AppDarkColors.headingColor,
               ),
             ),
             AppText(
                 text: widget.time,
                 fontSize: 28.sp,
-                fontWeight: FontWeight.w700),
+                fontWeight: FontWeight.w700,color: widget.darkMode?AppDarkColors.headingColor:AppDarkColors.headingColor,),
             SizedBox(width: 30.w),
             Image.asset(AppImages.bellIcon,height: 20,color: widget.darkMode?AppDarkColors.headingColor:AppColors.headingColor,)
           ],

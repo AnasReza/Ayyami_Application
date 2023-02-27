@@ -24,6 +24,13 @@ class AppColors {
   static const Color shimmerBaseColor = Color(0xFFEEEEEE);
   static const Color shimmerHighlightColor = Color(0xFFE0E0E0);
 
+  ///History Details
+  static const Color startDateColor= Color(0xFFBEFBFF);
+  static const Color endDateColor= Color(0xFFBEFFD0);
+  static const Color startTimeColor= Color(0xFFFFF9BE);
+  static const Color endTimeColor= Color(0xFFFFDDBE);
+  static const Color totalColor= Color(0xFFD88DBC);
+
   ///Likoria Color with Names
   static Map<String, Color> likoriaMap = {
     'Yellow': const Color(0xffffe600),

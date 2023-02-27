@@ -66,6 +66,7 @@ class _CategoryBoxState extends State<CategoryBox> {
                             text: widget.categoryName,
                             fontSize: 25.sp,
                             fontWeight: FontWeight.w700,
+                            color: widget.darkMode?AppDarkColors.headingColor:AppColors.headingColor,
                           ),
                           widget.comingSoon
                               ? Container(

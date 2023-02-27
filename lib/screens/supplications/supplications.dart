@@ -40,6 +40,7 @@ class SupplicationsState extends State<Supplications> {
                 text: text!['supplications']!,
                 fontSize: 45.sp,
                 fontWeight: FontWeight.w700,
+                color: darkMode ? AppDarkColors.headingColor : AppColors.headingColor,
               ),
               const SizedBox(
                 height: 20,
@@ -58,6 +59,7 @@ class SupplicationsState extends State<Supplications> {
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(10),
                       child: ExpansionTile(
+                        collapsedIconColor: darkMode?AppDarkColors.headingColor:AppColors.headingColor,
                         title: Text(
                           text['after_fajar']!,
                           style: TextStyle(
@@ -69,6 +71,7 @@ class SupplicationsState extends State<Supplications> {
                         collapsedBackgroundColor:
                             darkMode ? AppDarkColors.lightGreyBoxColor : AppColors.lightGreyBoxColor,
                         iconColor: darkMode ? AppDarkColors.headingColor : AppColors.headingColor,
+
                         children: [
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,

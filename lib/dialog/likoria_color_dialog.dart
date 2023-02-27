@@ -10,8 +10,9 @@ import '../constants/images.dart';
 
 class LikoriaColorDialog extends StatefulWidget {
   bool darkMode;
+  Map<String, String> text;
 
-  LikoriaColorDialog({required this.darkMode});
+  LikoriaColorDialog({required this.darkMode,required this.text});
 
   @override
   State<StatefulWidget> createState() {
@@ -43,7 +44,7 @@ class LikoriaColorDialogState extends State<LikoriaColorDialog> {
                   child: Column(
                     children: [
                       Text(
-                        'likoria_color'.tr,
+                        widget.text!['likoria_color']!,
                         style: TextStyle(
                             decoration: TextDecoration.none,
                             color: widget.darkMode ? AppDarkColors.headingColor : AppColors.headingColor,
@@ -111,7 +112,7 @@ class LikoriaColorDialogState extends State<LikoriaColorDialog> {
                               borderRadius:
                                   BorderRadius.only(bottomLeft: Radius.circular(10), bottomRight: Radius.circular(10))),
                           child: Text(
-                            'close'.tr,
+                            widget.text['close']!,
                             style: TextStyle(
                                 decoration: TextDecoration.none,
                                 color: AppColors.white,

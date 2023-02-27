@@ -248,7 +248,7 @@ class _PregnancyTimerBoxState extends State<PregnancyTimerBox> {
                     MensesTracker().startMensisTimer(mensesProvider, uid, tuhurProvider, Timestamp.now());
                     PregnancyTracker().stopPregnancyTimer(pregProvider, Timestamp.fromDate(endDate),reasonValue);
                     Navigator.pop(subContext);
-                  },darkMode:darkMode,);
+                  },darkMode:darkMode,text: text,);
                 });
               }else{
                  var postNatalProvider = Provider.of<PostNatalProvider>(context, listen: false);

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:ayyami/firebase_calls/user_record.dart';
 import 'package:ayyami/providers/user_provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -5,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
 import '../../constants/colors.dart';
@@ -13,6 +16,7 @@ import '../../constants/images.dart';
 import '../../translation/app_translation.dart';
 import '../../widgets/app_text.dart';
 import '../../widgets/question_answer_view.dart';
+import '../../widgets/utils.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
@@ -104,7 +108,35 @@ class _ProfilePageState extends State<ProfilePage> {
     } catch (e) {}
 
   }
+  final ImagePicker picker = ImagePicker();
+  File? imageData;
+  String assetsPath="assets/images/demo_profile.png";
 
+  Future getImageFromCamera(BuildContext context) async {
+    final img = await picker.pickImage(source: ImageSource.camera, imageQuality: 80);
+
+    setState(() {
+      if (img != null) {
+        imageData = File(img.path);
+        Navigator.pop(context);
+      } else {
+        toast_notification().toast_message("Image not captured");
+      }
+    });
+  }
+
+  Future getImageFromGallery(BuildContext context) async {
+    final img = await picker.pickImage(source: ImageSource.gallery, imageQuality: 80);
+
+    setState(() {
+      if (img != null) {
+        imageData = File(img.path);
+        Navigator.pop(context);
+      } else {
+        toast_notification().toast_message("Image not selected");
+      }
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return Consumer<UserProvider>(builder: (c,provider,child){
@@ -139,7 +171,7 @@ class _ProfilePageState extends State<ProfilePage> {
               SizedBox(
                 height: 20.h,
               ),
-              SizedBox(
+              GestureDetector(child:  SizedBox(
                 height: 120,
                 width: 120,
                 child: Stack(
@@ -177,7 +209,111 @@ class _ProfilePageState extends State<ProfilePage> {
                     )
                   ],
                 ),
-              ),
+              ),onTap: (){
+                showDialog(
+                    context: context,
+                    builder: (BuildContext dialogContex) {
+                      return Dialog(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(4),
+                          ),
+                          child: Stack(
+                            clipBehavior: Clip.none,
+                            alignment: Alignment.topCenter,
+                            children: [
+                              Container(
+                                height: 250,
+                                child: Column(
+                                  children: [
+                                    const Padding(padding: EdgeInsets.symmetric(vertical: 30)),
+                                    Text(
+                                      text['choose']!,
+                                      style: const TextStyle(
+                                        fontSize: 24.0,
+                                        fontFamily: 'DMSans',
+                                        color: Color(0xff1F3D73),
+                                        fontWeight: FontWeight.w700,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 30),
+                                    Padding(
+                                        padding: const EdgeInsets.fromLTRB(30, 0, 10, 10),
+                                        child: Row(
+                                          children: [
+                                            Container(
+                                              padding: const EdgeInsets.symmetric(horizontal: 30),
+                                              child: Column(
+                                                children: [
+                                                  InkWell(
+                                                      child: const Icon(
+                                                        Icons.camera_alt,
+                                                        size: 40,
+                                                        color: Color(0xff1F3D73),
+                                                      ),
+                                                      onTap: () {
+                                                        getImageFromCamera(dialogContex);
+                                                      }),
+                                                  const SizedBox(height: 5),
+                                                  Text(
+                                                    text['camera']!,
+                                                    style: TextStyle(
+                                                      fontSize: 18.0,
+                                                      fontFamily: 'DMSans',
+                                                      color: Color(0xff1F3D73),
+                                                      fontWeight: FontWeight.w400,
+                                                    ),
+                                                  )
+                                                ],
+                                              ),
+                                            ),
+                                            const SizedBox(width: 40),
+                                            Container(
+                                              padding: const EdgeInsets.symmetric(horizontal: 0),
+                                              child: Column(
+                                                children: [
+                                                  InkWell(
+                                                    child: const Icon(
+                                                      Icons.image,
+                                                      size: 40,
+                                                      color: Color(0xff1F3D73),
+                                                    ),
+                                                    onTap: () //Gallery OnTap
+
+                                                    {
+                                                      getImageFromGallery(dialogContex);
+                                                    },
+                                                  ),
+                                                  const SizedBox(height: 5),
+                                                  Text(
+                                                    text['gallery']!,
+                                                    style: TextStyle(
+                                                      fontSize: 18.0,
+                                                      fontFamily: 'DMSans',
+                                                      color: Color(0xff1F3D73),
+                                                      fontWeight: FontWeight.w400,
+                                                    ),
+                                                  )
+                                                ],
+                                              ),
+                                            ),
+                                          ],
+                                        )),
+                                  ],
+                                ),
+                              ),
+                              Positioned(
+                                top: -65,
+                                child: Image.asset(
+                                  'assets/images/dialog_icon.png',
+                                  height: 100,
+                                  width: 100,
+                                ),
+                              )
+                            ],
+                          ));
+                    });
+              },),
+
               SizedBox(
                 height: 20.h,
               ),

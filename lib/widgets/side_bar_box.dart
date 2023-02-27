@@ -6,20 +6,19 @@ import '../constants/colors.dart';
 import '../constants/dark_mode_colors.dart';
 
 class SideBarBox extends StatelessWidget {
-  String text, image;
-  bool showComingSoon,darkMode;
+  String text, image,lang;
+  bool showComingSoon, darkMode;
 
-  SideBarBox(this.text, this.image, this.showComingSoon,this.darkMode, {super.key});
+  SideBarBox(this.text, this.image, this.showComingSoon, this.darkMode,this.lang, {super.key});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(5),
       decoration: BoxDecoration(
-        color: darkMode?AppDarkColors.lightGreyBoxColor:AppColors.lightGreyBoxColor,
+        color: darkMode ? AppDarkColors.lightGreyBoxColor : AppColors.lightGreyBoxColor,
         borderRadius: BorderRadius.circular(10),
         border: Border.all(
-          color: darkMode?AppDarkColors.headingColor:AppColors.headingColor,
+          color: darkMode ? AppDarkColors.headingColor : AppColors.headingColor,
           width: 1.w,
         ),
       ),
@@ -28,34 +27,41 @@ class SideBarBox extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            SizedBox(height:70,child:  Stack(alignment: Alignment.center,
-              children: [
-                Align(alignment:Alignment.topRight,child: Visibility(
-                  visible: showComingSoon,
-                  child: Container(
-                    decoration: BoxDecoration(color: AppColors.lightGreen, borderRadius: BorderRadius.circular(5)),
-                    padding: const EdgeInsets.all(3),
-                    child: const Text(
-                      'Coming soon',
-                      style: TextStyle(fontSize: 10, fontWeight: FontWeight.w400, color: Colors.black),
+            SizedBox(
+              height: 70,
+              child: Stack(
+                alignment: Alignment.center,
+                children: [
+                  Align(
+                    alignment: Alignment.topRight,
+                    child: Visibility(
+                      visible: showComingSoon,
+                      child: Container(
+                        decoration: BoxDecoration(color: AppColors.lightGreen, borderRadius: BorderRadius.circular(5)),
+                        padding: const EdgeInsets.all(3),
+                        child: const Text(
+                          'Coming soon',
+                          style: TextStyle(fontSize: 10, fontWeight: FontWeight.w400, color: Colors.black),
+                        ),
+                      ),
                     ),
                   ),
-                ),),
-                SvgPicture.asset(
-                  image,
-                  width: 50.w,
-                  height: 50.h,
-                  color:darkMode?AppDarkColors.headingColor:AppColors.headingColor,
-                ),
-              ],
-            ),),
-
-            SizedBox(
-              height: 20,
+                  SvgPicture.asset(
+                    image,
+                    width: 50.w,
+                    height: 50.h,
+                    color: darkMode ? AppDarkColors.headingColor : AppColors.headingColor,
+                  ),
+                ],
+              ),
             ),
             Text(
               text,
-              style: TextStyle(color: darkMode?AppDarkColors.headingColor:AppColors.headingColor, fontWeight: FontWeight.w400, fontSize: 18),
+              textDirection: lang=='ur'?TextDirection.rtl:TextDirection.ltr,
+              style: TextStyle(
+                  color: darkMode ? AppDarkColors.headingColor : AppColors.headingColor,
+                  fontWeight: FontWeight.w400,
+                  fontSize: 18),
             )
           ],
         ),

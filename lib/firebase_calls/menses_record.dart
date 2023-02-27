@@ -8,6 +8,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:hive/hive.dart';
 
 class MensesRecord {
+  Stream<QuerySnapshot<Map<String, dynamic>>> getAllMensesRecord(String uid, ){
+
+    return FirebaseFirestore.instance.collection('menses').where('uid', isEqualTo: uid,)
+        .orderBy('start_date', descending: true).snapshots();
+  }
+
   static uploadMensesStartTime(String uid,Timestamp startTime) {
     return FirebaseFirestore.instance.collection('menses').add({'uid': uid, 'start_date': startTime});
   }

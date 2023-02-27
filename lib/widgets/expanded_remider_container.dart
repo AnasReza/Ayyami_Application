@@ -61,7 +61,7 @@ class _ExpandedReminderContainerState extends State<ExpandedReminderContainer> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          "Medicine Reminder",
+                          widget.text['medicine_reminder']!,
                           style: TextStyle(
                             color: const Color(0xff1f3d73),
                             fontSize: 28.sp,
@@ -124,7 +124,7 @@ class _ExpandedReminderContainerState extends State<ExpandedReminderContainer> {
                                 onTap: (){
                                   showDialog(context: context, builder: (c){
                                     return AlertDialog(
-                                      title: Text("Add Medicine"),
+                                      title: Text(widget.text!['add_medicine']!),
                                       content: SizedBox(
                                         height: 200,
                                         child: AddMedicine(darkMode:widget.darkMode,text: widget.text,)

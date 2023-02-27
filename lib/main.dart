@@ -20,8 +20,6 @@ import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 
-
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -45,7 +43,7 @@ Future<List<Box>> _openBoxes() async {
   final dir = await getApplicationDocumentsDirectory();
   Hive.init(dir.path);
 
-  return await Future.wait([Hive.openBox('aayami'),Hive.openBox('aayami_menses')]);
+  return await Future.wait([Hive.openBox('aayami'), Hive.openBox('aayami_menses')]);
 }
 
 class MyApp extends StatelessWidget {

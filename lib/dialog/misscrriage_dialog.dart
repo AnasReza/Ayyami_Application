@@ -8,8 +8,9 @@ import '../widgets/utils.dart';
 class MiscarraigeDialog extends StatefulWidget{
   late Function(String) reason;
   bool darkMode;
+  Map<String,String> text;
 
-  MiscarraigeDialog({super.key,required this.reason,required this.darkMode});
+  MiscarraigeDialog({super.key,required this.reason,required this.darkMode,required this.text});
 
   @override
   State<StatefulWidget> createState() {
@@ -44,7 +45,7 @@ class MiscarraigeDialogState extends State<MiscarraigeDialog>{
                  SizedBox(height: 45),
                  Container(
                    child:  Text(
-                     "You have stopped the pregnancy tracker before 9 months. Please tell us is it Miscarriage or DNC?",
+                     widget.text['before_9_months']!,
                      style: TextStyle(
                          fontSize: 30.0,
                          fontFamily: 'DMSans',
@@ -90,7 +91,7 @@ class MiscarraigeDialogState extends State<MiscarraigeDialog>{
                                          minHeight: 50,
                                        ),
                                        alignment: Alignment.center,
-                                       child: Text(("Miscarriage").toUpperCase(),
+                                       child: Text(widget.text['miscarriage']!,
                                            style: TextStyle(
                                                fontFamily: 'DMSans',
                                                fontSize: 17,
@@ -132,7 +133,7 @@ class MiscarraigeDialogState extends State<MiscarraigeDialog>{
                                          minHeight: 50,
                                        ),
                                        alignment: Alignment.center,
-                                       child: Text(("DNC").toUpperCase(),
+                                       child: Text(widget.text['dnc']!,
                                            style: TextStyle(
                                                fontFamily: 'DMSans',
                                                fontSize: 17,
@@ -148,12 +149,12 @@ class MiscarraigeDialogState extends State<MiscarraigeDialog>{
                  SizedBox(height: 65),
                  Container(
                    child: GradientButton(
-                     title: "Confirm",
+                     title:widget.text['confirm']!,
                      onPressedButon: () {
                        Widget nextWidget;
 
                        if (pressedInt==0) {
-                         toast_notification().toast_message("Please select an option");
+                         toast_notification().toast_message(widget.text['select_option']!);
                          return;
                        }
 

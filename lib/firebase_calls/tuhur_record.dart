@@ -96,6 +96,11 @@ class TuhurRecord{
 
   }
 
+  Stream<QuerySnapshot<Map<String, dynamic>>> getAllTuhurRecord(String uid){
+   return FirebaseFirestore.instance.collection('tuhur').where('uid', isEqualTo: uid)
+        .orderBy('start_date', descending: true).snapshots();
+  }
+
   static void saveDocMensesId(String id) async {
     var box = await Hive.openBox('aayami_menses');
     box.put('menses_timer_doc_id', id);
