@@ -37,6 +37,11 @@ class PrayerProvider extends ChangeNotifier
     "Evening",
     "Night"
   ];
+  List<String> medicineTimingListUrdu = [
+    "صبح",
+    "شام",
+    "رات"
+  ];
 
   bool _isHijri = false;
   bool get hijriCalender => _isHijri;

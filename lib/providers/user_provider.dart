@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
 class UserProvider extends ChangeNotifier{
   String uid='';
@@ -15,6 +16,9 @@ class UserProvider extends ChangeNotifier{
   late Timestamp lastTuhur;
   late Map<String, int> lastMensesTime;
   Map<String, int>? lastTuhurTime;
+  late List<PickerDateRange> mensesDateRange;
+  late List<QueryDocumentSnapshot<Map<String, dynamic>>> allMensesData;
+  late List<QueryDocumentSnapshot<Map<String, dynamic>>> allTuhurData;
 
   String get getUid=> uid;
   String? get getLanguage=> language;
@@ -29,7 +33,25 @@ class UserProvider extends ChangeNotifier{
   Timestamp get getLastTuhur => lastTuhur;
   Map<String, int> get getLastMensesTime => lastMensesTime;
   Map<String, int>? get getLastTuhurTime => lastTuhurTime;
+  List<PickerDateRange> get getMensesDateRange => mensesDateRange;
+  List<QueryDocumentSnapshot<Map<String, dynamic>>> get getMensesData => allMensesData;
+  List<QueryDocumentSnapshot<Map<String, dynamic>>> get getTuhurData => allTuhurData;
 
+  setAllTuhurData(List<QueryDocumentSnapshot<Map<String, dynamic>>> value) {
+
+    allTuhurData= value;
+    notifyListeners();
+  }
+  setAllMensesData(List<QueryDocumentSnapshot<Map<String, dynamic>>> value) {
+
+    allMensesData= value;
+    notifyListeners();
+  }
+  setMensesDate(List<PickerDateRange> value) {
+
+    mensesDateRange= value;
+    notifyListeners();
+  }
   setLastMensesTime(int days,int hour,int minute,int seconds) {
 
     lastMensesTime= {'day':days,'hour':hour,'minute':minute,'second':seconds};

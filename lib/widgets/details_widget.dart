@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../constants/colors.dart';
 
 class DetailsWidget extends StatelessWidget {
   Color backgroundColor;
-  String heading, dayName, day, monthYear;
+  String heading, dayName, day, monthYear,lang;
 
   DetailsWidget(
       {required this.backgroundColor,
@@ -12,6 +13,7 @@ class DetailsWidget extends StatelessWidget {
       required this.day,
       required this.dayName,
       required this.heading,
+        required this.lang,
       super.key});
 
   @override
@@ -29,12 +31,12 @@ class DetailsWidget extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                heading,
-                style: const TextStyle(color: AppColors.headingColor, fontSize: 14, fontWeight: FontWeight.w700),
+                lang=='ur'?dayName:heading,
+                style: TextStyle(color: AppColors.headingColor, fontSize: 25.sp, fontWeight: FontWeight.w700,fontFamily: 'DMSans'),
               ),
               Text(
-                dayName,
-                style: const TextStyle(color: AppColors.headingColor, fontSize: 14, fontWeight: FontWeight.w700),
+                lang=='ur'?heading:dayName,
+                style:TextStyle(color: AppColors.headingColor, fontSize: 25.sp, fontWeight: FontWeight.w700,fontFamily: 'DMSans'),
               ),
             ],
           ),
@@ -43,14 +45,14 @@ class DetailsWidget extends StatelessWidget {
           ),
           Text(
             day,
-            style: const TextStyle(color: AppColors.headingColor, fontSize: 20, fontWeight: FontWeight.w700),
+            style:  TextStyle(color: AppColors.headingColor, fontSize:40.sp, fontWeight: FontWeight.w700,fontFamily: 'DMSans'),
           ),
           const SizedBox(
             height: 15,
           ),
           Text(
             monthYear,
-            style: const TextStyle(color: AppColors.headingColor, fontSize: 14, fontWeight: FontWeight.w700),
+            style: TextStyle(color: AppColors.headingColor, fontSize: 25.sp, fontWeight: FontWeight.w700,fontFamily: 'DMSans'),
           )
         ],
       ),

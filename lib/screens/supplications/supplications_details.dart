@@ -37,7 +37,8 @@ class SupplicationsDetails extends StatelessWidget {
           centerTitle: true,
         ),
         body: Container(
-          margin: EdgeInsets.only(left: 20, right: 20),
+          padding: EdgeInsets.only(left: 20, right: 20),
+          decoration: BoxDecoration(gradient: darkMode?AppDarkColors.backgroundGradient:AppColors.backgroundGradient),
           child: ListView.builder(
               itemCount: list?.length,
               itemBuilder: (listContext, index) {

@@ -46,7 +46,7 @@ class SettingsState extends State<SettingsApp> {
                 height: 20,
               ),
               //CHANGE LOCATION
-              GestureDetector(
+              Directionality(textDirection: lang=='ur'?TextDirection.rtl:TextDirection.ltr, child: GestureDetector(
                 child: CategoryBox(
                   categoryName: text!['change_location']!,
                   days: 21,
@@ -56,16 +56,19 @@ class SettingsState extends State<SettingsApp> {
                   comingSoon: false,
                   showDate: false,
                   darkMode: darkMode,
+                  text: text,
+                  textDirection: lang=='ur'?TextDirection.rtl:TextDirection.ltr,
                 ),
                 onTap: () {
                   nextScreen(context, ChangeLocation());
                 },
-              ),
+              ),),
+
               const SizedBox(
                 height: 20,
               ),
               //CHANGE Language
-              GestureDetector(
+              Directionality(textDirection: lang=='ur'?TextDirection.rtl:TextDirection.ltr, child: GestureDetector(
                 child: CategoryBox(
                   categoryName: text!['change_language']!,
                   days: 21,
@@ -75,17 +78,20 @@ class SettingsState extends State<SettingsApp> {
                   comingSoon: false,
                   showDate: false,
                   darkMode: darkMode,
+                  text: text,
+                  textDirection: lang=='ur'?TextDirection.rtl:TextDirection.ltr,
                 ),
                 onTap: () {
                   nextScreen(context, ChooseLanguage());
                 },
-              ),
+              ),),
+
 
               const SizedBox(
                 height: 20,
               ),
               //CGANGE THEME
-              CategoryBox(
+              Directionality(textDirection: lang=='ur'?TextDirection.rtl:TextDirection.ltr, child: CategoryBox(
                 categoryName: text!['change_theme']!,
                 days: 21,
                 hours: 12,
@@ -94,26 +100,44 @@ class SettingsState extends State<SettingsApp> {
                 isSelected: false,
                 showDate: false,
                 darkMode: darkMode,
-              ),
+                text: text,
+                textDirection: lang=='ur'?TextDirection.rtl:TextDirection.ltr,
+              ),),
+              Directionality(textDirection: lang=='ur'?TextDirection.rtl:TextDirection.ltr, child: CategoryBox(
+                categoryName: text!['change_theme']!,
+                days: 21,
+                hours: 12,
+                checkbox: false,
+                comingSoon: true,
+                isSelected: false,
+                showDate: false,
+                darkMode: darkMode,
+                text: text,
+                textDirection: lang=='ur'?TextDirection.rtl:TextDirection.ltr,
+              ),),
+
               const SizedBox(
                 height: 20,
               ),
               //TRACKER FACE
-              CategoryBox(
-                categoryName: text!['change_tracker_face']!,
-                days: 21,
-                hours: 12,
-                checkbox: false,
-                isSelected: false,
-                comingSoon: true,
-                showDate: false,
-                darkMode: darkMode,
-              ),
+              Directionality(textDirection: lang=='ur'?TextDirection.rtl:TextDirection.ltr, child: CategoryBox(
+              categoryName: text!['change_tracker_face']!,
+              days: 21,
+              hours: 12,
+              checkbox: false,
+              isSelected: false,
+              comingSoon: true,
+              showDate: false,
+              text: text,
+              darkMode: darkMode,
+                textDirection: lang=='ur'?TextDirection.rtl:TextDirection.ltr,
+              ),),
+
               const SizedBox(
                 height: 20,
               ),
               //DARK MODE
-              CategoryBoxWithSwitch(
+              Directionality(textDirection: lang=='ur'?TextDirection.rtl:TextDirection.ltr, child: CategoryBoxWithSwitch(
                 categoryName: text!['dark_mode']!,
                 darkMode: darkMode,
                 comingSoon: false,
@@ -123,13 +147,14 @@ class SettingsState extends State<SettingsApp> {
                   Utils.saveAppData(onChangeValue, 'dark_mode');
                   UsersRecord().updateDarkMode(provider.getUid!, onChangeValue);
                 },
-              ),
+              ),),
+
 
               const SizedBox(
                 height: 20,
               ),
               //BUY PREMIUM
-              CategoryBox(
+              Directionality(textDirection: lang=='ur'?TextDirection.rtl:TextDirection.ltr, child: CategoryBox(
                 categoryName: text!['buy_premium']!,
                 days: 21,
                 hours: 12,
@@ -138,12 +163,15 @@ class SettingsState extends State<SettingsApp> {
                 comingSoon: false,
                 showDate: false,
                 darkMode: darkMode,
-              ),
+                text: text,
+                textDirection: lang=='ur'?TextDirection.rtl:TextDirection.ltr,
+              ),),
+
               const SizedBox(
                 height: 20,
               ),
               //RATE APP
-              GestureDetector(
+              Directionality(textDirection: lang=='ur'?TextDirection.rtl:TextDirection.ltr, child: GestureDetector(
                 child: CategoryBox(
                   categoryName: text!['rate_app']!,
                   days: 21,
@@ -153,6 +181,8 @@ class SettingsState extends State<SettingsApp> {
                   comingSoon: true,
                   showDate: false,
                   darkMode: darkMode,
+                  text: text,
+                  textDirection: lang=='ur'?TextDirection.rtl:TextDirection.ltr,
                 ),
                 onTap: () {
                   // showDialog(
@@ -162,7 +192,8 @@ class SettingsState extends State<SettingsApp> {
                   //     },
                   //     useSafeArea: true);
                 },
-              ),
+              ),),
+
 
               const SizedBox(
                 height: 20,

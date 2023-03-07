@@ -44,6 +44,7 @@ dependencies:
   hijri_picker: ^3.0.0
   hijri: ^3.0.0
   table_calendar: ^3.0.7
+  syncfusion_flutter_datepicker: ^20.4.52
 
   #  state
   provider: ^6.0.4
@@ -78,6 +79,7 @@ dependencies:
   change_app_package_name: ^1.1.0
   get: ^4.6.5
   get_storage: ^2.0.3
+
 
 dev_dependencies:
   flutter_test:

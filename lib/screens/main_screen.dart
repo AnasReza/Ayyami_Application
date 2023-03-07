@@ -6,6 +6,7 @@ import 'package:ayyami/screens/settings/settings.dart';
 import 'package:ayyami/screens/supplications/supplications.dart';
 
 import 'package:ayyami/widgets/side_bar.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -14,9 +15,12 @@ import 'package:hive/hive.dart';
 
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
 import '../constants/dark_mode_colors.dart';
 import '../constants/images.dart';
+import '../firebase_calls/menses_record.dart';
+import '../firebase_calls/tuhur_record.dart';
 import '../navigation/custom_bottom_nav.dart';
 import '../navigation/custom_fab.dart';
 import '../providers/namaz_provider.dart';
@@ -72,7 +76,28 @@ class MainScreenState extends State<MainScreen> {
       PrayerNotification().notificationTime(fajrTime, sunriseTime, zuharTime, asrTime, maghribTime, ishaTime);
     }
   }
-
+@override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    var provider=context.read<UserProvider>();
+    MensesRecord().getAllMensesRecord(provider.getUid).listen((event) {
+      var docs = event.docs;
+      provider.setAllMensesData(docs);
+      List<PickerDateRange> dateRangeList=[];
+      print('${docs.length}  user menses length');
+      for (var doc in docs) {
+        Timestamp start = doc['start_date'];
+        Timestamp end = doc['end_time'];
+        dateRangeList.add(PickerDateRange(start.toDate(), end.toDate()));
+      }
+      provider.setMensesDate(dateRangeList);
+    });
+    TuhurRecord().getAllTuhurRecord(provider.getUid).listen((event) {
+      var docs= event.docs;
+      provider.setAllTuhurData(docs);
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return Consumer<UserProvider>(

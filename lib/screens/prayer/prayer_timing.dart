@@ -15,9 +15,10 @@ import 'package:flutter_background_service/flutter_background_service.dart';
 import 'package:flutter_background_service_android/flutter_background_service_android.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hijri/hijri_calendar.dart';
-import 'package:intl/intl.dart';
+import 'package:intl/intl.dart' as intl;
 import 'package:provider/provider.dart';
 import 'package:stop_watch_timer/stop_watch_timer.dart';
+import '../../constants/colors.dart';
 import '../../translation/app_translation.dart';
 import '../../widgets/app_text.dart';
 import 'package:timezone/data/latest.dart' as latest;
@@ -35,7 +36,7 @@ class _PrayerTimingState extends State<PrayerTiming> {
   late DateTime fajrTime, sunriseTime, zuharTime, asrTime, maghribTime, ishaTime;
   final _hijriDateToday = HijriCalendar.now();
   static final DateTime _gorgeonDateToday = DateTime.now();
-  static final DateFormat _todayDateFormated = DateFormat('dd MMMM yyyy');
+  static final intl.DateFormat _todayDateFormated = intl.DateFormat('dd MMMM yyyy');
   String gorgeonTodayDateFormated = '';
   String hijriDateFormated = '';
   List<DateTime> _events = [];
@@ -220,21 +221,21 @@ class _PrayerTimingState extends State<PrayerTiming> {
           top: 80.h,
         ),
         child: SingleChildScrollView(
-          child: Column(
+          child: Directionality(textDirection: lang=='ur'?TextDirection.rtl:TextDirection.ltr, child: Column(
             children: [
 
               SizedBox(height: 70.6.h),
               AppText(
                 text: text!['prayer_times']!,
                 fontSize: 45.sp,
-                fontWeight: FontWeight.w700,color: darkMode?AppDarkColors.headingColor:AppDarkColors.headingColor,
+                fontWeight: FontWeight.w700,color: darkMode?AppDarkColors.headingColor:AppColors.headingColor,
               ),
               SizedBox(
                 height: 20.h,
               ),
               AppText(
                 textAlign: TextAlign.center,
-                color: darkMode?AppDarkColors.headingColor:AppDarkColors.headingColor,
+                color: darkMode?AppDarkColors.headingColor:AppColors.headingColor,
                 text: "$gorgeonTodayDateFormated\n$hijriDateFormated",
                 fontSize: 16.sp,
                 fontWeight: FontWeight.w400,
@@ -288,7 +289,7 @@ class _PrayerTimingState extends State<PrayerTiming> {
                 darkMode: darkMode,
               ),
             ],
-          ),
+          ),),
         ),
       );
     });

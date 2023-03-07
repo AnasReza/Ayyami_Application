@@ -1,5 +1,6 @@
 import 'package:ayyami/constants/dark_mode_colors.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../constants/colors.dart';
 
@@ -28,8 +29,8 @@ class TotalDuration extends StatelessWidget {
             child: Text(
               text!['total_duration']!,
               textDirection: lang == 'ur' ? TextDirection.rtl : TextDirection.ltr,
-              style: const TextStyle(
-                  color: Colors.white, fontSize: 14, fontWeight: FontWeight.w700, fontFamily: 'DMSans'),
+              style:
+                  TextStyle(color: Colors.white, fontSize: 30.sp, fontWeight: FontWeight.w700, fontFamily: 'DMSans'),
             ),
           ),
           const SizedBox(
@@ -37,19 +38,24 @@ class TotalDuration extends StatelessWidget {
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-
             children: [
               Column(
                 children: [
                   Text(
                     days,
-                    style: const TextStyle(
-                        color: AppDarkColors.headingColor, fontSize: 20, fontWeight: FontWeight.w700, fontFamily: 'DMSans'),
+                    style: TextStyle(
+                        color: AppDarkColors.headingColor,
+                        fontSize: 40.sp,
+                        fontWeight: FontWeight.w700,
+                        fontFamily: 'DMSans'),
                   ),
                   Text(
                     text['days']!,
                     style: TextStyle(
-                        color: AppDarkColors.headingColor, fontSize: 16, fontWeight: FontWeight.w400, fontFamily: 'DMSans'),
+                        color: AppDarkColors.headingColor,
+                        fontSize: 35.sp,
+                        fontWeight: FontWeight.w400,
+                        fontFamily: 'DMSans'),
                   ),
                 ],
               ),
@@ -57,13 +63,19 @@ class TotalDuration extends StatelessWidget {
                 children: [
                   Text(
                     hours,
-                    style: const TextStyle(
-                        color: AppDarkColors.headingColor, fontSize: 20, fontWeight: FontWeight.w700, fontFamily: 'DMSans'),
+                    style: TextStyle(
+                        color: AppDarkColors.headingColor,
+                        fontSize: 40.sp,
+                        fontWeight: FontWeight.w700,
+                        fontFamily: 'DMSans'),
                   ),
                   Text(
                     text['hours']!,
                     style: TextStyle(
-                        color: AppDarkColors.headingColor, fontSize: 16, fontWeight: FontWeight.w400, fontFamily: 'DMSans'),
+                        color: AppDarkColors.headingColor,
+                        fontSize: 35.sp,
+                        fontWeight: FontWeight.w400,
+                        fontFamily: 'DMSans'),
                   ),
                 ],
               ),
@@ -71,13 +83,19 @@ class TotalDuration extends StatelessWidget {
                 children: [
                   Text(
                     minutes,
-                    style: const TextStyle(
-                        color: AppDarkColors.headingColor, fontSize: 20, fontWeight: FontWeight.w700, fontFamily: 'DMSans'),
+                    style: TextStyle(
+                        color: AppDarkColors.headingColor,
+                        fontSize:35.sp,
+                        fontWeight: FontWeight.w700,
+                        fontFamily: 'DMSans'),
                   ),
                   Text(
                     text['minutes']!,
                     style: TextStyle(
-                        color: AppDarkColors.headingColor, fontSize: 16, fontWeight: FontWeight.w400, fontFamily: 'DMSans'),
+                        color: AppDarkColors.headingColor,
+                        fontSize: 30.sp,
+                        fontWeight: FontWeight.w400,
+                        fontFamily: 'DMSans'),
                   ),
                 ],
               )

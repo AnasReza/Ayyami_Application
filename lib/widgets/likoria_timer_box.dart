@@ -63,7 +63,6 @@ class _LikoriaTimerBoxState extends State<LikoriaTimerBox>  {
         children: [
           /// Timer Container
           Container(
-            width: 579.w,
             decoration: BoxDecoration(
               color: darkMode?AppDarkColors.lightGreyBoxColor:AppColors.white,
               borderRadius: BorderRadius.circular(18.r),
@@ -92,8 +91,8 @@ class _LikoriaTimerBoxState extends State<LikoriaTimerBox>  {
                     GestureDetector(child: Container(
                       padding: const EdgeInsets.only(left: 10, right: 10, top: 3, bottom: 3),
                       decoration: BoxDecoration(color: AppColors.yellow, borderRadius: BorderRadius.circular(15)),
-                      child: const Text(
-                        'Change Color',
+                      child: Text(
+                        text!['change_colour']!,
                         style: TextStyle(color: AppColors.headingColor, fontSize: 12, fontWeight: FontWeight.w600),
                       ),
                     ),onTap: (){
@@ -117,7 +116,7 @@ class _LikoriaTimerBoxState extends State<LikoriaTimerBox>  {
                               fontWeight: FontWeight.w700,
                             ),
                             AppText(
-                              text: 'Days',
+                              text: text!['days']!,
                               color: AppColors.pink,
                               fontSize: 28.sp,
                               fontWeight: FontWeight.w700,
@@ -135,7 +134,7 @@ class _LikoriaTimerBoxState extends State<LikoriaTimerBox>  {
                               fontWeight: FontWeight.w700,
                             ),
                             AppText(
-                              text: 'Hours',
+                              text: text['hours']!,
                               color: AppColors.pink,
                               fontSize: 28.sp,
                               fontWeight: FontWeight.w700,
@@ -153,7 +152,7 @@ class _LikoriaTimerBoxState extends State<LikoriaTimerBox>  {
                               fontWeight: FontWeight.w700,
                             ),
                             AppText(
-                              text: 'Min.',
+                              text: text['minutes']!,
                               color: AppColors.pink,
                               fontSize: 28.sp,
                               fontWeight: FontWeight.w700,
@@ -171,7 +170,7 @@ class _LikoriaTimerBoxState extends State<LikoriaTimerBox>  {
                               fontWeight: FontWeight.w700,
                             ),
                             AppText(
-                              text: 'Sec.',
+                              text: text['seconds']!,
                               color: AppColors.pink,
                               fontSize: 28.sp,
                               fontWeight: FontWeight.w700,
@@ -217,7 +216,7 @@ class _LikoriaTimerBoxState extends State<LikoriaTimerBox>  {
                 ),
                 child: Center(
                   child: AppText(
-                    text: isTimerStart ? "STOP TIMER" : "START TIMER",
+                    text: isTimerStart ? text['stop_timer']! : text['start_timer']!,
                     color: AppColors.white,
                     fontSize: 26.36170196533203.sp,
                     fontWeight: FontWeight.w700,

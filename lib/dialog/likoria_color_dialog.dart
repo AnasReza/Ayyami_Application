@@ -27,6 +27,7 @@ class LikoriaColorDialogState extends State<LikoriaColorDialog> {
   Widget build(BuildContext context) {
     return Center(
       child: Container(
+        width: double.infinity,
         height: 350,
         margin: EdgeInsets.only(left: 30, right: 30),
         child: Align(
@@ -55,6 +56,7 @@ class LikoriaColorDialogState extends State<LikoriaColorDialog> {
                         height: 20,
                       ),
                       SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.center,

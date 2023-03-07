@@ -8,20 +8,25 @@ import '../constants/colors.dart';
 import '../constants/dark_mode_colors.dart';
 
 class CategoryBox extends StatefulWidget {
-  CategoryBox(
-      {Key? key,
-      required this.categoryName,
-      required this.days,
-      required this.hours,
-      required this.checkbox,
-      required this.isSelected,
-      required this.showDate,
-      required this.comingSoon,required this.darkMode,})
-      : super(key: key);
+  CategoryBox({
+    Key? key,
+    required this.categoryName,
+    required this.days,
+    required this.hours,
+    required this.checkbox,
+    required this.isSelected,
+    required this.showDate,
+    required this.comingSoon,
+    required this.darkMode,
+    required this.text,
+    this.textDirection
+  }) : super(key: key);
 
   final String categoryName;
   final int days, hours;
-  bool checkbox, isSelected, showDate, comingSoon,darkMode;
+  bool checkbox, isSelected, showDate, comingSoon, darkMode;
+  TextDirection? textDirection;
+  Map<String,String> text;
 
   @override
   State<CategoryBox> createState() => _CategoryBoxState();
@@ -37,11 +42,11 @@ class _CategoryBoxState extends State<CategoryBox> {
               Container(
                 margin: EdgeInsets.only(left: 30, right: 30),
                 width: double.infinity,
-                height: 104.h,
+                height: 110.h,
                 decoration: BoxDecoration(
-                  color: widget.darkMode?AppDarkColors.lightGreyBoxColor:AppColors.lightGreyBoxColor,
+                  color: widget.darkMode ? AppDarkColors.lightGreyBoxColor : AppColors.lightGreyBoxColor,
                   border: Border.all(
-                    color: widget.darkMode?AppDarkColors.headingColor:AppColors.headingColor,
+                    color: widget.darkMode ? AppDarkColors.headingColor : AppColors.headingColor,
                     width: 1.w,
                   ),
                   borderRadius: BorderRadius.circular(18.r),
@@ -66,15 +71,15 @@ class _CategoryBoxState extends State<CategoryBox> {
                             text: widget.categoryName,
                             fontSize: 25.sp,
                             fontWeight: FontWeight.w700,
-                            color: widget.darkMode?AppDarkColors.headingColor:AppColors.headingColor,
+                            color: widget.darkMode ? AppDarkColors.headingColor : AppColors.headingColor,
                           ),
                           widget.comingSoon
                               ? Container(
                                   decoration: BoxDecoration(
                                       color: AppColors.lightGreen, borderRadius: BorderRadius.circular(5)),
                                   padding: const EdgeInsets.all(3),
-                                  child: const Text(
-                                    'Coming soon',
+                                  child: Text(
+                                    widget.text['coming_soon']!,
                                     style: TextStyle(fontSize: 10, fontWeight: FontWeight.w400, color: Colors.black),
                                   ),
                                 )
@@ -86,8 +91,18 @@ class _CategoryBoxState extends State<CategoryBox> {
                           ? Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                AppText(text: widget.days.toString(), fontSize: 28.sp, fontWeight: FontWeight.w700,color: widget.darkMode?AppDarkColors.headingColor:AppColors.headingColor,),
-                                AppText(text: "Days", fontSize: 16.sp, fontWeight: FontWeight.w400,color: widget.darkMode?AppDarkColors.headingColor:AppColors.headingColor,),
+                                AppText(
+                                  text: widget.days.toString(),
+                                  fontSize: 28.sp,
+                                  fontWeight: FontWeight.w700,
+                                  color: widget.darkMode ? AppDarkColors.headingColor : AppColors.headingColor,
+                                ),
+                                AppText(
+                                  text: widget.text['days']!,
+                                  fontSize: 16.sp,
+                                  fontWeight: FontWeight.w400,
+                                  color: widget.darkMode ? AppDarkColors.headingColor : AppColors.headingColor,
+                                ),
                               ],
                             )
                           : Container(),
@@ -96,30 +111,42 @@ class _CategoryBoxState extends State<CategoryBox> {
                           ? Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                AppText(text: widget.hours.toString(), fontSize: 28.sp, fontWeight: FontWeight.w700,color: widget.darkMode?AppDarkColors.headingColor:AppColors.headingColor,),
-                                AppText(text: "Hours", fontSize: 16.sp, fontWeight: FontWeight.w400,color: widget.darkMode?AppDarkColors.headingColor:AppColors.headingColor,),
+                                AppText(
+                                  text: widget.hours.toString(),
+                                  fontSize: 28.sp,
+                                  fontWeight: FontWeight.w700,
+                                  color: widget.darkMode ? AppDarkColors.headingColor : AppColors.headingColor,
+                                ),
+                                AppText(
+                                  text: widget.text['hours']!,
+                                  fontSize: 16.sp,
+                                  fontWeight: FontWeight.w400,
+                                  color: widget.darkMode ? AppDarkColors.headingColor : AppColors.headingColor,
+                                ),
                               ],
                             )
                           : Container(),
                       SizedBox(width: 24.w),
-                      SvgPicture.asset(
+                      RotatedBox(quarterTurns: widget.textDirection==TextDirection.rtl?1:0,child: SvgPicture.asset(
                         AppImages.forwardIcon,
                         width: 46.w,
                         height: 25.h,
-                        color: widget.darkMode?Colors.white:Colors.black,
-                      ),
-                      SvgPicture.asset(
-                        AppImages.forwardIcon,
-                        width: 46.w,
-                        height: 25.h,
-                        color: widget.darkMode?Colors.white:Colors.black,
-                      ),
-                      SvgPicture.asset(
-                        AppImages.forwardIcon,
-                        width: 46.w,
-                        height: 25.h,
-                        color: widget.darkMode?Colors.white:Colors.black,
-                      ),
+                        color: widget.darkMode ? Colors.white : Colors.black,
+                      ),),
+
+
+                      // SvgPicture.asset(
+                      //   widget.textDirection==TextDirection.rtl?AppImages.backwardIcon:AppImages.forwardIcon,
+                      //   width: 46.w,
+                      //   height: 25.h,
+                      //   color: widget.darkMode ? Colors.white : Colors.black,
+                      // ),
+                      // SvgPicture.asset(
+                      //   widget.textDirection==TextDirection.rtl?AppImages.backwardIcon:AppImages.forwardIcon,
+                      //   width: 46.w,
+                      //   height: 25.h,
+                      //   color: widget.darkMode ? Colors.white : Colors.black,
+                      // ),
                     ],
                   ),
                 ),
@@ -171,11 +198,11 @@ class _CategoryBoxState extends State<CategoryBox> {
         : Container(
             margin: EdgeInsets.only(left: 30, right: 30),
             width: double.infinity,
-            height: 104.h,
+            height: 110.h,
             decoration: BoxDecoration(
-              color: widget.darkMode?AppDarkColors.lightGreyBoxColor:AppColors.lightGreyBoxColor,
+              color: widget.darkMode ? AppDarkColors.lightGreyBoxColor : AppColors.lightGreyBoxColor,
               border: Border.all(
-                color: widget.darkMode?AppDarkColors.headingColor:AppColors.headingColor,
+                color: widget.darkMode ? AppDarkColors.headingColor : AppColors.headingColor,
                 width: 1.w,
               ),
               borderRadius: BorderRadius.circular(18.r),
@@ -194,22 +221,23 @@ class _CategoryBoxState extends State<CategoryBox> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Expanded(
-                      child: Wrap(spacing: 10,
+                      child: Wrap(
+                    spacing: 10,
                     children: [
                       AppText(
                         text: widget.categoryName,
                         fontSize: 25.sp,
                         fontWeight: FontWeight.w700,
-                        color: widget.darkMode?AppDarkColors.headingColor:AppColors.headingColor,
+                        color: widget.darkMode ? AppDarkColors.headingColor : AppColors.headingColor,
                       ),
                       widget.comingSoon
                           ? Container(
-                        padding: EdgeInsets.all(3),
+                              padding: EdgeInsets.all(3),
                               decoration:
                                   BoxDecoration(color: AppColors.lightGreen, borderRadius: BorderRadius.circular(5)),
-                              child: const Text(
-                                'Coming soon',
-                                style: TextStyle(fontSize:5, fontWeight: FontWeight.w400, color: Colors.black),
+                              child: Text(
+                                widget.text['coming_soon']!,
+                                style: TextStyle(fontSize: 5, fontWeight: FontWeight.w400, color: Colors.black),
                               ),
                             )
                           : Container(),
@@ -219,8 +247,18 @@ class _CategoryBoxState extends State<CategoryBox> {
                       ? Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            AppText(text: widget.days.toString(), fontSize: 28.sp, fontWeight: FontWeight.w700,color: widget.darkMode?AppDarkColors.headingColor:AppColors.headingColor,),
-                            AppText(text: "Days", fontSize: 16.sp, fontWeight: FontWeight.w400,color: widget.darkMode?AppDarkColors.headingColor:AppColors.headingColor,),
+                            AppText(
+                              text: widget.days.toString(),
+                              fontSize: 28.sp,
+                              fontWeight: FontWeight.w700,
+                              color: widget.darkMode ? AppDarkColors.headingColor : AppColors.headingColor,
+                            ),
+                            AppText(
+                              text: widget.text['days']!,
+                              fontSize: 16.sp,
+                              fontWeight: FontWeight.w400,
+                              color: widget.darkMode ? AppDarkColors.headingColor : AppColors.headingColor,
+                            ),
                           ],
                         )
                       : Container(),
@@ -229,30 +267,41 @@ class _CategoryBoxState extends State<CategoryBox> {
                       ? Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            AppText(text: widget.hours.toString(), fontSize: 28.sp, fontWeight: FontWeight.w700,color: widget.darkMode?AppDarkColors.headingColor:AppColors.headingColor,),
-                            AppText(text: "Hours", fontSize: 16.sp, fontWeight: FontWeight.w400,color: widget.darkMode?AppDarkColors.headingColor:AppColors.headingColor,),
+                            AppText(
+                              text: widget.hours.toString(),
+                              fontSize: 28.sp,
+                              fontWeight: FontWeight.w700,
+                              color: widget.darkMode ? AppDarkColors.headingColor : AppColors.headingColor,
+                            ),
+                            AppText(
+                              text: widget.text['hours']!,
+                              fontSize: 16.sp,
+                              fontWeight: FontWeight.w400,
+                              color: widget.darkMode ? AppDarkColors.headingColor : AppColors.headingColor,
+                            ),
                           ],
                         )
                       : Container(),
                   SizedBox(width: 30.w),
-                  SvgPicture.asset(
+                  RotatedBox(quarterTurns: widget.textDirection==TextDirection.rtl?2:0,child: SvgPicture.asset(
                     AppImages.forwardIcon,
                     width: 46.w,
                     height: 25.h,
-                    color: widget.darkMode?AppDarkColors.headingColor:AppColors.headingColor,
-                  ),
-                  SvgPicture.asset(
+                    color: widget.darkMode ? AppDarkColors.headingColor : AppColors.headingColor,
+                  ),),
+
+                  RotatedBox(quarterTurns: widget.textDirection==TextDirection.rtl?2:0,child: SvgPicture.asset(
                     AppImages.forwardIcon,
                     width: 46.w,
                     height: 25.h,
-                    color: widget.darkMode?AppDarkColors.headingColor:AppColors.headingColor,
-                  ),
-                  SvgPicture.asset(
+                    color: widget.darkMode ? AppDarkColors.headingColor : AppColors.headingColor,
+                  ),),
+                  RotatedBox(quarterTurns: widget.textDirection==TextDirection.rtl?2:0,child: SvgPicture.asset(
                     AppImages.forwardIcon,
                     width: 46.w,
                     height: 25.h,
-                    color: widget.darkMode?AppDarkColors.headingColor:AppColors.headingColor,
-                  ),
+                    color: widget.darkMode ? AppDarkColors.headingColor : AppColors.headingColor,
+                  ),),
                 ],
               ),
             ),

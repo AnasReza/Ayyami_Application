@@ -32,7 +32,7 @@ class SurahDetails extends StatelessWidget{
           centerTitle: true,
         ),
         body: Container(
-          margin: EdgeInsets.only(left: 20, right: 20),
+          padding: EdgeInsets.only(left: 20, right: 20),
           decoration: BoxDecoration(gradient: darkMode?AppDarkColors.backgroundGradient:AppColors.backgroundGradient),
           child: ListView.builder(itemCount: surah!.length,itemBuilder: (listContext,index){
             return SurahView(darkMode, surah![index]['surah']!, heading[index]);

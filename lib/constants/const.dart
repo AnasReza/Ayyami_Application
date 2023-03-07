@@ -27,6 +27,37 @@ int timeInMiliseconds(String s) {
   return form.inMilliseconds;
 }
 
+String? getUrduMonthNames(String month) {
+  Map<String, String> urduMonth = {
+    'January': 'جنوری',
+    'February': 'فروری',
+    'March': 'مارچ',
+    'April': 'اپریل',
+    'May':'مئی',
+    'June':'جون',
+    'July':'جولائی',
+    'August':'اگست',
+    'September':'ستمبر',
+    'October':'اکتوبر',
+    'November':'نومبر',
+    'December':'دسمبر'
+  };
+  return urduMonth[month];
+}
+String? getUrduDayNames(String month) {
+  Map<String, String> urduMonth = {
+    'Saturday': 'ہفتہ',
+    'Sunday': 'اتوار',
+    'Monday': 'پیر',
+    'Tuesday': 'منگل',
+    'Wednesday':'بدھ',
+    'Thursday':'جمعرات',
+    'Friday':'جمعہ',
+
+  };
+  return urduMonth[month];
+}
+
 // "9:30";
 // "15:30"
 // "18:30"
@@ -725,7 +756,7 @@ List<Map<String, String>>? getDuaMap(String prayerTime, String languageSelected)
   ];
 
   for (int x = 0; x < headingList!.length; x++) {
-    duaMap[prayerTime]![x]['heading']=headingList[x][languageSelected]!;
+    duaMap[prayerTime]![x]['heading'] = headingList[x][languageSelected]!;
   }
 
   return duaMap[prayerTime];

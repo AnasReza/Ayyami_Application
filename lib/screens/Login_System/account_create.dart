@@ -60,10 +60,11 @@ class _account_createState extends State<account_create> {
                   ),
                   const SizedBox(height: 55),
                   Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 45),
-                      alignment: Alignment.centerLeft,
+                    width: double.infinity,
+                     padding: EdgeInsets.only(left: 15,right: 15),
                       child: Text(
                         text['phone_number']!,
+                        textDirection: lang=='ur'?TextDirection.rtl:TextDirection.ltr,
                         style: const TextStyle(
                           fontFamily: 'DMSans',
                           fontSize: 22.0,

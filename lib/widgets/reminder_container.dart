@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../constants/colors.dart';
+import '../constants/dark_mode_colors.dart';
 
 class ReminderSwitchContainerWidget extends StatefulWidget {
   bool isSwitched = false;
@@ -29,10 +30,10 @@ class _ReminderSwitchContainerWidgetState
       width: 558.w,
       height: 101.h,
       decoration: BoxDecoration(
-        color: const Color(0xfff2f2f2),
+        color: widget.darkMode ? AppDarkColors.lightGreyBoxColor : AppColors.lightGreyBoxColor,
         borderRadius: BorderRadius.circular(18.r),
         border: Border.all(
-          color: AppColors.headingColor,
+          color: widget.darkMode ? AppDarkColors.headingColor : AppColors.headingColor,
           width: 1.w,
         ),
         boxShadow: [
@@ -49,7 +50,7 @@ class _ReminderSwitchContainerWidgetState
           Text(
             widget.title,
             style: TextStyle(
-              color: const Color(0xff1f3d73),
+              color: widget.darkMode ? AppDarkColors.headingColor : AppColors.headingColor,
               fontSize: 32.sp,
               fontWeight: FontWeight.w700,
               fontStyle: FontStyle.normal,
@@ -62,7 +63,7 @@ class _ReminderSwitchContainerWidgetState
                 value = widget.isSwitched;
               });
             }),
-            activeColor: AppColors.black,
+            activeColor: widget.darkMode ? AppDarkColors.headingColor : AppColors.headingColor,
             darkMode: widget.darkMode,
           )
         ],

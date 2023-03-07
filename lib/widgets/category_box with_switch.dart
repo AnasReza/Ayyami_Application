@@ -31,7 +31,7 @@ class CategoryBoxWithSwitchState extends State<CategoryBoxWithSwitch> {
       decoration: BoxDecoration(
         color: widget.darkMode ? AppDarkColors.lightGreyBoxColor : AppColors.lightGreyBoxColor,
         border: Border.all(
-          color: widget.darkMode ? AppColors.headingColor : AppColors.headingColor,
+          color: widget.darkMode ? AppDarkColors.headingColor : AppColors.headingColor,
           width: 1.w,
         ),
         borderRadius: BorderRadius.circular(18.r),

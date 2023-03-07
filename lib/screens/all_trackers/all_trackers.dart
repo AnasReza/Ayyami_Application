@@ -39,7 +39,8 @@ class AllTrackersState extends State<AllTrackers> {
     getPostNatalDetails();
     getLikoriaDetails();
   }
-  getLikoriaDetails(){
+
+  getLikoriaDetails() {
     var userProvider = context.read<UserProvider>();
     var likoriaProvider = context.read<LikoriaTimerProvider>();
     FirebaseFirestore.instance
@@ -48,22 +49,22 @@ class AllTrackersState extends State<AllTrackers> {
         .orderBy('start_date', descending: true)
         .snapshots()
         .listen((event) {
-      var docList=event.docs;
+      var docList = event.docs;
       Timestamp startTime;
-      for(var doc in docList){
-        startTime=doc.get('start_date');
-        try{
+      for (var doc in docList) {
+        startTime = doc.get('start_date');
+        try {
           Timestamp endTime = doc.get('end_time');
-
-        }catch(e){
+        } catch (e) {
           likoriaProvider.setTimerStart(true);
           likoriaProvider.setStartTime(startTime);
-          var diff=DateTime.now().difference(startTime.toDate());
+          var diff = DateTime.now().difference(startTime.toDate());
           LikoriaTracker().startLikoriaTimerAgain(likoriaProvider, diff.inMilliseconds);
         }
       }
     });
   }
+
   getPregnancyDetails() {
     var userProvider = context.read<UserProvider>();
     var pregProvider = context.read<PregnancyProvider>();
@@ -73,23 +74,23 @@ class AllTrackersState extends State<AllTrackers> {
         .orderBy('start_date', descending: true)
         .snapshots()
         .listen((event) {
-          var docList=event.docs;
-          Timestamp startTime;
-          for(var doc in docList){
-            startTime=doc.get('start_date');
-            try{
-              Timestamp endTime = doc.get('end_time');
-
-            }catch(e){
-              pregProvider.setTimerStart(true);
-              pregProvider.setStartTime(startTime);
-              var diff=DateTime.now().difference(startTime.toDate());
-              PregnancyTracker().startPregnancyAgain(pregProvider, diff.inMilliseconds);
-            }
-          }
+      var docList = event.docs;
+      Timestamp startTime;
+      for (var doc in docList) {
+        startTime = doc.get('start_date');
+        try {
+          Timestamp endTime = doc.get('end_time');
+        } catch (e) {
+          pregProvider.setTimerStart(true);
+          pregProvider.setStartTime(startTime);
+          var diff = DateTime.now().difference(startTime.toDate());
+          PregnancyTracker().startPregnancyAgain(pregProvider, diff.inMilliseconds);
+        }
+      }
     });
   }
-  getPostNatalDetails(){
+
+  getPostNatalDetails() {
     var userProvider = context.read<UserProvider>();
     var postNatalProvider = context.read<PostNatalProvider>();
     FirebaseFirestore.instance
@@ -98,119 +99,155 @@ class AllTrackersState extends State<AllTrackers> {
         .orderBy('start_date', descending: true)
         .snapshots()
         .listen((event) {
-      var docList=event.docs;
+      var docList = event.docs;
       Timestamp startTime;
-      for(var doc in docList){
-        startTime=doc.get('start_date');
-        try{
+      for (var doc in docList) {
+        startTime = doc.get('start_date');
+        try {
           Timestamp endTime = doc.get('end_time');
           postNatalProvider.setPostNatalID(doc.id);
           break;
-        }catch(e){
+        } catch (e) {
           postNatalProvider.setTimerStart(true);
           postNatalProvider.setStartTime(startTime);
-          var diff=DateTime.now().difference(startTime.toDate());
+          var diff = DateTime.now().difference(startTime.toDate());
           PostNatalTracker().startPostNatalAgain(postNatalProvider, diff.inMilliseconds);
         }
       }
     });
   }
+
   @override
   Widget build(BuildContext context) {
-    return Consumer<UserProvider>(builder: (c,provider,child){
-      var prayerProvider=Provider.of<PrayerProvider>(context,listen: false);
-      var darkMode=provider.getIsDarkMode;
-      var lang=provider.getLanguage;
-      var text=AppTranslate().textLanguage[lang];
-      return Scaffold(
-        appBar: AppBar(
-          backgroundColor: darkMode?AppDarkColors.white:AppColors.white,
-          elevation: 0,
-          title: SvgPicture.asset(
-            darkMode?AppImages.logo_white:AppImages.logo,
-            width: 249.6.w,
-            height: 78.4.h,
+    return Consumer<UserProvider>(
+      builder: (c, provider, child) {
+        var prayerProvider = Provider.of<PrayerProvider>(context, listen: false);
+        var darkMode = provider.getIsDarkMode;
+        var lang = provider.getLanguage;
+        var text = AppTranslate().textLanguage[lang];
+        return Scaffold(
+          appBar: AppBar(
+            backgroundColor: darkMode ? AppDarkColors.white : AppColors.white,
+            elevation: 0,
+            title: SvgPicture.asset(
+              darkMode ? AppImages.logo_white : AppImages.logo,
+              width: 249.6.w,
+              height: 78.4.h,
+            ),
+            centerTitle: true,
+            leading: Padding(
+              padding: EdgeInsets.only(left: 30),
+              child: InkWell(
+                onTap: () => Navigator.of(context).pop(),
+                child: SvgPicture.asset(
+                  AppImages.backIcon,
+                  width: 49.w,
+                  height: 34.h,
+                  color: darkMode ? Colors.white : AppColors.headingColor,
+                ),
+              ),
+            ),
+            leadingWidth: 60,
           ),
-          centerTitle: true,
-          leading: Padding(
-            padding: EdgeInsets.only(left: 30),
-            child: InkWell(
-              onTap: () => Navigator.of(context).pop(),
-              child: SvgPicture.asset(
-                AppImages.backIcon,
-                width: 49.w,
-                height: 34.h,
-                color: darkMode?Colors.white:AppColors.headingColor,
+          body: Container(
+            width: double.infinity,
+            padding: EdgeInsets.only(left: 30, right: 30),
+            decoration:
+                BoxDecoration(gradient: darkMode ? AppDarkColors.backgroundGradient : AppColors.backgroundGradient),
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(
+                    height: 30,
+                  ),
+                  SizedBox(
+                    width: double.infinity,
+                    child: Text(
+                      text!['pregnancy']!,
+                      textDirection: lang == 'ur' ? TextDirection.rtl : TextDirection.ltr,
+                      style: TextStyle(
+                        color: darkMode ? AppDarkColors.headingColor : AppColors.headingColor,
+                        fontSize: 25,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  PregnancyTimerBox(),
+                  const SizedBox(
+                    height: 60,
+                  ),
+                  SizedBox(
+                    width: double.infinity,
+                    child: Text(
+                      text!['likoria']!,
+                      textDirection: lang == 'ur' ? TextDirection.rtl : TextDirection.ltr,
+                      style: TextStyle(
+                          color: darkMode ? AppDarkColors.headingColor : AppColors.headingColor,
+                          fontSize: 25,
+                          fontWeight: FontWeight.w700),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  LikoriaTimerBox(showDialog: (show) {
+                    if (show) {
+                      /// SHOW COLO DIALOG
+                      showDialog(
+                          context: context,
+                          builder: (dialogContext) {
+                            return LikoriaColorDialog(
+                              darkMode: darkMode,
+                              text: text,
+                            );
+                          });
+                    }
+                  }),
+                  const SizedBox(
+                    height: 60,
+                  ),
+                  SizedBox(width: double.infinity,child: Text(
+                    text!['menstrual_bleeding']!,
+                    textDirection: lang=='ur'?TextDirection.rtl:TextDirection.ltr,
+                    style: TextStyle(
+                        color: darkMode ? AppDarkColors.headingColor : AppColors.headingColor,
+                        fontSize: 25,
+                        fontWeight: FontWeight.w700),
+                  ),),
+
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  TimerBox(mensis: (value, message) {}, islamicMonth: prayerProvider.hijriDateFormated),
+                  const SizedBox(
+                    height: 60,
+                  ),
+                  SizedBox(width: double.infinity,child: Text(
+                    text!['post-natal_bleeding']!,
+                    textDirection: lang=='ur'?TextDirection.rtl:TextDirection.ltr,
+                    style: TextStyle(
+                        color: darkMode ? AppDarkColors.headingColor : AppColors.headingColor,
+                        fontSize: 25,
+                        fontWeight: FontWeight.w700),
+                  ),),
+
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  PostNatalTimerBox(),
+                  const SizedBox(
+                    height: 30,
+                  )
+                ],
               ),
             ),
           ),
-          leadingWidth: 60,
-        ),
-        body: Container(
-          width: double.infinity,
-          padding: EdgeInsets.only(left: 30),
-          decoration: BoxDecoration(gradient: darkMode?AppDarkColors.backgroundGradient:AppColors.backgroundGradient),
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SizedBox(
-                  height: 30,
-                ),
-                Text(
-                  text!['pregnancy']!,
-                  style: TextStyle(color: darkMode?AppDarkColors.headingColor:AppColors.headingColor, fontSize: 25, fontWeight: FontWeight.w700,),
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                PregnancyTimerBox(),
-                const SizedBox(
-                  height: 60,
-                ),
-                Text(
-                  text!['likoria']!,
-                  style: TextStyle(color: darkMode?AppDarkColors.headingColor:AppColors.headingColor, fontSize: 25, fontWeight: FontWeight.w700),
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                LikoriaTimerBox(showDialog: (show){
-                  if(show){
-                    /// SHOW COLO DIALOG
-                    showDialog(context: context, builder: (dialogContext){return LikoriaColorDialog(darkMode:darkMode,text: text,);});
-                  }
-                }),
-                const SizedBox(
-                  height: 60,
-                ),
-                Text(
-                 text!['menstrual_bleeding']!,
-                  style: TextStyle(color: darkMode?AppDarkColors.headingColor:AppColors.headingColor, fontSize: 25, fontWeight: FontWeight.w700),
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                TimerBox(mensis: (value, message) {}, islamicMonth: prayerProvider.hijriDateFormated),
-                const SizedBox(
-                  height: 60,
-                ),
-                Text(
-                  text!['post-natal_bleeding']!,
-                  style: TextStyle(color: darkMode?AppDarkColors.headingColor:AppColors.headingColor, fontSize: 25, fontWeight: FontWeight.w700),
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                PostNatalTimerBox(),
-                const SizedBox(
-                  height: 30,
-                )
-              ],
-            ),
-          ),
-        ),
-      );
-    },);
+        );
+      },
+    );
   }
 }

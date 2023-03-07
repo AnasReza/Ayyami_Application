@@ -28,7 +28,7 @@ class TuhurTracker{
     });
 
     _stopWatch.secondTime.listen((event) {
-      print('$secondsCount==sec    $minutesCount==minutes');
+
       secondsCount++;
       if (secondsCount > 59) {
         minutesCount++;
@@ -65,7 +65,6 @@ class TuhurTracker{
     tuhurProvider.setSec(secondsCount);
     _stopWatch=StopWatchTimer(mode: StopWatchMode.countUp,presetMillisecond:milliseconds );
     _stopWatch.secondTime.listen((event) {
-      print('$secondsCount==sec    $minutesCount==minutes');
       secondsCount++;
       if (secondsCount > 59) {
         minutesCount++;

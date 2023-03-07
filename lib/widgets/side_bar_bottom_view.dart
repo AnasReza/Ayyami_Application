@@ -9,7 +9,7 @@ class SideBarBottomView extends StatelessWidget {
   String text, image;
   bool darkMode;
 
-  SideBarBottomView(this.text, this.image,this.darkMode, {super.key});
+  SideBarBottomView(this.text, this.image, this.darkMode, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -17,25 +17,30 @@ class SideBarBottomView extends StatelessWidget {
       width: double.infinity,
       padding: EdgeInsets.all(10),
       decoration: BoxDecoration(
-        color: darkMode?AppDarkColors.lightGreyBoxColor:AppColors.lightGreyBoxColor,
+        color: darkMode ? AppDarkColors.lightGreyBoxColor : AppColors.lightGreyBoxColor,
         borderRadius: BorderRadius.circular(10),
         border: Border.all(
-          color:darkMode?AppDarkColors.headingColor: AppColors.headingColor,
+          color: darkMode ? AppDarkColors.headingColor : AppColors.headingColor,
           width: 1.w,
         ),
       ),
-      child: Wrap(spacing: 20,
+      child: Wrap(
+        spacing: 20,
         crossAxisAlignment: WrapCrossAlignment.center,
+        textDirection: TextDirection.rtl,
         children: [
           SvgPicture.asset(
             image,
             width: 50.w,
             height: 50.h,
-            color: darkMode?AppDarkColors.headingColor: AppColors.headingColor,
+            color: darkMode ? AppDarkColors.headingColor : AppColors.headingColor,
           ),
           Text(
             text,
-            style: TextStyle(color: darkMode?AppDarkColors.headingColor: AppColors.headingColor, fontWeight: FontWeight.w400, fontSize: 18),
+            style: TextStyle(
+                color: darkMode ? AppDarkColors.headingColor : AppColors.headingColor,
+                fontWeight: FontWeight.w400,
+                fontSize: 30.sp),
           )
         ],
       ),

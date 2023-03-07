@@ -63,8 +63,6 @@ class _PostNatalTimerBoxState extends State<PostNatalTimerBox> {
         children: [
           /// Timer Container
           Container(
-            width: 579.w,
-            height: 205.h,
             decoration: BoxDecoration(
               color: darkMode ? AppDarkColors.lightGreyBoxColor : AppColors.white,
               borderRadius: BorderRadius.circular(18.r),
@@ -102,7 +100,7 @@ class _PostNatalTimerBoxState extends State<PostNatalTimerBox> {
                         fontWeight: FontWeight.w700,
                       ),
                       AppText(
-                        text: 'Days',
+                        text: text!['days']!,
                         color: AppColors.pink,
                         fontSize: 28.sp,
                         fontWeight: FontWeight.w700,
@@ -120,7 +118,7 @@ class _PostNatalTimerBoxState extends State<PostNatalTimerBox> {
                         fontWeight: FontWeight.w700,
                       ),
                       AppText(
-                        text: 'Hours',
+                        text: text['hours']!,
                         color: AppColors.pink,
                         fontSize: 28.sp,
                         fontWeight: FontWeight.w700,
@@ -138,7 +136,7 @@ class _PostNatalTimerBoxState extends State<PostNatalTimerBox> {
                         fontWeight: FontWeight.w700,
                       ),
                       AppText(
-                        text: 'Min.',
+                        text: text['minutes']!,
                         color: AppColors.pink,
                         fontSize: 28.sp,
                         fontWeight: FontWeight.w700,
@@ -156,7 +154,7 @@ class _PostNatalTimerBoxState extends State<PostNatalTimerBox> {
                         fontWeight: FontWeight.w700,
                       ),
                       AppText(
-                        text: 'Sec.',
+                        text: text['seconds']!,
                         color: AppColors.pink,
                         fontSize: 28.sp,
                         fontWeight: FontWeight.w700,
@@ -198,7 +196,7 @@ class _PostNatalTimerBoxState extends State<PostNatalTimerBox> {
                 ),
                 child: Center(
                   child: AppText(
-                    text: isTimerStart ? "STOP TIMER" : "START TIMER",
+                    text: isTimerStart ? text['stop_timer']! : text['start_timer']!,
                     color: AppColors.white,
                     fontSize: 26.36170196533203.sp,
                     fontWeight: FontWeight.w700,

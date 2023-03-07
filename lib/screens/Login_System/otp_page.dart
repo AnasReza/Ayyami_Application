@@ -64,11 +64,11 @@ class _otp_pageState extends State<otp_page> {
                       width: 230,
                       child: Image.asset("assets/images/logo.png"),
                     ),
-                    SizedBox(height: 40),
+                    const SizedBox(height: 40),
                     Container(
                       child: Text(
                         text!['otp_verify']!,
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 28.0,
                           letterSpacing: 0.4,
                           fontFamily: 'DMSans',
@@ -77,9 +77,11 @@ class _otp_pageState extends State<otp_page> {
                         ),
                       ),
                     ),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     Container(
-                      child: RichText(
+                      width: double.infinity,
+                      padding: const EdgeInsets.only(left: 30,right:30),
+                      child: RichText(textDirection: lang=='ur'?TextDirection.rtl:TextDirection.ltr,
                         text: TextSpan(
                           text: text['enter_otp'],
                           style: const TextStyle(
@@ -101,9 +103,9 @@ class _otp_pageState extends State<otp_page> {
                         ),
                       ),
                     ),
-                    SizedBox(height: 30),
+                    const SizedBox(height: 30),
                     Container(
-                      padding: EdgeInsets.all(50),
+                      padding: const EdgeInsets.all(50),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -147,7 +149,7 @@ class _otp_pageState extends State<otp_page> {
                               keyboardType: TextInputType.number,
                               textAlign: TextAlign.center,
                               controller: code2Controller,
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontSize: 35,
                                 fontWeight: FontWeight.bold,
                               ),
@@ -172,7 +174,7 @@ class _otp_pageState extends State<otp_page> {
                               keyboardType: TextInputType.number,
                               textAlign: TextAlign.center,
                               controller: code3Controller,
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontSize: 35,
                                 fontWeight: FontWeight.bold,
                               ),
@@ -306,13 +308,13 @@ class _otp_pageState extends State<otp_page> {
                             toast_notification().toast_message(e.toString());
                           }
                         }),
-                    SizedBox(height: 30),
+                    const SizedBox(height: 30),
                     Container(
                       child: TextButton(
                         onPressed: () {
                           auth.verifyPhoneNumber(
                               phoneNumber: get_number,
-                              timeout: Duration(seconds: 20),
+                              timeout: const Duration(seconds: 20),
                               verificationCompleted: (_) {
                                 setState(() {
                                   loading = false;
@@ -345,7 +347,7 @@ class _otp_pageState extends State<otp_page> {
                               });
                         },
                         style: TextButton.styleFrom(
-                          foregroundColor: Color(0xff1F3D73),
+                          foregroundColor: const Color(0xff1F3D73),
                           textStyle: const TextStyle(
                             fontFamily: 'DMSans',
                             fontSize: 14.0,

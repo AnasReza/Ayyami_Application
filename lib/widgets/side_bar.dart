@@ -4,16 +4,20 @@ import 'package:ayyami/constants/const.dart';
 import 'package:ayyami/providers/user_provider.dart';
 import 'package:ayyami/screens/all_trackers/all_trackers.dart';
 import 'package:ayyami/screens/medicine_reminder.dart';
+import 'package:ayyami/translation/app_translation.dart';
 import 'package:ayyami/widgets/side_bar_bottom_view.dart';
 import 'package:ayyami/widgets/side_bar_box.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
-
+import 'package:syncfusion_flutter_datepicker/datepicker.dart';
+import 'package:syncfusion_flutter_core/core.dart';
 import '../constants/dark_mode_colors.dart';
 import '../constants/images.dart';
 import '../constants/routes.dart';
+import '../firebase_calls/menses_record.dart';
 import '../screens/about_us/about_us.dart';
 import '../screens/history/history.dart';
 
@@ -39,6 +43,7 @@ class SideBar extends StatelessWidget {
       builder: (consContext, provider, child) {
         var darkMode = provider.getIsDarkMode;
         var lang=provider.getLanguage;
+        var text=AppTranslate().textLanguage[lang];
         return SafeArea(
             child: Container(
           width: MediaQuery.of(context).size.width * 0.8,
@@ -71,18 +76,33 @@ class SideBar extends StatelessWidget {
                       showComingSoon = false;
                     }
                     return GestureDetector(
-                      child: SideBarBox(textList[index], imageList[index], showComingSoon, darkMode,lang!),
+                      child: SideBarBox(textList[index], imageList[index], showComingSoon, darkMode,lang!,text!),
                       onTap: () {
                         switch (index) {
                           case 0:
                             print('Add Members');
                             break;
                           case 1:
+                            var list=provider.getMensesDateRange;
+                            List<HijriDateRange> hijriList=[];
+                            for(PickerDateRange dateRange in list){
+                              var mensesStart=dateRange.startDate;
+                              var mensesEnd=dateRange.endDate;
+                              var mensesStartDiff=DateTime.now().difference(mensesStart!);
+                              var mensesEndDiff=DateTime.now().difference(mensesEnd!);
+                              var mensesHijriStart=HijriDateTime.now().subtract(mensesStartDiff);
+                              var mensesHijriEnd=HijriDateTime.now().subtract(mensesEndDiff);
+                              hijriList.add(HijriDateRange(mensesHijriStart, mensesHijriEnd));
+                            }
+
                             nextScreen(
                                 context,
                                 CalenderPage(
                                   darkMode: darkMode,
+                                  dateRangeList:  provider.getMensesDateRange,
+                                  hijriRangeList: hijriList,
                                 ));
+
                             print('calender');
                             break;
                           case 2:

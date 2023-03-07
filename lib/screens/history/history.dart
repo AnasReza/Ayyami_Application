@@ -25,7 +25,7 @@ class HistoryScreen extends StatefulWidget {
 }
 
 class _HistoryScreenState extends State<HistoryScreen> {
-  final List<String> items = ['6 Month', '1 Year', '2 years', '5 years'];
+  List<String> items = [];
   String? selectedValue;
   List<QueryDocumentSnapshot<Map<String, dynamic>>> allTuhur = [];
   List<QueryDocumentSnapshot<Map<String, dynamic>>> allMenses = [];
@@ -34,6 +34,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
+
     var userPro = context.read<UserProvider>();
     var uid = userPro.getUid;
     getMensesData(uid);
@@ -43,6 +44,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
   getMensesData(String uid) {
     MensesRecord().getAllMensesRecord(uid).listen((event) {
       allMenses.clear();
+      print('${event.docs.length} menses length');
       setState(() {
         allMenses = event.docs;
       });
@@ -60,9 +62,12 @@ class _HistoryScreenState extends State<HistoryScreen> {
 
   @override
   Widget build(BuildContext context) {
+
     return Consumer<UserProvider>(builder: (c, provider, child) {
+      print('${allMenses.length} length from build method');
       var darkMode = provider.getIsDarkMode;
       var text = AppTranslate().textLanguage[provider.getLanguage!];
+      items = [text!['6_month']!, text['1_year']!, text['2_year']!, text['5_year']!];
       return Scaffold(
           body: Container(
               decoration: BoxDecoration(
@@ -118,7 +123,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                             ],
                           ),
                           SizedBox(height: 41.h),
-                          Row(
+                          Directionality(textDirection: provider.getLanguage=='ur'?TextDirection.rtl:TextDirection.ltr, child:  Row(
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
                               AppText(
@@ -128,7 +133,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                 color: darkMode ? AppDarkColors.headingColor : AppColors.headingColor,
                               ),
                               CustomDropdownButton2(
-                                hint: '1 Year',
+                                hint: text['1_year']!,
                                 icon: SvgPicture.asset(
                                   AppImages.downIcon,
                                   width: 20.w,
@@ -155,7 +160,8 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                 },
                               ),
                             ],
-                          ),
+                          ),),
+
                           SizedBox(height: 71.h),
                           Visibility(
                             visible: allTuhur.isNotEmpty && allMenses.isNotEmpty,
@@ -168,16 +174,17 @@ class _HistoryScreenState extends State<HistoryScreen> {
                             ),
                             child: Expanded(
                                 child: ListView.builder(
-                                    itemCount: allTuhur.isEmpty ? allMenses.length : allTuhur.length,
+                                    itemCount: allMenses.length,
                                     itemBuilder: (c, index) {
+                                      print('$index from menses list');
                                       return Column(
                                         children: [
-                                          // AppText(
-                                          //   text: "5 September 2022",
-                                          //   fontSize: 20.sp,
-                                          //   fontWeight: FontWeight.w400,
-                                          //   color: AppColors.grey,
-                                          // ),
+                                          AppText(
+                                            text: "5 September 2022",
+                                            fontSize: 20.sp,
+                                            fontWeight: FontWeight.w400,
+                                            color: AppColors.grey,
+                                          ),
                                           SizedBox(height: 10.h),
                                           // GestureDetector(child: CategoryBox(
                                           //   categoryName: text['tuhur']!,
@@ -202,7 +209,9 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                             showDate: false,
                                             isSelected: false,
                                             darkMode: darkMode,
+                                            text: text,
                                           ),onTap: (){
+                                            print('${allMenses.length} length on click');
                                             nextScreen(context, HistoryDetails(text['menses']!,allMenses[0]));
                                           },),
 

@@ -11,8 +11,9 @@ class AppText extends StatelessWidget {
   final TextAlign? textAlign;
   final int? maxLines;
   final TextOverflow? overflow;
+  final TextDirection? textDirection;
 
-  const AppText({
+  AppText({
     Key? key,
     required this.text,
     this.fontSize,
@@ -22,6 +23,7 @@ class AppText extends StatelessWidget {
     this.textAlign,
     this.maxLines,
     this.overflow,
+    this.textDirection,
   }) : super(key: key);
 
   @override
@@ -31,6 +33,7 @@ class AppText extends StatelessWidget {
       textAlign: textAlign,
       maxLines: maxLines,
       overflow: overflow,
+      textDirection: textDirection,
       style: TextStyle(
         fontFamily: 'DMSans',
         fontSize: fontSize ?? 45.19.sp,

@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors_in_immutables
 
+import 'package:ayyami/constants/const.dart';
 import 'package:ayyami/constants/dark_mode_colors.dart';
 import 'package:ayyami/constants/images.dart';
 import 'package:ayyami/providers/tuhur_provider.dart';
@@ -12,7 +13,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:intl/intl.dart';
+import 'package:intl/intl.dart' as intl;
 import 'package:provider/provider.dart';
 
 import '../../constants/colors.dart';
@@ -104,6 +105,8 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
       for (var doc in docList) {
         Timestamp startTime = doc.get('start_date');
         try {
+          var lang=pro.getLanguage;
+
           Timestamp endTime = doc.get('end_time');
           DateTime startDate = startTime.toDate();
           int days = doc.get('days');
@@ -111,12 +114,18 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
           int minute = doc.get('minutes');
           int seconds = doc.get('seconds');
 
-          DateFormat format = DateFormat('dd MMMM yyyy');
+          intl.DateFormat format = intl.DateFormat('dd MMMM yyyy');
+          intl.DateFormat monthFormat = intl.DateFormat('MMMM');
+          if(lang=='ur'){
+            lastCycleDate='${startDate.day} ${getUrduMonthNames(monthFormat.format(startDate))} ${startDate.year}';
+          }else{
+            lastCycleDate = format.format(startDate);
+          }
           setState(() {
             //change minutes and seconds to days and hours
             lastMensesDays = doc.get('days');
             lastMensesHours = doc.get('hours');
-            lastCycleDate = format.format(startDate);
+
           });
           pro.setLastMenses(startTime);
           pro.setLastMensesEnd(endTime);
@@ -151,7 +160,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
           int minute = doc.get('minutes');
           int seconds = doc.get('seconds');
 
-          DateFormat format = DateFormat('dd MMMM yyyy');
+          intl.DateFormat format = intl.DateFormat('dd MMMM yyyy');
         } catch (e) {
           var mensesProvider = context.read<MensesProvider>();
           var timerStart = mensesProvider.getTimerStart;
@@ -234,8 +243,8 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
     return Consumer<UserProvider>(builder: (consumerContext, userProvider, child) {
       final provider = context.read<PrayerProvider>();
       var darkMode = userProvider.getIsDarkMode;
-      var lang=userProvider.getLanguage;
-      var text=AppTranslate().textLanguage[lang];
+      var lang = userProvider.getLanguage;
+      var text = AppTranslate().textLanguage[lang];
       return Container(
         height: double.infinity,
         child: Padding(
@@ -266,24 +275,31 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
               //     ),
               //   ],
               // ),
-              Padding(
-                padding: EdgeInsets.only(left: 440.w, top: 60.h),
-                child: AppText(
-                  text: "${provider.gorgeonTodayDateFormated}\n${provider.hijriDateFormated}",
-                  fontSize: 16.sp,
-                  fontWeight: FontWeight.w400,
-                  color: darkMode?AppDarkColors.headingColor:AppColors.headingColor,
+              Directionality(
+                textDirection: lang == 'ur' ? TextDirection.rtl : TextDirection.ltr,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    AppText(
+                      text: "${provider.gorgeonTodayDateFormated}\n${provider.hijriDateFormated}",
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.w400,
+                      color: darkMode ? AppDarkColors.headingColor : AppColors.headingColor,
+                    ),
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: AppText(
+                        text: text!['menstrual_bleeding']!,
+                        fontSize: 30.sp,
+                        fontWeight: FontWeight.w700,
+                        color: darkMode ? AppDarkColors.headingColor : AppColors.headingColor,
+                      ),
+                    ),
+                  ],
                 ),
               ),
-              Align(
-                alignment: Alignment.centerLeft,
-                child: AppText(
-                  text: text!['menstrual_bleeding']!,
-                  fontSize: 30.sp,
-                  fontWeight: FontWeight.w700,
-                  color: darkMode?AppDarkColors.headingColor:AppColors.headingColor,
-                ),
-              ),
+
               SizedBox(height: 14.h),
               Container(
                 width: 558.w,
@@ -330,48 +346,48 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
 
               regulationExpanded
                   ? Column(
-                children: [
-                  Container(
-                    width: 558.w,
-                    height: 120.h,
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        color: AppColors.headingColor,
-                        width: 1.w,
-                      ),
-                      color: AppColors.white,
-                      boxShadow: const [
-                        BoxShadow(
-                          color: Color(0x1e1f3d73),
-                          offset: Offset(0, 12),
-                          blurRadius: 40,
-                          spreadRadius: 0,
-                        )
+                      children: [
+                        Container(
+                          width: 558.w,
+                          height: 120.h,
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              color: AppColors.headingColor,
+                              width: 1.w,
+                            ),
+                            color: AppColors.white,
+                            boxShadow: const [
+                              BoxShadow(
+                                color: Color(0x1e1f3d73),
+                                offset: Offset(0, 12),
+                                blurRadius: 40,
+                                spreadRadius: 0,
+                              )
+                            ],
+                          ),
+                          child: Padding(
+                            padding: EdgeInsets.only(left: 30.w, right: 5.w, top: 10),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                SvgPicture.asset(AppImages.safeIcon),
+                                SizedBox(width: 25.8.w),
+                                Container(
+                                    width: MediaQuery.of(context).size.width * 0.63,
+                                    child: SingleChildScrollView(
+                                      child: AppText(
+                                        text: regulationMessage,
+                                        fontSize: 20.sp,
+                                        fontWeight: FontWeight.w700,
+                                      ),
+                                    )),
+                              ],
+                            ),
+                          ),
+                        ),
                       ],
-                    ),
-                    child: Padding(
-                      padding: EdgeInsets.only(left: 30.w, right: 5.w, top: 10),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          SvgPicture.asset(AppImages.safeIcon),
-                          SizedBox(width: 25.8.w),
-                          Container(
-                              width: MediaQuery.of(context).size.width * 0.63,
-                              child: SingleChildScrollView(
-                                child: AppText(
-                                  text: regulationMessage,
-                                  fontSize: 20.sp,
-                                  fontWeight: FontWeight.w700,
-                                ),
-                              )),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              )
+                    )
                   : Container(),
               TimerBox(
                   mensis: (value, message) {
@@ -382,24 +398,27 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                   },
                   islamicMonth: provider.hijriDateFormated),
               SizedBox(height: 117.6.h),
-              Align(
-                alignment: Alignment.centerLeft,
+
+              SizedBox(
+                width: double.infinity,
                 child: AppText(
-                  text:text['last_cycle']!,
+                  text: text['last_cycle']!,
                   fontSize: 30.sp,
+                  textDirection: lang == 'ur' ? TextDirection.rtl : TextDirection.ltr,
                   fontWeight: FontWeight.w700,
-                  color: darkMode?AppDarkColors.headingColor:AppColors.headingColor,
+                  color: darkMode ? AppDarkColors.headingColor : AppColors.headingColor,
                 ),
               ),
+
               SizedBox(height: 20.h),
               AppText(
                 text: lastCycleDate,
                 fontSize: 20.sp,
-                fontWeight: FontWeight.w400,
+                fontWeight: FontWeight.w400,textDirection: lang=='ur'?TextDirection.rtl:TextDirection.ltr,
                 color: AppColors.grey,
               ),
               SizedBox(height: 15.h),
-              CategoryBox(
+              Directionality(textDirection: lang=='ur'?TextDirection.rtl:TextDirection.ltr, child: CategoryBox(
                 categoryName: text['tuhur']!,
                 days: lastTuhurDays,
                 hours: lastTuhurHours,
@@ -407,19 +426,25 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                 showDate: true,
                 isSelected: false,
                 comingSoon: false,
+                text: text,
                 darkMode: darkMode,
-              ),
+                textDirection: lang=='ur'?TextDirection.rtl:TextDirection.ltr,
+              ),),
+
               SizedBox(height: 41.h),
-              CategoryBox(
+              Directionality(textDirection: lang=='ur'?TextDirection.rtl:TextDirection.ltr, child: CategoryBox(
                 categoryName: text['menses']!,
                 days: lastMensesDays,
                 hours: lastMensesHours,
                 checkbox: false,
                 showDate: true,
                 comingSoon: false,
+                text: text,
                 isSelected: false,
                 darkMode: darkMode,
-              ),
+                textDirection: lang=='ur'?TextDirection.rtl:TextDirection.ltr,
+              ),)
+
             ]),
           ),
         ),

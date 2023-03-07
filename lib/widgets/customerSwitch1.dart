@@ -1,6 +1,7 @@
 library custom_switch;
 
 import 'package:ayyami/constants/colors.dart';
+import 'package:ayyami/constants/dark_mode_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -71,7 +72,7 @@ class _CustomSwitch1State extends State<CustomSwitch1>
                   height: 32.h,
                   decoration: BoxDecoration(
                     border: Border.all(
-                      color: AppColors.black,
+                      color: widget.darkMode?AppDarkColors.headingColor:AppColors.black,
                       width: 1,
                     ),
                     borderRadius: BorderRadius.circular(16.r),

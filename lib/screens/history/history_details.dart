@@ -1,3 +1,4 @@
+import 'package:ayyami/constants/const.dart';
 import 'package:ayyami/widgets/details_widget.dart';
 import 'package:ayyami/widgets/total_duration.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -19,6 +20,7 @@ class HistoryDetails extends StatelessWidget {
 
   String heading;
   QueryDocumentSnapshot<Map<String, dynamic>> data;
+
 
   @override
   Widget build(BuildContext context) {
@@ -42,6 +44,10 @@ class HistoryDetails extends StatelessWidget {
       String startMonthName=monthFormat.format(startDate);
       String endDayName=dayFormat.format(endDate);
       String endMonthName=monthFormat.format(endDate);
+      if(provider.getLanguage=='ur'){
+        startDayName=getUrduDayNames(startDayName)!;
+        endDayName=getUrduDayNames(endDayName)!;
+      }
 
       return Scaffold(
         body: Container(
@@ -107,11 +113,13 @@ class HistoryDetails extends StatelessWidget {
                               monthYear: '$startMonthName ${startDate.year}',
                               day: startDate.day.toString(),
                               dayName: startDayName,
+                              lang: provider.getLanguage!,
                               heading: text!['start_date']!),
                           DetailsWidget(
                               backgroundColor: AppColors.endDateColor,
                               monthYear: '$endMonthName ${endDate.year}',
                               day: endDate.day.toString(),
+                              lang: provider.getLanguage!,
                               dayName: endDayName,
                               heading: text!['end_date']!),
                         ],
@@ -125,12 +133,14 @@ class HistoryDetails extends StatelessWidget {
                               monthYear: startAMPM,
                               day: starttime,
                               dayName: '',
+                              lang: provider.getLanguage!,
                               heading: text['start_time']!),
                           DetailsWidget(
                               backgroundColor: AppColors.endDateColor,
                               monthYear: endAMPM,
                               day: endtime,
                               dayName: '',
+                              lang: provider.getLanguage!,
                               heading: text['end_time']!),
                         ],
                       ),

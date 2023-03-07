@@ -6,10 +6,11 @@ import '../constants/colors.dart';
 import '../constants/dark_mode_colors.dart';
 
 class SideBarBox extends StatelessWidget {
-  String text, image,lang;
+  String text, image, lang;
   bool showComingSoon, darkMode;
+  Map<String,String> textMap;
 
-  SideBarBox(this.text, this.image, this.showComingSoon, this.darkMode,this.lang, {super.key});
+  SideBarBox(this.text, this.image, this.showComingSoon, this.darkMode, this.lang,this.textMap, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -39,9 +40,9 @@ class SideBarBox extends StatelessWidget {
                       child: Container(
                         decoration: BoxDecoration(color: AppColors.lightGreen, borderRadius: BorderRadius.circular(5)),
                         padding: const EdgeInsets.all(3),
-                        child: const Text(
-                          'Coming soon',
-                          style: TextStyle(fontSize: 10, fontWeight: FontWeight.w400, color: Colors.black),
+                        child: Text(
+                          textMap['coming_soon']!,
+                          style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w400, color: Colors.black),
                         ),
                       ),
                     ),
@@ -57,11 +58,11 @@ class SideBarBox extends StatelessWidget {
             ),
             Text(
               text,
-              textDirection: lang=='ur'?TextDirection.rtl:TextDirection.ltr,
+              textDirection: lang == 'ur' ? TextDirection.rtl : TextDirection.ltr,
               style: TextStyle(
                   color: darkMode ? AppDarkColors.headingColor : AppColors.headingColor,
                   fontWeight: FontWeight.w400,
-                  fontSize: 18),
+                  fontSize: 27.sp,fontFamily: 'DMSans'),
             )
           ],
         ),

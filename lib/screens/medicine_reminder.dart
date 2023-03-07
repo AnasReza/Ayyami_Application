@@ -88,7 +88,7 @@ class _MedicineReminderScreenState extends State<MedicineReminderScreen> {
                     height: 50.h,
                   ),
                   ExpandedReminderContainer(text: text,
-                      regulationExpanded: regulationExpanded,darkMode: darkMode,),
+                      regulationExpanded: regulationExpanded,darkMode: darkMode,lang: lang!,),
                   SizedBox(
                     height: 54.h,
                   ),
@@ -97,7 +97,7 @@ class _MedicineReminderScreenState extends State<MedicineReminderScreen> {
                     width: 558.w,
                     height: sadqaContainerExpanded ? 234.h : 101.h,
                     decoration: BoxDecoration(
-                      color: const Color(0xfff2f2f2),
+                      color: darkMode ? AppDarkColors.lightGreyBoxColor : AppColors.lightGreyBoxColor,
                       borderRadius: BorderRadius.circular(18.r),
                       border: Border.all(
                         color: darkMode?AppDarkColors.headingColor:AppColors.headingColor,
