@@ -205,8 +205,10 @@ class AppTranslate {
           '2_year':'2 Years',
           '5_year':'5 Years',
           'coming_soon':'Coming Soon',
+          'prayer':'Prayer',
         },
         'ur': {
+          'prayer':'نماز',
           'coming_soon':'جلد آ رہا ہے',
           '6_month':'چھ ماہ',
           '1_year':'ایک سال',
