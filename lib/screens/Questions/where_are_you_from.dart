@@ -65,7 +65,8 @@ class LocationQuestionState extends State<LocationQuestion> {
         body: Container(
           decoration: BoxDecoration(gradient: AppColors.backgroundGradient),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               SizedBox(
                 width: double.infinity,

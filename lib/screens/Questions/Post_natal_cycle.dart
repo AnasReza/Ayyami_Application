@@ -1,9 +1,13 @@
 
+import 'package:ayyami/constants/colors.dart';
+import 'package:ayyami/constants/dark_mode_colors.dart';
+import 'package:ayyami/constants/images.dart';
 import 'package:ayyami/providers/user_provider.dart';
 import 'package:ayyami/screens/Questions/where_are_you_from.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import "package:flutter/material.dart";
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 
 import '../../firebase_calls/questions_record.dart';
@@ -13,7 +17,8 @@ import '../../widgets/gradient_button.dart';
 
 class postNatal_Cycle extends StatefulWidget {
   String uid;
-  postNatal_Cycle({required this.uid,super.key});
+  bool  darkMode;
+  postNatal_Cycle({required this.uid,required this.darkMode,super.key});
 
   @override
   State<postNatal_Cycle> createState() => _postNatal_CycleState();
@@ -47,8 +52,8 @@ class _postNatal_CycleState extends State<postNatal_Cycle> {
     var text=AppTranslate().textLanguage[lang];
 
     return Scaffold(
-      backgroundColor: Color(0xffF5F5F5),
-      body: Center(
+      body: Container(
+        decoration: BoxDecoration(gradient: widget.darkMode?AppDarkColors.backgroundGradient:AppColors.backgroundGradient),
           child: SingleChildScrollView(
             child: Container(
               child: Column(
@@ -56,7 +61,7 @@ class _postNatal_CycleState extends State<postNatal_Cycle> {
                   Container(
                     height: 140,
                     width: 200,
-                    child: Image.asset("assets/images/icon_name.png"),
+                    child: SvgPicture.asset(widget.darkMode?AppImages.logo_white:AppImages.logo),
                   ),
                   SizedBox(height: 5),
                   Container(
@@ -73,7 +78,7 @@ class _postNatal_CycleState extends State<postNatal_Cycle> {
                       style: TextStyle(
                           fontSize: 28.0,
                           fontFamily: 'DMSans',
-                          color: Color(0xff1F3D73),
+                          color: widget.darkMode?AppDarkColors.headingColor:AppColors.headingColor,
                           fontWeight: FontWeight.w700,
                           letterSpacing: 1),
                     ),
@@ -86,23 +91,23 @@ class _postNatal_CycleState extends State<postNatal_Cycle> {
                     children: [
                       InkWell(
 
-                          child:  Image.asset("assets/images/left_arrow.png"),
+                          child:  Image.asset("assets/images/left_arrow.png",color: widget.darkMode?AppDarkColors.headingColor:Colors.black,),
                           onTap: (){
                             _decrementCount();
                           }
                       ),
                       const SizedBox(width:60),
                       Text("$counter",
-                        style: const TextStyle(
+                        style:  TextStyle(
                           fontSize: 35,
                           fontFamily: 'DMSans',
-                          color: Color(0xff1F3D73),
+                          color: widget.darkMode?AppDarkColors.headingColor:AppColors.headingColor,
                           fontWeight: FontWeight.w700,
                         ),
                       ),
                       const  SizedBox(width:60),
                       InkWell(
-                          child:  Image.asset("assets/images/right_arrow.png"),
+                          child:  Image.asset("assets/images/right_arrow.png",color: widget.darkMode?AppDarkColors.headingColor:Colors.black,),
                           onTap: (){
                             _incrementCount();
                           }

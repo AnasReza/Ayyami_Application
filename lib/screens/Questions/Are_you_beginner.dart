@@ -1,9 +1,13 @@
+import 'package:ayyami/constants/dark_mode_colors.dart';
 import 'package:ayyami/firebase_calls/questions_record.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 
+import '../../constants/colors.dart';
+import '../../constants/images.dart';
 import '../../providers/user_provider.dart';
 import '../../translation/app_translation.dart';
 import '../../widgets/gradient_button.dart';
@@ -13,8 +17,9 @@ import 'When_did_the_bleeding_start.dart';
 
 class first_question extends StatefulWidget {
   String uid;
+  bool darkMode,fromProfile;
 
-  first_question({required this.uid, super.key});
+  first_question({required this.uid, required this.darkMode,required this.fromProfile, super.key});
 
   @override
   State<first_question> createState() => _first_questionState();
@@ -24,26 +29,28 @@ class _first_questionState extends State<first_question> {
   final databaseRef = FirebaseDatabase.instance.ref("QuestionAnswers");
   final FirebaseAuth auth = FirebaseAuth.instance;
 
-  int pressedInt=0;
-  String answer='';
+  int pressedInt = 0;
+  String answer = '';
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<UserProvider>(builder: (c,provider,child){
-      var lang=provider.getLanguage;
-      var text=AppTranslate().textLanguage[lang];
+    return Consumer<UserProvider>(
+      builder: (c, provider, child) {
+        var lang = provider.getLanguage;
+        var text = AppTranslate().textLanguage[lang];
 
-      return Scaffold(
-        backgroundColor: Color(0xffF5F5F5),
-        body: Center(
-            child: SingleChildScrollView(
-              child: Container(
+        return Scaffold(
+          body: Container(
+              height: double.infinity,
+              decoration: BoxDecoration(
+                  gradient: widget.darkMode ? AppDarkColors.backgroundGradient : AppColors.backgroundGradient),
+              child: SingleChildScrollView(
                 child: Column(
                   children: [
                     Container(
                       height: 150,
                       width: 200,
-                      child: Image.asset("assets/images/icon_name.png"),
+                      child: SvgPicture.asset(widget.darkMode ? AppImages.logo_white : AppImages.logo),
                     ),
                     Container(
                       child: Text(
@@ -51,35 +58,43 @@ class _first_questionState extends State<first_question> {
                         style: TextStyle(
                           fontSize: 16.0,
                           fontFamily: 'DMSans',
-                          color: Color(0xFF1F3D73),
+                          color: widget.darkMode ? AppDarkColors.headingColor : AppColors.headingColor,
                           fontWeight: FontWeight.w700,
                         ),
                       ),
                     ),
-                    SizedBox(height: 45),
+                    const SizedBox(height: 45),
                     Container(
                       height: 130,
                       width: 180,
                       child: Image.asset("assets/images/question_one_icon.png"),
                     ),
-                    SizedBox(height: 45),
+                    const SizedBox(height: 45),
                     Container(
                       child: Text(
                         text['are_you']!,
                         style: TextStyle(
                             fontSize: 30.0,
                             fontFamily: 'DMSans',
-                            color: Color(0xff1F3D73),
+                            color: widget.darkMode ? AppDarkColors.headingColor : AppColors.headingColor,
                             fontWeight: FontWeight.w700,
                             letterSpacing: 1),
                       ),
                     ),
-                    SizedBox(height: 35),
+                    const SizedBox(height: 35),
                     Container(
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           Container(
+                              decoration: BoxDecoration(
+                                gradient: pressedInt == 1
+                                    ? widget.darkMode
+                                        ? AppDarkColors.bgPinkishGradient
+                                        : AppColors.bgPinkishGradient
+                                    : AppColors.transparentGradient,
+                                borderRadius: BorderRadius.circular(25),
+                              ),
                               child: Column(
                                 children: [
                                   InkWell(
@@ -87,41 +102,42 @@ class _first_questionState extends State<first_question> {
                                       String v1 = "Beginner Value";
 
                                       print(v1);
-                                      answer='Beginner';
+                                      answer = 'Beginner';
                                       setState(() {
-                                        pressedInt=1;
+                                        pressedInt = 1;
                                       });
                                     },
-                                    child: Ink(
-                                      decoration: BoxDecoration(
-                                        gradient: pressedInt==1
-                                            ? const LinearGradient(
-                                            colors: [Color(0xffFFBBE6), Color(0xffC43CF3)],
-                                            begin: Alignment.centerLeft,
-                                            end: Alignment.center)
-                                            : const LinearGradient(
-                                            colors: [Color(0xFFF2F2F2), Color(0xFFF2F2F2)],
-                                            begin: Alignment.centerLeft,
-                                            end: Alignment.center),
-                                        borderRadius: BorderRadius.circular(25),
+                                    child: Container(
+                                      constraints: const BoxConstraints(
+                                        maxWidth: 150,
+                                        minHeight: 50,
                                       ),
-                                      child: Container(
-                                          constraints: const BoxConstraints(
-                                            maxWidth: 150,
-                                            minHeight: 50,
-                                          ),
-                                          alignment: Alignment.center,
-                                          child: Text(text['beginner']!,
-                                              style: TextStyle(
-                                                  fontFamily: 'DMSans',
-                                                  fontSize: 17,
-                                                  fontWeight: FontWeight.w700,
-                                                  color: pressedInt==1 ? Colors.white:const Color(0xFF1F3D73) ))),
+                                      alignment: Alignment.center,
+                                      child: Text(
+                                        text['beginner']!,
+                                        style: TextStyle(
+                                            fontFamily: 'DMSans',
+                                            fontSize: 17,
+                                            fontWeight: FontWeight.w700,
+                                            color: pressedInt == 1
+                                                ? Colors.white
+                                                : widget.darkMode
+                                                    ? Colors.grey.shade400
+                                                    : AppColors.headingColor),
+                                      ),
                                     ),
                                   )
                                 ],
                               )),
                           Container(
+                              decoration: BoxDecoration(
+                                gradient: pressedInt == 2
+                                    ? widget.darkMode
+                                        ? AppDarkColors.bgPinkishGradient
+                                        : AppColors.bgPinkishGradient
+                                    : AppColors.transparentGradient,
+                                borderRadius: BorderRadius.circular(25),
+                              ),
                               child: Column(
                                 children: [
                                   InkWell(
@@ -129,36 +145,29 @@ class _first_questionState extends State<first_question> {
                                       String v2 = "Accustomed Value";
 
                                       print(v2);
-                                      answer='Accustomed';
+                                      answer = 'Accustomed';
                                       setState(() {
-                                        pressedInt=2;
+                                        pressedInt = 2;
                                       });
                                     },
-                                    child: Ink(
-                                      decoration: BoxDecoration(
-                                        gradient: pressedInt==2
-                                            ? const LinearGradient(
-                                            colors: [Color(0xffFFBBE6), Color(0xffC43CF3)],
-                                            begin: Alignment.centerLeft,
-                                            end: Alignment.center)
-                                            : const LinearGradient(
-                                            colors: [Color(0xFFF2F2F2), Color(0xFFF2F2F2)],
-                                            begin: Alignment.centerLeft,
-                                            end: Alignment.center),
-                                        borderRadius: BorderRadius.circular(25),
+                                    child: Container(
+                                      constraints: const BoxConstraints(
+                                        maxWidth: 150,
+                                        minHeight: 50,
                                       ),
-                                      child: Container(
-                                          constraints: const BoxConstraints(
-                                            maxWidth: 150,
-                                            minHeight: 50,
-                                          ),
-                                          alignment: Alignment.center,
-                                          child: Text(text['accustomed']!,
-                                              style: TextStyle(
-                                                  fontFamily: 'DMSans',
-                                                  fontSize: 17,
-                                                  fontWeight: FontWeight.w700,
-                                                  color: pressedInt==2 ?  Colors.white: const Color(0xFF1F3D73)))),
+                                      alignment: Alignment.center,
+                                      child: Text(
+                                        text['accustomed']!,
+                                        style: TextStyle(
+                                            fontFamily: 'DMSans',
+                                            fontSize: 17,
+                                            fontWeight: FontWeight.w700,
+                                            color: pressedInt == 2
+                                                ? Colors.white
+                                                : widget.darkMode
+                                                    ? Colors.grey.shade400
+                                                    : AppColors.headingColor),
+                                      ),
                                     ),
                                   )
                                 ],
@@ -166,30 +175,36 @@ class _first_questionState extends State<first_question> {
                         ],
                       ),
                     ),
-                    SizedBox(height: 65),
-                    Container(
-                      child: GradientButton(
-                        title: text['confirm']!,
-                        onPressedButon: () {
-                          Widget nextWidget;
+                    const SizedBox(height: 65),
+                    GradientButton(
+                      title: text['confirm']!,
+                      onPressedButon: () {
+                        Widget nextWidget;
 
-                          if (pressedInt==0) {
-                            toast_notification().toast_message(text['select_option']!);
-                            return;
-                          }
+                        if (pressedInt == 0) {
+                          toast_notification().toast_message(text['select_option']!);
+                          return;
+                        }
 
-                          if (pressedInt==1) {
-                            nextWidget = third_question(uid: widget.uid,);
-                          } else  {
-                            nextWidget = second_question(uid: widget.uid,);
-                          }
-                          QuestionRecord().uploadBeginnerQuestion(widget.uid, answer).then((value) {
-                            Navigator.push(context, MaterialPageRoute(builder: (context) =>  nextWidget));
-                          });
-                        },
-                      ),
+                        if (pressedInt == 1) {
+                          nextWidget = third_question(
+                            uid: widget.uid,
+                            darkMode: widget.darkMode,
+                            fromProfile:widget.fromProfile,
+                          );
+                        } else {
+                          nextWidget = second_question(
+                            uid: widget.uid,
+                            darkMode: widget.darkMode,
+                            fromProfile:widget.fromProfile
+                          );
+                        }
+                        QuestionRecord().uploadBeginnerQuestion(widget.uid, answer).then((value) {
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => nextWidget));
+                        });
+                      },
                     ),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     // Row(
                     //   mainAxisAlignment: MainAxisAlignment.center,
                     //   children: [
@@ -224,9 +239,9 @@ class _first_questionState extends State<first_question> {
                     // ),
                   ],
                 ),
-              ),
-            )),
-      );
-    },);
+              )),
+        );
+      },
+    );
   }
 }

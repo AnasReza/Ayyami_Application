@@ -28,13 +28,13 @@ class QuestionAnswerView extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              AppText(text: question, fontSize: 18.sp,color: darkMode?AppDarkColors.headingColor:AppColors.headingColor,),
+              AppText(text: question, fontSize: 30.sp,color: darkMode?AppDarkColors.headingColor:AppColors.headingColor,),
               const SizedBox(
                 height: 5,
               ),
               AppText(
                 text: answer,
-                fontSize: 20.sp,
+                fontSize: 32.sp,
                 fontWeight: FontWeight.w700,
                 color: darkMode?AppDarkColors.headingColor:AppColors.headingColor,
               ),

@@ -203,8 +203,7 @@ class _TimerBoxState extends State<TimerBox> {
                         }
                       } else {
                         var mensesID = Utils.getDocMensesID();
-                        TuhurTracker().stopTimerWithDeletion(
-                            mensesID, "", mensesProvider, tuhurProvider, PostNatalProvider());
+                        MensesTracker().stopTimerWithDeletion(mensesID, mensesProvider, tuhurProvider);
                         widget.mensis(true, '');
                         mensesProvider.setTimerStart(false);
                       }

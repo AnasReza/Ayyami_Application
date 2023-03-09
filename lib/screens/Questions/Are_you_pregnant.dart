@@ -13,8 +13,9 @@ import 'is_it_bleeding_pregnant.dart';
 
 class pregnant_question extends StatefulWidget {
   String uid;
+  bool darkMode,fromProfile;
 
-  pregnant_question({required this.uid, super.key});
+  pregnant_question({required this.uid,required this.darkMode,required this.fromProfile, super.key});
 
   @override
   State<pregnant_question> createState() => _pregnant_questionState();
@@ -155,7 +156,6 @@ class _pregnant_questionState extends State<pregnant_question> {
                       child: GradientButton(
                         title: text['confirm']!,
                         onPressedButon: () {
-                          String q_id = DateTime.now().millisecondsSinceEpoch.toString();
                           Widget nextWidget;
                           String answer = '';
 
@@ -164,11 +164,12 @@ class _pregnant_questionState extends State<pregnant_question> {
                             return;
                           }
                           if (pressedInt==1) {
-                            nextWidget = which_pregnancy(uid: widget.uid,);
+                            nextWidget = which_pregnancy(uid: widget.uid,darkMode: widget.darkMode,);
                             answer = 'Pregnant';
                           } else {
                             nextWidget = is_it_bleeding_pregnant(
                               uid: widget.uid,
+                              darkMode: widget.darkMode,
                             );
                             answer = 'No Pregnancy';
                           }

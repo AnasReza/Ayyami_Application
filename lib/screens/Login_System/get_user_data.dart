@@ -327,7 +327,7 @@ class _set_passwordState extends State<set_password> {
                             final provider=Provider.of<UserProvider>(context,listen: false);
                             provider.setUID(uid!);
                             setHive(uid!);
-                            nextScreen(context, first_question(uid: uid,));
+                            nextScreen(context, first_question(uid: uid,darkMode: false,fromProfile: false,));
                           });
                         });
 
@@ -346,7 +346,7 @@ class _set_passwordState extends State<set_password> {
                           final provider=Provider.of<UserProvider>(context,listen: false);
                           provider.setUID(uid!);
                           setHive(uid!);
-                          nextScreen(context, first_question(uid: uid,));
+                          nextScreen(context, first_question(uid: uid,darkMode: false,fromProfile: false,));
                         });
                       }
 

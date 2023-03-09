@@ -1,3 +1,6 @@
+import 'package:ayyami/constants/colors.dart';
+import 'package:ayyami/constants/dark_mode_colors.dart';
+import 'package:ayyami/constants/images.dart';
 import 'package:ayyami/firebase_calls/questions_record.dart';
 import 'package:ayyami/providers/menses_provider.dart';
 import 'package:ayyami/providers/user_provider.dart';
@@ -8,6 +11,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
@@ -16,8 +20,9 @@ import '../../widgets/gradient_button.dart';
 
 class MenstrualPeriodStartDate extends StatefulWidget {
   String uid;
+  bool darkMode;
 
-  MenstrualPeriodStartDate({required this.uid, super.key});
+  MenstrualPeriodStartDate({required this.uid,required this.darkMode, super.key});
 
   @override
   State<MenstrualPeriodStartDate> createState() => MenstrualPeriodStartDateState();
@@ -44,8 +49,8 @@ class MenstrualPeriodStartDateState extends State<MenstrualPeriodStartDate> {
       var text=AppTranslate().textLanguage[lang];
 
       return Scaffold(
-        backgroundColor: Color(0xffF5F5F5),
-        body: Center(
+        body: Container(
+          decoration: BoxDecoration(gradient: widget.darkMode?AppDarkColors.backgroundGradient:AppColors.backgroundGradient),
             child: SingleChildScrollView(
               child: Container(
                 child: Column(
@@ -53,7 +58,7 @@ class MenstrualPeriodStartDateState extends State<MenstrualPeriodStartDate> {
                     Container(
                       height: 140,
                       width: 200,
-                      child: Image.asset("assets/images/icon_name.png"),
+                      child: SvgPicture.asset(widget.darkMode?AppImages.logo_white:AppImages.logo),
                     ),
                     SizedBox(height: 5),
                     Container(
@@ -69,7 +74,7 @@ class MenstrualPeriodStartDateState extends State<MenstrualPeriodStartDate> {
                           style: TextStyle(
                             fontSize: 20.0,
                             fontFamily: 'DMSans',
-                            color: Color(0xff1F3D73),
+                            color: widget.darkMode?AppDarkColors.headingColor:AppColors.headingColor,
                             fontWeight: FontWeight.w700,
                           ),
                         ),
@@ -86,19 +91,19 @@ class MenstrualPeriodStartDateState extends State<MenstrualPeriodStartDate> {
                                     children: [
                                       Container(
                                         padding: const EdgeInsets.only(left: 60, top: 20),
-                                        child: const Icon(
+                                        child: Icon(
                                           Icons.calendar_month,
-                                          color: Color(0xFF1F3D73),
+                                          color: widget.darkMode?AppDarkColors.headingColor:AppColors.headingColor
                                         ),
                                       ),
                                       Padding(
                                         padding: EdgeInsets.only(top: 22, left: 10),
                                         child: Text(
                                           getStartDate(text),
-                                          style: const TextStyle(
+                                          style:  TextStyle(
                                             fontSize: 15.0,
                                             fontFamily: 'DMSans',
-                                            color: Color(0xff1F3D73),
+                                            color: widget.darkMode?AppDarkColors.headingColor:AppColors.headingColor,
                                             fontWeight: FontWeight.w400,
                                           ),
                                         ),
@@ -130,19 +135,19 @@ class MenstrualPeriodStartDateState extends State<MenstrualPeriodStartDate> {
                                     children: [
                                       Container(
                                         padding: const EdgeInsets.only(left: 60, top: 20),
-                                        child: const Icon(
+                                        child:  Icon(
                                           Icons.access_time_outlined,
-                                          color: Color(0xFF1F3D73),
+                                          color: widget.darkMode?AppDarkColors.headingColor:AppColors.headingColor,
                                         ),
                                       ),
                                       Padding(
                                         padding: EdgeInsets.only(top: 22, left: 10),
                                         child: Text(
                                           getStartTime(text),
-                                          style: const TextStyle(
+                                          style: TextStyle(
                                             fontSize: 15.0,
                                             fontFamily: 'DMSans',
-                                            color: Color(0xff1F3D73),
+                                            color: widget.darkMode?AppDarkColors.headingColor:AppColors.headingColor,
                                             fontWeight: FontWeight.w400,
                                           ),
                                         ),
