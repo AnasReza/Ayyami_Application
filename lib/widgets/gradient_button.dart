@@ -6,11 +6,13 @@ class GradientButton extends StatelessWidget {
   final String title;
   final VoidCallback onPressedButon;
   final bool loading;
+  double width=320;
 
-  const GradientButton(
+   GradientButton(
       {super.key,
       required this.title,
       required this.onPressedButon,
+       required this.width,
       this.loading = false});
 
   @override
@@ -34,8 +36,8 @@ class GradientButton extends StatelessWidget {
             borderRadius: BorderRadius.circular(15),
           ),
           child: Container(
-              constraints: const BoxConstraints(
-                maxWidth: 320,
+              constraints: BoxConstraints(
+                maxWidth: width,
                 minHeight: 50,
               ),
               alignment: Alignment.center,

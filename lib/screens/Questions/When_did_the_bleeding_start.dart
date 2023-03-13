@@ -151,7 +151,7 @@ class _third_questionState extends State<third_question> {
                 ),
                 const SizedBox(height: 28),
                 Container(
-                  child: GradientButton(
+                  child: GradientButton(width: 320,
                     title: text['confirm']!,
                     onPressedButon: () {
                       getDate = '${focusedDay.day}-${focusedDay.month}-${focusedDay.year}';

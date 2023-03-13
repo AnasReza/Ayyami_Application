@@ -280,7 +280,7 @@ class menstrual_periodState extends State<menstrual_period> {
                     ),
                     const SizedBox(height: 40),
                     Container(
-                      child: GradientButton(
+                      child: GradientButton(width: 320,
                         title: text['confirm']!,
                         onPressedButon: () {
                           String answer = '$SelectedStartDate@$SelectedStartTime';

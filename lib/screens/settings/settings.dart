@@ -103,18 +103,6 @@ class SettingsState extends State<SettingsApp> {
                 text: text,
                 textDirection: lang=='ur'?TextDirection.rtl:TextDirection.ltr,
               ),),
-              Directionality(textDirection: lang=='ur'?TextDirection.rtl:TextDirection.ltr, child: CategoryBox(
-                categoryName: text!['change_theme']!,
-                days: 21,
-                hours: 12,
-                checkbox: false,
-                comingSoon: true,
-                isSelected: false,
-                showDate: false,
-                darkMode: darkMode,
-                text: text,
-                textDirection: lang=='ur'?TextDirection.rtl:TextDirection.ltr,
-              ),),
 
               const SizedBox(
                 height: 20,

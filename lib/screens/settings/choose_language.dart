@@ -97,7 +97,7 @@ class ChooseLanguageState extends State<ChooseLanguage> {
               const SizedBox(
                 height: 30,
               ),
-              GradientButton(
+              GradientButton(width: 320,
                   title: text!['save']!,
                   onPressedButon: () {
                     if (languageSelected.isNotEmpty) {

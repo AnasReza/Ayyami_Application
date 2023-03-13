@@ -176,7 +176,7 @@ class _first_questionState extends State<first_question> {
                       ),
                     ),
                     const SizedBox(height: 65),
-                    GradientButton(
+                    GradientButton(width: 320,
                       title: text['confirm']!,
                       onPressedButon: () {
                         Widget nextWidget;

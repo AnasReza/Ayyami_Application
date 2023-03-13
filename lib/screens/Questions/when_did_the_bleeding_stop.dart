@@ -141,7 +141,7 @@ class _bleeding_stopState extends State<bleeding_stop> {
                  ),
                  const SizedBox(height: 28),
                  Container(
-                   child: GradientButton(
+                   child: GradientButton(width: 320,
                      title: text['confirm']!,
                      onPressedButon: () {
                        getDate = '${focusedDay.day}-${focusedDay.month}-${focusedDay.year}';

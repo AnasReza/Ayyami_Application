@@ -262,7 +262,7 @@ class _otp_pageState extends State<otp_page> {
                         ],
                       ),
                     ),
-                    GradientButton(
+                    GradientButton(width: 320,
                         title: text['confirm']!,
                         loading: loading,
                         onPressedButon: () async {

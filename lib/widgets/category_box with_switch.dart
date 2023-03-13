@@ -53,7 +53,7 @@ class CategoryBoxWithSwitchState extends State<CategoryBoxWithSwitch> {
               children: [
                 AppText(
                   text: widget.categoryName,
-                  fontSize: 25.sp,
+                  fontSize: 30.sp,
                   fontWeight: FontWeight.w700,
                   color: widget.darkMode ? AppDarkColors.headingColor : AppColors.headingColor,
                 ),

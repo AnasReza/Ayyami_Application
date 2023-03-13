@@ -194,24 +194,25 @@ class _TimerBoxState extends State<TimerBox> {
                 if (!isMensesStart) {
                   if (isTuhurStart) {
                     if (tuhurFrom == 0) {
-                      if (tuhurDays >= tuhurMinimum) {
-                        if (start) {
-                          showStartDialog(text!);
-                        } else {
-                          widget.mensis(true, '');
-                          mensesProvider.setTimerStart(false);
-                        }
-                      } else {
-                        var mensesID = Utils.getDocMensesID();
-                        MensesTracker().stopTimerWithDeletion(mensesID, mensesProvider, tuhurProvider);
-                        widget.mensis(true, '');
-                        mensesProvider.setTimerStart(false);
-                      }
+                      showStartDialog(text!);
+                      // if (tuhurDays >= tuhurMinimum) {
+                      //   if (start) {
+                      //
+                      //   } else {
+                      //     widget.mensis(true, '');
+                      //     mensesProvider.setTimerStart(false);
+                      //   }
+                      // } else {
+                      //   var mensesID = Utils.getDocMensesID();
+                      //   MensesTracker().stopTimerWithDeletion(mensesID, mensesProvider, tuhurProvider);
+                      //   widget.mensis(true, '');
+                      //   mensesProvider.setTimerStart(false);
+                      // }
                     } else {
-                      toast_notification().toast_message('should_post-natal_again'.tr);
+                      toast_notification().toast_message(text['should_post-natal_again']!);
                     }
                   } else {
-                    toast_notification().toast_message('should_tuhur_start'.tr);
+                    toast_notification().toast_message(text['should_tuhur_start']!);
                   }
                 } else {
                   showStopDialog(text!);
@@ -347,8 +348,9 @@ class _TimerBoxState extends State<TimerBox> {
               var mensesProvider = Provider.of<MensesProvider>(context, listen: false);
               var tuhurProvider = Provider.of<TuhurProvider>(context, listen: false);
               var userProvider = Provider.of<UserProvider>(context, listen: false);
-              MensesTracker().stopMensesTimer(
-                  mensesProvider, tuhurProvider, uid, userProvider, Timestamp.fromDate(endDate), widget.islamicMonth);
+              String message=MensesTracker().stopMensesTimer(
+                  mensesProvider, tuhurProvider, uid, userProvider, Timestamp.fromDate(endDate), widget.islamicMonth,text);
+              widget.mensis(true,message);
               Navigator.pop(dialogContext);
             },
             darkMode: darkMode,

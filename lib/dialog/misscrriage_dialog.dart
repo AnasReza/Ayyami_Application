@@ -148,7 +148,7 @@ class MiscarraigeDialogState extends State<MiscarraigeDialog>{
                  ),
                  SizedBox(height: 65),
                  Container(
-                   child: GradientButton(
+                   child: GradientButton(width: 320,
                      title:widget.text['confirm']!,
                      onPressedButon: () {
                        Widget nextWidget;

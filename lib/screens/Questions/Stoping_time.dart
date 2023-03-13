@@ -104,7 +104,7 @@ class _stopping_timeState extends State<stopping_time> {
                   ),
                   SizedBox(height: 45),
                   Container(
-                    child: GradientButton(
+                    child: GradientButton(width: 320,
                       title: text['confirm']!,
                       onPressedButon: () {
                         var tuhurProvider=Provider.of<TuhurProvider>(context,listen: false);

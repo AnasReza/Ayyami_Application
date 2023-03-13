@@ -112,7 +112,7 @@ class _which_pregnancyState extends State<which_pregnancy> {
                   ),
                   SizedBox(height: 45),
                   Container(
-                    child: GradientButton(
+                    child: GradientButton(width: 320,
                       title: text['confirm']!,
                       onPressedButon: () {
                         print(counter);

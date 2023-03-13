@@ -117,7 +117,7 @@ class _postNatal_CycleState extends State<postNatal_Cycle> {
                   ),
                   SizedBox(height: 45),
                   Container(
-                    child: GradientButton(
+                    child: GradientButton(width: 320,
                       title: text['confirm']!,
                       onPressedButon: () {
                         print(counter);

@@ -63,7 +63,8 @@ class ChangeLocationState extends State<ChangeLocation> {
          padding: EdgeInsets.only(left: 30,right: 30),
          decoration: BoxDecoration(gradient: darkMode?AppDarkColors.backgroundGradient:AppColors.backgroundGradient),
          child: Column(
-           crossAxisAlignment: CrossAxisAlignment.start,
+           crossAxisAlignment: CrossAxisAlignment.center,
+           mainAxisAlignment: MainAxisAlignment.center,
            children: [
              SizedBox(
                width: double.infinity,
@@ -140,7 +141,7 @@ class ChangeLocationState extends State<ChangeLocation> {
                });
              },),
              const SizedBox(height: 30,),
-             GradientButton(title: text['save']!, onPressedButon: () {
+             GradientButton(width:320,title: text['save']!, onPressedButon: () {
                if (currentPoint != null) {
                  var provider=Provider.of<UserProvider>(context,listen: false);
                  String? uid=provider.getUid;

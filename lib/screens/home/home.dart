@@ -345,49 +345,49 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
               ),
 
               regulationExpanded
-                  ? Column(
-                      children: [
-                        Container(
-                          width: 558.w,
-                          height: 120.h,
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                              color: AppColors.headingColor,
-                              width: 1.w,
-                            ),
-                            color: AppColors.white,
-                            boxShadow: const [
-                              BoxShadow(
-                                color: Color(0x1e1f3d73),
-                                offset: Offset(0, 12),
-                                blurRadius: 40,
-                                spreadRadius: 0,
-                              )
-                            ],
-                          ),
-                          child: Padding(
-                            padding: EdgeInsets.only(left: 30.w, right: 5.w, top: 10),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                SvgPicture.asset(AppImages.safeIcon),
-                                SizedBox(width: 25.8.w),
-                                Container(
-                                    width: MediaQuery.of(context).size.width * 0.63,
-                                    child: SingleChildScrollView(
-                                      child: AppText(
-                                        text: regulationMessage,
-                                        fontSize: 20.sp,
-                                        fontWeight: FontWeight.w700,
-                                      ),
-                                    )),
-                              ],
-                            ),
-                          ),
-                        ),
+                  ? Directionality(textDirection: lang=='ur'?TextDirection.rtl:TextDirection.ltr, child: Column(
+                children: [
+                  Container(
+                    width: 558.w,
+                    height: 120.h,
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: AppColors.headingColor,
+                        width: 1.w,
+                      ),
+                      color: AppColors.white,
+                      boxShadow: const [
+                        BoxShadow(
+                          color: Color(0x1e1f3d73),
+                          offset: Offset(0, 12),
+                          blurRadius: 40,
+                          spreadRadius: 0,
+                        )
                       ],
-                    )
+                    ),
+                    child: Padding(
+                      padding: EdgeInsets.only(left: 30.w, right: 5.w, top: 10),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SvgPicture.asset(AppImages.safeIcon),
+                          SizedBox(width: 25.8.w),
+                          Container(
+                              width: MediaQuery.of(context).size.width * 0.63,
+                              child: SingleChildScrollView(
+                                child: AppText(
+                                  text: regulationMessage,
+                                  fontSize: 30.sp,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              )),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ))
                   : Container(),
               TimerBox(
                   mensis: (value, message) {

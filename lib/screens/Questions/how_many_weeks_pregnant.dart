@@ -114,7 +114,7 @@ class _weeks_of_pregnantState extends State<weeks_of_pregnant> {
                   ),
                   SizedBox(height: 45),
                   Container(
-                    child: GradientButton(
+                    child: GradientButton(width: 320,
                       title: text['confirm']!,
                       onPressedButon: () {
                         int week=counter;

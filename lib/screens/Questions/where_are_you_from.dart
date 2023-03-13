@@ -140,7 +140,7 @@ class LocationQuestionState extends State<LocationQuestion> {
                 });
               },),
               const SizedBox(height: 30,),
-              GradientButton(title: text['save']!, onPressedButon: () {
+              GradientButton(width:320,title: text['save']!, onPressedButon: () {
 
                 if (currentPoint != null) {
                   var provider=Provider.of<UserProvider>(context,listen: false);

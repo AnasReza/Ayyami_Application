@@ -104,7 +104,7 @@ class _starting_timeState extends State<starting_time> {
               ),
               SizedBox(height: 45),
               Container(
-                child: GradientButton(
+                child: GradientButton(width: 320,
                   title: text['confirm']!,
                   onPressedButon: () {
                     print(_dateTime);

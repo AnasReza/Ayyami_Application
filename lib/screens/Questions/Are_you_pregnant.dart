@@ -153,7 +153,7 @@ class _pregnant_questionState extends State<pregnant_question> {
                     ),
                     SizedBox(height: 65),
                     Container(
-                      child: GradientButton(
+                      child: GradientButton(width: 320,
                         title: text['confirm']!,
                         onPressedButon: () {
                           Widget nextWidget;

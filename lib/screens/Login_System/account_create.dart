@@ -130,6 +130,7 @@ class _account_createState extends State<account_create> {
                   ),
                   const SizedBox(height: 35),
                   GradientButton(
+                    width: 320,
                       title: text['Send Code']!,
                       loading: loading,
                       onPressedButon: () {

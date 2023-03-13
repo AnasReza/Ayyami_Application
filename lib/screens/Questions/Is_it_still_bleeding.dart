@@ -169,7 +169,7 @@ class _isit_bleedingState extends State<isit_bleeding> {
                   ),
                   SizedBox(height: 65),
                   Container(
-                    child: GradientButton(
+                    child: GradientButton(width: 320,
                       title: text['confirm']!,
                       onPressedButon: () {
                         String q_id = DateTime.now().millisecondsSinceEpoch.toString();

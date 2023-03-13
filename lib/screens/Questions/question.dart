@@ -56,7 +56,7 @@ class _Question_UploadState extends State<Question_Upload> {
              ),
            ),
            SizedBox(height: 35),
-           GradientButton(
+           GradientButton(width: 320,
              title: text!['upload']!,
              onPressedButon: () {
                String question = questionController.text.toString();

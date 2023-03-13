@@ -31,6 +31,9 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   late UserProvider provider;
   bool showEditProfile = false, showEditQuestion = false;
+  final ImagePicker picker = ImagePicker();
+  File? imageData;
+  String assetsPath = "assets/images/demo_profile.png";
   String name = '',
       imgUrl =
           'https://thumbs.dreamstime.com/b/portrait-young-man-beard-hair-style-male-avatar-vector-portrait-young-man-beard-hair-style-male-avatar-105082137.jpg',
@@ -50,28 +53,41 @@ class _ProfilePageState extends State<ProfilePage> {
       menstrual_period = '',
       post_natal_bleeding = '';
 
+  late TextEditingController nameController = TextEditingController();
+  List<String> firstQuestion = [];
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     provider = context.read<UserProvider>();
     UsersRecord().getUsersData(provider.getUid!).then((value) {
-      getQuestionsAnswer(value);
+      var lang = provider.getLanguage;
+      getQuestionsAnswer(value, lang!);
 
       setState(() {
         name = value.get('user_name');
         imgUrl = value.get('imgUrl');
         phone = value.get('contact_no');
       });
+
+      nameController = TextEditingController(text: name);
     });
   }
 
-  getQuestionsAnswer(DocumentSnapshot<Map<String, dynamic>> value) {
+  getQuestionsAnswer(DocumentSnapshot<Map<String, dynamic>> value, String lang) {
+    var text = AppTranslate().textLanguage[lang];
     try {
       question = value.get('question');
     } catch (e) {}
     try {
-      beginner = value.get('beginner');
+      if (value.get('beginner').toString().contains('Beg')) {
+        beginner = text!['beginner']!;
+      } else {
+        beginner = text!['accustomed']!;
+      }
+      firstQuestion.add(text!['beginner']!);
+      firstQuestion.add(text!['accustomed']!);
     } catch (e) {}
     try {
       married_unmarried = value.get('married_unmarried');
@@ -110,10 +126,6 @@ class _ProfilePageState extends State<ProfilePage> {
       post_natal_bleeding = value.get('post_natal_bleeding');
     } catch (e) {}
   }
-
-  final ImagePicker picker = ImagePicker();
-  File? imageData;
-  String assetsPath = "assets/images/demo_profile.png";
 
   Future getImageFromCamera(BuildContext context) async {
     final img = await picker.pickImage(source: ImageSource.camera, imageQuality: 80);
@@ -344,7 +356,8 @@ class _ProfilePageState extends State<ProfilePage> {
                       ]),
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 20),
-                    child: Column(crossAxisAlignment: CrossAxisAlignment.center,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         SizedBox(
                           width: double.infinity,
@@ -388,9 +401,12 @@ class _ProfilePageState extends State<ProfilePage> {
                                             child: SizedBox(
                                               width: 200,
                                               child: TextField(
-                                                controller: TextEditingController(text: name),style: TextStyle( fontSize: 32.sp,
-                                                fontWeight: FontWeight.w700,
-                                                color: darkMode ? AppDarkColors.headingColor : AppColors.headingColor,),
+                                                controller: nameController,
+                                                style: TextStyle(
+                                                  fontSize: 32.sp,
+                                                  fontWeight: FontWeight.w700,
+                                                  color: darkMode ? AppDarkColors.headingColor : AppColors.headingColor,
+                                                ),
                                                 decoration: const InputDecoration(
                                                   isDense: true,
                                                   border: InputBorder.none,
@@ -409,7 +425,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                     });
                                   },
                                   icon: Icon(
-                                    showEditProfile?Icons.dangerous_outlined:Icons.edit,
+                                    showEditProfile ? Icons.dangerous_outlined : Icons.edit,
                                     color: darkMode ? AppDarkColors.headingColor : AppColors.headingColor,
                                   ))
                             ],
@@ -442,39 +458,38 @@ class _ProfilePageState extends State<ProfilePage> {
                                 const SizedBox(
                                   height: 5,
                                 ),
-                                Visibility(
-                                    replacement: AppText(
-                                      text: phone,
-                                      fontSize: 32.sp,
-                                      fontWeight: FontWeight.w700,
-                                      color: darkMode ? AppDarkColors.headingColor : AppColors.headingColor,
-                                    ),
-                                    visible: showEditProfile,
-                                    child: Directionality(
-                                      textDirection: lang == 'ur' ? TextDirection.rtl : TextDirection.ltr,
-                                      child: SizedBox(
-                                        width: 200,
-                                        child: TextField(
-                                          controller: TextEditingController(text: phone),style: TextStyle( fontSize: 32.sp,
-                                          fontWeight: FontWeight.w700,
-                                          color: darkMode ? AppDarkColors.headingColor : AppColors.headingColor,),
-                                          decoration: const InputDecoration(
-                                            isDense: true,
-                                            border: InputBorder.none,
-                                          ),
-                                        ),
-                                      ),
-                                    )),
+                                AppText(
+                                  text: phone,
+                                  fontSize: 32.sp,
+                                  fontWeight: FontWeight.w700,
+                                  color: darkMode ? AppDarkColors.headingColor : AppColors.headingColor,
+                                ),
                               ],
                             ),
                           ],
                         ),
-
-                        const SizedBox(height: 20,),
-                        Visibility(visible:showEditProfile,child: GradientButton(title: text['save']!, onPressedButon: (){
-
-                        }))
-
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        Visibility(
+                          visible: showEditProfile,
+                          child: GradientButton(
+                            width: 320,
+                            title: text['save']!,
+                            onPressedButon: () {
+                              var nameChange = nameController.text;
+                              if (name.isNotEmpty) {
+                                if (nameChange != name) {
+                                  UsersRecord().changeName(provider.getUid, nameChange).then((value) {
+                                    setState(() {
+                                      showEditProfile = false;
+                                    });
+                                  });
+                                }
+                              }
+                            },
+                          ),
+                        ),
                       ],
                     ),
                   ),
@@ -517,17 +532,28 @@ class _ProfilePageState extends State<ProfilePage> {
                               ),
                               IconButton(
                                   onPressed: () {
-                                    nextScreen(context, first_question(uid: provider.getUid,darkMode: darkMode,fromProfile: true,));
+
+
+                                    nextScreen(
+                                        context,
+                                        first_question(
+                                          uid: provider.getUid,
+                                          darkMode: darkMode,
+                                          fromProfile: true,
+                                        ));
                                   },
                                   icon: Icon(
-                                    Icons.edit,
+                                    showEditQuestion ? Icons.dangerous_outlined : Icons.edit,
                                     color: darkMode ? AppDarkColors.headingColor : AppColors.headingColor,
                                   ))
                             ],
                           ),
-                          QuestionAnswerView(question: text['Are_you_Beginner']!, answer: beginner, darkMode: darkMode),
+                          QuestionAnswerView(
+                              question: text['Are_you_Beginner']!, answer: beginner, darkMode: darkMode),
+
                           QuestionAnswerView(
                               question: text['Are_you_Married']!, answer: married_unmarried, darkMode: darkMode),
+
                           QuestionAnswerView(
                               question: text['Are_you_pregnant']!, answer: are_pregnant, darkMode: darkMode),
                           QuestionAnswerView(
@@ -558,7 +584,9 @@ class _ProfilePageState extends State<ProfilePage> {
                       ),
                     ),
                   )),
-              SizedBox(height: 20,)
+              SizedBox(
+                height: 20,
+              )
             ],
           ),
         ),

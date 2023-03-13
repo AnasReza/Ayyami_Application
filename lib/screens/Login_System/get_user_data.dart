@@ -299,6 +299,7 @@ class _set_passwordState extends State<set_password> {
                 ),
                 const SizedBox(height: 25),
                 GradientButton(
+                  width: 320,
                   title: text['sign_in']!,
                   loading: loading,
                   onPressedButon: () async {
