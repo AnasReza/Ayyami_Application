@@ -31,7 +31,8 @@ class SettingsState extends State<SettingsApp> {
       var darkMode = provider.getIsDarkMode;
       var lang = provider.getLanguage;
       var text = AppTranslate().textLanguage[lang];
-      return Center(
+      return Container(
+        decoration: BoxDecoration(gradient: darkMode?AppDarkColors.backgroundGradient:AppColors.backgroundGradient),
         child: SingleChildScrollView(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,

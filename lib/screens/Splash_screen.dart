@@ -21,6 +21,7 @@ import 'package:stop_watch_timer/stop_watch_timer.dart';
 import '../firebase_calls/user_record.dart';
 import '../providers/menses_provider.dart';
 import 'Login_System/account_create.dart';
+import 'main_screen_1.dart';
 
 class Splash_Screen extends StatefulWidget {
   const Splash_Screen({super.key});
@@ -69,7 +70,7 @@ class _Splash_ScreenState extends State<Splash_Screen> {
           // }
           provider.setCurrentPoint(value.get('coordinates'));
           provider.setLocation('location_name');
-          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => MainScreen()));
+          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => MainScreen1()));
         });
       } else {
         nextScreen(context, ChooseLanguage());

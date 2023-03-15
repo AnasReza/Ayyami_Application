@@ -247,6 +247,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
       var text = AppTranslate().textLanguage[lang];
       return Container(
         height: double.infinity,
+        decoration: BoxDecoration(gradient: darkMode?AppDarkColors.backgroundGradient:AppColors.backgroundGradient),
         child: Padding(
           padding: EdgeInsets.only(
             left: 70.w,

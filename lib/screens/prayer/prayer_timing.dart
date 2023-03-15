@@ -215,10 +215,12 @@ class _PrayerTimingState extends State<PrayerTiming> {
       return Container(
         width: double.infinity,
         height: double.infinity,
+        decoration: BoxDecoration(gradient: darkMode?AppDarkColors.backgroundGradient:AppColors.backgroundGradient),
         padding: EdgeInsets.only(
           left: 70.w,
           right: 70.w,
           top: 80.h,
+          bottom: 30
         ),
         child: SingleChildScrollView(
           child: Directionality(textDirection: lang=='ur'?TextDirection.rtl:TextDirection.ltr, child: Column(

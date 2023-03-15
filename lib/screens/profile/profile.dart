@@ -160,7 +160,8 @@ class _ProfilePageState extends State<ProfilePage> {
       var lang = provider.getLanguage;
       var text = AppTranslate().textLanguage[lang];
 
-      return Padding(
+      return Container(
+        decoration: BoxDecoration(gradient: darkMode?AppDarkColors.backgroundGradient:AppColors.backgroundGradient),
         padding: EdgeInsets.only(
           left: 70.w,
           right: 70.w,
