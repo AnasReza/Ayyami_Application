@@ -19,21 +19,21 @@ class AddMedicine extends StatefulWidget {
 
 class _AddMedicineState extends State<AddMedicine> {
   TextEditingController medicineTitle = TextEditingController();
-  List<String> timingList=[];
-  String selectedValue='';
+  List<String> timingList = [];
+  String selectedValue = '';
 
   @override
   Widget build(BuildContext context) {
     final provider = context.read<PrayerProvider>();
     return Consumer<PrayerProvider>(builder: (context, child, build) {
-      var userProvider=Provider.of<UserProvider>(context,listen: false);
-      var lang=userProvider.getLanguage;
-      if(lang=='ur'){
-        timingList=child.medicineTimingListUrdu;
+      var userProvider = Provider.of<UserProvider>(context, listen: false);
+      var lang = userProvider.getLanguage;
+      if (lang == 'ur') {
+        timingList = child.medicineTimingListUrdu;
 
         child.setMedicineTime('صبح');
-      }else{
-        timingList=child.medicineTimingList;
+      } else {
+        timingList = child.medicineTimingList;
         child.setMedicineTime('Morning');
       }
       return Column(
@@ -49,25 +49,33 @@ class _AddMedicineState extends State<AddMedicine> {
           const SizedBox(
             height: 20,
           ),
-          Directionality(textDirection: lang=='ur'?TextDirection.rtl:TextDirection.ltr, child: Container(
-              decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), border: Border.all()),
-              padding: const EdgeInsets.only(left: 8.0),
-              child: DropdownButtonHideUnderline(
-                child: DropdownButton<String>(
-                  items: timingList.map((e) {
-                    return DropdownMenuItem(
-                      child: SizedBox(width: double.infinity,child: Text(e,textDirection: lang=='ur'?TextDirection.rtl:TextDirection.ltr,),),
-                      value: e,
-                    );
-                  }).toList(),
-                  isExpanded: true,
-                  value: child.medicineTimeValue,
-                  onChanged: (v) {
-                    provider.setMedicineTime(v!);
-                  },
-                ),
-              )),),
-
+          Directionality(
+            textDirection: lang == 'ur' ? TextDirection.rtl : TextDirection.ltr,
+            child: Container(
+                decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), border: Border.all()),
+                padding: const EdgeInsets.only(left: 8.0),
+                child: DropdownButtonHideUnderline(
+                  child: DropdownButton<String>(
+                    items: timingList.map((e) {
+                      return DropdownMenuItem(
+                        child: SizedBox(
+                          width: double.infinity,
+                          child: Text(
+                            e,
+                            textDirection: lang == 'ur' ? TextDirection.rtl : TextDirection.ltr,
+                          ),
+                        ),
+                        value: e,
+                      );
+                    }).toList(),
+                    isExpanded: true,
+                    value: child.medicineTimeValue,
+                    onChanged: (v) {
+                      provider.setMedicineTime(v!);
+                    },
+                  ),
+                )),
+          ),
           const SizedBox(
             height: 30,
           ),

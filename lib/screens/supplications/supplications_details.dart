@@ -19,11 +19,10 @@ class SupplicationsDetails extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer<UserProvider>(builder: (c, provider, child) {
-
       var darkMode = provider.getIsDarkMode;
       var lang = provider.getLanguage;
       var text = AppTranslate().textLanguage[lang];
-      var list = getDuaMap(prayerTime,lang!);
+      var list = getDuaMap(prayerTime, lang!);
 
       return Scaffold(
         appBar: AppBar(
@@ -38,7 +37,8 @@ class SupplicationsDetails extends StatelessWidget {
         ),
         body: Container(
           padding: EdgeInsets.only(left: 20, right: 20),
-          decoration: BoxDecoration(gradient: darkMode?AppDarkColors.backgroundGradient:AppColors.backgroundGradient),
+          decoration:
+              BoxDecoration(gradient: darkMode ? AppDarkColors.backgroundGradient : AppColors.backgroundGradient),
           child: ListView.builder(
               itemCount: list?.length,
               itemBuilder: (listContext, index) {

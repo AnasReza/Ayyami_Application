@@ -39,9 +39,9 @@ class SupplicationView extends StatelessWidget {
                     color: darkMode ? AppDarkColors.headingColor : AppColors.headingColor,
                     fontSize: 20,
                     fontWeight: FontWeight.w700),
-                textAlign: TextAlign.end,
+                textAlign: TextAlign.center,
               ),
-              Container(
+              Container(margin: EdgeInsets.only(top: 10),
                 padding: EdgeInsets.all(5),
                 decoration: BoxDecoration(
                   color: Color.fromARGB(100, 216, 220, 227).withOpacity(1.0),

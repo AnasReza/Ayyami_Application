@@ -6,7 +6,6 @@ import 'package:ayyami/screens/prayer/prayer_timing.dart';
 import 'package:ayyami/screens/profile/profile.dart';
 import 'package:ayyami/screens/settings/settings.dart';
 import 'package:ayyami/screens/supplications/supplications.dart';
-
 import 'package:ayyami/widgets/side_bar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -30,7 +29,6 @@ import '../providers/namaz_provider.dart';
 import '../providers/user_provider.dart';
 import '../translation/app_translation.dart';
 import '../utils/prayer_notification.dart';
-import '../widgets/custom_nav_bar_widget.dart';
 import 'home/home.dart';
 
 class MainScreen1 extends StatefulWidget {
@@ -197,6 +195,7 @@ class MainScreenState1 extends State<MainScreen1> {
         String logout = text['logout']!;
         return Scaffold(
           key: _key,
+          backgroundColor: AppDarkColors.lightPink,
           appBar: AppBar(
             elevation: 0,
             backgroundColor: darkMode ? AppDarkColors.white : Colors.white,
@@ -236,11 +235,11 @@ class MainScreenState1 extends State<MainScreen1> {
             //   ),
             // ],
           ),
-          body: PersistentTabView(
+          body:PersistentTabView(
             context,
             controller: _controller,
             screens: widgetList,
-            items: persitentList,
+            items: persitentList,confineInSafeArea: true,
             navBarHeight: 75,
             decoration: NavBarDecoration(
               gradient: darkMode ? AppDarkColors.backgroundGradient : AppColors.backgroundGradient,
@@ -251,19 +250,18 @@ class MainScreenState1 extends State<MainScreen1> {
                 // strokeAlign: StrokeAlign.inside,
               ),
             ),
-            navBarStyle: NavBarStyle.style15,
-
-
+            navBarStyle: NavBarStyle.style15,stateManagement: false,popActionScreens: PopActionScreensType.once,
           ),
 
+
 // bottomNavigationBar: CustomBottomNav(
-          //     darkMode: darkMode,
-          //     cIndex: _cIndex,
-          //     tappingIndex: (index) {
-          //       setState(() {
-          //         widgetIndex = index;
-          //       });
-          //     }),
+//               darkMode: darkMode,
+//               cIndex: _cIndex,
+//               tappingIndex: (index) {
+//                 setState(() {
+//                   widgetIndex = index;
+//                 });
+//               }),
           // floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
           // floatingActionButton: FAB(tappingIndex: (index) {
           //   setState(() {

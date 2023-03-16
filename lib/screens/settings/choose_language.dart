@@ -33,29 +33,30 @@ class ChooseLanguageState extends State<ChooseLanguage> {
       var lang = provider.getLanguage;
       var text = AppTranslate().textLanguage[lang];
       return Scaffold(
-        appBar: AppBar(
-          elevation: 0,
-          backgroundColor: darkMode ? AppDarkColors.white : Colors.white,
-          title: SvgPicture.asset(
-            darkMode ? AppImages.logo_white : AppImages.logo,
-            width: 249.6.w,
-            height: 78.36.h,
-          ),
-          centerTitle: true,
-        ),
+        // appBar: AppBar(
+        //   elevation: 0,
+        //   backgroundColor: darkMode ? AppDarkColors.white : Colors.white,
+        //   title: SvgPicture.asset(
+        //     darkMode ? AppImages.logo_white : AppImages.logo,
+        //     width: 249.6.w,
+        //     height: 78.36.h,
+        //   ),
+        //   centerTitle: true,
+        // ),
         body: Container(
           padding: EdgeInsets.only(left: 30,right: 30),
           decoration:
               BoxDecoration(gradient: darkMode ? AppDarkColors.backgroundGradient : AppColors.backgroundGradient),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
+              const SizedBox(height: 30,),
               SizedBox(
                 width: double.infinity,
                 child: Row(
                   children: [
                     GestureDetector(child:SvgPicture.asset(
-                      AppImages.backIcon,
+                      AppImages.backIcon,width: 20,height: 20,
                       color: darkMode ? AppDarkColors.headingColor : AppColors.headingColor,
                     ),onTap: (){
                       Navigator.pop(context);
@@ -78,25 +79,15 @@ class ChooseLanguageState extends State<ChooseLanguage> {
               const SizedBox(
                 height: 30,
               ),
-              AppText(
-                text: text!['change_language']!,
-                fontSize: 36.sp,
-                fontWeight: FontWeight.w700,
-                color: darkMode ? AppDarkColors.headingColor : AppColors.headingColor,
-              ),
-              const SizedBox(
-                height: 20,
-              ),
+
               Container(
-                height: 500,
+                height: 300,
                 child: CustomRadio(darkMode, (value) {
                   print('$value-language selected123');
                   languageSelected = value;
                 }),
               ),
-              const SizedBox(
-                height: 30,
-              ),
+
               GradientButton(width: 320,
                   title: text!['save']!,
                   onPressedButon: () {

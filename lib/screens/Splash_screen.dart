@@ -70,7 +70,7 @@ class _Splash_ScreenState extends State<Splash_Screen> {
           // }
           provider.setCurrentPoint(value.get('coordinates'));
           provider.setLocation('location_name');
-          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => MainScreen1()));
+          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => MainScreen()));
         });
       } else {
         nextScreen(context, ChooseLanguage());

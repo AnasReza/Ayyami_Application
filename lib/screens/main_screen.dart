@@ -44,8 +44,6 @@ class MainScreenState extends State<MainScreen> {
   final GlobalKey<ScaffoldState> _key = GlobalKey();
   String fajr = '', sunrise = '', zuhar = '', asr = '', maghrib = '', isha = '';
   late DateTime fajrTime, sunriseTime, zuharTime, asrTime, maghribTime, ishaTime;
-  PersistentTabController _controller = PersistentTabController(initialIndex: 2);
-
 
   void getPrayerTiming(BuildContext context) {
     var userProvider = Provider.of<UserProvider>(context, listen: false);
@@ -162,6 +160,7 @@ class MainScreenState extends State<MainScreen> {
             // ],
           ),
           body: Container(
+            height: double.infinity,
             decoration:
                 BoxDecoration(gradient: darkMode ? AppDarkColors.backgroundGradient : AppColors.backgroundGradient),
             child: widgetList[widgetIndex],
@@ -174,12 +173,12 @@ class MainScreenState extends State<MainScreen> {
                   widgetIndex = index;
                 });
               }),
-          floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-          floatingActionButton: FAB(tappingIndex: (index) {
-            setState(() {
-              widgetIndex = index;
-            });
-          }),
+          // floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+          // floatingActionButton: FAB(tappingIndex: (index) {
+          //   setState(() {
+          //     widgetIndex = index;
+          //   });
+          // }),
           drawer: SideBar(textList,invite,about,logout),
         );
       },

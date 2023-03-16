@@ -132,7 +132,13 @@ class _ExpandedReminderContainerState extends State<ExpandedReminderContainer> {
                                     context: context,
                                     builder: (c) {
                                       return AlertDialog(
-                                        title: SizedBox(width:double.infinity,child: Text(widget.text!['add_medicine']!,textDirection:widget.lang=='ur'?TextDirection.rtl:TextDirection.ltr ,),),
+                                        title: SizedBox(
+                                          width: double.infinity,
+                                          child: Text(
+                                            widget.text!['add_medicine']!,
+                                            textDirection: widget.lang == 'ur' ? TextDirection.rtl : TextDirection.ltr,
+                                          ),
+                                        ),
                                         content: SizedBox(
                                             height: 200,
                                             child: AddMedicine(
