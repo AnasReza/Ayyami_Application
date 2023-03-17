@@ -104,10 +104,10 @@ class CustomBottomNav extends StatelessWidget {
                     AppImages.homeBtn,
                     width: 42.w,
                     height: 34.h,
-                    color: darkMode ? AppDarkColors.headingColor : AppColors.headingColor,
+                    color: Colors.white,
                   ),
                   SizedBox(height: 9.h),
-                  Text('Home',style: TextStyle(color: darkMode ? AppDarkColors.headingColor : AppColors.headingColor), ),
+                  const Text('Home',style: TextStyle(color: Colors.white), ),
                 ],
               ),
             ),onTap: (){

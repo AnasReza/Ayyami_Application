@@ -33,16 +33,16 @@ class ChooseLanguageState extends State<ChooseLanguage> {
       var lang = provider.getLanguage;
       var text = AppTranslate().textLanguage[lang];
       return Scaffold(
-        // appBar: AppBar(
-        //   elevation: 0,
-        //   backgroundColor: darkMode ? AppDarkColors.white : Colors.white,
-        //   title: SvgPicture.asset(
-        //     darkMode ? AppImages.logo_white : AppImages.logo,
-        //     width: 249.6.w,
-        //     height: 78.36.h,
-        //   ),
-        //   centerTitle: true,
-        // ),
+        appBar: AppBar(
+          elevation: 0,
+          backgroundColor: darkMode ? AppDarkColors.white : Colors.white,
+          title: SvgPicture.asset(
+            darkMode ? AppImages.logo_white : AppImages.logo,
+            width: 249.6.w,
+            height: 78.36.h,
+          ),
+          centerTitle: true,
+        ),
         body: Container(
           padding: EdgeInsets.only(left: 30,right: 30),
           decoration:
@@ -55,12 +55,6 @@ class ChooseLanguageState extends State<ChooseLanguage> {
                 width: double.infinity,
                 child: Row(
                   children: [
-                    GestureDetector(child:SvgPicture.asset(
-                      AppImages.backIcon,width: 20,height: 20,
-                      color: darkMode ? AppDarkColors.headingColor : AppColors.headingColor,
-                    ),onTap: (){
-                      Navigator.pop(context);
-                    },),
 
                     Expanded(
                       child: Align(

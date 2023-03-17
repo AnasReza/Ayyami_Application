@@ -8,7 +8,6 @@ import 'package:ayyami/screens/supplications/surah_details.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
 import '../../translation/app_translation.dart';
@@ -74,15 +73,15 @@ class SupplicationsState extends State<Supplications> {
                         iconColor: darkMode ? AppDarkColors.headingColor : AppColors.headingColor,
 
                         children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
+                          Container(padding:EdgeInsets.only(right: 10,left: 10),width:double.infinity,child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              GestureDetector(
+
+                              Expanded(flex:1,child: GestureDetector(
                                 child: Container(
                                   decoration: BoxDecoration(
                                       color: darkMode ? AppDarkColors.greyBoxColor : AppColors.greyBoxColor,
                                       borderRadius: BorderRadius.circular(10)),
-                                  width: 130,
                                   height: 130,
                                   margin: const EdgeInsets.only(bottom: 30),
                                   child: Column(
@@ -111,16 +110,17 @@ class SupplicationsState extends State<Supplications> {
                                 onTap: () {
                                   nextScreen(context, SupplicationsDetails('fajar'));
                                 },
-                              ),
+                              ),),
+
                               const SizedBox(
                                 width: 20,
                               ),
-                              GestureDetector(
+                              Expanded(flex:1,child: GestureDetector(
                                 child: Container(
                                   decoration: BoxDecoration(
                                       color: darkMode ? AppDarkColors.greyBoxColor : AppColors.greyBoxColor,
                                       borderRadius: BorderRadius.circular(10)),
-                                  width: 130,
+
                                   height: 130,
                                   margin: const EdgeInsets.only(bottom: 30),
                                   child: Column(
@@ -149,9 +149,15 @@ class SupplicationsState extends State<Supplications> {
                                 onTap: () {
                                   nextScreen(context, SurahDetails('fajar', [text['surah_yaseen']!]));
                                 },
-                              ),
+                              ),),
+
+
                             ],
-                          )
+                          ),)
+
+
+
+
                         ],
                       ),
                     ),
@@ -188,15 +194,14 @@ class SupplicationsState extends State<Supplications> {
                             darkMode ? AppDarkColors.lightGreyBoxColor : AppColors.lightGreyBoxColor,
                         iconColor: darkMode ? AppDarkColors.headingColor : AppColors.headingColor,
                         children: [
-                          Row(
+                          Container(padding:EdgeInsets.only(left: 10,right: 10),width:double.infinity,child:Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              GestureDetector(
+                              Expanded(flex:1,child:  GestureDetector(
                                 child: Container(
                                   decoration: BoxDecoration(
                                       color: darkMode ? AppDarkColors.greyBoxColor : AppColors.greyBoxColor,
                                       borderRadius: BorderRadius.circular(10)),
-                                  width: 130,
                                   height: 130,
                                   margin: const EdgeInsets.only(bottom: 30),
                                   child: Column(
@@ -225,46 +230,52 @@ class SupplicationsState extends State<Supplications> {
                                 onTap: () {
                                   nextScreen(context, SupplicationsDetails('zuhur'));
                                 },
-                              ),
-const SizedBox(width: 20,),
-                              GestureDetector(
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                      color: darkMode ? AppDarkColors.greyBoxColor : AppColors.greyBoxColor,
-                                      borderRadius: BorderRadius.circular(10)),
-                                  width: 130,
-                                  height: 130,
-                                  margin: const EdgeInsets.only(bottom: 30),
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment: CrossAxisAlignment.center,
-                                    children: [
-                                      SvgPicture.asset(
-                                        AppImages.bookIcon,
-                                        color: darkMode ? AppDarkColors.headingColor : AppColors.headingColor,
-                                        width: 40,
-                                        height: 31,
-                                      ),
-                                      const SizedBox(
-                                        height: 10,
-                                      ),
-                                      Text(
-                                        text['surah']!,
-                                        style: TextStyle(
+                              ),),
+
+                              const SizedBox(width: 20,),
+                              Expanded(
+                                flex:1,
+                                child: GestureDetector(
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                        color: darkMode ? AppDarkColors.greyBoxColor : AppColors.greyBoxColor,
+                                        borderRadius: BorderRadius.circular(10)),
+                                    height: 130,
+                                    margin: const EdgeInsets.only(bottom: 30),
+                                    child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      children: [
+                                        SvgPicture.asset(
+                                          AppImages.bookIcon,
                                           color: darkMode ? AppDarkColors.headingColor : AppColors.headingColor,
-                                          fontWeight: FontWeight.w700,
+                                          width: 40,
+                                          height: 31,
                                         ),
-                                      )
-                                    ],
+                                        const SizedBox(
+                                          height: 10,
+                                        ),
+                                        Text(
+                                          text['surah']!,
+                                          style: TextStyle(
+                                            color: darkMode ? AppDarkColors.headingColor : AppColors.headingColor,
+                                            fontWeight: FontWeight.w700,
+                                          ),
+                                        )
+                                      ],
+                                    ),
                                   ),
+                                  onTap: () {
+                                    nextScreen(context, SurahDetails('zuhur', [text['surah_fatah']!]));
+                                  },
                                 ),
-                                onTap: () {
-                                  nextScreen(context, SurahDetails('zuhur', [text['surah_fatah']!]));
-                                },
                               ),
 
+
+
                             ],
-                          )
+                          ))
+
                         ],
                       ),
                     ),
@@ -302,15 +313,15 @@ const SizedBox(width: 20,),
                         darkMode ? AppDarkColors.lightGreyBoxColor : AppColors.lightGreyBoxColor,
                         iconColor: darkMode ? AppDarkColors.headingColor : AppColors.headingColor,
                         children: [
-                          Row(
+                          Container(padding: EdgeInsets.only(left: 10,right: 10),width: double.infinity,child:  Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              GestureDetector(
+                              Expanded(flex:1,child:  GestureDetector(
                                 child: Container(
                                   decoration: BoxDecoration(
                                       color: darkMode ? AppDarkColors.greyBoxColor : AppColors.greyBoxColor,
                                       borderRadius: BorderRadius.circular(10)),
-                                  width: 130,
+
                                   height: 130,
                                   margin: const EdgeInsets.only(bottom: 30),
                                   child: Column(
@@ -339,14 +350,14 @@ const SizedBox(width: 20,),
                                 onTap: () {
                                   nextScreen(context, SupplicationsDetails('asr'));
                                 },
-                              ),
+                              ),),
+
                               const SizedBox(width: 20,),
-                              GestureDetector(
+                              Expanded(flex:1,child: GestureDetector(
                                 child: Container(
                                   decoration: BoxDecoration(
                                       color: darkMode ? AppDarkColors.greyBoxColor : AppColors.greyBoxColor,
                                       borderRadius: BorderRadius.circular(10)),
-                                  width: 130,
                                   height: 130,
                                   margin: const EdgeInsets.only(bottom: 30),
                                   child: Column(
@@ -375,10 +386,12 @@ const SizedBox(width: 20,),
                                 onTap: () {
                                   nextScreen(context, SurahDetails('asr', [text['surah_naba']!]));
                                 },
-                              ),
+                              ),),
+
 
                             ],
-                          )
+                          ),)
+
                         ],
                       ),
                     ),
@@ -416,15 +429,14 @@ const SizedBox(width: 20,),
                         darkMode ? AppDarkColors.lightGreyBoxColor : AppColors.lightGreyBoxColor,
                         iconColor: darkMode ? AppDarkColors.headingColor : AppColors.headingColor,
                         children: [
-                          Row(
+                          Container(padding: EdgeInsets.only(left: 10,right: 10),width: double.infinity,child:  Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              GestureDetector(
+                              Expanded(flex:1,child: GestureDetector(
                                 child: Container(
                                   decoration: BoxDecoration(
                                       color: darkMode ? AppDarkColors.greyBoxColor : AppColors.greyBoxColor,
                                       borderRadius: BorderRadius.circular(10)),
-                                  width: 130,
                                   height: 130,
                                   margin: const EdgeInsets.only(bottom: 30),
                                   child: Column(
@@ -453,16 +465,16 @@ const SizedBox(width: 20,),
                                 onTap: () {
                                   nextScreen(context, SupplicationsDetails('maghrib'));
                                 },
-                              ),
+                              ),),
+
                               const SizedBox(
                                 width: 20,
                               ),
-                              GestureDetector(
+                              Expanded(flex:1,child: GestureDetector(
                                 child: Container(
                                   decoration: BoxDecoration(
                                       color: darkMode ? AppDarkColors.greyBoxColor : AppColors.greyBoxColor,
                                       borderRadius: BorderRadius.circular(10)),
-                                  width: 130,
                                   height: 130,
                                   margin: const EdgeInsets.only(bottom: 30),
                                   child: Column(
@@ -491,9 +503,11 @@ const SizedBox(width: 20,),
                                 onTap: () {
                                   nextScreen(context, SurahDetails('maghrib', [text['surah_waqia']!]));
                                 },
-                              ),
+                              ),)
+
                             ],
-                          )
+                          ),)
+
                         ],
                       ),
                     ),
@@ -531,15 +545,14 @@ const SizedBox(width: 20,),
                         darkMode ? AppDarkColors.lightGreyBoxColor : AppColors.lightGreyBoxColor,
                         iconColor: darkMode ? AppDarkColors.headingColor : AppColors.headingColor,
                         children: [
-                          Row(
+                          Container(padding: EdgeInsets.only(left: 10,right: 10),width: double.infinity,child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              GestureDetector(
+                              Expanded(flex:1,child:   GestureDetector(
                                 child: Container(
                                   decoration: BoxDecoration(
                                       color: darkMode ? AppDarkColors.greyBoxColor : AppColors.greyBoxColor,
                                       borderRadius: BorderRadius.circular(10)),
-                                  width: 130,
                                   height: 130,
                                   margin: const EdgeInsets.only(bottom: 30),
                                   child: Column(
@@ -568,16 +581,17 @@ const SizedBox(width: 20,),
                                 onTap: () {
                                   nextScreen(context, SupplicationsDetails('isha'));
                                 },
-                              ),
+                              ),),
+
                               const SizedBox(
                                 width: 20,
                               ),
-                              GestureDetector(
+                              Expanded(flex:1,child: GestureDetector(
                                 child: Container(
                                   decoration: BoxDecoration(
                                       color: darkMode ? AppDarkColors.greyBoxColor : AppColors.greyBoxColor,
                                       borderRadius: BorderRadius.circular(10)),
-                                  width: 130,
+
                                   height: 130,
                                   margin: const EdgeInsets.only(bottom: 30),
                                   child: Column(
@@ -606,9 +620,11 @@ const SizedBox(width: 20,),
                                 onTap: () {
                                   nextScreen(context, SurahDetails('isha', [text['surah_mulk']!,text['surah_sajda']!]));
                                 },
-                              ),
+                              ),)
+
                             ],
-                          )
+                          ),)
+
                         ],
                       ),
                     ),
