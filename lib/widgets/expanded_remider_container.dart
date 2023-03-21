@@ -1,6 +1,8 @@
 import 'package:ayyami/constants/dark_mode_colors.dart';
 import 'package:ayyami/models/medicine_model.dart';
+import 'package:ayyami/providers/medicine_provider.dart';
 import 'package:ayyami/providers/prayer_provider.dart';
+import 'package:ayyami/providers/user_provider.dart';
 import 'package:ayyami/widgets/add_medicine.dart';
 import 'package:ayyami/widgets/customerSwitch1.dart';
 import 'package:flutter/material.dart';
@@ -36,7 +38,7 @@ class _ExpandedReminderContainerState extends State<ExpandedReminderContainer> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<PrayerProvider>(builder: (context, child, build) {
+    return Consumer<MedicineProvider>(builder: (context, child, build) {
       return SingleChildScrollView(
         child: Container(
           width: double.infinity,
@@ -111,17 +113,29 @@ class _ExpandedReminderContainerState extends State<ExpandedReminderContainer> {
                               child: Row(
                                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                   children: List.generate(
-                                      child.medicinesLsit.length,
-                                      (index) => Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                              horizontal: 8.0,
-                                            ),
-                                            child: MedicineContainer(
-                                              medicineTime: child.medicinesLsit[index].timing,
-                                              medicinetitle: child.medicinesLsit[index].medicalTile,
-                                              darkMode: widget.darkMode,
-                                            ),
-                                          ))),
+                                      child.getMap.length,
+                                      (index){
+                                        print('${child.getMap[index]['id']} med id from map $index');
+                                        var list=child.getMap[index]['timeList'];
+                                        String timeName='';
+                                        for(var listItem in list){
+                                          timeName='$timeName\n$listItem';
+                                        }
+                                        return Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                            horizontal: 8.0,
+                                          ),
+                                          child: MedicineContainer(
+                                            medicineTime: timeName,
+                                            medicinetitle: child.getMap[index]['medicine_name'],
+                                            darkMode: widget.darkMode,
+                                            text:widget.text,
+                                            lang: widget.lang,
+                                            medId: child.getMap[index]['id'],
+                                            index:index,
+                                          ),
+                                        );
+                                      },),),
                             ),
                             SizedBox(
                               height: 32.h,
@@ -140,11 +154,11 @@ class _ExpandedReminderContainerState extends State<ExpandedReminderContainer> {
                                           ),
                                         ),
                                         content: SizedBox(
-                                            height: 200,
-                                            child: AddMedicine(
+
+                                            child: IntrinsicHeight(child: AddMedicine(
                                               darkMode: widget.darkMode,
                                               text: widget.text,
-                                            )),
+                                            ),)),
                                       );
                                     });
                               },

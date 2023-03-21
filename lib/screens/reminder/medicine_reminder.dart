@@ -5,13 +5,13 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 
-import '../constants/colors.dart';
-import '../constants/images.dart';
-import '../translation/app_translation.dart';
-import '../widgets/app_text.dart';
-import '../widgets/customerSwitch1.dart';
-import '../widgets/expanded_remider_container.dart';
-import '../widgets/reminder_container.dart';
+import '../../constants/colors.dart';
+import '../../constants/images.dart';
+import '../../translation/app_translation.dart';
+import '../../widgets/app_text.dart';
+import '../../widgets/customerSwitch1.dart';
+import '../../widgets/expanded_remider_container.dart';
+import '../../widgets/reminder_container.dart';
 
 class MedicineReminderScreen extends StatefulWidget {
   const MedicineReminderScreen({Key? key}) : super(key: key);

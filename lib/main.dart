@@ -1,5 +1,6 @@
 import 'package:ayyami/constants/routes.dart';
 import 'package:ayyami/providers/likoria_timer_provider.dart';
+import 'package:ayyami/providers/medicine_provider.dart';
 import 'package:ayyami/providers/namaz_provider.dart';
 import 'package:ayyami/providers/post-natal_timer_provider.dart';
 import 'package:ayyami/providers/prayer_provider.dart';
@@ -10,7 +11,7 @@ import 'package:ayyami/providers/user_provider.dart';
 import 'package:ayyami/screens/Splash_screen.dart';
 import 'package:ayyami/screens/history/history.dart';
 import 'package:ayyami/screens/main_screen.dart';
-import 'package:ayyami/screens/medicine_reminder.dart';
+import 'package:ayyami/screens/reminder/medicine_reminder.dart';
 import 'package:ayyami/translation/app_translation.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -32,6 +33,7 @@ void main() async {
       ChangeNotifierProvider(create: (_) => PostNatalProvider()),
       ChangeNotifierProvider(create: (_) => TuhurProvider()),
       ChangeNotifierProvider(create: (_) => NamazProvider()),
+      ChangeNotifierProvider(create: (_) => MedicineProvider()),
     ],
     child: const MyApp(),
   ));

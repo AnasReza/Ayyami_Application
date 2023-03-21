@@ -1,5 +1,7 @@
 import 'dart:async';
 import 'package:ayyami/constants/const.dart';
+import 'package:ayyami/firebase_calls/medicine_record.dart';
+import 'package:ayyami/providers/medicine_provider.dart';
 import 'package:ayyami/providers/tuhur_provider.dart';
 import 'package:ayyami/providers/user_provider.dart';
 import 'package:ayyami/screens/main_screen.dart';
@@ -21,7 +23,7 @@ import 'package:stop_watch_timer/stop_watch_timer.dart';
 import '../firebase_calls/user_record.dart';
 import '../providers/menses_provider.dart';
 import 'Login_System/account_create.dart';
-import 'main_screen_1.dart';
+
 
 class Splash_Screen extends StatefulWidget {
   const Splash_Screen({super.key});
@@ -51,6 +53,7 @@ class _Splash_ScreenState extends State<Splash_Screen> {
       if (login) {
         UsersRecord().getUsersData(uid).then((value) {
           var provider = Provider.of<UserProvider>(context, listen: false);
+          var medProvider = Provider.of<MedicineProvider>(context, listen: false);
           provider.setUID(value.id);
           try {
             provider.setDarkMode(value.get('dark-mode'));
@@ -62,12 +65,25 @@ class _Splash_ScreenState extends State<Splash_Screen> {
           } catch (e) {
             provider.setLanguage('en');
           }
+          try {
+            List<String> medListIDs=List<String>.from(value.get('medicine_list') );
+            provider.setMedicinesIDS(medListIDs);
+            print('${medListIDs.length} length of med list');
+            Map<String,dynamic> map={};
+            for(var medId in medListIDs){
+             MedicineRecord().getMedicineData(medId).then((medValue){
+               List<String> timingList=List<String>.from(medValue.get('time_list'));
+               var medName=medValue.get('medicine_name');
+               var id=medValue.get('id');
+               print('$id medids');
+               map = {'timeList': timingList, 'medicine_name': medName,'id':id};
+               medProvider.setMedMap(map);
+             });
 
-          // if(hiveValue['dark_mode']==null){
-          //   provider.setDarkMode(false);
-          // }else{
-          //   provider.setDarkMode(hiveValue['dark_mode']);
-          // }
+            }
+          } catch (e) {
+            print(' ERROR  in MEDCINE LIST=$e');
+          }
           provider.setCurrentPoint(value.get('coordinates'));
           provider.setLocation('location_name');
           Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => MainScreen()));
@@ -147,7 +163,10 @@ class _Splash_ScreenState extends State<Splash_Screen> {
       login = false;
     }
 
-    return {'uid': uid, 'login': login,};
+    return {
+      'uid': uid,
+      'login': login,
+    };
   }
 
   @override

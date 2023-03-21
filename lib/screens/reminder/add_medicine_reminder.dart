@@ -3,16 +3,16 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 
-import '../constants/colors.dart';
-import '../constants/const.dart';
-import '../constants/dark_mode_colors.dart';
-import '../constants/images.dart';
-import '../models/medicine_model.dart';
-import '../providers/prayer_provider.dart';
-import '../providers/user_provider.dart';
-import '../translation/app_translation.dart';
-import '../widgets/app_text.dart';
-import '../widgets/utils.dart';
+import '../../constants/colors.dart';
+import '../../constants/const.dart';
+import '../../constants/dark_mode_colors.dart';
+import '../../constants/images.dart';
+import '../../models/medicine_model.dart';
+import '../../providers/prayer_provider.dart';
+import '../../providers/user_provider.dart';
+import '../../translation/app_translation.dart';
+import '../../widgets/app_text.dart';
+import '../../widgets/utils.dart';
 import 'medicine_reminder.dart';
 
 class AddMedicineReminder extends StatefulWidget {

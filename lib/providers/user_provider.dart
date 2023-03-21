@@ -19,6 +19,7 @@ class UserProvider extends ChangeNotifier{
   late List<PickerDateRange> mensesDateRange;
   late List<QueryDocumentSnapshot<Map<String, dynamic>>> allMensesData;
   late List<QueryDocumentSnapshot<Map<String, dynamic>>> allTuhurData;
+  List<String> medicineIDS=[];
 
   String get getUid=> uid;
   String? get getLanguage=> language;
@@ -36,10 +37,16 @@ class UserProvider extends ChangeNotifier{
   List<PickerDateRange> get getMensesDateRange => mensesDateRange;
   List<QueryDocumentSnapshot<Map<String, dynamic>>> get getMensesData => allMensesData;
   List<QueryDocumentSnapshot<Map<String, dynamic>>> get getTuhurData => allTuhurData;
+  List<String> get getMedicinesList => medicineIDS;
 
   setAllTuhurData(List<QueryDocumentSnapshot<Map<String, dynamic>>> value) {
 
     allTuhurData= value;
+    notifyListeners();
+  }
+  setMedicinesIDS(List<String> value) {
+
+    medicineIDS= value;
     notifyListeners();
   }
   setAllMensesData(List<QueryDocumentSnapshot<Map<String, dynamic>>> value) {

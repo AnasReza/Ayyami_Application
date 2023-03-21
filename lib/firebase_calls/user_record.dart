@@ -18,6 +18,9 @@ class UsersRecord {
   Future<void> updateDarkMode(String uid, bool darkMode) {
     return FirebaseFirestore.instance.collection('users').doc(uid).update({'dark-mode': darkMode});
   }
+  Future<void> updateMedicineList(String uid, List<String> medicineList) {
+    return FirebaseFirestore.instance.collection('users').doc(uid).update({'medicine_list': medicineList});
+  }
   Future<void> changeName(String uid,String name){
     return FirebaseFirestore.instance.collection('users').doc(uid).update({'user_name': name});
   }

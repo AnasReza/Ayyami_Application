@@ -3,7 +3,7 @@ import 'package:ayyami/constants/colors.dart';
 import 'package:ayyami/constants/const.dart';
 import 'package:ayyami/providers/user_provider.dart';
 import 'package:ayyami/screens/all_trackers/all_trackers.dart';
-import 'package:ayyami/screens/medicine_reminder.dart';
+import 'package:ayyami/screens/reminder/medicine_reminder.dart';
 import 'package:ayyami/translation/app_translation.dart';
 import 'package:ayyami/widgets/side_bar_bottom_view.dart';
 import 'package:ayyami/widgets/side_bar_box.dart';

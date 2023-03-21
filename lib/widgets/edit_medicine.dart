@@ -13,22 +13,48 @@ import '../constants/colors.dart';
 import '../models/medicine_model.dart';
 import 'gradient_button.dart';
 
-class AddMedicine extends StatefulWidget {
-  AddMedicine({Key? key, required this.darkMode, required this.text,}) : super(key: key);
+class EditMedicine extends StatefulWidget {
+  EditMedicine(
+      {Key? key,
+      required this.darkMode,
+      required this.text,
+      required this.medicineTime,
+      required this.medicinetitle,
+      required this.medId,
+      required this.index})
+      : super(key: key);
 
+  String medicineTime, medicinetitle, medId;
   bool darkMode;
   Map<String, String> text;
-
+  int index;
 
   @override
-  State<AddMedicine> createState() => _AddMedicineState();
+  State<EditMedicine> createState() => _EditMedicineState();
 }
 
-class _AddMedicineState extends State<AddMedicine> {
-  TextEditingController medicineTitle = TextEditingController();
+class _EditMedicineState extends State<EditMedicine> {
+  TextEditingController medicineTitleController = TextEditingController();
   List<String> timingList = [], medTimeList = [];
   String selectedValue = '';
   bool morningSelected = false, eveSelected = false, nightSelected = false;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    medicineTitleController = TextEditingController(text: widget.medicinetitle);
+    if (widget.medicineTime.contains('Morning')) {
+      morningSelected = true;
+    }
+    if (widget.medicineTime.contains('Evening')) {
+      eveSelected = true;
+    }
+    if (widget.medicineTime.contains('Night')) {
+      nightSelected = true;
+    }
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +77,7 @@ class _AddMedicineState extends State<AddMedicine> {
             decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), border: Border.all()),
             padding: const EdgeInsets.only(left: 8.0),
             child: TextField(
-              controller: medicineTitle,
+              controller: medicineTitleController,
               decoration: InputDecoration(hintText: widget.text['medicine_name']!, border: InputBorder.none),
             ),
           ),
@@ -194,7 +220,7 @@ class _AddMedicineState extends State<AddMedicine> {
           GradientButton(
             title: widget.text['add_medicine']!,
             onPressedButon: () {
-              String medName = medicineTitle.text;
+              String medName = medicineTitleController.text;
               bool timingSelect = false;
               if (morningSelected) {
                 medTimeList.add('Morning');
@@ -208,12 +234,15 @@ class _AddMedicineState extends State<AddMedicine> {
                 medTimeList.add('Night');
                 timingSelect = true;
               }
+              print('$medTimeList');
               if (medName.isNotEmpty && timingSelect) {
-                Map<String, dynamic> map = {'timeList': medTimeList, 'medicine_name': medName};
-                provider.setMedMap(map);
-
-                var medicineList=userProvider.getMedicinesList;
-                MedicineRecord().uploadMedicine(userProvider.getUid,medTimeList,medName,medicineList,provider);
+                var list = provider.getMap;
+                var map = list[widget.index];
+                map['timeList'] = medTimeList;
+                map['medicine_name'] = medName;
+                list[widget.index] = map;
+                provider.updateMedMap(list);
+                MedicineRecord().editMedicine(widget.medId, medTimeList, medName);
                 Navigator.pop(context);
               } else {
                 if (medTimeList.isEmpty) {
