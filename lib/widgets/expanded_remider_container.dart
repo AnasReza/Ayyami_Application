@@ -111,31 +111,33 @@ class _ExpandedReminderContainerState extends State<ExpandedReminderContainer> {
                             SingleChildScrollView(
                               scrollDirection: Axis.horizontal,
                               child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                  children: List.generate(
-                                      child.getMap.length,
-                                      (index){
-                                        print('${child.getMap[index]['id']} med id from map $index');
-                                        var list=child.getMap[index]['timeList'];
-                                        String timeName='';
-                                        for(var listItem in list){
-                                          timeName='$timeName\n$listItem';
-                                        }
-                                        return Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                            horizontal: 8.0,
-                                          ),
-                                          child: MedicineContainer(
-                                            medicineTime: timeName,
-                                            medicinetitle: child.getMap[index]['medicine_name'],
-                                            darkMode: widget.darkMode,
-                                            text:widget.text,
-                                            lang: widget.lang,
-                                            medId: child.getMap[index]['id'],
-                                            index:index,
-                                          ),
-                                        );
-                                      },),),
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                children: List.generate(
+                                  child.getMap.length,
+                                  (index) {
+                                    print('${child.getMap[index]['id']} med id from map $index');
+                                    var list = child.getMap[index]['timeList'];
+                                    String timeName = '';
+                                    for (var listItem in list) {
+                                      timeName = '$timeName\n$listItem';
+                                    }
+                                    return Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 8.0,
+                                      ),
+                                      child: MedicineContainer(
+                                        medicineTime: timeName,
+                                        medicinetitle: child.getMap[index]['medicine_name'],
+                                        darkMode: widget.darkMode,
+                                        text: widget.text,
+                                        lang: widget.lang,
+                                        medId: child.getMap[index]['id'],
+                                        index: index,
+                                      ),
+                                    );
+                                  },
+                                ),
+                              ),
                             ),
                             SizedBox(
                               height: 32.h,
@@ -154,11 +156,12 @@ class _ExpandedReminderContainerState extends State<ExpandedReminderContainer> {
                                           ),
                                         ),
                                         content: SizedBox(
-
-                                            child: IntrinsicHeight(child: AddMedicine(
-                                              darkMode: widget.darkMode,
-                                              text: widget.text,
-                                            ),)),
+                                            child: IntrinsicHeight(
+                                          child: AddMedicine(
+                                            darkMode: widget.darkMode,
+                                            text: widget.text,
+                                          ),
+                                        )),
                                       );
                                     });
                               },

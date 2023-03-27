@@ -58,40 +58,7 @@ class _AddMedicineState extends State<AddMedicine> {
           const SizedBox(
             height: 20,
           ),
-          // StatefulBuilder(builder: (c,state){
-          //   return  Directionality(
-          //     textDirection: lang == 'ur' ? TextDirection.rtl : TextDirection.ltr,
-          //     child: Container(
-          //         decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), border: Border.all()),
-          //         padding: const EdgeInsets.only(left: 8.0),
-          //         child: DropdownButton<String>(underline: Container(),
-          //           items: timingList.map((e) {
-          //             return DropdownMenuItem(
-          //               value: e,
-          //               child: SizedBox(
-          //                 width: double.infinity,
-          //                 child: Text(
-          //                   e,
-          //                   textDirection: lang == 'ur' ? TextDirection.rtl : TextDirection.ltr,
-          //                 ),
-          //               ),onTap: (){print('$e from ontap');},
-          //             );
-          //           }).toList(),
-          //           isExpanded: true,
-          //           value: selectedValue,
-          //           onChanged: (v) {
-          //             print('$v is selected');
-          //             state(() {
-          //               selectedValue=v!;
-          //             });
-          //             print('$selectedValue is selected');
-          //             provider.setMedicineTime(v!);
-          //             widget.returnFunction;
-          //           },
-          //
-          //         ),),
-          //   );
-          // }),
+
           Column(children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -214,6 +181,7 @@ class _AddMedicineState extends State<AddMedicine> {
 
                 var medicineList=userProvider.getMedicinesList;
                 MedicineRecord().uploadMedicine(userProvider.getUid,medTimeList,medName,medicineList,provider);
+
                 Navigator.pop(context);
               } else {
                 if (medTimeList.isEmpty) {

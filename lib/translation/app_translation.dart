@@ -208,8 +208,10 @@ class AppTranslate {
           'prayer': 'Prayer',
           'enter_med_name':'Please enter the Medicine name',
           'enter_med_timing':'Please select the timing for Medicine',
+          'spot_today':'I SAW A SPOT TODAY',
         },
         'ur': {
+          'spot_today':'میں نے آج خون کا دھبہ دیکھا',
           'enter_med_timing':'برائے مہربانی دوا کے لیے وقت کا انتخاب کریں',
           'enter_med_name':'براہ کرم دوا کا نام درج کریں',
           'prayer': 'نماز',

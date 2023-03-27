@@ -94,6 +94,9 @@ class LocalNotfiService
       iOS: iosDetail,
       android: androidDetail,
     );
+
+    await _localNotificationsPlugin.periodicallyShow(id, title, body, RepeatInterval.daily, noticeDetail);
+
     await _localNotificationsPlugin.zonedSchedule(
       id,
       title,

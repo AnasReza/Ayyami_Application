@@ -77,15 +77,16 @@ class MainScreenState extends State<MainScreen> {
       PrayerNotification().notificationTime(fajrTime, sunriseTime, zuharTime, asrTime, maghribTime, ishaTime);
     }
   }
-@override
+
+  @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    var provider=context.read<UserProvider>();
+    var provider = context.read<UserProvider>();
     MensesRecord().getAllMensesRecord(provider.getUid).listen((event) {
       var docs = event.docs;
       provider.setAllMensesData(docs);
-      List<PickerDateRange> dateRangeList=[];
+      List<PickerDateRange> dateRangeList = [];
       print('${docs.length}  user menses length');
       for (var doc in docs) {
         Timestamp start = doc['start_date'];
@@ -95,10 +96,11 @@ class MainScreenState extends State<MainScreen> {
       provider.setMensesDate(dateRangeList);
     });
     TuhurRecord().getAllTuhurRecord(provider.getUid).listen((event) {
-      var docs= event.docs;
+      var docs = event.docs;
       provider.setAllTuhurData(docs);
     });
   }
+
   @override
   Widget build(BuildContext context) {
     return Consumer<UserProvider>(
@@ -115,9 +117,9 @@ class MainScreenState extends State<MainScreen> {
           text!['cycle_history']!,
           text!['ask_mufti']!
         ];
-        String invite=text['invite']!;
-        String about=text['about_us_text']!;
-        String logout=text['logout']!;
+        String invite = text['invite']!;
+        String about = text['about_us_text']!;
+        String logout = text['logout']!;
         return Scaffold(
           key: _key,
           appBar: AppBar(
@@ -179,7 +181,7 @@ class MainScreenState extends State<MainScreen> {
           //     widgetIndex = index;
           //   });
           // }),
-          drawer: SideBar(textList,invite,about,logout),
+          drawer: SideBar(textList, invite, about, logout),
         );
       },
     );
