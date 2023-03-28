@@ -55,6 +55,7 @@ class _weeks_of_pregnantState extends State<weeks_of_pregnant> {
 
       return Scaffold(
         body: Container(
+          height: double.infinity,
           decoration: BoxDecoration(gradient: widget.darkMode?AppDarkColors.backgroundGradient:AppColors.backgroundGradient),
             child: SingleChildScrollView(
               child: Column(
@@ -121,7 +122,7 @@ class _weeks_of_pregnantState extends State<weeks_of_pregnant> {
                         var dur=Duration(days: week*7);
                         var startDate=DateTime.now().subtract(dur);
                         PregnancyRecord().uploadPregnancyStart(widget.uid, Timestamp.fromDate(startDate)).then((value){
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => LocationQuestion(uid: widget.uid)));
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => LocationQuestion(uid: widget.uid,darkMode: widget.darkMode,)));
                         });
                         print(counter);
                       },

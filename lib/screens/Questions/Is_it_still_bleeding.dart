@@ -79,14 +79,10 @@ class _isit_bleedingState extends State<isit_bleeding> {
                         Container(
                             decoration: BoxDecoration(
                               gradient: pressedInt == 1
-                                  ? const LinearGradient(
-                                      colors: [Color(0xffFFBBE6), Color(0xffC43CF3)],
-                                      begin: Alignment.centerLeft,
-                                      end: Alignment.center)
-                                  : const LinearGradient(
-                                      colors: [Color(0xFFF2F2F2), Color(0xFFF2F2F2)],
-                                      begin: Alignment.centerLeft,
-                                      end: Alignment.center),
+                                  ? widget.darkMode
+                                  ? AppDarkColors.bgPinkishGradient
+                                  : AppColors.bgPinkishGradient
+                                  : AppColors.transparentGradient,
                               borderRadius: BorderRadius.circular(25),
                             ),
                             child: Column(
@@ -124,14 +120,10 @@ class _isit_bleedingState extends State<isit_bleeding> {
                         Container(
                             decoration: BoxDecoration(
                               gradient: pressedInt == 2
-                                  ? const LinearGradient(
-                                      colors: [Color(0xffFFBBE6), Color(0xffC43CF3)],
-                                      begin: Alignment.centerLeft,
-                                      end: Alignment.center)
-                                  : const LinearGradient(
-                                      colors: [Color(0xFFF2F2F2), Color(0xFFF2F2F2)],
-                                      begin: Alignment.centerLeft,
-                                      end: Alignment.center),
+                                  ? widget.darkMode
+                                  ? AppDarkColors.bgPinkishGradient
+                                  : AppColors.bgPinkishGradient
+                                  : AppColors.transparentGradient,
                               borderRadius: BorderRadius.circular(25),
                             ),
                             child: Column(
@@ -188,6 +180,7 @@ class _isit_bleedingState extends State<isit_bleeding> {
                               mensesProvider, widget.uid, diff.inMilliseconds, Timestamp.fromDate(widget.start_date));
                           nextWidget = LocationQuestion(
                             uid: widget.uid,
+                            darkMode: widget.darkMode,
                           );
                         } else {
                           nextWidget = bleeding_stop(uid: widget.uid, start_date: widget.start_date,darkMode: widget.darkMode,);

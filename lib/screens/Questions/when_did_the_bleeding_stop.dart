@@ -41,6 +41,10 @@ class _bleeding_stopState extends State<bleeding_stop> {
 
      return Scaffold(
        body: Container(
+           height: double.infinity,
+           decoration: BoxDecoration(
+             gradient: widget.darkMode ? AppDarkColors.backgroundGradient : AppColors.backgroundGradient,
+           ),
            child: SingleChildScrollView(
              child: Column(
                children: [

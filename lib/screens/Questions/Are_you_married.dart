@@ -74,15 +74,11 @@ int pressedInt=0;
                       children: [
                         Container(
                             decoration: BoxDecoration(
-                              gradient: pressedInt==1
-                                  ? const LinearGradient(
-                                  colors: [Color(0xffFFBBE6), Color(0xffC43CF3)],
-                                  begin: Alignment.centerLeft,
-                                  end: Alignment.center)
-                                  : const LinearGradient(
-                                  colors: [Color(0xFFF2F2F2), Color(0xFFF2F2F2)],
-                                  begin: Alignment.centerLeft,
-                                  end: Alignment.center),
+                              gradient: pressedInt == 1
+                                  ? widget.darkMode
+                                  ? AppDarkColors.bgPinkishGradient
+                                  : AppColors.bgPinkishGradient
+                                  : AppColors.transparentGradient,
                               borderRadius: BorderRadius.circular(25),
                             ),
                             child: Column(
@@ -116,15 +112,11 @@ int pressedInt=0;
                             )),
                         Container(
                             decoration: BoxDecoration(
-                              gradient: pressedInt==2
-                                  ? const LinearGradient(
-                                  colors: [Color(0xffFFBBE6), Color(0xffC43CF3)],
-                                  begin: Alignment.centerLeft,
-                                  end: Alignment.center)
-                                  : const LinearGradient(
-                                  colors: [Color(0xFFF2F2F2), Color(0xFFF2F2F2)],
-                                  begin: Alignment.centerLeft,
-                                  end: Alignment.center),
+                              gradient: pressedInt == 2
+                                  ? widget.darkMode
+                                  ? AppDarkColors.bgPinkishGradient
+                                  : AppColors.bgPinkishGradient
+                                  : AppColors.transparentGradient,
                               borderRadius: BorderRadius.circular(25),
                             ),
                             child: Column(

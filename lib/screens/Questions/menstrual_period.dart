@@ -50,6 +50,7 @@ class menstrual_periodState extends State<menstrual_period> {
 
       return Scaffold(
         body: Container(
+          height: double.infinity,
           decoration: BoxDecoration(gradient: widget.darkMode?AppDarkColors.backgroundGradient:AppColors.backgroundGradient),
             child: SingleChildScrollView(
               child: Container(
@@ -309,6 +310,7 @@ class menstrual_periodState extends State<menstrual_period> {
                                     MaterialPageRoute(
                                         builder: (context) => LocationQuestion(
                                           uid: widget.uid,
+                                          darkMode: widget.darkMode,
                                         )));
                               });
                             }

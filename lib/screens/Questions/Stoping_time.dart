@@ -43,6 +43,7 @@ class _stopping_timeState extends State<stopping_time> {
 
       return Scaffold(
         body: Container(
+          height: double.infinity,
             decoration: BoxDecoration(gradient: widget.darkMode?AppDarkColors.backgroundGradient:AppColors.backgroundGradient),
             child: SingleChildScrollView(
               child:  Column(
@@ -126,6 +127,7 @@ class _stopping_timeState extends State<stopping_time> {
                               MaterialPageRoute(
                                   builder: (context) => LocationQuestion(
                                     uid: widget.uid,
+                                    darkMode: widget.darkMode,
                                   )));
                         });
                       },

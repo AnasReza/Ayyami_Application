@@ -1,4 +1,5 @@
 import 'package:ayyami/constants/colors.dart';
+import 'package:ayyami/constants/dark_mode_colors.dart';
 import 'package:ayyami/firebase_calls/user_record.dart';
 import 'package:ayyami/providers/user_provider.dart';
 import 'package:ayyami/widgets/gradient_button.dart';
@@ -19,8 +20,8 @@ import '../main_screen.dart';
 
 class LocationQuestion extends StatefulWidget {
   String uid;
-
-  LocationQuestion({super.key, required this.uid});
+bool darkMode;
+  LocationQuestion({super.key, required this.uid,required this.darkMode});
 
   @override
   State<StatefulWidget> createState() {
@@ -63,7 +64,7 @@ class LocationQuestionState extends State<LocationQuestion> {
           // ],
         ),
         body: Container(
-          decoration: BoxDecoration(gradient: AppColors.backgroundGradient),
+          decoration: BoxDecoration(gradient: widget.darkMode?AppDarkColors.backgroundGradient:AppColors.backgroundGradient),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
@@ -79,6 +80,7 @@ class LocationQuestionState extends State<LocationQuestion> {
                           text: text!['where_are_you_from']!,
                           fontSize: 45.sp,
                           fontWeight: FontWeight.w700,
+                          color: widget.darkMode?AppDarkColors.headingColor:AppColors.headingColor,
                         ),
                       ),
                     ),
@@ -92,7 +94,7 @@ class LocationQuestionState extends State<LocationQuestion> {
                 text: text['your_location']!,
                 fontSize: 36.sp,
                 fontWeight: FontWeight.w700,
-                color: AppColors.grey,
+                color: widget.darkMode?AppDarkColors.headingColor:AppColors.grey,
               ),
               const SizedBox(
                 height: 20,

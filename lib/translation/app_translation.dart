@@ -209,8 +209,10 @@ class AppTranslate {
           'enter_med_name':'Please enter the Medicine name',
           'enter_med_timing':'Please select the timing for Medicine',
           'spot_today':'I SAW A SPOT TODAY',
+          'when_pregnancy_start':'You should be in Tuhur to be Pregnant',
         },
         'ur': {
+          'when_pregnancy_start':'آپ کو حاملہ ہونے کے لیے طہر میں ہونا چاہیے',
           'spot_today':'میں نے آج خون کا دھبہ دیکھا',
           'enter_med_timing':'برائے مہربانی دوا کے لیے وقت کا انتخاب کریں',
           'enter_med_name':'براہ کرم دوا کا نام درج کریں',

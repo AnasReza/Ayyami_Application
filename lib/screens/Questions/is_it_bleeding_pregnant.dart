@@ -20,7 +20,8 @@ import 'menstrual_period.dart';
 class is_it_bleeding_pregnant extends StatefulWidget {
   String uid;
   bool darkMode;
-  is_it_bleeding_pregnant({required this.uid, required this.darkMode,super.key});
+
+  is_it_bleeding_pregnant({required this.uid, required this.darkMode, super.key});
 
   @override
   State<is_it_bleeding_pregnant> createState() => _is_it_bleeding_pregnantState();
@@ -29,24 +30,25 @@ class is_it_bleeding_pregnant extends StatefulWidget {
 class _is_it_bleeding_pregnantState extends State<is_it_bleeding_pregnant> {
   final databaseRef = FirebaseDatabase.instance.ref("QuestionAnswers");
   final FirebaseAuth auth = FirebaseAuth.instance;
-  int pressedInt=0;
+  int pressedInt = 0;
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<UserProvider>(builder: (c,provider,child){
-      var lang=provider.getLanguage;
-      var text=AppTranslate().textLanguage[lang];
+    return Consumer<UserProvider>(builder: (c, provider, child) {
+      var lang = provider.getLanguage;
+      var text = AppTranslate().textLanguage[lang];
 
       return Scaffold(
         body: Container(
-          decoration: BoxDecoration(gradient: widget.darkMode?AppDarkColors.backgroundGradient:AppColors.backgroundGradient),
+            decoration: BoxDecoration(
+                gradient: widget.darkMode ? AppDarkColors.backgroundGradient : AppColors.backgroundGradient),
             child: SingleChildScrollView(
               child: Column(
                 children: [
                   Container(
                     height: 150,
                     width: 200,
-                    child: SvgPicture.asset(widget.darkMode?AppImages.logo_white:AppImages.logo),
+                    child: SvgPicture.asset(widget.darkMode ? AppImages.logo_white : AppImages.logo),
                   ),
                   Container(
                     height: 130,
@@ -60,7 +62,7 @@ class _is_it_bleeding_pregnantState extends State<is_it_bleeding_pregnant> {
                       style: TextStyle(
                           fontSize: 30.0,
                           fontFamily: 'DMSans',
-                          color: widget.darkMode?AppDarkColors.headingColor:AppColors.headingColor,
+                          color: widget.darkMode ? AppDarkColors.headingColor : AppColors.headingColor,
                           fontWeight: FontWeight.w700,
                           letterSpacing: 1),
                     ),
@@ -72,14 +74,11 @@ class _is_it_bleeding_pregnantState extends State<is_it_bleeding_pregnant> {
                       children: [
                         Container(
                             decoration: BoxDecoration(
-                              gradient: pressedInt==1
-                                  ?const LinearGradient(
-                                  colors: [Color(0xffFFBBE6), Color(0xffC43CF3)],
-                                  begin: Alignment.centerLeft,
-                                  end: Alignment.center): const LinearGradient(
-                                  colors: [Color(0xFFF2F2F2), Color(0xFFF2F2F2)],
-                                  begin: Alignment.centerLeft,
-                                  end: Alignment.center),
+                              gradient: pressedInt == 1
+                                  ? widget.darkMode
+                                      ? AppDarkColors.bgPinkishGradient
+                                      : AppColors.bgPinkishGradient
+                                  : AppColors.transparentGradient,
                               borderRadius: BorderRadius.circular(25),
                             ),
                             child: Column(
@@ -90,7 +89,7 @@ class _is_it_bleeding_pregnantState extends State<is_it_bleeding_pregnant> {
 
                                     print(v1);
                                     setState(() {
-                                      pressedInt=1;
+                                      pressedInt = 1;
                                     });
                                   },
                                   child: Container(
@@ -104,21 +103,22 @@ class _is_it_bleeding_pregnantState extends State<is_it_bleeding_pregnant> {
                                             fontFamily: 'DMSans',
                                             fontSize: 17,
                                             fontWeight: FontWeight.w700,
-                                            color: pressedInt==1 ? Colors.white : widget.darkMode?Colors.grey.shade400:AppColors.headingColor,))),
+                                            color: pressedInt == 1
+                                                ? Colors.white
+                                                : widget.darkMode
+                                                    ? Colors.grey.shade400
+                                                    : AppColors.headingColor,
+                                          ))),
                                 )
                               ],
                             )),
                         Container(
                             decoration: BoxDecoration(
-                              gradient: pressedInt==2
-                                  ? const LinearGradient(
-                                  colors: [Color(0xffFFBBE6), Color(0xffC43CF3)],
-                                  begin: Alignment.centerLeft,
-                                  end: Alignment.center)
-                                  : const LinearGradient(
-                                  colors: [Color(0xFFF2F2F2), Color(0xFFF2F2F2)],
-                                  begin: Alignment.centerLeft,
-                                  end: Alignment.center),
+                              gradient: pressedInt == 2
+                                  ? widget.darkMode
+                                  ? AppDarkColors.bgPinkishGradient
+                                  : AppColors.bgPinkishGradient
+                                  : AppColors.transparentGradient,
                               borderRadius: BorderRadius.circular(25),
                             ),
                             child: Column(
@@ -128,7 +128,7 @@ class _is_it_bleeding_pregnantState extends State<is_it_bleeding_pregnant> {
                                     String v2 = "No Value";
                                     print(v2);
                                     setState(() {
-                                      pressedInt=2;
+                                      pressedInt = 2;
                                     });
                                   },
                                   child: Container(
@@ -142,7 +142,12 @@ class _is_it_bleeding_pregnantState extends State<is_it_bleeding_pregnant> {
                                             fontFamily: 'DMSans',
                                             fontSize: 17,
                                             fontWeight: FontWeight.w700,
-                                            color: pressedInt==2 ? Colors.white : widget.darkMode?Colors.grey.shade400:AppColors.headingColor,))),
+                                            color: pressedInt == 2
+                                                ? Colors.white
+                                                : widget.darkMode
+                                                    ? Colors.grey.shade400
+                                                    : AppColors.headingColor,
+                                          ))),
                                 )
                               ],
                             )),
@@ -151,26 +156,30 @@ class _is_it_bleeding_pregnantState extends State<is_it_bleeding_pregnant> {
                   ),
                   SizedBox(height: 65),
                   Container(
-                    child: GradientButton(width: 320,
+                    child: GradientButton(
+                      width: 320,
                       title: text['confirm']!,
                       onPressedButon: () {
                         String q_id = DateTime.now().millisecondsSinceEpoch.toString();
                         Widget nextWidget;
                         String answer = '';
-                        if (pressedInt==0) {
+                        if (pressedInt == 0) {
                           toast_notification().toast_message("Please select only one");
                           return;
                         }
-                        if (pressedInt==1) {
-
+                        if (pressedInt == 1) {
                           answer = 'Yes';
                           // nextWidget = LocationQuestion(uid: widget.uid,);
-                          nextWidget=MenstrualPeriodStartDate(uid: widget.uid,darkMode: widget.darkMode,);
+                          nextWidget = MenstrualPeriodStartDate(
+                            uid: widget.uid,
+                            darkMode: widget.darkMode,
+                          );
                         } else {
-
                           answer = 'No';
-                          nextWidget = menstrual_period(uid: widget.uid,darkMode: widget.darkMode,);
-
+                          nextWidget = menstrual_period(
+                            uid: widget.uid,
+                            darkMode: widget.darkMode,
+                          );
                         }
                         QuestionRecord().uploadBleedingPregnantQuestion(widget.uid, answer);
                         Navigator.push(context, MaterialPageRoute(builder: (context) => nextWidget));

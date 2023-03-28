@@ -53,6 +53,7 @@ class _postNatal_CycleState extends State<postNatal_Cycle> {
 
     return Scaffold(
       body: Container(
+        height: double.infinity,
         decoration: BoxDecoration(gradient: widget.darkMode?AppDarkColors.backgroundGradient:AppColors.backgroundGradient),
           child: SingleChildScrollView(
             child: Container(
@@ -125,7 +126,7 @@ class _postNatal_CycleState extends State<postNatal_Cycle> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) =>  LocationQuestion(uid: widget.uid)));
+                                  builder: (context) =>  LocationQuestion(uid: widget.uid,darkMode: widget.darkMode,)));
                         });
 
                       },

@@ -54,8 +54,10 @@ class _PregnancyTimerBoxState extends State<PregnancyTimerBox> {
   Widget build(BuildContext context) {
     return Consumer<PregnancyProvider>(builder: (conTimer, pro, build) {
       var userProvider = Provider.of<UserProvider>(context);
+      var tuhurProvider = Provider.of<TuhurProvider>(context);
       uid = userProvider.getUid!;
       bool isTimerStart = pro.getTimerStart;
+      bool isTuhurStart = tuhurProvider.getTimerStart;
       darkMode=userProvider.getIsDarkMode;
       var lang=userProvider.getLanguage;
       var text=AppTranslate().textLanguage[lang];
@@ -158,7 +160,11 @@ class _PregnancyTimerBoxState extends State<PregnancyTimerBox> {
             child: InkWell(
               onTap: () {
                 if (!isTimerStart) {
-                  showStartDialog(text!);
+                  if(isTuhurStart){
+                    showStartDialog(text!);
+                  }else{
+                    toast_notification().toast_message(text['when_pregnancy_start']!);
+                  }
                 }else{
                   showStopDialog(text!);
                 }

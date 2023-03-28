@@ -461,7 +461,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
               ),
 
               Visibility(visible: tuhurProvider.isTimerStart,child: GestureDetector(
-                child: Container(
+                child: Directionality(textDirection: lang=='ur'?TextDirection.rtl:TextDirection.ltr, child: Container(
                   padding: EdgeInsets.only(top: 5, bottom: 5),
                   margin: EdgeInsets.only(left: 50, right: 50),
                   decoration:
@@ -483,7 +483,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                       ],
                     ),
                   ),
-                ),
+                ),),
                 onTap: (){
                   var currentID=tuhurProvider.getTuhurID;
                   TuhurRecord.uploadNonMenstrualBleeding(currentID, true);
