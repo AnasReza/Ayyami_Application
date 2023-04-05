@@ -134,7 +134,7 @@ class AllTrackersState extends State<AllTrackers> {
         var text = AppTranslate().textLanguage[lang];
         mensesStart = context.read<MensesProvider>().isTimerStart;
         tuhurStart = context.read<TuhurProvider>().isTimerStart;
-        
+
         return Scaffold(
           appBar: AppBar(
             backgroundColor: darkMode ? AppDarkColors.white : AppColors.white,
