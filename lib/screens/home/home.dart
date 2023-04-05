@@ -4,6 +4,9 @@ import 'package:ayyami/constants/const.dart';
 import 'package:ayyami/constants/dark_mode_colors.dart';
 import 'package:ayyami/constants/images.dart';
 import 'package:ayyami/firebase_calls/tuhur_record.dart';
+import 'package:ayyami/providers/likoria_timer_provider.dart';
+import 'package:ayyami/providers/post-natal_timer_provider.dart';
+import 'package:ayyami/providers/pregnancy_timer_provider.dart';
 import 'package:ayyami/providers/tuhur_provider.dart';
 import 'package:ayyami/providers/user_provider.dart';
 import 'package:ayyami/screens/prayer/prayer_timing.dart';
@@ -11,6 +14,7 @@ import 'package:ayyami/tracker/menses_tracker.dart';
 import 'package:ayyami/tracker/tuhur_tracker.dart';
 import 'package:ayyami/widgets/app_text.dart';
 import 'package:ayyami/widgets/gradient_button.dart';
+import 'package:ayyami/widgets/utils.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -43,6 +47,8 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
   int lastMensesDays = 0, lastMensesHours = 0, lastMensesMinutes = 0, lastMensesSeconds = 0;
   int lastTuhurDays = 0, lastTuhurHours = 0, lastTuhurMinutes = 0, lastTuhurSeconds = 0;
 
+  bool mensesStart=false,tuhurStart=false;
+
   @override
   void initState() {
     super.initState();
@@ -53,6 +59,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
     // Future.delayed(const Duration(microseconds: 100),(){
     //   provider.initPrayerTiming(context);
     // });
+
     WidgetsBinding.instance.addObserver(this);
     getLastTuhur(uid, provider);
     getLastMenses(uid, provider);
@@ -190,30 +197,30 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
         var doc = docList[x];
         Timestamp startTime = doc.get('start_date');
         int tuhurFrom = doc.get('from');
-        bool non_menstrual_bleeding = doc.get('non_menstrual_bleeding');
-        if (!non_menstrual_bleeding) {
-          try {
-            Timestamp endTime = doc.get('end_time');
+        try {
+          Timestamp endTime = doc.get('end_time');
 
-            int days = doc.get('days');
-            int hour = doc.get('hours');
-            int minute = doc.get('minutes');
-            int seconds = doc.get('seconds');
+          int days = doc.get('days');
+          // int hour = doc.get('hours');
+          // int minute = doc.get('minutes');
+          // int seconds = doc.get('seconds');
 
-            break;
-          } catch (e) {
-            var tuhurProvider = context.read<TuhurProvider>();
-            var timerStart = tuhurProvider.getTimerStart;
-            if (!timerStart) {
-              tuhurProvider.setTuhurID(doc.id);
-              tuhurProvider.setTimerStart(true);
-              tuhurProvider.setFrom(tuhurFrom);
-              tuhurProvider.setStartTime(startTime);
-              var now = DateTime.now();
-              var diff = now.difference(startTime.toDate());
-              TuhurTracker().startTuhurTimerAgain(tuhurProvider, diff.inMilliseconds);
-            }
+          break;
+        } catch (e) {
+          print('$e error in tuhur');
+          var tuhurProvider = context.read<TuhurProvider>();
+          var timerStart = tuhurProvider.getTimerStart;
+          print('${doc.id} tuhur id that is not finished');
+          if (!timerStart) {
+            tuhurProvider.setTuhurID(doc.id);
+            tuhurProvider.setTimerStart(true);
+            tuhurProvider.setFrom(tuhurFrom);
+            tuhurProvider.setStartTime(startTime);
+            var now = DateTime.now();
+            var diff = now.difference(startTime.toDate());
+            TuhurTracker().startTuhurTimerAgain(tuhurProvider, diff.inMilliseconds);
           }
+
         }
       }
     });
@@ -243,10 +250,12 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
   Widget build(BuildContext context) {
     return Consumer<UserProvider>(builder: (consumerContext, userProvider, child) {
       final provider = context.read<PrayerProvider>();
-      final tuhurProvider = Provider.of<TuhurProvider>(context,listen: false);
+      final tuhurProvider = Provider.of<TuhurProvider>(context, listen: false);
       var darkMode = userProvider.getIsDarkMode;
       var lang = userProvider.getLanguage;
       var text = AppTranslate().textLanguage[lang];
+      mensesStart = context.read<MensesProvider>().isTimerStart;
+      tuhurStart = context.read<TuhurProvider>().isTimerStart;
       return Container(
         height: double.infinity,
         decoration: BoxDecoration(gradient: darkMode ? AppDarkColors.backgroundGradient : AppColors.backgroundGradient),
@@ -460,36 +469,41 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                 height: 50,
               ),
 
-              Visibility(visible: tuhurProvider.isTimerStart,child: GestureDetector(
-                child: Directionality(textDirection: lang=='ur'?TextDirection.rtl:TextDirection.ltr, child: Container(
-                  padding: EdgeInsets.only(top: 5, bottom: 5),
-                  margin: EdgeInsets.only(left: 50, right: 50),
-                  decoration:
-                  BoxDecoration(gradient: AppColors.bgPinkishGradient, borderRadius: BorderRadius.circular(5)),
-                  child: Center(
-                    child: Wrap(
-                      spacing: 20,
-                      crossAxisAlignment: WrapCrossAlignment.center,
-                      children: [
-                        SvgPicture.asset(
-                          AppImages.dropIcon,
-                          width: 28.sp,
-                          height: 40.sp,
+              Visibility(
+                visible: tuhurProvider.isTimerStart,
+                child: GestureDetector(
+                  child: Directionality(
+                    textDirection: lang == 'ur' ? TextDirection.rtl : TextDirection.ltr,
+                    child: Container(
+                      padding: EdgeInsets.only(top: 5, bottom: 5),
+                      margin: EdgeInsets.only(left: 50, right: 50),
+                      decoration:
+                          BoxDecoration(gradient: AppColors.bgPinkishGradient, borderRadius: BorderRadius.circular(5)),
+                      child: Center(
+                        child: Wrap(
+                          spacing: 20,
+                          crossAxisAlignment: WrapCrossAlignment.center,
+                          children: [
+                            SvgPicture.asset(
+                              AppImages.dropIcon,
+                              width: 28.sp,
+                              height: 40.sp,
+                            ),
+                            Text(
+                              text['spot_today']!,
+                              style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700, fontSize: 22.sp),
+                            )
+                          ],
                         ),
-                        Text(
-                          text['spot_today']!,
-                          style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700, fontSize: 22.sp),
-                        )
-                      ],
+                      ),
                     ),
                   ),
-                ),),
-                onTap: (){
-                  var currentID=tuhurProvider.getTuhurID;
-                  TuhurRecord.uploadNonMenstrualBleeding(currentID, true);
-                },
-              ),),
-
+                  onTap: () {
+                    var currentID = tuhurProvider.getTuhurID;
+                    TuhurRecord.uploadNonMenstrualBleeding(currentID, true);
+                  },
+                ),
+              ),
             ]),
           ),
         ),

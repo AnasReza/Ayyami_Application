@@ -40,6 +40,7 @@ class _is_it_bleeding_pregnantState extends State<is_it_bleeding_pregnant> {
 
       return Scaffold(
         body: Container(
+          height: double.infinity,
             decoration: BoxDecoration(
                 gradient: widget.darkMode ? AppDarkColors.backgroundGradient : AppColors.backgroundGradient),
             child: SingleChildScrollView(

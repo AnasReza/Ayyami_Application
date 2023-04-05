@@ -2,6 +2,7 @@
 import 'package:ayyami/constants/dark_mode_colors.dart';
 import 'package:ayyami/firebase_calls/questions_record.dart';
 import 'package:ayyami/providers/user_provider.dart';
+import 'package:ayyami/screens/Questions/is_it_bleeding_pregnant.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
@@ -13,8 +14,6 @@ import '../../translation/app_translation.dart';
 import '../../widgets/gradient_button.dart';
 import '../../widgets/utils.dart';
 import 'Are_you_pregnant.dart';
-import 'Is_it_still_bleeding.dart';
-import 'is_it_bleeding_pregnant.dart';
 
 class second_question extends StatefulWidget {
   String uid;

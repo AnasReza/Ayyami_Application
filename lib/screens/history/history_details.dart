@@ -21,32 +21,31 @@ class HistoryDetails extends StatelessWidget {
   String heading;
   QueryDocumentSnapshot<Map<String, dynamic>> data;
 
-
   @override
   Widget build(BuildContext context) {
     return Consumer<UserProvider>(builder: (c, provider, child) {
       var darkMode = provider.getIsDarkMode;
       var text = AppTranslate().textLanguage[provider.getLanguage!];
-      int days=data['days'];
-      int hours=data['hours'];
-      int minutes=data['minutes'];
-      Timestamp startStamp=data.get('start_date');
-      Timestamp endStamp=data.get('end_time');
-      DateTime startDate=startStamp.toDate();
-      DateTime endDate=endStamp.toDate();
-      var dayFormat=DateFormat('EEEE');
-      var monthFormat=DateFormat('MMMM');
-      var startAMPM=DateFormat('a').format(startDate);
-      var endAMPM=DateFormat('a').format(endDate);
-      var starttime=DateFormat('hh:mm').format(startDate);
-      var endtime=DateFormat('hh:mm').format(endDate);
-      String startDayName=dayFormat.format(startDate);
-      String startMonthName=monthFormat.format(startDate);
-      String endDayName=dayFormat.format(endDate);
-      String endMonthName=monthFormat.format(endDate);
-      if(provider.getLanguage=='ur'){
-        startDayName=getUrduDayNames(startDayName)!;
-        endDayName=getUrduDayNames(endDayName)!;
+      int days = data['days'];
+      int hours = data['hours'];
+      int minutes = data['minutes'];
+      Timestamp startStamp = data.get('start_date');
+      Timestamp endStamp = data.get('end_time');
+      DateTime startDate = startStamp.toDate();
+      DateTime endDate = endStamp.toDate();
+      var dayFormat = DateFormat('EEEE');
+      var monthFormat = DateFormat('MMMM');
+      var startAMPM = DateFormat('a').format(startDate);
+      var endAMPM = DateFormat('a').format(endDate);
+      var starttime = DateFormat('hh:mm').format(startDate);
+      var endtime = DateFormat('hh:mm').format(endDate);
+      String startDayName = dayFormat.format(startDate);
+      String startMonthName = monthFormat.format(startDate);
+      String endDayName = dayFormat.format(endDate);
+      String endMonthName = monthFormat.format(endDate);
+      if (provider.getLanguage == 'ur') {
+        startDayName = getUrduDayNames(startDayName)!;
+        endDayName = getUrduDayNames(endDayName)!;
       }
 
       return Scaffold(
@@ -124,7 +123,9 @@ class HistoryDetails extends StatelessWidget {
                               heading: text!['end_date']!),
                         ],
                       ),
-                      const SizedBox(height: 20,),
+                      const SizedBox(
+                        height: 20,
+                      ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -136,7 +137,7 @@ class HistoryDetails extends StatelessWidget {
                               lang: provider.getLanguage!,
                               heading: text['start_time']!),
                           DetailsWidget(
-                              backgroundColor: AppColors.endDateColor,
+                              backgroundColor: AppColors.endTimeColor,
                               monthYear: endAMPM,
                               day: endtime,
                               dayName: '',
@@ -144,8 +145,15 @@ class HistoryDetails extends StatelessWidget {
                               heading: text['end_time']!),
                         ],
                       ),
-                      const SizedBox(height: 20,),
-                      TotalDuration(text: text, lang: provider.language, days: days.toString(), hours: hours.toString(), minutes: minutes.toString())
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      TotalDuration(
+                          text: text,
+                          lang: provider.language,
+                          days: days.toString(),
+                          hours: hours.toString(),
+                          minutes: minutes.toString())
                     ],
                   ),
                 )

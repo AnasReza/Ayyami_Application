@@ -89,9 +89,14 @@ class TuhurTracker{
     _stopWatch.onStartTimer();
   }
 
-  void stopTuhurTimer(TuhurProvider tuhurProvider){
+  void stopTuhurTimer(TuhurProvider tuhurProvider,Timestamp endTime){
     String tuhurID=tuhurProvider.getTuhurID;
-    TuhurRecord.uploadTuhurEndTime(tuhurID,daysCount,hoursCount,minutesCount,secondsCount);
+    var startTime=tuhurProvider.startTime.toDate();
+    var endDate=endTime.toDate();
+
+    var diff= endDate.difference(startTime);
+    var map=Utils.timeConverter(diff);
+    TuhurRecord.uploadTuhurEndTime(tuhurID,map['days']!,map['hours']!,map['minutes']!,map['seconds']!);
 
     tuhurProvider.setTimerStart(false);
     tuhurProvider.setDays(0);

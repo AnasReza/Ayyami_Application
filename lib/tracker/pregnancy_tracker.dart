@@ -27,7 +27,7 @@ class PregnancyTracker {
   void startPregnancyTimer(UserProvider userProvider, PregnancyProvider provider, String uid,
       TuhurProvider tuhurProvider, Timestamp startTime) {
     if (tuhurProvider.getTimerStart) {
-      tuhurTracker.stopTuhurTimer(tuhurProvider);
+      tuhurTracker.stopTuhurTimer(tuhurProvider,startTime);
       var pregnancy = PregnancyRecord().uploadPregnancyStart(uid, startTime);
       pregnancy.then((value) {
         saveDocId(value.id);

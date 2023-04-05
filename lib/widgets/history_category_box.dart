@@ -1,5 +1,6 @@
 import 'package:ayyami/constants/images.dart';
 import 'package:ayyami/widgets/app_text.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -7,10 +8,11 @@ import 'package:flutter_svg/svg.dart';
 import '../constants/colors.dart';
 import '../constants/dark_mode_colors.dart';
 
-class CategoryBox extends StatefulWidget {
-  CategoryBox(
+class HistoryCategoryBox extends StatefulWidget {
+  HistoryCategoryBox(
       {Key? key,
       required this.categoryName,
+      required this.data,
       required this.days,
       required this.hours,
       required this.checkbox,
@@ -19,21 +21,24 @@ class CategoryBox extends StatefulWidget {
       required this.comingSoon,
       required this.darkMode,
       required this.text,
+        required this.returnID,
       this.textDirection,})
       : super(key: key);
 
   final String categoryName;
+  QueryDocumentSnapshot<Map<String, dynamic>> data;
   final int days, hours;
   bool checkbox, isSelected, showDate, comingSoon, darkMode;
   TextDirection? textDirection;
   Map<String, String> text;
+  Function(QueryDocumentSnapshot<Map<String, dynamic>>,bool) returnID;
 
 
   @override
-  State<CategoryBox> createState() => _CategoryBoxState();
+  State<HistoryCategoryBox> createState() => _HistoryCategoryBoxState();
 }
 
-class _CategoryBoxState extends State<CategoryBox> {
+class _HistoryCategoryBoxState extends State<HistoryCategoryBox> {
   @override
   Widget build(BuildContext context) {
     return widget.checkbox
@@ -161,7 +166,12 @@ class _CategoryBoxState extends State<CategoryBox> {
                     setState(() {
                       widget.isSelected = !widget.isSelected;
                     });
-                  },
+                    if(widget.isSelected){
+                      widget.returnID(widget.data,true);
+                    }else{
+                      widget.returnID(widget.data,false);
+                    }
+                    },
                   child: Container(
                     width: 44.w,
                     height: 44.h,

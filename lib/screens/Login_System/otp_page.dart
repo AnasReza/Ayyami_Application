@@ -290,6 +290,7 @@ class _otp_pageState extends State<otp_page> {
                                 if (value.exists) {
                                   final provider=Provider.of<UserProvider>(context,listen: false);
                                   provider.setUID(getUid!);
+                                  provider.setDarkMode(value.get('dark-mode'));
                                   provider.setLocation(value.get('location_name'));
                                   provider.setCurrentPoint(value.get('coordinates'));
                                   setHive(getUid!);

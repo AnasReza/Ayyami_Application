@@ -80,7 +80,7 @@ class MenstrualPeriodStartDateState extends State<MenstrualPeriodStartDate> {
                           ),
                         ),
                         const SizedBox(height: 10),
-                        Row(
+                        Column(
                           children: [
                             Column(
                               children: [
@@ -112,20 +112,17 @@ class MenstrualPeriodStartDateState extends State<MenstrualPeriodStartDate> {
                                     ],
                                   ),
                                 ),
-                                Row(
-                                  children: [
-                                    Container(
-                                      margin: const EdgeInsets.only(left: 58, top: 10),
-                                      width: 130,
-                                      height: 3,
-                                      decoration: BoxDecoration(
-                                        color: Color(0xFf8F92A1).withOpacity(0.3),
-                                      ),
-                                    )
-                                  ],
+                                Container(
+                                  margin: const EdgeInsets.only(left: 58, top: 10,right: 58),
+                                  width: double.infinity,
+                                  height: 3,
+                                  decoration: BoxDecoration(
+                                    color: Color(0xFf8F92A1).withOpacity(0.3),
+                                  ),
                                 )
                               ],
                             ),
+                            SizedBox(height: 20,),
                             Column(
                               children: [
                                 InkWell(
@@ -156,17 +153,13 @@ class MenstrualPeriodStartDateState extends State<MenstrualPeriodStartDate> {
                                     ],
                                   ),
                                 ),
-                                Row(
-                                  children: [
-                                    Container(
-                                      margin: const EdgeInsets.only(left: 58, top: 10),
-                                      width: 130,
-                                      height: 3,
-                                      decoration: BoxDecoration(
-                                        color: Color(0xFf8F92A1).withOpacity(0.3),
-                                      ),
-                                    )
-                                  ],
+                                Container(
+                                  margin: const EdgeInsets.only(left: 58, top: 10,right: 58),
+                                  width: double.infinity,
+                                  height: 3,
+                                  decoration: BoxDecoration(
+                                    color: Color(0xFf8F92A1).withOpacity(0.3),
+                                  ),
                                 )
                               ],
                             ),

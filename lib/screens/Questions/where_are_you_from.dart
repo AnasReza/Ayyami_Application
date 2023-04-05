@@ -40,35 +40,18 @@ class LocationQuestionState extends State<LocationQuestion> {
       var text=AppTranslate().textLanguage[lang];
 
       return Scaffold(
-        appBar: AppBar(
-          elevation: 0,
-          backgroundColor: Colors.white,
-          title: SvgPicture.asset(
-            AppImages.logo,
-            width: 249.6.w,
-            height: 78.36.h,
-          ),
-          centerTitle: true,
-          // actions: [
-          //   InkWell(
-          //     onTap: () {
-          //       _key.currentState!.openDrawer();
-          //       // Navigator.push(context, MaterialPageRoute(builder: (context) => PrayerTiming()));
-          //     },
-          //     child: SvgPicture.asset(
-          //       AppImages.menuIcon,
-          //       width: 44.w,
-          //       height: 38.h,
-          //     ),
-          //   ),
-          // ],
-        ),
+
         body: Container(
           decoration: BoxDecoration(gradient: widget.darkMode?AppDarkColors.backgroundGradient:AppColors.backgroundGradient),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              Container(
+                height: 140,
+                width: 200,
+                child: SvgPicture.asset(widget.darkMode?AppImages.logo_white:AppImages.logo),
+              ),
               SizedBox(
                 width: double.infinity,
                 child: Row(
@@ -101,7 +84,7 @@ class LocationQuestionState extends State<LocationQuestion> {
               ),
               Row(
                 children: [
-                  SvgPicture.asset(AppImages.locationIcon),
+                  SvgPicture.asset(AppImages.locationIcon,color: widget.darkMode?AppDarkColors.headingColor:AppColors.headingColor,),
                   const SizedBox(
                     width: 20,
                   ),
@@ -120,11 +103,11 @@ class LocationQuestionState extends State<LocationQuestion> {
               const SizedBox(height: 20,),
               GestureDetector(child: Row(
                 children: [
-                  SvgPicture.asset(AppImages.locateIcon, width: 30, height: 30,),
+                  SvgPicture.asset(AppImages.locateIcon, width: 30, height: 30,color: widget.darkMode?AppDarkColors.headingColor:AppColors.headingColor,),
                   const SizedBox(
                     width: 20,
                   ),
-                  AppText(text: text['locate_me']!, fontSize: 18, fontWeight: FontWeight.w700,),
+                  AppText(text: text['locate_me']!, fontSize: 18, fontWeight: FontWeight.w700,color: widget.darkMode?AppDarkColors.headingColor:AppColors.headingColor,),
                 ],
               ), onTap: () {
                 _determinePosition().then((value) async {

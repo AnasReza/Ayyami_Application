@@ -21,6 +21,8 @@ import 'package:provider/provider.dart';
 
 import '../../constants/images.dart';
 import '../../dialog/likoria_color_dialog.dart';
+import '../../providers/menses_provider.dart';
+import '../../providers/tuhur_provider.dart';
 import '../../translation/app_translation.dart';
 
 class AllTrackers extends StatefulWidget {
@@ -31,6 +33,8 @@ class AllTrackers extends StatefulWidget {
 }
 
 class AllTrackersState extends State<AllTrackers> {
+  bool mensesStart=false,tuhurStart=false;
+
   @override
   void initState() {
     // TODO: implement initState
@@ -68,6 +72,7 @@ class AllTrackersState extends State<AllTrackers> {
   getPregnancyDetails() {
     var userProvider = context.read<UserProvider>();
     var pregProvider = context.read<PregnancyProvider>();
+    print('${userProvider.getUid}preg uid');
     FirebaseFirestore.instance
         .collection('pregnancy')
         .where('uid', isEqualTo: userProvider.getUid)
@@ -81,6 +86,7 @@ class AllTrackersState extends State<AllTrackers> {
         try {
           Timestamp endTime = doc.get('end_time');
         } catch (e) {
+          print('${doc.id} preg that is start');
           pregProvider.setTimerStart(true);
           pregProvider.setStartTime(startTime);
           var diff = DateTime.now().difference(startTime.toDate());
@@ -112,6 +118,7 @@ class AllTrackersState extends State<AllTrackers> {
           postNatalProvider.setStartTime(startTime);
           var diff = DateTime.now().difference(startTime.toDate());
           PostNatalTracker().startPostNatalAgain(postNatalProvider, diff.inMilliseconds);
+
         }
       }
     });
@@ -125,6 +132,9 @@ class AllTrackersState extends State<AllTrackers> {
         var darkMode = provider.getIsDarkMode;
         var lang = provider.getLanguage;
         var text = AppTranslate().textLanguage[lang];
+        mensesStart = context.read<MensesProvider>().isTimerStart;
+        tuhurStart = context.read<TuhurProvider>().isTimerStart;
+        
         return Scaffold(
           appBar: AppBar(
             backgroundColor: darkMode ? AppDarkColors.white : AppColors.white,
@@ -161,6 +171,7 @@ class AllTrackersState extends State<AllTrackers> {
                   const SizedBox(
                     height: 30,
                   ),
+
                   SizedBox(
                     width: double.infinity,
                     child: Text(

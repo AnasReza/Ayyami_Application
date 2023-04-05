@@ -80,7 +80,7 @@ class menstrual_periodState extends State<menstrual_period> {
                           ),
                         ),
                         const SizedBox(height: 10),
-                        Row(
+                        Column(
                           children: [
                             Column(
                               children: [
@@ -112,20 +112,17 @@ class menstrual_periodState extends State<menstrual_period> {
                                     ],
                                   ),
                                 ),
-                                Row(
-                                  children: [
-                                    Container(
-                                      margin: const EdgeInsets.only(left: 58, top: 10),
-                                      width: 130,
-                                      height: 3,
-                                      decoration: BoxDecoration(
-                                        color: Color(0xFf8F92A1).withOpacity(0.3),
-                                      ),
-                                    )
-                                  ],
+                                Container(
+                                  margin: const EdgeInsets.only(left: 58, top: 10,right: 58),
+                                  width:double.infinity,
+                                  height: 3,
+                                  decoration: BoxDecoration(
+                                    color: Color(0xFf8F92A1).withOpacity(0.3),
+                                  ),
                                 )
                               ],
                             ),
+                            SizedBox(height: 15,),
                             Column(
                               children: [
                                 InkWell(
@@ -156,17 +153,13 @@ class menstrual_periodState extends State<menstrual_period> {
                                     ],
                                   ),
                                 ),
-                                Row(
-                                  children: [
-                                    Container(
-                                      margin: const EdgeInsets.only(left: 58, top: 10),
-                                      width: 130,
-                                      height: 3,
-                                      decoration: BoxDecoration(
-                                        color: Color(0xFf8F92A1).withOpacity(0.3),
-                                      ),
-                                    )
-                                  ],
+                                Container(
+                                  margin: const EdgeInsets.only(left: 58, top: 10,right: 58),
+                                  width:double.infinity,
+                                  height: 3,
+                                  decoration: BoxDecoration(
+                                    color: Color(0xFf8F92A1).withOpacity(0.3),
+                                  ),
                                 )
                               ],
                             ),
@@ -185,7 +178,7 @@ class menstrual_periodState extends State<menstrual_period> {
                               fontWeight: FontWeight.w700,
                             )),
                         const SizedBox(height: 10),
-                        Row(
+                        Column(
                           children: [
                             Column(
                               children: [
@@ -217,20 +210,17 @@ class menstrual_periodState extends State<menstrual_period> {
                                     ],
                                   ),
                                 ),
-                                Row(
-                                  children: [
-                                    Container(
-                                      margin: const EdgeInsets.only(left: 58, top: 10),
-                                      width: 130,
-                                      height: 3,
-                                      decoration: BoxDecoration(
-                                        color: Color(0xFf8F92A1).withOpacity(0.3),
-                                      ),
-                                    )
-                                  ],
+                                Container(
+                                  margin: const EdgeInsets.only(left: 58, top: 10,right: 58),
+                                  width:double.infinity,
+                                  height: 3,
+                                  decoration: BoxDecoration(
+                                    color: Color(0xFf8F92A1).withOpacity(0.3),
+                                  ),
                                 )
                               ],
                             ),
+                            SizedBox(height: 15,),
                             Column(
                               children: [
                                 InkWell(
@@ -241,19 +231,19 @@ class menstrual_periodState extends State<menstrual_period> {
                                     children: [
                                       Container(
                                         padding: const EdgeInsets.only(left: 60, top: 20),
-                                        child: const Icon(
+                                        child: Icon(
                                           Icons.access_time_outlined,
-                                          color: Color(0xFF1F3D73),
+                                          color: widget.darkMode?AppDarkColors.headingColor:AppColors.headingColor,
                                         ),
                                       ),
                                       Padding(
                                         padding: EdgeInsets.only(top: 22, left: 10),
                                         child: Text(
                                           getEndTime(text),
-                                          style: const TextStyle(
+                                          style: TextStyle(
                                             fontSize: 15.0,
                                             fontFamily: 'DMSans',
-                                            color: Color(0xff1F3D73),
+                                            color: widget.darkMode?AppDarkColors.headingColor:AppColors.headingColor,
                                             fontWeight: FontWeight.w400,
                                           ),
                                         ),
@@ -261,17 +251,13 @@ class menstrual_periodState extends State<menstrual_period> {
                                     ],
                                   ),
                                 ),
-                                Row(
-                                  children: [
-                                    Container(
-                                      margin: const EdgeInsets.only(left: 58, top: 10),
-                                      width: 130,
-                                      height: 3,
-                                      decoration: BoxDecoration(
-                                        color: Color(0xFf8F92A1).withOpacity(0.3),
-                                      ),
-                                    )
-                                  ],
+                                Container(
+                                  margin: const EdgeInsets.only(left: 58, top: 10,right: 58),
+                                  width:double.infinity,
+                                  height: 3,
+                                  decoration: BoxDecoration(
+                                    color: Color(0xFf8F92A1).withOpacity(0.3),
+                                  ),
                                 )
                               ],
                             ),

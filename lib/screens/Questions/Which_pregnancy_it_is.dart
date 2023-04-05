@@ -53,6 +53,7 @@ class _which_pregnancyState extends State<which_pregnancy> {
 
       return Scaffold(
         body: Container(
+          height: double.infinity,
           decoration: BoxDecoration(gradient: widget.darkMode?AppDarkColors.backgroundGradient:AppColors.backgroundGradient),
             child: SingleChildScrollView(
               child: Column(

@@ -40,7 +40,7 @@ class MensesTracker {
       Utils.saveDocMensesId(value.id);
       mensesProvider.setMensesID(value.id);
       mensesProvider.setStartTime(startTime);
-      tuhurTracker.stopTuhurTimer(tuhurProvider);
+      tuhurTracker.stopTuhurTimer(tuhurProvider,startTime);
       print('${value.id} record doc id');
     });
     _stopWatch.secondTime.listen((event) {
