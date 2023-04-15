@@ -105,22 +105,23 @@ class _ExpandedReminderContainerState extends State<ExpandedReminderContainer> {
                     height: 16.h,
                   ),
                   widget.regulationExpanded
-                      ? const SizedBox()
+                      ? Container()
                       : Column(
                           children: [
-                            SingleChildScrollView(
+                            Visibility(visible:child.getMap.isNotEmpty,child: SingleChildScrollView(
                               scrollDirection: Axis.horizontal,
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                 children: List.generate(
                                   child.getMap.length,
-                                  (index) {
+                                      (index) {
                                     print('${child.getMap[index]['id']} med id from map $index');
                                     var list = child.getMap[index]['timeList'];
                                     String timeName = '';
                                     for (var listItem in list) {
-                                      timeName = '$timeName\n$listItem';
+                                      timeName = '$timeName\n${listItem['timeName']}';
                                     }
+
                                     return Padding(
                                       padding: const EdgeInsets.symmetric(
                                         horizontal: 8.0,
@@ -138,7 +139,8 @@ class _ExpandedReminderContainerState extends State<ExpandedReminderContainer> {
                                   },
                                 ),
                               ),
-                            ),
+                            ),),
+
                             SizedBox(
                               height: 32.h,
                             ),

@@ -39,35 +39,71 @@ class _HistoryScreenState extends State<HistoryScreen> {
   String? selectedValue;
   List<QueryDocumentSnapshot<Map<String, dynamic>>> allTuhur = [];
   List<QueryDocumentSnapshot<Map<String, dynamic>>> allMenses = [];
+  List<QueryDocumentSnapshot<Map<String,dynamic>>> lengthList=[];
   List<Map<String, dynamic>> selectedDataList = [];
   late ProgressDialog pd;
+  List<Widget> historyList=[];
 
   @override
   void initState() {
     super.initState();
-pd=ProgressDialog(context: context);
+    pd = ProgressDialog(context: context);
     var userPro = context.read<UserProvider>();
     var uid = userPro.getUid;
-    getMensesData(uid);
-    getTuhurData(uid);
+    getMensesData(uid,'6 Months');
   }
 
-  getMensesData(String uid) {
-    MensesRecord().getAllMensesRecord(uid).listen((event) {
-      allMenses.clear();
-      print('${event.docs.length} menses length');
-      setState(() {
-        allMenses = event.docs;
-      });
-    });
-  }
+  getMensesData(String uid,String timeLimit) {
+    int days=0;
+    if(timeLimit=='6 Months'){
+      days=180;
+    }
+    else if(timeLimit=='1 year'){
+      days=365;
+    }
+    else if(timeLimit=='2 years'){
+      days=730;
+    }
+    else if(timeLimit=='5 years'){
+      days=1825;
+    }
 
-  getTuhurData(String uid) {
-    TuhurRecord().getAllTuhurRecord(uid).listen((event) {
-      allTuhur.clear();
-      setState(() {
-        allTuhur = event.docs;
+    MensesRecord().getAllMensesRecordLimited(uid,DateTime.now().subtract(Duration(days: days))).listen((mensesEvent) {
+
+      TuhurRecord().getAllTuhurRecordLimit(uid,DateTime.now().subtract(Duration(days: days))).listen((tuhurEvent) {
+        List<QueryDocumentSnapshot<Map<String,dynamic>>> newtuhurList=[];
+
+        allTuhur.clear();
+        allMenses.clear();
+        allMenses = mensesEvent.docs;
+        allTuhur = tuhurEvent.docs;
+        for(QueryDocumentSnapshot<Map<String,dynamic>> map in allTuhur){
+          try{
+            var endTime=map['end_time'];
+            newtuhurList.add(map);
+          }catch(e){
+            print('${map.id} end timenahi hai');
+          }
+        }
+        allTuhur.clear();
+        allTuhur=newtuhurList;
+        if(allMenses.length>allTuhur.length){
+          lengthList=allTuhur;
+        }else if(allTuhur.length>allMenses.length){
+          lengthList=allMenses;
+        }else{
+          lengthList=allMenses;
+        }
+        print('AllMenses=${allMenses.length}  AllTuhur=${allTuhur.length}');
+       // for(int m=0;m<allMenses.length;m++){
+       //   for(int t=0;t<allTuhur.length;t++){
+       //
+       //   }
+       // }
+
+        setState(() {});
       });
+
     });
   }
 
@@ -75,10 +111,11 @@ pd=ProgressDialog(context: context);
   void dispose() {
     // TODO: implement dispose
     super.dispose();
-    if(pd.isOpen()){
+    if (pd.isOpen()) {
       pd.close();
     }
   }
+
   @override
   Widget build(BuildContext context) {
     return Consumer<UserProvider>(builder: (c, provider, child) {
@@ -142,8 +179,7 @@ pd=ProgressDialog(context: context);
                                     );
                                     createPDF();
                                   } else {
-                                    toast_notification()
-                                        .toast_message(text['not_selected_history']!);
+                                    toast_notification().toast_message(text['not_selected_history']!);
                                   }
                                 },
                                 child: SvgPicture.asset(
@@ -168,7 +204,8 @@ pd=ProgressDialog(context: context);
                                   color: darkMode ? AppDarkColors.headingColor : AppColors.headingColor,
                                 ),
                                 CustomDropdownButton2(
-                                  hint: text['1_year']!,
+                                  // items = [text!['6_month']!, text['1_year']!, text['2_year']!, text['5_year']!];
+                                  hint: text['6_month']!,
                                   icon: SvgPicture.asset(
                                     AppImages.downIcon,
                                     width: 20.w,
@@ -189,6 +226,8 @@ pd=ProgressDialog(context: context);
                                   dropdownItems: items,
                                   value: selectedValue,
                                   onChanged: (value) {
+                                    print('$value selected value');
+                                    getMensesData(provider.getUid, value!);
                                     setState(() {
                                       selectedValue = value;
                                     });
@@ -210,7 +249,7 @@ pd=ProgressDialog(context: context);
                             ),
                             child: Expanded(
                                 child: ListView.builder(
-                                    itemCount: allMenses.length,
+                                    itemCount: lengthList.length,
                                     itemBuilder: (c, index) {
                                       print('$index from menses list');
                                       Timestamp startStamp = allMenses[index]['start_date'];
@@ -240,14 +279,15 @@ pd=ProgressDialog(context: context);
                                               text: text,
                                               data: allMenses[index],
                                               returnID: (data, value) {
-                                                if(value){
+                                                if (value) {
                                                   selectedDataList.add({'name': text['menses']!, 'data': data});
-                                                }else{
-                                                  var dataID=data.id;
-                                                  for(int x=0;x<selectedDataList.length;x++){
-                                                    QueryDocumentSnapshot<Map<String,dynamic>> selected=selectedDataList[x]['data'];
-                                                    var selectedID=selected.id;
-                                                    if(dataID==selectedID){
+                                                } else {
+                                                  var dataID = data.id;
+                                                  for (int x = 0; x < selectedDataList.length; x++) {
+                                                    QueryDocumentSnapshot<Map<String, dynamic>> selected =
+                                                        selectedDataList[x]['data'];
+                                                    var selectedID = selected.id;
+                                                    if (dataID == selectedID) {
                                                       selectedDataList.removeAt(x);
                                                     }
                                                   }
@@ -274,14 +314,15 @@ pd=ProgressDialog(context: context);
                                               text: text,
                                               data: allTuhur[index],
                                               returnID: (data, value) {
-                                                if(value){
+                                                if (value) {
                                                   selectedDataList.add({'name': text['tuhur']!, 'data': data});
-                                                }else{
-                                                  var dataID=data.id;
-                                                  for(int x=0;x<selectedDataList.length;x++){
-                                                    QueryDocumentSnapshot<Map<String,dynamic>> selected=selectedDataList[x]['data'];
-                                                    var selectedID=selected.id;
-                                                    if(dataID==selectedID){
+                                                } else {
+                                                  var dataID = data.id;
+                                                  for (int x = 0; x < selectedDataList.length; x++) {
+                                                    QueryDocumentSnapshot<Map<String, dynamic>> selected =
+                                                        selectedDataList[x]['data'];
+                                                    var selectedID = selected.id;
+                                                    if (dataID == selectedID) {
                                                       selectedDataList.removeAt(x);
                                                     }
                                                   }
@@ -291,11 +332,12 @@ pd=ProgressDialog(context: context);
                                             ),
                                             onTap: () {
                                               nextScreen(
-                                                  context,
-                                                  HistoryDetails(
-                                                    text['tuhur']!,
-                                                    allTuhur[index],
-                                                  ),);
+                                                context,
+                                                HistoryDetails(
+                                                  text['tuhur']!,
+                                                  allTuhur[index],
+                                                ),
+                                              );
                                             },
                                           ),
                                           SizedBox(height: 41.h),
@@ -389,11 +431,10 @@ pd=ProgressDialog(context: context);
               decoration: const pw.BoxDecoration(
                   color: PdfColors.pink50,
                   gradient: pw.LinearGradient(
-                    colors: [PdfColors.white, PdfColor.fromInt(0xffD88DBC)],
-                    stops: [0, 1],
-                    begin: pw.Alignment(180,778.878),
-                    end: pw.Alignment(548,778.878)
-                  )),
+                      colors: [PdfColors.white, PdfColor.fromInt(0xffD88DBC)],
+                      stops: [0, 1],
+                      begin: pw.Alignment(180, 778.878),
+                      end: pw.Alignment(548, 778.878))),
               child: pw.Padding(
                 padding: pw.EdgeInsets.only(
                   left: 70.w,
@@ -402,7 +443,9 @@ pd=ProgressDialog(context: context);
                 ),
                 child: pw.Column(
                   children: [
-                    pw.Align(alignment: pw.Alignment.center,child: pw.SvgImage(svg:app_logo,width: 249.6.w,height: 78.4.h)),
+                    pw.Align(
+                        alignment: pw.Alignment.center,
+                        child: pw.SvgImage(svg: app_logo, width: 249.6.w, height: 78.4.h)),
 
                     pw.SizedBox(height: 70.6.h),
                     pw.Row(
@@ -762,10 +805,11 @@ pd=ProgressDialog(context: context);
       File file = await File('${tempDir.path}/$dateTime.pdf').create();
       file.writeAsBytesSync(bytes);
       pd.close();
-      shareFile(file.path,text!['share_pdf']!);
+      shareFile(file.path, text!['share_pdf']!);
     });
   }
-  void shareFile(String path,String title)async{
-await FlutterShare.shareFile(title: title, filePath: path);
+
+  void shareFile(String path, String title) async {
+    await FlutterShare.shareFile(title: title, filePath: path);
   }
 }

@@ -31,8 +31,6 @@ import '../translation/app_translation.dart';
 import 'app_text.dart';
 
 class PregnancyTimerBox extends StatefulWidget {
-
-
   PregnancyTimerBox({Key? key}) : super(key: key);
 
   @override
@@ -41,9 +39,7 @@ class PregnancyTimerBox extends StatefulWidget {
 
 class _PregnancyTimerBoxState extends State<PregnancyTimerBox> {
   static late String uid;
-  bool darkMode=false;
-
-
+  bool darkMode = false;
 
   @override
   void initState() {
@@ -58,9 +54,9 @@ class _PregnancyTimerBoxState extends State<PregnancyTimerBox> {
       uid = userProvider.getUid!;
       bool isTimerStart = pro.getTimerStart;
       bool isTuhurStart = tuhurProvider.getTimerStart;
-      darkMode=userProvider.getIsDarkMode;
-      var lang=userProvider.getLanguage;
-      var text=AppTranslate().textLanguage[lang];
+      darkMode = userProvider.getIsDarkMode;
+      var lang = userProvider.getLanguage;
+      var text = AppTranslate().textLanguage[lang];
       return Stack(
         clipBehavior: Clip.none,
         children: [
@@ -68,10 +64,10 @@ class _PregnancyTimerBoxState extends State<PregnancyTimerBox> {
           Container(
             height: 210.h,
             decoration: BoxDecoration(
-              color: darkMode?AppDarkColors.lightGreyBoxColor:AppColors.white,
+              color: darkMode ? AppDarkColors.lightGreyBoxColor : AppColors.white,
               borderRadius: BorderRadius.circular(18.r),
               border: Border.all(
-                color: darkMode?AppDarkColors.headingColor:AppColors.headingColor,
+                color: darkMode ? AppDarkColors.headingColor : AppColors.headingColor,
                 width: 5.w,
               ),
               boxShadow: const [
@@ -98,7 +94,7 @@ class _PregnancyTimerBoxState extends State<PregnancyTimerBox> {
                   Column(
                     children: [
                       AppText(
-                        text: isTimerStart?pro.weeks.toString():'0',
+                        text: isTimerStart ? pro.weeks.toString() : '0',
                         color: AppColors.pink,
                         fontSize: 56.722694396972656.sp,
                         fontWeight: FontWeight.w700,
@@ -116,7 +112,7 @@ class _PregnancyTimerBoxState extends State<PregnancyTimerBox> {
                   Column(
                     children: [
                       AppText(
-                        text: isTimerStart?pro.days.toString():'0',
+                        text: isTimerStart ? pro.days.toString() : '0',
                         color: AppColors.pink,
                         fontSize: 56.722694396972656.sp,
                         fontWeight: FontWeight.w700,
@@ -134,7 +130,7 @@ class _PregnancyTimerBoxState extends State<PregnancyTimerBox> {
                   Column(
                     children: [
                       AppText(
-                        text: isTimerStart?pro.hours.toString():'0',
+                        text: isTimerStart ? pro.hours.toString() : '0',
                         color: AppColors.pink,
                         fontSize: 56.722694396972656.sp,
                         fontWeight: FontWeight.w700,
@@ -160,12 +156,12 @@ class _PregnancyTimerBoxState extends State<PregnancyTimerBox> {
             child: InkWell(
               onTap: () {
                 if (!isTimerStart) {
-                  if(isTuhurStart){
+                  if (isTuhurStart) {
                     showStartDialog(text!);
-                  }else{
+                  } else {
                     toast_notification().toast_message(text['when_pregnancy_start']!);
                   }
-                }else{
+                } else {
                   showStopDialog(text!);
                 }
               },
@@ -196,10 +192,10 @@ class _PregnancyTimerBoxState extends State<PregnancyTimerBox> {
     });
   }
 
-
-  void showStartDialog(Map<String,String> text) {
+  void showStartDialog(Map<String, String> text) {
     showDialog(
         context: context,
+        barrierDismissible: true,
         builder: (dialogContext) {
           return DialogDateTime(
             getDateTime: (date, time) {
@@ -226,9 +222,12 @@ class _PregnancyTimerBoxState extends State<PregnancyTimerBox> {
         });
   }
 
-  void showStopDialog(Map<String,String> text) {
+  void showStopDialog(Map<String, String> text) {
+    print('pregnancy stop');
     showDialog(
         context: context,
+        barrierDismissible: true,
+        useSafeArea: true,
         builder: (dialogContext) {
           return DialogDateTime(
             getDateTime: (date, time) {
@@ -241,27 +240,36 @@ class _PregnancyTimerBoxState extends State<PregnancyTimerBox> {
               DateTime endDate = DateTime.utc(year, month, day, hour, minute);
               var dateString = DateFormat.yMEd().add_jms().format(endDate);
               print('$dateString  == dateString');
-              var tuhurProvider = Provider.of<TuhurProvider>(context, listen: false);
               UserProvider userProvider = Provider.of<UserProvider>(context, listen: false);
               var pregProvider = Provider.of<PregnancyProvider>(context, listen: false);
               var mensesProvider = Provider.of<MensesProvider>(context, listen: false);
-              var startTime=pregProvider.getStartTime;
-              var diff=endDate.difference(startTime.toDate());
-               if(diff.inDays<252){
-                showDialog(context: context, builder: (subContext){
-                  return MiscarraigeDialog(reason: (reasonValue){
-                    MensesTracker().startMensisTimer(mensesProvider, uid, tuhurProvider, Timestamp.now());
-                    PregnancyTracker().stopPregnancyTimer(pregProvider, Timestamp.fromDate(endDate),reasonValue);
-                    Navigator.pop(subContext);
-                  },darkMode:darkMode,text: text,);
-                });
-              }else{
-                 var postNatalProvider = Provider.of<PostNatalProvider>(context, listen: false);
-                 PregnancyTracker().stopPregnancyTimer(pregProvider, Timestamp.fromDate(endDate),'Given Birth');
-                 PostNatalTracker().startPostNatalTimer(uid, postNatalProvider);
-               }
+              var startTime = pregProvider.getStartTime;
+              var diff = endDate.difference(startTime.toDate());
+              if (diff.inDays < 252) {
+                Navigator.pop(dialogContext);
+                print('open miscarraige dialog');
 
-              Navigator.pop(dialogContext);
+                showDialog(
+                    context: context,
+                    builder: (subContext) {
+                      return MiscarraigeDialog(
+                        reason: (reasonValue) {
+                          MensesTracker().startMensisTimerFromPregnancy(mensesProvider, uid, Timestamp.now());
+                          PregnancyTracker().stopPregnancyTimer(pregProvider, Timestamp.fromDate(endDate), reasonValue);
+                          Navigator.pop(subContext);
+                        },
+                        darkMode: darkMode,
+                        text: text,
+                      );
+                    });
+              } else {
+                Navigator.pop(dialogContext);
+                var postNatalProvider = Provider.of<PostNatalProvider>(context, listen: false);
+                PregnancyTracker().stopPregnancyTimer(pregProvider, Timestamp.fromDate(endDate), 'Given Birth');
+                PostNatalTracker().startPostNatalTimer(uid, postNatalProvider);
+              }
+
+
             },
             darkMode: darkMode,
             text: text,

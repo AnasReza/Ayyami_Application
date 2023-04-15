@@ -11,7 +11,10 @@ import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:provider/provider.dart';
 
+import '../../firebase_calls/medicine_record.dart';
+import '../../providers/medicine_provider.dart';
 import '../../translation/app_translation.dart';
+import '../../utils/notification.dart';
 import '../../widgets/gradient_button.dart';
 import '../../widgets/utils.dart';
 import 'get_user_data.dart';
@@ -289,10 +292,35 @@ class _otp_pageState extends State<otp_page> {
                               UsersRecord().getUsersData(getUid!).then((value){
                                 if (value.exists) {
                                   final provider=Provider.of<UserProvider>(context,listen: false);
+                                  var medProvider = Provider.of<MedicineProvider>(context, listen: false);
                                   provider.setUID(getUid!);
                                   provider.setDarkMode(value.get('dark-mode'));
                                   provider.setLocation(value.get('location_name'));
                                   provider.setCurrentPoint(value.get('coordinates'));
+                                  provider.setSadqaAmount(value['sadqa_amount']);
+                                  int sadqaAmount =value['sadqa_amount'];
+                                  if(sadqaAmount!=0){
+                                    SendNotification().sadqaNotificationTime(int.parse(value['sadqa_reminder'].toString()));
+                                  }
+                                  try {
+                                    List<String> medListIDs=List<String>.from(value.get('medicine_list') );
+                                    provider.setMedicinesIDS(medListIDs);
+                                    print('${medListIDs.length} length of med list');
+                                    Map<String,dynamic> map={};
+                                    for(var medId in medListIDs){
+                                      MedicineRecord().getMedicineData(medId).then((medValue){
+                                        List<Map<String,dynamic>> timingList=List<Map<String,dynamic>>.from(medValue.get('time_list'));
+                                        var medName=medValue.get('medicine_name');
+                                        var id=medValue.get('medId');
+                                        print('$id medids');
+                                        map = {'timeList': timingList, 'medicine_name': medName,'id':id};
+                                        medProvider.setMedMap(map);
+                                        SendNotification().medicineNotificationTime(timingList,medName);
+                                      });
+                                    }
+                                  } catch (e) {
+                                    print(' ERROR  in MEDCINE LIST=$e');
+                                  }
                                   setHive(getUid!);
                                   Navigator.of(context).push(MaterialPageRoute(
                                       builder: (context) => MainScreen()));

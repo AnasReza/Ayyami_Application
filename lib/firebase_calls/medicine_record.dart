@@ -1,10 +1,12 @@
 import 'package:ayyami/firebase_calls/user_record.dart';
 import 'package:ayyami/providers/medicine_provider.dart';
+import 'package:ayyami/utils/notification.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 
 class MedicineRecord{
 
-  void uploadMedicine(String uid,List<String> timingList,String medName,List<String> medicineList,MedicineProvider provider){
+  void uploadMedicine(String uid,List<Map<String,dynamic>> timingList,String medName,List<String> medicineList,MedicineProvider provider,BuildContext context){
     FirebaseFirestore.instance.collection('medicine_reminder').add({'time_list':timingList,'medicine_name':medName}).then((value) {
       var medID=value.id;
       medicineList.add(medID);
@@ -12,6 +14,9 @@ class MedicineRecord{
       uploadMedId(medID);
       Map<String, dynamic> map = {'timeList': timingList, 'medicine_name': medName,'id':medID};
       provider.setMedMap(map);
+      SendNotification().medicineNotificationTime(timingList,medName);
+    }).then((value) {
+      Navigator.pop(context);
     });
   }
   void uploadMedId(String medId){

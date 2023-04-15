@@ -11,6 +11,7 @@ class UserProvider extends ChangeNotifier{
   late GeoPoint currentPoint;
   bool? login;
   bool isDarkMode=false;
+  int sadqaAmount=0;
   late Timestamp lastMenses;
   late Timestamp lastMensesEnd;
   late Timestamp lastTuhur;
@@ -29,6 +30,7 @@ class UserProvider extends ChangeNotifier{
   GeoPoint get getCurrentPoint=> currentPoint;
   bool? get getLogin=>login;
   bool get getIsDarkMode=>isDarkMode;
+  int get getSadqaAmount=>sadqaAmount;
   Timestamp get getLastMenses => lastMenses;
   Timestamp get getLastMensesEnd => lastMensesEnd;
   Timestamp get getLastTuhur => lastTuhur;
@@ -47,6 +49,10 @@ class UserProvider extends ChangeNotifier{
   setMedicinesIDS(List<String> value) {
 
     medicineIDS= value;
+    notifyListeners();
+  }
+  setSadqaAmount(int value) {
+    sadqaAmount= value;
     notifyListeners();
   }
   setAllMensesData(List<QueryDocumentSnapshot<Map<String, dynamic>>> value) {

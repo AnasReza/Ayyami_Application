@@ -27,7 +27,7 @@ import '../navigation/custom_fab.dart';
 import '../providers/namaz_provider.dart';
 import '../providers/user_provider.dart';
 import '../translation/app_translation.dart';
-import '../utils/prayer_notification.dart';
+import '../utils/notification.dart';
 import 'home/home.dart';
 
 class MainScreen extends StatefulWidget {
@@ -74,7 +74,7 @@ class MainScreenState extends State<MainScreen> {
     print('$once boolean of namaz notification');
     if (!once) {
       saveNamazStart(true);
-      PrayerNotification().notificationTime(fajrTime, sunriseTime, zuharTime, asrTime, maghribTime, ishaTime);
+      SendNotification().prayerNotificationTime(fajrTime, sunriseTime, zuharTime, asrTime, maghribTime, ishaTime);
     }
   }
 

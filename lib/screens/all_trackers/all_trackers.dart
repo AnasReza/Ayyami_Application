@@ -33,8 +33,6 @@ class AllTrackers extends StatefulWidget {
 }
 
 class AllTrackersState extends State<AllTrackers> {
-  bool mensesStart=false,tuhurStart=false;
-
   @override
   void initState() {
     // TODO: implement initState
@@ -118,7 +116,6 @@ class AllTrackersState extends State<AllTrackers> {
           postNatalProvider.setStartTime(startTime);
           var diff = DateTime.now().difference(startTime.toDate());
           PostNatalTracker().startPostNatalAgain(postNatalProvider, diff.inMilliseconds);
-
         }
       }
     });
@@ -132,9 +129,6 @@ class AllTrackersState extends State<AllTrackers> {
         var darkMode = provider.getIsDarkMode;
         var lang = provider.getLanguage;
         var text = AppTranslate().textLanguage[lang];
-        mensesStart = context.read<MensesProvider>().isTimerStart;
-        tuhurStart = context.read<TuhurProvider>().isTimerStart;
-
         return Scaffold(
           appBar: AppBar(
             backgroundColor: darkMode ? AppDarkColors.white : AppColors.white,
@@ -171,7 +165,6 @@ class AllTrackersState extends State<AllTrackers> {
                   const SizedBox(
                     height: 30,
                   ),
-
                   SizedBox(
                     width: double.infinity,
                     child: Text(
@@ -221,15 +214,17 @@ class AllTrackersState extends State<AllTrackers> {
                   const SizedBox(
                     height: 60,
                   ),
-                  SizedBox(width: double.infinity,child: Text(
-                    text!['menstrual_bleeding']!,
-                    textDirection: lang=='ur'?TextDirection.rtl:TextDirection.ltr,
-                    style: TextStyle(
-                        color: darkMode ? AppDarkColors.headingColor : AppColors.headingColor,
-                        fontSize: 25,
-                        fontWeight: FontWeight.w700),
-                  ),),
-
+                  SizedBox(
+                    width: double.infinity,
+                    child: Text(
+                      text!['menstrual_bleeding']!,
+                      textDirection: lang == 'ur' ? TextDirection.rtl : TextDirection.ltr,
+                      style: TextStyle(
+                          color: darkMode ? AppDarkColors.headingColor : AppColors.headingColor,
+                          fontSize: 25,
+                          fontWeight: FontWeight.w700),
+                    ),
+                  ),
                   const SizedBox(
                     height: 10,
                   ),
@@ -237,15 +232,17 @@ class AllTrackersState extends State<AllTrackers> {
                   const SizedBox(
                     height: 60,
                   ),
-                  SizedBox(width: double.infinity,child: Text(
-                    text!['post-natal_bleeding']!,
-                    textDirection: lang=='ur'?TextDirection.rtl:TextDirection.ltr,
-                    style: TextStyle(
-                        color: darkMode ? AppDarkColors.headingColor : AppColors.headingColor,
-                        fontSize: 25,
-                        fontWeight: FontWeight.w700),
-                  ),),
-
+                  SizedBox(
+                    width: double.infinity,
+                    child: Text(
+                      text!['post-natal_bleeding']!,
+                      textDirection: lang == 'ur' ? TextDirection.rtl : TextDirection.ltr,
+                      style: TextStyle(
+                          color: darkMode ? AppDarkColors.headingColor : AppColors.headingColor,
+                          fontSize: 25,
+                          fontWeight: FontWeight.w700),
+                    ),
+                  ),
                   const SizedBox(
                     height: 10,
                   ),

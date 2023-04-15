@@ -27,4 +27,8 @@ class UsersRecord {
   Future<void> update(String uid,String beg){
     return FirebaseFirestore.instance.collection('users').doc(uid).update({'beginner': beg});
   }
+
+  Future<void> updateSadqaAmount(String uid,int amount){
+    return FirebaseFirestore.instance.collection('users').doc(uid).update({'sadqa_amount': amount});
+  }
 }

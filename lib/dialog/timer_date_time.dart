@@ -31,8 +31,9 @@ class DialogDateTimeState extends State<DialogDateTime> {
       backgroundColor: Colors.transparent,
       body: Center(
         child: Container(
-          height: 500,
+          height: 450,
           margin: const EdgeInsets.only(left: 30, right: 30),
+
           child: Align(
             alignment: Alignment.bottomCenter,
             child: Stack(

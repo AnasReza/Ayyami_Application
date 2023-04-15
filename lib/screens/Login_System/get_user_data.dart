@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:ayyami/constants/const.dart';
+import 'package:ayyami/firebase_calls/user_record.dart';
 import 'package:ayyami/providers/user_provider.dart';
 import 'package:ayyami/screens/Questions/Are_you_beginner.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -327,7 +328,9 @@ class _set_passwordState extends State<set_password> {
                           }).then((value){
                             final provider=Provider.of<UserProvider>(context,listen: false);
                             provider.setUID(uid!);
+                            provider.setSadqaAmount(0);
                             setHive(uid!);
+
                             nextScreen(context, first_question(uid: uid,darkMode: false,fromProfile: false,));
                           });
                         });
@@ -346,7 +349,9 @@ class _set_passwordState extends State<set_password> {
                         }).then((value){
                           final provider=Provider.of<UserProvider>(context,listen: false);
                           provider.setUID(uid!);
+                          provider.setSadqaAmount(0);
                           setHive(uid!);
+                          UsersRecord().updateSadqaAmount(uid!, 0);
                           nextScreen(context, first_question(uid: uid,darkMode: false,fromProfile: false,));
                         });
                       }

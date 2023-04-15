@@ -5,6 +5,7 @@ import 'package:ayyami/providers/prayer_provider.dart';
 import 'package:ayyami/providers/user_provider.dart';
 import 'package:ayyami/translation/app_translation.dart';
 import 'package:ayyami/widgets/utils.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
@@ -26,9 +27,12 @@ class AddMedicine extends StatefulWidget {
 
 class _AddMedicineState extends State<AddMedicine> {
   TextEditingController medicineTitle = TextEditingController();
-  List<String> timingList = [], medTimeList = [];
+  List<String> timingList = [];
+  List<Map<String, dynamic>> medTimeList=[];
   String selectedValue = '';
   bool morningSelected = false, eveSelected = false, nightSelected = false;
+  late TimeOfDay morningTime,eveTime,nightTime;
+
 
   @override
   Widget build(BuildContext context) {
@@ -82,9 +86,27 @@ class _AddMedicineState extends State<AddMedicine> {
                     ),
                   ),
                   onTap: () {
-                    setState(() {
-                      morningSelected = !morningSelected;
-                    });
+                    var now=TimeOfDay.now();
+                    if(!morningSelected){
+                      showTimePicker(
+                        context: context,
+                        initialTime: now,
+                      ).then((value) {
+                        print('${value?.hour}--${value?.hourOfPeriod}');
+                        print('${value?.minute}--${value?.period.name}');
+                        if(value?.hour!=null){
+                          morningTime=value!;
+                          setState(() {
+                            morningSelected = !morningSelected;
+                          });
+                        }
+
+                      });
+                    }else{
+                      setState(() {
+                        morningSelected = !morningSelected;
+                      });
+                    }
                   },
                 ),
               ],
@@ -114,9 +136,27 @@ class _AddMedicineState extends State<AddMedicine> {
                     ),
                   ),
                   onTap: () {
-                    setState(() {
-                      eveSelected = !eveSelected;
-                    });
+                    var now=TimeOfDay.now();
+                    if(!eveSelected){
+                      showTimePicker(
+                        context: context,
+                        initialTime: now,
+                      ).then((value) {
+                        print('${value?.hour}--${value?.hourOfPeriod}');
+                        print('${value?.minute}--${value?.period.name}');
+                        if(value?.hour!=null){
+                          eveTime=value!;
+                          setState(() {
+                            eveSelected = !eveSelected;
+                          });
+                        }
+
+                      });
+                    }else{
+                      setState(() {
+                        eveSelected = !eveSelected;
+                      });
+                    }
                   },
                 ),
               ],
@@ -146,9 +186,27 @@ class _AddMedicineState extends State<AddMedicine> {
                     ),
                   ),
                   onTap: () {
-                    setState(() {
-                      nightSelected = !nightSelected;
-                    });
+                    var now=TimeOfDay.now();
+                    if(!nightSelected){
+                      showTimePicker(
+                        context: context,
+                        initialTime: now,
+                      ).then((value) {
+                        print('${value?.hour}--${value?.hourOfPeriod}');
+                        print('${value?.minute}--${value?.period.name}');
+                        if(value?.hour!=null){
+                          nightTime=value!;
+                          setState(() {
+                            nightSelected = !nightSelected;
+                          });
+                        }
+
+                      });
+                    }else{
+                      setState(() {
+                        nightSelected = !nightSelected;
+                      });
+                    }
                   },
                 ),
               ],
@@ -162,27 +220,23 @@ class _AddMedicineState extends State<AddMedicine> {
             title: widget.text['add_medicine']!,
             onPressedButon: () {
               String medName = medicineTitle.text;
+              DateTime now=DateTime.now();
               bool timingSelect = false;
               if (morningSelected) {
-                medTimeList.add('Morning');
+                medTimeList.add({'timeName':'Morning','time':Timestamp.fromDate(DateTime(now.year,now.month,now.day,morningTime.hour,morningTime.minute))});
                 timingSelect = true;
               }
               if (eveSelected) {
-                medTimeList.add('Evening');
+                medTimeList.add({'timeName':'Evening','time':Timestamp.fromDate(DateTime(now.year,now.month,now.day,eveTime.hour,eveTime.minute))});
                 timingSelect = true;
               }
               if (nightSelected) {
-                medTimeList.add('Night');
+                medTimeList.add({'timeName':'Evening','time':Timestamp.fromDate(DateTime(now.year,now.month,now.day,nightTime.hour,nightTime.minute))});
                 timingSelect = true;
               }
               if (medName.isNotEmpty && timingSelect) {
-                Map<String, dynamic> map = {'timeList': medTimeList, 'medicine_name': medName};
-                provider.setMedMap(map);
-
                 var medicineList=userProvider.getMedicinesList;
-                MedicineRecord().uploadMedicine(userProvider.getUid,medTimeList,medName,medicineList,provider);
-
-                Navigator.pop(context);
+                MedicineRecord().uploadMedicine(userProvider.getUid,medTimeList,medName,medicineList,provider,context);
               } else {
                 if (medTimeList.isEmpty) {
                   toast_notification().toast_message(widget.text!['enter_med_name']!);

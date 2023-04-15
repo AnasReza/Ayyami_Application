@@ -8,6 +8,7 @@ import 'package:ayyami/screens/main_screen.dart';
 import 'package:ayyami/screens/settings/choose_language.dart';
 import 'package:ayyami/tracker/menses_tracker.dart';
 import 'package:ayyami/tracker/tuhur_tracker.dart';
+import 'package:ayyami/utils/notification.dart';
 import 'package:ayyami/utils/utils.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -55,6 +56,12 @@ class _Splash_ScreenState extends State<Splash_Screen> {
           var provider = Provider.of<UserProvider>(context, listen: false);
           var medProvider = Provider.of<MedicineProvider>(context, listen: false);
           provider.setUID(value.id);
+          provider.setSadqaAmount(value['sadqa_amount']);
+          int sadqaAmount =value['sadqa_amount'];
+          if(sadqaAmount!=0){
+            SendNotification().sadqaNotificationTime(int.parse(value['sadqa_reminder'].toString()));
+          }
+
           try {
             provider.setDarkMode(value.get('dark-mode'));
           } catch (e) {
@@ -72,14 +79,15 @@ class _Splash_ScreenState extends State<Splash_Screen> {
             Map<String,dynamic> map={};
             for(var medId in medListIDs){
              MedicineRecord().getMedicineData(medId).then((medValue){
-               List<String> timingList=List<String>.from(medValue.get('time_list'));
+               List<Map<String,dynamic>> timingList=List<Map<String,dynamic>>.from(medValue.get('time_list'));
                var medName=medValue.get('medicine_name');
-               var id=medValue.get('id');
+               var id=medValue.get('medId');
                print('$id medids');
                map = {'timeList': timingList, 'medicine_name': medName,'id':id};
                medProvider.setMedMap(map);
-             });
+               SendNotification().medicineNotificationTime(timingList,medName);
 
+             });
             }
           } catch (e) {
             print(' ERROR  in MEDCINE LIST=$e');
@@ -87,6 +95,7 @@ class _Splash_ScreenState extends State<Splash_Screen> {
           provider.setCurrentPoint(value.get('coordinates'));
           provider.setLocation('location_name');
           Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => MainScreen()));
+
         });
       } else {
         nextScreen(context, ChooseLanguage());

@@ -8,9 +8,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:hive/hive.dart';
 
 class MensesRecord {
-  Stream<QuerySnapshot<Map<String, dynamic>>> getAllMensesRecord(String uid, ){
+  Stream<QuerySnapshot<Map<String, dynamic>>> getAllMensesRecord(String uid){
 
     return FirebaseFirestore.instance.collection('menses').where('uid', isEqualTo: uid,)
+        .orderBy('start_date', descending: true).snapshots();
+  }
+  Stream<QuerySnapshot<Map<String, dynamic>>> getAllMensesRecordLimited(String uid, DateTime limitedDate){
+
+    return FirebaseFirestore.instance.collection('menses').where('uid', isEqualTo: uid,).where('start_date',isLessThanOrEqualTo: limitedDate,)
         .orderBy('start_date', descending: true).snapshots();
   }
 

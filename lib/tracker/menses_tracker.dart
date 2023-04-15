@@ -72,6 +72,56 @@ class MensesTracker {
     });
     _stopWatch.onStartTimer();
   }
+  void startMensisTimerFromPregnancy(MensesProvider mensesProvider, String uid,Timestamp startTime) {
+    // var startTime = Timestamp.now();
+    var startDate=startTime.toDate();
+    var now=DateTime.now();
+    _stopWatch = StopWatchTimer(mode: StopWatchMode.countUp, presetMillisecond: now.difference(startDate).inMilliseconds);
+    var timeMap=Utils.timeConverter(Duration(milliseconds: now.difference(startDate).inMilliseconds));
+    secondsCount=timeMap['seconds']!;
+    minutesCount=timeMap['minutes']!;
+    hoursCount=timeMap['hours']!;
+    daysCount=timeMap['days']!;
+    mensesProvider.setDays(daysCount);
+    mensesProvider.setHours(hoursCount);
+    mensesProvider.setMin(minutesCount);
+    mensesProvider.setSec(secondsCount);
+    var menses = MensesRecord.uploadMensesStartTime(uid, startTime);
+    menses.then((value) {
+      Utils.saveDocMensesId(value.id);
+      mensesProvider.setMensesID(value.id);
+      mensesProvider.setStartTime(startTime);
+      print('${value.id} record doc id');
+    });
+    _stopWatch.secondTime.listen((event) {
+      secondsCount++;
+      if (secondsCount > 59) {
+        minutesCount++;
+        if (minutesCount > 59) {
+          hoursCount++;
+          if (hoursCount > 23) {
+            daysCount++;
+            // if (daysCount > 30) {
+            //   daysCount = 0;
+            // }
+            mensesProvider.setDays(daysCount);
+            hoursCount = 0;
+          }
+          mensesProvider.setHours(hoursCount);
+          minutesCount = 0;
+        }
+        // else if (minutesCount == 10) {
+        //   stopMensesTimer(mensesProvider, tuhurProvider, uid);
+        // }
+
+        mensesProvider.setMin(minutesCount);
+        secondsCount = 0;
+      }
+
+      mensesProvider.setSec(secondsCount);
+    });
+    _stopWatch.onStartTimer();
+  }
 
   void startMensisTimerWithTime(MensesProvider mensesProvider, String uid, int milliseconds,Timestamp startTime) {
 
@@ -1167,15 +1217,14 @@ class MensesTracker {
             if (islamicMonth.contains('Rama')) {
               regulationMessage = text['accustomed_stopped_after_3_day_before_habit']! +
                   text['accustomed_stopped_after_3_day_before_habit_ramadhan']! +
-                  text['accustomed_stopped_after_3_day_before_habit_married']!.tr;
+                  text['accustomed_stopped_after_3_day_before_habit_married']!;
             } else {
               regulationMessage =
-                  text['accustomed_stopped_after_3_day_before_habit'.tr + 'accustomed_stopped_after_3_day_before_habit_married']!;
+                  text['accustomed_stopped_after_3_day_before_habit']!+ text['accustomed_stopped_after_3_day_before_habit_married']!;
             }
           } else {
             if (islamicMonth.contains('Rama')) {
-              regulationMessage =
-                  text['accustomed_stopped_after_3_day_before_habit'.tr + 'accustomed_stopped_after_3_day_before_habit_ramadhan']!;
+              regulationMessage =text['accustomed_stopped_after_3_day_before_habit']!+ text['accustomed_stopped_after_3_day_before_habit_ramadhan']!;
             } else {
               regulationMessage = text['accustomed_stopped_after_3_day_before_habit']!;
             }

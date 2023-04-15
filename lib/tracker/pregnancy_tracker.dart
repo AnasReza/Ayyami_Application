@@ -35,7 +35,6 @@ class PregnancyTracker {
         provider.setTimerStart(true);
       });
       _stopWatch.secondTime.listen((event) {
-        print('$secondsCount==sec    $minutesCount==minutes');
         secondsCount++;
         if (secondsCount > 59) {
           minutesCount++;
@@ -89,7 +88,6 @@ class PregnancyTracker {
     provider.setSec(secondsCount);
     _stopWatch=StopWatchTimer(mode: StopWatchMode.countUp,);
     _stopWatch.secondTime.listen((event) {
-      print('$secondsCount==sec    $minutesCount==minutes');
       secondsCount++;
       if (secondsCount > 59) {
         minutesCount++;
