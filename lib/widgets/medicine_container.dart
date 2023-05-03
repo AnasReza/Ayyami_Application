@@ -1,7 +1,6 @@
 import 'package:ayyami/constants/colors.dart';
 import 'package:ayyami/constants/dark_mode_colors.dart';
 import 'package:ayyami/widgets/edit_medicine.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -10,23 +9,23 @@ import '../constants/images.dart';
 
 class MedicineContainer extends StatelessWidget {
   final String medicinetitle;
-  final String medicineTime;
+  final Map<String, dynamic> medicineTime;
   String medId;
   String lang;
   bool darkMode;
   Map<String, String> text;
   int index;
 
-  MedicineContainer({
-    Key? key,
-    required this.medicineTime,
-    required this.medicinetitle,
-    required this.darkMode,
-    required this.text,
-    required this.lang,
-    required this.medId,
-    required this.index
-  }) : super(key: key);
+  MedicineContainer(
+      {Key? key,
+      required this.medicineTime,
+      required this.medicinetitle,
+      required this.darkMode,
+      required this.text,
+      required this.lang,
+      required this.medId,
+      required this.index})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -74,7 +73,8 @@ class MedicineContainer extends StatelessWidget {
                                   text: text,
                                   medicineTime: medicineTime,
                                   medicinetitle: medicinetitle,
-                                  medId: medId,index:index),
+                                  medId: medId,
+                                  index: index),
                             ),
                           );
                         });
@@ -83,7 +83,7 @@ class MedicineContainer extends StatelessWidget {
               ],
             ),
             Text(
-              medicineTime,
+              medicineTime['timeName'],
               style: TextStyle(
                 color: darkMode ? AppDarkColors.headingColor : AppColors.headingColor,
                 fontSize: 24.sp,

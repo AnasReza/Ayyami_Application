@@ -18,7 +18,8 @@ class AppImages {
   static const String upIcon = "assets/svg/up_icon.svg";
   static const String downIcon = "assets/svg/down_icon.svg";
   static const String safeIcon = "assets/svg/safe_icon.svg";
-  static const String bellIcon = "assets/svg/bell.png";
+  static const String bellIcon = "assets/svg/bell.svg";
+  static const String bellStrikeIcon = "assets/svg/bell_strike.svg";
   static const String medicineIcon = "assets/svg/medicine.svg";
   static const String locationIcon = "assets/svg/location.svg";
   static const String locateIcon = "assets/svg/locate.svg";

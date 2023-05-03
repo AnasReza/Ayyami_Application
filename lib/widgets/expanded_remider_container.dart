@@ -1,8 +1,5 @@
 import 'package:ayyami/constants/dark_mode_colors.dart';
-import 'package:ayyami/models/medicine_model.dart';
 import 'package:ayyami/providers/medicine_provider.dart';
-import 'package:ayyami/providers/prayer_provider.dart';
-import 'package:ayyami/providers/user_provider.dart';
 import 'package:ayyami/widgets/add_medicine.dart';
 import 'package:ayyami/widgets/customerSwitch1.dart';
 import 'package:flutter/material.dart';
@@ -38,7 +35,7 @@ class _ExpandedReminderContainerState extends State<ExpandedReminderContainer> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<MedicineProvider>(builder: (context, child, build) {
+    return Consumer<MedicineProvider>(builder: (context, provider, build) {
       return SingleChildScrollView(
         child: Container(
           width: double.infinity,
@@ -51,7 +48,11 @@ class _ExpandedReminderContainerState extends State<ExpandedReminderContainer> {
               color: widget.darkMode ? AppDarkColors.headingColor : AppColors.headingColor,
             ),
             boxShadow: [
-              BoxShadow(color: const Color(0x1e1f3d73), offset: const Offset(0, 12), blurRadius: 40.r, spreadRadius: 0)
+              BoxShadow(
+                  color: const Color(0x1e1f3d73),
+                  offset: const Offset(0, 12),
+                  blurRadius: 40.r,
+                  spreadRadius: 0)
             ],
           ),
           child: Center(
@@ -66,7 +67,8 @@ class _ExpandedReminderContainerState extends State<ExpandedReminderContainer> {
                       Text(
                         widget.text['medicine_reminder']!,
                         style: TextStyle(
-                          color: widget.darkMode ? AppDarkColors.headingColor : AppColors.headingColor,
+                          color:
+                              widget.darkMode ? AppDarkColors.headingColor : AppColors.headingColor,
                           fontSize: 28.sp,
                           fontWeight: FontWeight.w700,
                           fontStyle: FontStyle.normal,
@@ -108,39 +110,37 @@ class _ExpandedReminderContainerState extends State<ExpandedReminderContainer> {
                       ? Container()
                       : Column(
                           children: [
-                            Visibility(visible:child.getMap.isNotEmpty,child: SingleChildScrollView(
-                              scrollDirection: Axis.horizontal,
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                children: List.generate(
-                                  child.getMap.length,
-                                      (index) {
-                                    print('${child.getMap[index]['id']} med id from map $index');
-                                    var list = child.getMap[index]['timeList'];
-                                    String timeName = '';
-                                    for (var listItem in list) {
-                                      timeName = '$timeName\n${listItem['timeName']}';
-                                    }
+                            Visibility(
+                              visible: provider.getMap.isNotEmpty,
+                              child: SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                  children: List.generate(
+                                    provider.getMap.length,
+                                    (index) {
+                                      print(
+                                          '${provider.getMap[index]['id']} med id from map $index');
 
-                                    return Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                        horizontal: 8.0,
-                                      ),
-                                      child: MedicineContainer(
-                                        medicineTime: timeName,
-                                        medicinetitle: child.getMap[index]['medicine_name'],
-                                        darkMode: widget.darkMode,
-                                        text: widget.text,
-                                        lang: widget.lang,
-                                        medId: child.getMap[index]['id'],
-                                        index: index,
-                                      ),
-                                    );
-                                  },
+                                      return Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                          horizontal: 8.0,
+                                        ),
+                                        child: MedicineContainer(
+                                          medicineTime: provider.getMap[index],
+                                          medicinetitle: provider.getMap[index]['medicine_name'],
+                                          darkMode: widget.darkMode,
+                                          text: widget.text,
+                                          lang: widget.lang,
+                                          medId: provider.getMap[index]['id'],
+                                          index: index,
+                                        ),
+                                      );
+                                    },
+                                  ),
                                 ),
                               ),
-                            ),),
-
+                            ),
                             SizedBox(
                               height: 32.h,
                             ),
@@ -154,7 +154,9 @@ class _ExpandedReminderContainerState extends State<ExpandedReminderContainer> {
                                           width: double.infinity,
                                           child: Text(
                                             widget.text!['add_medicine']!,
-                                            textDirection: widget.lang == 'ur' ? TextDirection.rtl : TextDirection.ltr,
+                                            textDirection: widget.lang == 'ur'
+                                                ? TextDirection.rtl
+                                                : TextDirection.ltr,
                                           ),
                                         ),
                                         content: SizedBox(
@@ -171,7 +173,8 @@ class _ExpandedReminderContainerState extends State<ExpandedReminderContainer> {
                                 width: double.infinity,
                                 height: 82.h,
                                 decoration: BoxDecoration(
-                                    color: const Color(0xffd9d9d9), borderRadius: BorderRadius.circular(8.r)),
+                                    color: const Color(0xffd9d9d9),
+                                    borderRadius: BorderRadius.circular(8.r)),
                                 child: Center(
                                   child: SvgPicture.asset(
                                     AppImages.add_icon,

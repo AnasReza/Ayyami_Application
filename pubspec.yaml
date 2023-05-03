@@ -26,6 +26,7 @@ dependencies:
   sn_progress_dialog: ^1.0.3
   flutter_share: ^2.0.0
 
+
   cloud_firestore: ^4.0.5
 
   image_picker: ^0.8.6
@@ -65,7 +66,6 @@ dependencies:
   firebase_messaging: ^14.2.1
 
   #  storage
-  shared_preferences: ^2.0.15
   hive: ^2.2.3
 
   #  networking

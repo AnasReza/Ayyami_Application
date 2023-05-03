@@ -7,6 +7,12 @@ class NamazProvider extends ChangeNotifier{
   String asrTiming='';
   String maghribTiming='';
   String ishaTiming='';
+  DateTime fajrDateTime=DateTime(2023);
+  DateTime sunriseDateTime=DateTime(2023);
+  DateTime duhurDateTime=DateTime(2023);
+  DateTime asrDateTime=DateTime(2023);
+  DateTime maghribDateTime=DateTime(2023);
+  DateTime ishaDateTime=DateTime(2023);
 
   String get getFajrTime => fajrTiming;
   String get getSunriseTime => sunriseTiming;
@@ -14,7 +20,38 @@ class NamazProvider extends ChangeNotifier{
   String get getAsrTime => asrTiming;
   String get getMaghribTime => maghribTiming;
   String get getIshaTime => ishaTiming;
+  DateTime get getFajrDateTime => fajrDateTime;
+  DateTime get getSunriseDateTime => sunriseDateTime;
+  DateTime get getDuhurDateTime => duhurDateTime;
+  DateTime get getAsrDateTime => asrDateTime;
+  DateTime get getMaghribDateTime => maghribDateTime;
+  DateTime get getIshaDateTime => ishaDateTime;
 
+
+  void setFajarDateTime(DateTime value){
+    fajrDateTime=value;
+    notifyListeners();
+  }
+  void setSunriseDateTime(DateTime value){
+    sunriseDateTime=value;
+    notifyListeners();
+  }
+  void setDuhurDateTime(DateTime value){
+    duhurDateTime=value;
+    notifyListeners();
+  }
+  void setAsrDateTime(DateTime value){
+    asrDateTime=value;
+    notifyListeners();
+  }
+  void setMaghribDateTime(DateTime value){
+    maghribDateTime=value;
+    notifyListeners();
+  }
+  void setIshaDateTime(DateTime value){
+    ishaDateTime=value;
+    notifyListeners();
+  }
   void setFajrTime(String value){
     fajrTiming=value;
     notifyListeners();

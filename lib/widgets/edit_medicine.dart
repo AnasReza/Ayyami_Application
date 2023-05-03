@@ -1,16 +1,14 @@
-import 'package:ayyami/constants/dark_mode_colors.dart';
 import 'package:ayyami/firebase_calls/medicine_record.dart';
 import 'package:ayyami/providers/medicine_provider.dart';
 import 'package:ayyami/providers/prayer_provider.dart';
 import 'package:ayyami/providers/user_provider.dart';
-import 'package:ayyami/translation/app_translation.dart';
 import 'package:ayyami/widgets/utils.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 import '../constants/colors.dart';
-import '../models/medicine_model.dart';
+import '../utils/notification.dart';
 import 'gradient_button.dart';
 
 class EditMedicine extends StatefulWidget {
@@ -24,9 +22,10 @@ class EditMedicine extends StatefulWidget {
       required this.index})
       : super(key: key);
 
-  String medicineTime, medicinetitle, medId;
+  String medicinetitle, medId;
   bool darkMode;
   Map<String, String> text;
+  Map<String, dynamic> medicineTime;
   int index;
 
   @override
@@ -35,22 +34,24 @@ class EditMedicine extends StatefulWidget {
 
 class _EditMedicineState extends State<EditMedicine> {
   TextEditingController medicineTitleController = TextEditingController();
-  List<String> timingList = [], medTimeList = [];
+  List<String> timingList = [];
+  List<Map<String, dynamic>> medTimeList = [];
   String selectedValue = '';
   bool morningSelected = false, eveSelected = false, nightSelected = false;
+  late TimeOfDay morningTime, eveTime, nightTime;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     medicineTitleController = TextEditingController(text: widget.medicinetitle);
-    if (widget.medicineTime.contains('Morning')) {
+    if (widget.medicineTime['timeName'].contains('Morning')) {
       morningSelected = true;
     }
-    if (widget.medicineTime.contains('Evening')) {
+    if (widget.medicineTime['timeName'].contains('Evening')) {
       eveSelected = true;
     }
-    if (widget.medicineTime.contains('Night')) {
+    if (widget.medicineTime['timeName'].contains('Night')) {
       nightSelected = true;
     }
     setState(() {});
@@ -74,11 +75,13 @@ class _EditMedicineState extends State<EditMedicine> {
       return Column(
         children: [
           Container(
-            decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), border: Border.all()),
+            decoration:
+                BoxDecoration(borderRadius: BorderRadius.circular(10), border: Border.all()),
             padding: const EdgeInsets.only(left: 8.0),
             child: TextField(
               controller: medicineTitleController,
-              decoration: InputDecoration(hintText: widget.text['medicine_name']!, border: InputBorder.none),
+              decoration: InputDecoration(
+                  hintText: widget.text['medicine_name']!, border: InputBorder.none),
             ),
           ),
           const SizedBox(
@@ -127,7 +130,8 @@ class _EditMedicineState extends State<EditMedicine> {
                   margin: const EdgeInsets.only(left: 10.0),
                   child: Text(
                     lang == 'ur' ? 'صبح' : 'Morning',
-                    style: TextStyle(color: AppColors.headingColor, fontSize: 15, fontWeight: FontWeight.w700),
+                    style: const TextStyle(
+                        color: AppColors.headingColor, fontSize: 15, fontWeight: FontWeight.w700),
                   ),
                 ),
                 GestureDetector(
@@ -135,15 +139,34 @@ class _EditMedicineState extends State<EditMedicine> {
                     height: 25.0,
                     width: 25.0,
                     decoration: BoxDecoration(
-                      gradient: morningSelected ? AppColors.bgPinkishGradient : AppColors.transparentGradient,
+                      gradient: morningSelected
+                          ? AppColors.bgPinkishGradient
+                          : AppColors.transparentGradient,
                       border: Border.all(width: 1.0, color: AppColors.headingColor),
                       borderRadius: const BorderRadius.all(Radius.circular(5.0)),
                     ),
                   ),
                   onTap: () {
-                    setState(() {
-                      morningSelected = !morningSelected;
-                    });
+                    var now = TimeOfDay.now();
+                    if (!morningSelected) {
+                      showTimePicker(
+                        context: context,
+                        initialTime: now,
+                      ).then((value) {
+                        print('${value?.hour}--${value?.hourOfPeriod}');
+                        print('${value?.minute}--${value?.period.name}');
+                        if (value?.hour != null) {
+                          morningTime = value!;
+                          setState(() {
+                            morningSelected = !morningSelected;
+                          });
+                        }
+                      });
+                    } else {
+                      setState(() {
+                        morningSelected = !morningSelected;
+                      });
+                    }
                   },
                 ),
               ],
@@ -159,7 +182,8 @@ class _EditMedicineState extends State<EditMedicine> {
                   margin: const EdgeInsets.only(left: 10.0),
                   child: Text(
                     lang == 'ur' ? 'شام' : 'Evening',
-                    style: TextStyle(color: AppColors.headingColor, fontSize: 15, fontWeight: FontWeight.w700),
+                    style: const TextStyle(
+                        color: AppColors.headingColor, fontSize: 15, fontWeight: FontWeight.w700),
                   ),
                 ),
                 GestureDetector(
@@ -167,15 +191,33 @@ class _EditMedicineState extends State<EditMedicine> {
                     height: 25.0,
                     width: 25.0,
                     decoration: BoxDecoration(
-                      gradient: eveSelected ? AppColors.bgPinkishGradient : AppColors.transparentGradient,
+                      gradient:
+                          eveSelected ? AppColors.bgPinkishGradient : AppColors.transparentGradient,
                       border: Border.all(width: 1.0, color: AppColors.headingColor),
                       borderRadius: const BorderRadius.all(Radius.circular(5.0)),
                     ),
                   ),
                   onTap: () {
-                    setState(() {
-                      eveSelected = !eveSelected;
-                    });
+                    var now = TimeOfDay.now();
+                    if (!eveSelected) {
+                      showTimePicker(
+                        context: context,
+                        initialTime: now,
+                      ).then((value) {
+                        print('${value?.hour}--${value?.hourOfPeriod}');
+                        print('${value?.minute}--${value?.period.name}');
+                        if (value?.hour != null) {
+                          eveTime = value!;
+                          setState(() {
+                            eveSelected = !eveSelected;
+                          });
+                        }
+                      });
+                    } else {
+                      setState(() {
+                        eveSelected = !eveSelected;
+                      });
+                    }
                   },
                 ),
               ],
@@ -191,7 +233,8 @@ class _EditMedicineState extends State<EditMedicine> {
                   margin: const EdgeInsets.only(left: 10.0),
                   child: Text(
                     lang == 'ur' ? 'رات' : 'Night',
-                    style: TextStyle(color: AppColors.headingColor, fontSize: 15, fontWeight: FontWeight.w700),
+                    style: const TextStyle(
+                        color: AppColors.headingColor, fontSize: 15, fontWeight: FontWeight.w700),
                   ),
                 ),
                 GestureDetector(
@@ -199,15 +242,34 @@ class _EditMedicineState extends State<EditMedicine> {
                     height: 25.0,
                     width: 25.0,
                     decoration: BoxDecoration(
-                      gradient: nightSelected ? AppColors.bgPinkishGradient : AppColors.transparentGradient,
+                      gradient: nightSelected
+                          ? AppColors.bgPinkishGradient
+                          : AppColors.transparentGradient,
                       border: Border.all(width: 1.0, color: AppColors.headingColor),
                       borderRadius: const BorderRadius.all(Radius.circular(5.0)),
                     ),
                   ),
                   onTap: () {
-                    setState(() {
-                      nightSelected = !nightSelected;
-                    });
+                    var now = TimeOfDay.now();
+                    if (!nightSelected) {
+                      showTimePicker(
+                        context: context,
+                        initialTime: now,
+                      ).then((value) {
+                        print('${value?.hour}--${value?.hourOfPeriod}');
+                        print('${value?.minute}--${value?.period.name}');
+                        if (value?.hour != null) {
+                          nightTime = value!;
+                          setState(() {
+                            nightSelected = !nightSelected;
+                          });
+                        }
+                      });
+                    } else {
+                      setState(() {
+                        nightSelected = !nightSelected;
+                      });
+                    }
                   },
                 ),
               ],
@@ -221,17 +283,30 @@ class _EditMedicineState extends State<EditMedicine> {
             title: widget.text['add_medicine']!,
             onPressedButon: () {
               String medName = medicineTitleController.text;
+              DateTime now = DateTime.now();
               bool timingSelect = false;
               if (morningSelected) {
-                medTimeList.add('Morning');
+                medTimeList.add({
+                  'timeName': 'Morning',
+                  'time': Timestamp.fromDate(
+                      DateTime(now.year, now.month, now.day, morningTime.hour, morningTime.minute))
+                });
                 timingSelect = true;
               }
               if (eveSelected) {
-                medTimeList.add('Evening');
+                medTimeList.add({
+                  'timeName': 'Evening',
+                  'time': Timestamp.fromDate(
+                      DateTime(now.year, now.month, now.day, eveTime.hour, eveTime.minute))
+                });
                 timingSelect = true;
               }
               if (nightSelected) {
-                medTimeList.add('Night');
+                medTimeList.add({
+                  'timeName': 'Evening',
+                  'time': Timestamp.fromDate(
+                      DateTime(now.year, now.month, now.day, nightTime.hour, nightTime.minute))
+                });
                 timingSelect = true;
               }
               print('$medTimeList');
@@ -243,6 +318,8 @@ class _EditMedicineState extends State<EditMedicine> {
                 list[widget.index] = map;
                 provider.updateMedMap(list);
                 MedicineRecord().editMedicine(widget.medId, medTimeList, medName);
+                SendNotification()
+                    .medicineEditNotificationTime(widget.index, medTimeList, medName, provider);
                 Navigator.pop(context);
               } else {
                 if (medTimeList.isEmpty) {

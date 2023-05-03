@@ -1,4 +1,5 @@
 import 'dart:async';
+
 import 'package:ayyami/constants/const.dart';
 import 'package:ayyami/firebase_calls/medicine_record.dart';
 import 'package:ayyami/providers/medicine_provider.dart';
@@ -6,10 +7,8 @@ import 'package:ayyami/providers/tuhur_provider.dart';
 import 'package:ayyami/providers/user_provider.dart';
 import 'package:ayyami/screens/main_screen.dart';
 import 'package:ayyami/screens/settings/choose_language.dart';
-import 'package:ayyami/tracker/menses_tracker.dart';
 import 'package:ayyami/tracker/tuhur_tracker.dart';
 import 'package:ayyami/utils/notification.dart';
-import 'package:ayyami/utils/utils.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -17,14 +16,10 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hive/hive.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:stop_watch_timer/stop_watch_timer.dart';
 
 import '../firebase_calls/user_record.dart';
 import '../providers/menses_provider.dart';
-import 'Login_System/account_create.dart';
-
 
 class Splash_Screen extends StatefulWidget {
   const Splash_Screen({super.key});
@@ -57,11 +52,26 @@ class _Splash_ScreenState extends State<Splash_Screen> {
           var medProvider = Provider.of<MedicineProvider>(context, listen: false);
           provider.setUID(value.id);
           provider.setSadqaAmount(value['sadqa_amount']);
-          int sadqaAmount =value['sadqa_amount'];
-          if(sadqaAmount!=0){
+          int sadqaAmount = value['sadqa_amount'];
+          if (sadqaAmount != 0) {
             SendNotification().sadqaNotificationTime(int.parse(value['sadqa_reminder'].toString()));
           }
 
+          try {
+            provider.setShowFajar(value['show_fajar']);
+            provider.setShowSunrise(value['show_sunrise']);
+            provider.setShowDuhur(value['show_duhur']);
+            provider.setShowAsr(value['show_asr']);
+            provider.setShowMaghrib(value['show_maghrib']);
+            provider.setShowIsha(value['show_isha']);
+          } catch (e) {
+            provider.setShowFajar(true);
+            provider.setShowSunrise(true);
+            provider.setShowDuhur(true);
+            provider.setShowAsr(true);
+            provider.setShowMaghrib(true);
+            provider.setShowIsha(true);
+          }
           try {
             provider.setDarkMode(value.get('dark-mode'));
           } catch (e) {
@@ -73,21 +83,22 @@ class _Splash_ScreenState extends State<Splash_Screen> {
             provider.setLanguage('en');
           }
           try {
-            List<String> medListIDs=List<String>.from(value.get('medicine_list') );
+            List<String> medListIDs = List<String>.from(value.get('medicine_list'));
             provider.setMedicinesIDS(medListIDs);
             print('${medListIDs.length} length of med list');
-            Map<String,dynamic> map={};
-            for(var medId in medListIDs){
-             MedicineRecord().getMedicineData(medId).then((medValue){
-               List<Map<String,dynamic>> timingList=List<Map<String,dynamic>>.from(medValue.get('time_list'));
-               var medName=medValue.get('medicine_name');
-               var id=medValue.get('medId');
-               print('$id medids');
-               map = {'timeList': timingList, 'medicine_name': medName,'id':id};
-               medProvider.setMedMap(map);
-               SendNotification().medicineNotificationTime(timingList,medName);
-
-             });
+            Map<String, dynamic> map = {};
+            for (var medId in medListIDs) {
+              MedicineRecord().getMedicineData(medId).then((medValue) {
+                List<Map<String, dynamic>> timingList =
+                    List<Map<String, dynamic>>.from(medValue.get('time_list'));
+                var medName = medValue.get('medicine_name');
+                var id = medValue.get('medId');
+                print('$id medids');
+                for (int x = 0; x < timingList.length; x++) {}
+                map = {'timeList': timingList, 'medicine_name': medName, 'id': id};
+                medProvider.setMedMap(map);
+                SendNotification().medicineNotificationTime(timingList, medName);
+              });
             }
           } catch (e) {
             print(' ERROR  in MEDCINE LIST=$e');
@@ -95,7 +106,6 @@ class _Splash_ScreenState extends State<Splash_Screen> {
           provider.setCurrentPoint(value.get('coordinates'));
           provider.setLocation('location_name');
           Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => MainScreen()));
-
         });
       } else {
         nextScreen(context, ChooseLanguage());

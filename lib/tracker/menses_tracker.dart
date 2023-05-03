@@ -1239,7 +1239,7 @@ class MensesTracker {
         if (beginner == 'Beginner') {
           if (islamicMonth.contains('Rama')) {
             regulationMessage =
-                text['beginner_stop_at_10_days'.tr + 'beginner_stop_at_10_days_ramadhan']!;
+                text['beginner_stop_at_10_days']! + text['beginner_stop_at_10_days_ramadhan']!;
           } else {
             regulationMessage = 'beginner_stop_at_10_days'.tr;
           }
@@ -1253,12 +1253,12 @@ class MensesTracker {
                   text['accustomed_stopped_at_10_day_married']!;
             } else {
               regulationMessage =
-                  text['accustomed_stopped_at_10_day'.tr + 'accustomed_stopped_at_10_day_married']!;
+                  text['accustomed_stopped_at_10_day']! + text['accustomed_stopped_at_10_day_married']!;
             }
           } else {
             if (islamicMonth.contains('Rama')) {
               regulationMessage =
-                  text['accustomed_stopped_at_10_day'.tr + 'accustomed_stopped_at_10_day_ramadhan']!;
+                  text['accustomed_stopped_at_10_day']! + text['accustomed_stopped_at_10_day_ramadhan']!;
             } else {
               regulationMessage = text['accustomed_stopped_at_10_day']!;
             }

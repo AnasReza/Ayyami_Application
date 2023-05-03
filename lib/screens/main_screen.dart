@@ -4,17 +4,13 @@ import 'package:ayyami/screens/prayer/prayer_timing.dart';
 import 'package:ayyami/screens/profile/profile.dart';
 import 'package:ayyami/screens/settings/settings.dart';
 import 'package:ayyami/screens/supplications/supplications.dart';
-
 import 'package:ayyami/widgets/side_bar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:hive/hive.dart';
-
 import 'package:intl/intl.dart';
-import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
@@ -23,7 +19,6 @@ import '../constants/images.dart';
 import '../firebase_calls/menses_record.dart';
 import '../firebase_calls/tuhur_record.dart';
 import '../navigation/custom_bottom_nav.dart';
-import '../navigation/custom_fab.dart';
 import '../providers/namaz_provider.dart';
 import '../providers/user_provider.dart';
 import '../translation/app_translation.dart';
@@ -40,7 +35,13 @@ class MainScreen extends StatefulWidget {
 class MainScreenState extends State<MainScreen> {
   final int _cIndex = 0;
   int widgetIndex = 2;
-  List<Widget> widgetList = [ProfilePage(), Supplications(), HomeScreen(), PrayerTiming(), SettingsApp()];
+  List<Widget> widgetList = [
+    ProfilePage(),
+    Supplications(),
+    HomeScreen(),
+    PrayerTiming(),
+    SettingsApp()
+  ];
   final GlobalKey<ScaffoldState> _key = GlobalKey();
   String fajr = '', sunrise = '', zuhar = '', asr = '', maghrib = '', isha = '';
   late DateTime fajrTime, sunriseTime, zuharTime, asrTime, maghribTime, ishaTime;
@@ -63,6 +64,13 @@ class MainScreenState extends State<MainScreen> {
     maghribTime = prayerTimes.maghrib;
     ishaTime = prayerTimes.isha;
 
+    prayerProvider.setFajarDateTime(fajrTime);
+    prayerProvider.setSunriseDateTime(sunriseTime);
+    prayerProvider.setDuhurDateTime(asrTime);
+    prayerProvider.setAsrDateTime(fajrTime);
+    prayerProvider.setMaghribDateTime(maghribTime);
+    prayerProvider.setIshaDateTime(ishaTime);
+
     prayerProvider.setFajrTime(DateFormat.jm().format(prayerTimes.fajr));
     prayerProvider.setSunriseTime(DateFormat.jm().format(prayerTimes.sunrise));
     prayerProvider.setDuhurTime(DateFormat.jm().format(prayerTimes.dhuhr));
@@ -74,7 +82,8 @@ class MainScreenState extends State<MainScreen> {
     print('$once boolean of namaz notification');
     if (!once) {
       saveNamazStart(true);
-      SendNotification().prayerNotificationTime(fajrTime, sunriseTime, zuharTime, asrTime, maghribTime, ishaTime);
+      SendNotification().prayerNotificationTime(
+          fajrTime, sunriseTime, zuharTime, asrTime, maghribTime, ishaTime, userProvider);
     }
   }
 
@@ -163,8 +172,9 @@ class MainScreenState extends State<MainScreen> {
           ),
           body: Container(
             height: double.infinity,
-            decoration:
-                BoxDecoration(gradient: darkMode ? AppDarkColors.backgroundGradient : AppColors.backgroundGradient),
+            decoration: BoxDecoration(
+                gradient:
+                    darkMode ? AppDarkColors.backgroundGradient : AppColors.backgroundGradient),
             child: widgetList[widgetIndex],
           ),
           bottomNavigationBar: CustomBottomNav(

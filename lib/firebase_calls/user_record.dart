@@ -15,20 +15,31 @@ class UsersRecord {
   Future<void> updateLanguage(String uid, String language) {
     return FirebaseFirestore.instance.collection('users').doc(uid).update({'language': language});
   }
+
   Future<void> updateDarkMode(String uid, bool darkMode) {
     return FirebaseFirestore.instance.collection('users').doc(uid).update({'dark-mode': darkMode});
   }
+
   Future<void> updateMedicineList(String uid, List<String> medicineList) {
-    return FirebaseFirestore.instance.collection('users').doc(uid).update({'medicine_list': medicineList});
+    return FirebaseFirestore.instance
+        .collection('users')
+        .doc(uid)
+        .update({'medicine_list': medicineList});
   }
-  Future<void> changeName(String uid,String name){
+
+  Future<void> changeName(String uid, String name) {
     return FirebaseFirestore.instance.collection('users').doc(uid).update({'user_name': name});
   }
-  Future<void> update(String uid,String beg){
+
+  Future<void> update(String uid, String beg) {
     return FirebaseFirestore.instance.collection('users').doc(uid).update({'beginner': beg});
   }
 
-  Future<void> updateSadqaAmount(String uid,int amount){
+  Future<void> updateSadqaAmount(String uid, int amount) {
     return FirebaseFirestore.instance.collection('users').doc(uid).update({'sadqa_amount': amount});
+  }
+
+  Future<void> updateShowNamaz(String uid, String itemName, bool value) {
+    return FirebaseFirestore.instance.collection('users').doc(uid).update({itemName: value});
   }
 }
