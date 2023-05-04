@@ -9,7 +9,8 @@ import '../constants/images.dart';
 
 class MedicineContainer extends StatelessWidget {
   final String medicinetitle;
-  final Map<String, dynamic> medicineTime;
+  List<Map<String, dynamic>> medicineTime;
+  Map<String, dynamic> medicineMap;
   String medId;
   String lang;
   bool darkMode;
@@ -20,6 +21,7 @@ class MedicineContainer extends StatelessWidget {
       {Key? key,
       required this.medicineTime,
       required this.medicinetitle,
+      required this.medicineMap,
       required this.darkMode,
       required this.text,
       required this.lang,
@@ -29,6 +31,10 @@ class MedicineContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String medcinieTimeString = '';
+    for (var timeName in medicineTime) {
+      medcinieTimeString = '$medcinieTimeString\n${timeName['timeName']}';
+    }
     return Container(
       padding: const EdgeInsets.all(8),
       width: 180.w,
@@ -71,7 +77,7 @@ class MedicineContainer extends StatelessWidget {
                               child: EditMedicine(
                                   darkMode: darkMode,
                                   text: text,
-                                  medicineTime: medicineTime,
+                                  medicineTime: medicineMap,
                                   medicinetitle: medicinetitle,
                                   medId: medId,
                                   index: index),
@@ -83,7 +89,7 @@ class MedicineContainer extends StatelessWidget {
               ],
             ),
             Text(
-              medicineTime['timeName'],
+              medcinieTimeString,
               style: TextStyle(
                 color: darkMode ? AppDarkColors.headingColor : AppColors.headingColor,
                 fontSize: 24.sp,

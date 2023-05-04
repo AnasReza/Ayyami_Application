@@ -16,7 +16,7 @@ class MedicineRecord {
       uploadMedId(medID);
       Map<String, dynamic> map = {'timeList': timingList, 'medicine_name': medName, 'id': medID};
       provider.setMedMap(map);
-      SendNotification().medicineNotificationTime(timingList, medName);
+      SendNotification().medicineNotificationTime(timingList, medName, provider);
     }).then((value) {
       Navigator.pop(context);
     });

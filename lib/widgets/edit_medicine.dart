@@ -44,16 +44,24 @@ class _EditMedicineState extends State<EditMedicine> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    print('${widget.medicineTime['timeList']} edit medicine');
+    var medList = widget.medicineTime['timeList'];
     medicineTitleController = TextEditingController(text: widget.medicinetitle);
-    if (widget.medicineTime['timeName'].contains('Morning')) {
-      morningSelected = true;
+    for (var medDetailMap in medList) {
+      if (medDetailMap['timeName'].contains('Morning')) {
+        morningSelected = true;
+        Timestamp morningTimeStamp = medDetailMap['time'];
+        DateTime morningDate = morningTimeStamp.toDate();
+        morningTime = TimeOfDay(hour: morningDate.hour, minute: morningDate.minute);
+      }
+      if (medDetailMap['timeName'].contains('Evening')) {
+        eveSelected = true;
+      }
+      if (medDetailMap['timeName'].contains('Night')) {
+        nightSelected = true;
+      }
     }
-    if (widget.medicineTime['timeName'].contains('Evening')) {
-      eveSelected = true;
-    }
-    if (widget.medicineTime['timeName'].contains('Night')) {
-      nightSelected = true;
-    }
+
     setState(() {});
   }
 

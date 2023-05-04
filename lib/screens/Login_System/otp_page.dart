@@ -332,12 +332,14 @@ class _otp_pageState extends State<otp_page> {
                                       List<Map<String, dynamic>>.from(medValue.get('time_list'));
                                   var medName = medValue.get('medicine_name');
                                   var id = medValue.get('medId');
-                                  print('$id medids');
-                                  map = {
-                                    'timeList': timingList,
-                                    'medicine_name': medName,
-                                    'id': id
-                                  };
+
+                                  List<Map<String, dynamic>> tempList = [];
+                                  for (var medMap in timingList) {
+                                    tempList.add(
+                                        {'timeName': medMap['timeName'], 'time': medMap['time']});
+                                  }
+
+                                  map = {'timeList': tempList, 'medicine_name': medName, 'id': id};
                                   medProvider.setMedMap(map);
                                   SendNotification()
                                       .medicineNotificationTime(timingList, medName, medProvider);

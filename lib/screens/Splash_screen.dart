@@ -5,7 +5,6 @@ import 'package:ayyami/firebase_calls/medicine_record.dart';
 import 'package:ayyami/providers/medicine_provider.dart';
 import 'package:ayyami/providers/tuhur_provider.dart';
 import 'package:ayyami/providers/user_provider.dart';
-import 'package:ayyami/screens/main_screen.dart';
 import 'package:ayyami/screens/settings/choose_language.dart';
 import 'package:ayyami/tracker/tuhur_tracker.dart';
 import 'package:ayyami/utils/notification.dart';
@@ -20,6 +19,7 @@ import 'package:provider/provider.dart';
 
 import '../firebase_calls/user_record.dart';
 import '../providers/menses_provider.dart';
+import 'main_screen.dart';
 
 class Splash_Screen extends StatefulWidget {
   const Splash_Screen({super.key});
@@ -93,11 +93,15 @@ class _Splash_ScreenState extends State<Splash_Screen> {
                     List<Map<String, dynamic>>.from(medValue.get('time_list'));
                 var medName = medValue.get('medicine_name');
                 var id = medValue.get('medId');
-                print('$id medids');
-                for (int x = 0; x < timingList.length; x++) {}
-                map = {'timeList': timingList, 'medicine_name': medName, 'id': id};
+
+                List<Map<String, dynamic>> tempList = [];
+                for (var medMap in timingList) {
+                  tempList.add({'timeName': medMap['timeName'], 'time': medMap['time']});
+                }
+
+                map = {'timeList': tempList, 'medicine_name': medName, 'id': id};
                 medProvider.setMedMap(map);
-                SendNotification().medicineNotificationTime(timingList, medName);
+                SendNotification().medicineNotificationTime(timingList, medName, medProvider);
               });
             }
           } catch (e) {

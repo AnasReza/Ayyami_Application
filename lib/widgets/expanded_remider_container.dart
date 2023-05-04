@@ -127,8 +127,9 @@ class _ExpandedReminderContainerState extends State<ExpandedReminderContainer> {
                                           horizontal: 8.0,
                                         ),
                                         child: MedicineContainer(
-                                          medicineTime: provider.getMap[index],
+                                          medicineTime: provider.getMap[index]['timeList'],
                                           medicinetitle: provider.getMap[index]['medicine_name'],
+                                          medicineMap: provider.getMap[index],
                                           darkMode: widget.darkMode,
                                           text: widget.text,
                                           lang: widget.lang,
