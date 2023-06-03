@@ -1,5 +1,4 @@
 import 'package:ayyami/firebase_calls/pregnancy_record.dart';
-import 'package:ayyami/providers/menses_provider.dart';
 import 'package:ayyami/providers/tuhur_provider.dart';
 import 'package:ayyami/providers/user_provider.dart';
 import 'package:ayyami/tracker/menses_tracker.dart';
@@ -22,12 +21,12 @@ class PregnancyTracker {
 
   final TuhurTracker tuhurTracker = TuhurTracker();
   final MensesTracker mensesTracker = MensesTracker();
-   late StopWatchTimer _stopWatch = StopWatchTimer(mode: StopWatchMode.countUp);
+  late StopWatchTimer _stopWatch = StopWatchTimer(mode: StopWatchMode.countUp);
 
   void startPregnancyTimer(UserProvider userProvider, PregnancyProvider provider, String uid,
       TuhurProvider tuhurProvider, Timestamp startTime) {
     if (tuhurProvider.getTimerStart) {
-      tuhurTracker.stopTuhurTimer(tuhurProvider,startTime);
+      tuhurTracker.stopTuhurTimer(tuhurProvider, startTime);
       var pregnancy = PregnancyRecord().uploadPregnancyStart(uid, startTime);
       pregnancy.then((value) {
         saveDocId(value.id);
@@ -69,24 +68,28 @@ class PregnancyTracker {
     }
   }
 
-  void stopPregnancyTimer(PregnancyProvider provider, Timestamp endTime,String reason) {
+  void stopPregnancyTimer(PregnancyProvider provider, Timestamp endTime, String reason) {
     var pID = getDocID();
-    PregnancyRecord().uploadPregnancyEndTime(endTime, pID,reason);
+    PregnancyRecord().uploadPregnancyEndTime(endTime, provider.pregnancyID, reason);
   }
 
   void startPregnancyAgain(PregnancyProvider provider, int milliseconds) {
-    var timeMap=Utils.timeConverterWithWeeks(Duration(milliseconds: milliseconds));
-    weekCount=timeMap['weeks']!;
-    daysCount=timeMap['days']!;
-    hoursCount=timeMap['hours']!;
-    minutesCount=timeMap['minutes']!;
-    secondsCount=timeMap['seconds']!;
+    var timeMap = Utils.timeConverterWithWeeks(Duration(milliseconds: milliseconds));
+
+    weekCount = timeMap['weeks']!;
+    daysCount = timeMap['days']!;
+    hoursCount = timeMap['hours']!;
+    minutesCount = timeMap['minutes']!;
+    secondsCount = timeMap['seconds']!;
+
     provider.setWeeks(weekCount);
     provider.setDays(daysCount);
     provider.setHours(hoursCount);
     provider.setMin(minutesCount);
     provider.setSec(secondsCount);
-    _stopWatch=StopWatchTimer(mode: StopWatchMode.countUp,);
+    _stopWatch = StopWatchTimer(
+      mode: StopWatchMode.countUp,
+    );
     _stopWatch.secondTime.listen((event) {
       secondsCount++;
       if (secondsCount > 59) {
@@ -117,6 +120,12 @@ class PregnancyTracker {
       provider.setSec(secondsCount);
     });
     _stopWatch.onStartTimer();
+  }
+
+  void resetValue(PregnancyProvider provider) {
+    _stopWatch.onStopTimer();
+    _stopWatch.onResetTimer();
+    provider.resetValue();
   }
 
   static void saveDocId(String id) async {

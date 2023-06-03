@@ -299,7 +299,25 @@ class _otp_pageState extends State<otp_page> {
                             provider.setDarkMode(value.get('dark-mode'));
                             provider.setLocation(value.get('location_name'));
                             provider.setCurrentPoint(value.get('coordinates'));
-                            provider.setSadqaAmount(value['sadqa_amount']);
+                            try {
+                              provider.setShowSadqa(value['show_sadqa']);
+                              if (provider.getShowSadqa) {
+                                provider.setSadqaAmount(value['sadqa_amount']);
+                                int sadqaAmount = value['sadqa_amount'];
+                                if (sadqaAmount != 0) {
+                                  SendNotification().sadqaNotificationTime(
+                                      int.parse(value['sadqa_reminder'].toString()));
+                                }
+                              }
+                            } catch (e) {
+                              provider.setShowSadqa(true);
+                            }
+                            try {
+                              provider.setShowCycle(value['show_cycle']);
+                            } catch (e) {
+                              provider.setShowCycle(true);
+                            }
+
                             try {
                               provider.setShowFajar(value['show_fajar']);
                               provider.setShowSunrise(value['show_sunrise']);
@@ -321,32 +339,39 @@ class _otp_pageState extends State<otp_page> {
                                   int.parse(value['sadqa_reminder'].toString()));
                             }
                             try {
-                              List<String> medListIDs =
-                                  List<String>.from(value.get('medicine_list'));
-                              provider.setMedicinesIDS(medListIDs);
-                              print('${medListIDs.length} length of med list');
-                              Map<String, dynamic> map = {};
-                              for (var medId in medListIDs) {
-                                MedicineRecord().getMedicineData(medId).then((medValue) {
-                                  List<Map<String, dynamic>> timingList =
-                                      List<Map<String, dynamic>>.from(medValue.get('time_list'));
-                                  var medName = medValue.get('medicine_name');
-                                  var id = medValue.get('medId');
+                              provider.setShowMedicine(value.get('show_medicine'));
+                              if (provider.getShowMedicine) {
+                                List<String> medListIDs =
+                                    List<String>.from(value.get('medicine_list'));
+                                provider.setMedicinesIDS(medListIDs);
+                                print('${medListIDs.length} length of med list');
+                                Map<String, dynamic> map = {};
+                                for (var medId in medListIDs) {
+                                  MedicineRecord().getMedicineData(medId).then((medValue) {
+                                    List<Map<String, dynamic>> timingList =
+                                        List<Map<String, dynamic>>.from(medValue.get('time_list'));
+                                    var medName = medValue.get('medicine_name');
+                                    var id = medValue.get('medId');
 
-                                  List<Map<String, dynamic>> tempList = [];
-                                  for (var medMap in timingList) {
-                                    tempList.add(
-                                        {'timeName': medMap['timeName'], 'time': medMap['time']});
-                                  }
+                                    List<Map<String, dynamic>> tempList = [];
+                                    for (var medMap in timingList) {
+                                      tempList.add(
+                                          {'timeName': medMap['timeName'], 'time': medMap['time']});
+                                    }
 
-                                  map = {'timeList': tempList, 'medicine_name': medName, 'id': id};
-                                  medProvider.setMedMap(map);
-                                  SendNotification()
-                                      .medicineNotificationTime(timingList, medName, medProvider);
-                                });
+                                    map = {
+                                      'timeList': tempList,
+                                      'medicine_name': medName,
+                                      'id': id
+                                    };
+                                    medProvider.setMedMap(map);
+                                    SendNotification()
+                                        .medicineNotificationTime(timingList, medName, medProvider);
+                                  });
+                                }
                               }
                             } catch (e) {
-                              print(' ERROR  in MEDCINE LIST=$e');
+                              provider.setShowMedicine(true);
                             }
                             setHive(getUid!);
                             Navigator.of(context)

@@ -8,7 +8,7 @@ class PostNatalProvider extends ChangeNotifier {
   int days = 0;
   bool isTimerStart = false;
   late Timestamp startTime;
-  String postNatalID='';
+  String postNatalID = '';
 
   int get getSec => seconds;
 
@@ -17,7 +17,7 @@ class PostNatalProvider extends ChangeNotifier {
   int get getDays => days;
 
   bool get getTimerStart => isTimerStart;
-  String get getpostNatalID=> postNatalID;
+  String get getpostNatalID => postNatalID;
   Timestamp get getStartTime => startTime;
 
   setSec(int value) {
@@ -29,12 +29,14 @@ class PostNatalProvider extends ChangeNotifier {
     minutes = value;
     notifyListeners();
   }
-  setHours(int value){
-    hours=value;
+
+  setHours(int value) {
+    hours = value;
     notifyListeners();
   }
-  setDays(int value){
-    days=value;
+
+  setDays(int value) {
+    days = value;
     notifyListeners();
   }
 
@@ -42,12 +44,25 @@ class PostNatalProvider extends ChangeNotifier {
     isTimerStart = value;
     notifyListeners();
   }
+
   setStartTime(Timestamp value) {
     startTime = value;
     notifyListeners();
   }
+
   setPostNatalID(String value) {
     postNatalID = value;
+    notifyListeners();
+  }
+
+  resetValue() {
+    seconds = 0;
+    minutes = 0;
+    hours = 0;
+    days = 0;
+    isTimerStart = false;
+    startTime = Timestamp(0, 0);
+    postNatalID = '';
     notifyListeners();
   }
 }

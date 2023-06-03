@@ -1,16 +1,18 @@
-import 'package:ayyami/constants/images.dart';
 import 'package:ayyami/widgets/app_text.dart';
 import 'package:ayyami/widgets/customerSwitch1.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
 
 import '../constants/colors.dart';
 import '../constants/dark_mode_colors.dart';
 
 class CategoryBoxWithSwitch extends StatefulWidget {
   CategoryBoxWithSwitch(
-      {Key? key, required this.categoryName, required this.comingSoon, required this.onchange, required this.darkMode})
+      {Key? key,
+      required this.categoryName,
+      required this.comingSoon,
+      required this.onchange,
+      required this.darkMode})
       : super(key: key);
 
   final String categoryName;
@@ -35,7 +37,10 @@ class CategoryBoxWithSwitchState extends State<CategoryBoxWithSwitch> {
           width: 1.w,
         ),
         borderRadius: BorderRadius.circular(18.r),
-        boxShadow: const [BoxShadow(color: Color(0x1e1f3d73), offset: Offset(0, 12), blurRadius: 40, spreadRadius: 0)],
+        boxShadow: const [
+          BoxShadow(
+              color: Color(0x1e1f3d73), offset: Offset(0, 12), blurRadius: 40, spreadRadius: 0)
+        ],
       ),
       child: Padding(
         padding: EdgeInsets.fromLTRB(
@@ -60,10 +65,12 @@ class CategoryBoxWithSwitchState extends State<CategoryBoxWithSwitch> {
                 widget.comingSoon
                     ? Container(
                         padding: EdgeInsets.all(3),
-                        decoration: BoxDecoration(color: AppColors.lightGreen, borderRadius: BorderRadius.circular(5)),
+                        decoration: BoxDecoration(
+                            color: AppColors.lightGreen, borderRadius: BorderRadius.circular(5)),
                         child: const Text(
                           'Coming soon',
-                          style: TextStyle(fontSize: 5, fontWeight: FontWeight.w400, color: Colors.black),
+                          style: TextStyle(
+                              fontSize: 5, fontWeight: FontWeight.w400, color: Colors.black),
                         ),
                       )
                     : Container(),
@@ -73,6 +80,7 @@ class CategoryBoxWithSwitchState extends State<CategoryBoxWithSwitch> {
             CustomSwitch1(
               value: widget.darkMode,
               onChanged: (value) {
+                print('$value  switch value from settings');
                 widget.onchange(value);
               },
               activeColor: AppColors.black,

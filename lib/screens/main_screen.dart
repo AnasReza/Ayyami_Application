@@ -129,6 +129,11 @@ class MainScreenState extends State<MainScreen> {
         String invite = text['invite']!;
         String about = text['about_us_text']!;
         String logout = text['logout']!;
+        String delete = text['delete_account']!;
+        String delete_question = text['delete_account_question']!;
+        String yes = text['yes']!;
+        String no = text['no']!;
+        String deleting = text['deleting']!;
         return Scaffold(
           key: _key,
           appBar: AppBar(
@@ -156,19 +161,6 @@ class MainScreenState extends State<MainScreen> {
               height: 78.36.h,
             ),
             centerTitle: true,
-            // actions: [
-            //   InkWell(
-            //     onTap: () {
-            //       _key.currentState!.openDrawer();
-            //       // Navigator.push(context, MaterialPageRoute(builder: (context) => PrayerTiming()));
-            //     },
-            //     child: SvgPicture.asset(
-            //       AppImages.menuIcon,
-            //       width: 44.w,
-            //       height: 38.h,
-            //     ),
-            //   ),
-            // ],
           ),
           body: Container(
             height: double.infinity,
@@ -191,7 +183,8 @@ class MainScreenState extends State<MainScreen> {
           //     widgetIndex = index;
           //   });
           // }),
-          drawer: SideBar(textList, invite, about, logout),
+          drawer:
+              SideBar(textList, invite, about, logout, delete, delete_question, yes, no, deleting),
         );
       },
     );

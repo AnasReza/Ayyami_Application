@@ -20,7 +20,7 @@ class CustomSwitch1 extends StatefulWidget {
       {required this.value,
       required this.onChanged,
       required this.activeColor,
-        required this.darkMode,
+      required this.darkMode,
       this.inactiveColor = Colors.grey,
       this.activeText = '',
       this.inactiveText = '',
@@ -31,21 +31,28 @@ class CustomSwitch1 extends StatefulWidget {
   _CustomSwitch1State createState() => _CustomSwitch1State();
 }
 
-class _CustomSwitch1State extends State<CustomSwitch1>
-    with SingleTickerProviderStateMixin {
+class _CustomSwitch1State extends State<CustomSwitch1> with SingleTickerProviderStateMixin {
   late Animation _circleAnimation;
   late AnimationController _animationController;
+  bool isSwitched = false;
+  Alignment circularAlignment = Alignment.centerRight;
 
   @override
   void initState() {
     super.initState();
-    _animationController = AnimationController(
-        vsync: this, duration: const Duration(milliseconds: 60));
+    _animationController =
+        AnimationController(vsync: this, duration: const Duration(milliseconds: 60));
+    print('${widget.value} settings value');
     _circleAnimation = AlignmentTween(
             begin: widget.value ? Alignment.centerRight : Alignment.centerLeft,
             end: widget.value ? Alignment.centerLeft : Alignment.centerRight)
-        .animate(CurvedAnimation(
-            parent: _animationController, curve: Curves.linear));
+        .animate(CurvedAnimation(parent: _animationController, curve: Curves.linear));
+    isSwitched = widget.value;
+    if (isSwitched) {
+      circularAlignment = Alignment.centerRight;
+    } else {
+      circularAlignment = Alignment.centerLeft;
+    }
   }
 
   @override
@@ -60,9 +67,16 @@ class _CustomSwitch1State extends State<CustomSwitch1>
               } else {
                 _animationController.forward();
               }
-              widget.value == false
-                  ? widget.onChanged(true)
-                  : widget.onChanged(false);
+
+              if (isSwitched) {
+                widget.onChanged(false);
+                isSwitched = false;
+                circularAlignment = Alignment.centerLeft;
+              } else {
+                widget.onChanged(true);
+                isSwitched = true;
+                circularAlignment = Alignment.centerRight;
+              }
             },
             child: Stack(
               clipBehavior: Clip.none,
@@ -72,7 +86,7 @@ class _CustomSwitch1State extends State<CustomSwitch1>
                   height: 32.h,
                   decoration: BoxDecoration(
                     border: Border.all(
-                      color: widget.darkMode?AppDarkColors.headingColor:AppColors.black,
+                      color: widget.darkMode ? AppDarkColors.headingColor : AppColors.black,
                       width: 1,
                     ),
                     borderRadius: BorderRadius.circular(16.r),
@@ -86,13 +100,13 @@ class _CustomSwitch1State extends State<CustomSwitch1>
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      _circleAnimation.value == Alignment.centerRight
+                      circularAlignment == Alignment.centerRight
                           ? const Padding(
                               padding: EdgeInsets.only(left: 18.0, right: 0),
                             )
                           : Container(),
                       Align(
-                        alignment: _circleAnimation.value,
+                        alignment: circularAlignment,
                         child: Container(
                           width: 52.0.w,
                           height: 52.0.h,
@@ -102,7 +116,7 @@ class _CustomSwitch1State extends State<CustomSwitch1>
                           ),
                         ),
                       ),
-                      _circleAnimation.value == Alignment.centerLeft
+                      circularAlignment == Alignment.centerLeft
                           ? const Padding(
                               padding: EdgeInsets.only(left: 0, right: 18.0),
                             )

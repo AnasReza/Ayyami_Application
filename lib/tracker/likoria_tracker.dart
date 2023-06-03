@@ -3,15 +3,13 @@ import 'package:ayyami/firebase_calls/tuhur_record.dart';
 import 'package:ayyami/providers/likoria_timer_provider.dart';
 import 'package:ayyami/providers/post-natal_timer_provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:hive/hive.dart';
 import 'package:stop_watch_timer/stop_watch_timer.dart';
 
 import '../providers/menses_provider.dart';
 import '../providers/tuhur_provider.dart';
 import '../utils/utils.dart';
 
-class LikoriaTracker{
+class LikoriaTracker {
   int secondsCount = 0;
   int minutesCount = 0;
   int hoursCount = 0;
@@ -19,9 +17,10 @@ class LikoriaTracker{
 
   late var _stopWatch = StopWatchTimer(mode: StopWatchMode.countUp);
 
-  void startLikoriaTimer(LikoriaTimerProvider likoriaProvider, String uid,Timestamp startTime,int colorInt) {
-
-    Future<DocumentReference<Map<String, dynamic>>> tuhur = LikoriaRecord().uploadLikoriaStartTime(uid, startTime,colorInt);
+  void startLikoriaTimer(
+      LikoriaTimerProvider likoriaProvider, String uid, Timestamp startTime, int colorInt) {
+    Future<DocumentReference<Map<String, dynamic>>> tuhur =
+        LikoriaRecord().uploadLikoriaStartTime(uid, startTime, colorInt);
     tuhur.then((value) {
       Utils.saveDocLikoriaId(value.id);
 
@@ -55,17 +54,17 @@ class LikoriaTracker{
     _stopWatch.onStartTimer();
   }
 
-  void startLikoriaTimerAgain(LikoriaTimerProvider likoriaProvider,int milliseconds){
-    var timeMap=Utils.timeConverter(Duration(milliseconds: milliseconds));
-    secondsCount=timeMap['seconds']!;
-    minutesCount=timeMap['minutes']!;
-    hoursCount=timeMap['hours']!;
-    daysCount=timeMap['days']!;
+  void startLikoriaTimerAgain(LikoriaTimerProvider likoriaProvider, int milliseconds) {
+    var timeMap = Utils.timeConverter(Duration(milliseconds: milliseconds));
+    secondsCount = timeMap['seconds']!;
+    minutesCount = timeMap['minutes']!;
+    hoursCount = timeMap['hours']!;
+    daysCount = timeMap['days']!;
     likoriaProvider.setDays(daysCount);
     likoriaProvider.setHours(hoursCount);
     likoriaProvider.setMin(minutesCount);
     likoriaProvider.setSec(secondsCount);
-    _stopWatch=StopWatchTimer(mode: StopWatchMode.countUp,presetMillisecond:milliseconds );
+    _stopWatch = StopWatchTimer(mode: StopWatchMode.countUp, presetMillisecond: milliseconds);
     _stopWatch.secondTime.listen((event) {
       print('$secondsCount==sec    $minutesCount==minutes');
       secondsCount++;
@@ -92,10 +91,23 @@ class LikoriaTracker{
     _stopWatch.onStartTimer();
   }
 
-  void stopLikoriaTimer(LikoriaTimerProvider tuhurProvider){
-    String tuhurID=tuhurProvider.getID;
-    TuhurRecord.uploadTuhurEndTime(tuhurID,daysCount,hoursCount,minutesCount,secondsCount);
+  void stopLikoriaTimer(LikoriaTimerProvider likoriaProvider) {
+    String tuhurID = likoriaProvider.getID;
+    TuhurRecord.uploadTuhurEndTime(tuhurID, daysCount, hoursCount, minutesCount, secondsCount);
 
+    likoriaProvider.setTimerStart(false);
+    likoriaProvider.setDays(0);
+    likoriaProvider.setHours(0);
+    likoriaProvider.setMin(0);
+    likoriaProvider.setSec(0);
+    _stopWatch.onStopTimer();
+    _stopWatch.onResetTimer();
+  }
+
+  void stopTimerWithDeletion(String mensesID, String postNatalID, MensesProvider mensesProvider,
+      TuhurProvider tuhurProvider, PostNatalProvider postNatalProvider) {
+    TuhurRecord.deleteTuhurID(
+        mensesID, postNatalID, tuhurProvider, mensesProvider, postNatalProvider);
     tuhurProvider.setTimerStart(false);
     tuhurProvider.setDays(0);
     tuhurProvider.setHours(0);
@@ -105,16 +117,9 @@ class LikoriaTracker{
     _stopWatch.onResetTimer();
   }
 
-  void stopTimerWithDeletion(String mensesID, String postNatalID, MensesProvider mensesProvider, TuhurProvider tuhurProvider,PostNatalProvider postNatalProvider) {
-    TuhurRecord.deleteTuhurID(mensesID,postNatalID,tuhurProvider,mensesProvider,postNatalProvider);
-    tuhurProvider.setTimerStart(false);
-    tuhurProvider.setDays(0);
-    tuhurProvider.setHours(0);
-    tuhurProvider.setMin(0);
-    tuhurProvider.setSec(0);
+  void resetLikoria(LikoriaTimerProvider likoriaProvider) {
     _stopWatch.onStopTimer();
     _stopWatch.onResetTimer();
+    likoriaProvider.resetValue();
   }
-
-
 }

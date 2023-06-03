@@ -1,5 +1,7 @@
 import 'package:hive/hive.dart';
 
+import '../providers/user_provider.dart';
+
 class Utils {
   static Map<String, int> timeConverter(Duration diff) {
     var days = diff.inDays;
@@ -20,6 +22,24 @@ class Utils {
     var minutes = diff.inMinutes % 60;
     var seconds = diff.inSeconds % 60;
     return {'weeks': weeks, 'days': days, 'hours': hours, 'minutes': minutes, 'seconds': seconds};
+  }
+
+  Map<String, DateTime> assumptionOfMenses(UserProvider provider, DateTime startTime) {
+    var tuhurTimeMap = provider.getLastTuhurTime;
+    var mensesTimeMap = provider.getLastMensesTime;
+    Duration tuhurDuration = Duration(
+        days: tuhurTimeMap!['day']!,
+        hours: tuhurTimeMap!['hours']!,
+        minutes: tuhurTimeMap!['minutes']!,
+        seconds: tuhurTimeMap!['second']!);
+    Duration mensesDuration = Duration(
+        days: mensesTimeMap!['day']!,
+        hours: mensesTimeMap!['hours']!,
+        minutes: mensesTimeMap!['minutes']!,
+        seconds: mensesTimeMap!['second']!);
+    var menses_should_start = startTime.add(tuhurDuration);
+    var menses_should_end = menses_should_start.add(mensesDuration);
+    return {'start': menses_should_start, 'end': menses_should_end};
   }
 
   static void saveDocMensesId(String id) async {

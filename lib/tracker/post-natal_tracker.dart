@@ -6,7 +6,7 @@ import 'package:stop_watch_timer/stop_watch_timer.dart';
 import '../firebase_calls/post-natal_record.dart';
 import '../utils/utils.dart';
 
-class PostNatalTracker{
+class PostNatalTracker {
   int secondsCount = 0;
   int minutesCount = 0;
   int hoursCount = 0;
@@ -14,8 +14,9 @@ class PostNatalTracker{
 
   late var _stopWatch = StopWatchTimer(mode: StopWatchMode.countUp);
 
-  void startPostNatalTimer(String uid,PostNatalProvider postNatalProvider){
-    Future<DocumentReference<Map<String, dynamic>>> tuhur = PostNatalRecord().uploadPostNatalStartTime(uid);
+  void startPostNatalTimer(String uid, PostNatalProvider postNatalProvider) {
+    Future<DocumentReference<Map<String, dynamic>>> tuhur =
+        PostNatalRecord().uploadPostNatalStartTime(uid);
     tuhur.then((value) {
       saveDocId(value.id);
 
@@ -48,17 +49,20 @@ class PostNatalTracker{
     });
     _stopWatch.onStartTimer();
   }
+
   void startPostNatalAgain(PostNatalProvider provider, int milliseconds) {
-    var timeMap=Utils.timeConverterWithWeeks(Duration(milliseconds: milliseconds));
-    daysCount=timeMap['days']!;
-    hoursCount=timeMap['hours']!;
-    minutesCount=timeMap['minutes']!;
-    secondsCount=timeMap['seconds']!;
+    var timeMap = Utils.timeConverterWithWeeks(Duration(milliseconds: milliseconds));
+    daysCount = timeMap['days']!;
+    hoursCount = timeMap['hours']!;
+    minutesCount = timeMap['minutes']!;
+    secondsCount = timeMap['seconds']!;
     provider.setDays(daysCount);
     provider.setHours(hoursCount);
     provider.setMin(minutesCount);
     provider.setSec(secondsCount);
-    _stopWatch=StopWatchTimer(mode: StopWatchMode.countUp,);
+    _stopWatch = StopWatchTimer(
+      mode: StopWatchMode.countUp,
+    );
     _stopWatch.secondTime.listen((event) {
       print('$secondsCount==sec    $minutesCount==minutes');
       secondsCount++;
@@ -86,10 +90,18 @@ class PostNatalTracker{
     });
     _stopWatch.onStartTimer();
   }
+
+  void resetValue(PostNatalProvider provider) {
+    _stopWatch.onStopTimer();
+    _stopWatch.onResetTimer();
+    provider.resetValue();
+  }
+
   dynamic getDocID() async {
     var box = await Hive.openBox('aayami_post-natal');
     return box.get('post-natal_timer_doc_id');
   }
+
   dynamic saveDocId(String docID) async {
     var box = await Hive.openBox('aayami_post-natal');
     return box.get('post-natal_timer_doc_id');

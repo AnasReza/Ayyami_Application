@@ -7,39 +7,36 @@ import 'package:provider/provider.dart';
 
 import '../../constants/colors.dart';
 import '../../constants/images.dart';
+import '../../firebase_calls/user_record.dart';
 import '../../translation/app_translation.dart';
 import '../../utils/notification.dart';
+import '../../utils/utils.dart';
 import '../../widgets/app_text.dart';
 import '../../widgets/customerSwitch1.dart';
 import '../../widgets/expanded_remider_container.dart';
 import '../../widgets/reminder_container.dart';
 
-class MedicineReminderScreen extends StatefulWidget {
-  const MedicineReminderScreen({Key? key}) : super(key: key);
+class ReminderScreen extends StatefulWidget {
+  const ReminderScreen({Key? key}) : super(key: key);
 
   @override
-  State<MedicineReminderScreen> createState() => _MedicineReminderScreenState();
+  State<ReminderScreen> createState() => _ReminderScreenState();
 }
 
-class _MedicineReminderScreenState extends State<MedicineReminderScreen> {
+class _ReminderScreenState extends State<ReminderScreen> {
   bool regulationExpanded = true;
   bool sadqaContainerExpanded = true;
   bool saqdaToggle = false, sadqaEdit = false;
 
   @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    print('Reminder class');
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Consumer<UserProvider>(builder: (c, provider, child) {
-      TextEditingController sadqaController = TextEditingController(text: provider.getSadqaAmount.toString());
+      TextEditingController sadqaController =
+          TextEditingController(text: provider.getSadqaAmount.toString());
       var darkMode = provider.getIsDarkMode;
       var lang = provider.getLanguage;
       var text = AppTranslate().textLanguage[lang];
+      bool showMedicine = provider.getShowMedicine;
 
       return Scaffold(
         body: Container(
@@ -91,6 +88,7 @@ class _MedicineReminderScreenState extends State<MedicineReminderScreen> {
                   ExpandedReminderContainer(
                     text: text,
                     regulationExpanded: regulationExpanded,
+                    isSwitched: showMedicine,
                     darkMode: darkMode,
                     lang: lang!,
                   ),
@@ -102,7 +100,8 @@ class _MedicineReminderScreenState extends State<MedicineReminderScreen> {
                     width: 558.w,
                     height: sadqaContainerExpanded ? 234.h : 101.h,
                     decoration: BoxDecoration(
-                      color: darkMode ? AppDarkColors.lightGreyBoxColor : AppColors.lightGreyBoxColor,
+                      color:
+                          darkMode ? AppDarkColors.lightGreyBoxColor : AppColors.lightGreyBoxColor,
                       borderRadius: BorderRadius.circular(18.r),
                       border: Border.all(
                         color: darkMode ? AppDarkColors.headingColor : AppColors.headingColor,
@@ -125,7 +124,9 @@ class _MedicineReminderScreenState extends State<MedicineReminderScreen> {
                                   Text(
                                     text['sadqa_reminder']!,
                                     style: TextStyle(
-                                      color: darkMode ? AppDarkColors.headingColor : AppColors.headingColor,
+                                      color: darkMode
+                                          ? AppDarkColors.headingColor
+                                          : AppColors.headingColor,
                                       fontSize: 32.sp,
                                       fontWeight: FontWeight.w700,
                                       fontStyle: FontStyle.normal,
@@ -134,9 +135,14 @@ class _MedicineReminderScreenState extends State<MedicineReminderScreen> {
                                   CustomSwitch1(
                                     value: saqdaToggle,
                                     onChanged: ((value) {
-                                      setState(() {
-                                        value = saqdaToggle;
-                                      });
+                                      if (!value) {
+                                        SendNotification().sadqaNotificationTime(
+                                            int.parse(provider.getSadqaAmount.toString()));
+                                      } else {
+                                        SendNotification().cancelSadqaNotificationTime();
+                                      }
+                                      provider.setShowSadqa(value);
+                                      UsersRecord().updateShowSadqa(provider.getUid, value);
                                     }),
                                     activeColor: AppColors.black,
                                     darkMode: darkMode,
@@ -163,14 +169,18 @@ class _MedicineReminderScreenState extends State<MedicineReminderScreen> {
                                     text: text['sadqa_amount']!,
                                     fontSize: 18.sp,
                                     fontWeight: FontWeight.w400,
-                                    color: darkMode ? AppDarkColors.headingColor : AppColors.headingColor,
+                                    color: darkMode
+                                        ? AppDarkColors.headingColor
+                                        : AppColors.headingColor,
                                   ),
                                   SizedBox(width: 46.w),
                                   AppText(
                                     text: '\$',
                                     fontSize: 45.sp,
                                     fontWeight: FontWeight.w700,
-                                    color: darkMode ? AppDarkColors.headingColor : AppColors.headingColor,
+                                    color: darkMode
+                                        ? AppDarkColors.headingColor
+                                        : AppColors.headingColor,
                                   ),
                                   Padding(
                                       padding: EdgeInsets.only(top: 5.h),
@@ -193,12 +203,17 @@ class _MedicineReminderScreenState extends State<MedicineReminderScreen> {
                                             text: provider.getSadqaAmount.toString(),
                                             fontSize: 45.sp,
                                             fontWeight: FontWeight.w700,
-                                            color: darkMode ? AppDarkColors.headingColor : AppColors.headingColor,
+                                            color: darkMode
+                                                ? AppDarkColors.headingColor
+                                                : AppColors.headingColor,
                                           ),
                                           onTap: () {
-                                            setState(() {
-                                              sadqaEdit=false;
-                                            });
+                                            var amount = sadqaController.text;
+                                            if (amount.isNotEmpty) {
+                                              setState(() {
+                                                sadqaEdit = false;
+                                              });
+                                            }
                                           },
                                         ),
                                       )),
@@ -209,7 +224,9 @@ class _MedicineReminderScreenState extends State<MedicineReminderScreen> {
                                       decoration: BoxDecoration(
                                           borderRadius: BorderRadius.circular(8.r),
                                           border: Border.all(
-                                            color: darkMode ? AppDarkColors.headingColor : AppColors.headingColor,
+                                            color: darkMode
+                                                ? AppDarkColors.headingColor
+                                                : AppColors.headingColor,
                                             width: 1.w,
                                           )),
                                       child: Center(
@@ -217,17 +234,19 @@ class _MedicineReminderScreenState extends State<MedicineReminderScreen> {
                                           text: "Done",
                                           fontSize: 18.sp,
                                           fontWeight: FontWeight.w700,
-                                          color: darkMode ? AppDarkColors.headingColor : AppColors.headingColor,
+                                          color: darkMode
+                                              ? AppDarkColors.headingColor
+                                              : AppColors.headingColor,
                                         ),
                                       ),
                                     ),
-                                    onTap: (){
+                                    onTap: () {
                                       setState(() {
-                                        sadqaEdit=true;
+                                        sadqaEdit = true;
                                       });
-                                      String sadqaString=sadqaController.text;
-                                      if(sadqaString.isEmpty){
-                                        sadqaString='0';
+                                      String sadqaString = sadqaController.text;
+                                      if (sadqaString.isEmpty) {
+                                        sadqaString = '0';
                                       }
                                       provider.setSadqaAmount(int.parse(sadqaString));
                                     },
@@ -242,7 +261,9 @@ class _MedicineReminderScreenState extends State<MedicineReminderScreen> {
                               Text(
                                 text['sadqa_reminder']!,
                                 style: TextStyle(
-                                  color: darkMode ? AppDarkColors.headingColor : AppColors.headingColor,
+                                  color: darkMode
+                                      ? AppDarkColors.headingColor
+                                      : AppColors.headingColor,
                                   fontSize: 32.sp,
                                   fontWeight: FontWeight.w700,
                                   fontStyle: FontStyle.normal,
@@ -266,21 +287,41 @@ class _MedicineReminderScreenState extends State<MedicineReminderScreen> {
                   SizedBox(height: 71.h),
                   ReminderSwitchContainerWidget(
                     title: text['cycle_reminder']!,
-                    isSwitched: false,
+                    isSwitched: provider.getShowCycle,
                     darkMode: darkMode,
+                    returnvalue: (value) {
+                      try {
+                        if (!value) {
+                          var startTime = provider.getLastMenses.toDate();
+                          var map = Utils().assumptionOfMenses(provider, startTime);
+                          DateTime startDateTime = DateTime.parse(map['start'].toString());
+
+                          SendNotification().cycleNotificationTime(startDateTime);
+                          provider.setShowCycle(true);
+                          UsersRecord().updateShowCycle(provider.getUid, true);
+                        } else {
+                          SendNotification().cancelCycleNotificationTime();
+                          provider.setShowCycle(false);
+                          UsersRecord().updateShowCycle(provider.getUid, false);
+                        }
+                      } catch (e) {
+                        print(e.toString());
+                      }
+                    },
                   ),
-                  SizedBox(height: 48.h),
-                  ReminderSwitchContainerWidget(
-                    title: text['prayer_reminder']!,
-                    isSwitched: false,
-                    darkMode: darkMode,
-                  ),
-                  SizedBox(height: 48.h),
-                  ReminderSwitchContainerWidget(
-                    title: text['supplication_reminder']!,
-                    isSwitched: false,
-                    darkMode: darkMode,
-                  ),
+
+                  // SizedBox(height: 48.h),
+                  // ReminderSwitchContainerWidget(
+                  //   title: text['prayer_reminder']!,
+                  //   isSwitched: false,
+                  //   darkMode: darkMode,
+                  // ),
+                  // SizedBox(height: 48.h),
+                  // ReminderSwitchContainerWidget(
+                  //   title: text['supplication_reminder']!,
+                  //   isSwitched: false,
+                  //   darkMode: darkMode,
+                  // ),
                 ],
               ),
             ),

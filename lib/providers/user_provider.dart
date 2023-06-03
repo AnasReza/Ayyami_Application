@@ -17,6 +17,9 @@ class UserProvider extends ChangeNotifier {
   bool showAsr = true;
   bool showMaghrib = true;
   bool showIsha = true;
+  bool showMedicine = true;
+  bool showSadqa = true;
+  bool showCycle = true;
   int sadqaAmount = 0;
   late Timestamp lastMenses;
   late Timestamp lastMensesEnd;
@@ -55,6 +58,9 @@ class UserProvider extends ChangeNotifier {
   bool get getShowMaghrib => showMaghrib;
 
   bool get getShowIsha => showIsha;
+  bool get getShowMedicine => showMedicine;
+  bool get getShowSadqa => showSadqa;
+  bool get getShowCycle => showCycle;
 
   int get getSadqaAmount => sadqaAmount;
 
@@ -75,6 +81,21 @@ class UserProvider extends ChangeNotifier {
   List<QueryDocumentSnapshot<Map<String, dynamic>>> get getTuhurData => allTuhurData;
 
   List<String> get getMedicinesList => medicineIDS;
+
+  setShowCycle(bool value) {
+    showCycle = value;
+    notifyListeners();
+  }
+
+  setShowMedicine(bool value) {
+    showMedicine = value;
+    notifyListeners();
+  }
+
+  setShowSadqa(bool value) {
+    showSadqa = value;
+    notifyListeners();
+  }
 
   setShowFajar(bool value) {
     showFajar = value;
@@ -132,7 +153,7 @@ class UserProvider extends ChangeNotifier {
   }
 
   setLastMensesTime(int days, int hour, int minute, int seconds) {
-    lastMensesTime = {'day': days, 'hour': hour, 'minute': minute, 'second': seconds};
+    lastMensesTime = {'day': days, 'hours': hour, 'minutes': minute, 'second': seconds};
     notifyListeners();
   }
 

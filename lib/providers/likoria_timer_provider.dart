@@ -8,9 +8,9 @@ class LikoriaTimerProvider extends ChangeNotifier {
   int days = 0;
   bool isTimerStart = false;
   bool isSelected = false;
-  String id='';
-  Color selectedColor=Colors.white;
-  Timestamp startTime=Timestamp(0, 0);
+  String id = '';
+  Color selectedColor = Colors.white;
+  Timestamp startTime = Timestamp(0, 0);
 
   int get getSec => seconds;
 
@@ -33,12 +33,14 @@ class LikoriaTimerProvider extends ChangeNotifier {
     minutes = value;
     notifyListeners();
   }
-  setHours(int value){
-    hours=value;
+
+  setHours(int value) {
+    hours = value;
     notifyListeners();
   }
-  setDays(int value){
-    days=value;
+
+  setDays(int value) {
+    days = value;
     notifyListeners();
   }
 
@@ -46,20 +48,38 @@ class LikoriaTimerProvider extends ChangeNotifier {
     isTimerStart = value;
     notifyListeners();
   }
+
   setID(String value) {
     id = value;
     notifyListeners();
   }
+
   setIsSelected(bool value) {
     isSelected = value;
     notifyListeners();
   }
+
   setSelectedColor(Color value) {
     selectedColor = value;
     notifyListeners();
   }
+
   setStartTime(Timestamp value) {
     startTime = value;
+    notifyListeners();
+  }
+
+  resetValue() {
+    seconds = 0;
+    minutes = 0;
+    hours = 0;
+    hours = 0;
+    days = 0;
+    isTimerStart = false;
+    isSelected = false;
+    id = '';
+    selectedColor = Colors.white;
+    startTime = Timestamp(0, 0);
     notifyListeners();
   }
 }

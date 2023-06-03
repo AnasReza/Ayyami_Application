@@ -2,8 +2,11 @@ import 'package:ayyami/utils/utils.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class PregnancyRecord {
-  Future<DocumentReference<Map<String, dynamic>>> uploadPregnancyStart(String uid, Timestamp startTime) {
-    return FirebaseFirestore.instance.collection('pregnancy').add({'uid': uid, 'start_date': startTime});
+  Future<DocumentReference<Map<String, dynamic>>> uploadPregnancyStart(
+      String uid, Timestamp startTime) {
+    return FirebaseFirestore.instance
+        .collection('pregnancy')
+        .add({'uid': uid, 'start_date': startTime});
   }
 
   void uploadPregnancyEndTime(Timestamp end, String docID, String reason) {
@@ -22,6 +25,23 @@ class PregnancyRecord {
         'hours': timeMap['hours'],
         'reason': reason
       });
+    });
+  }
+
+  Future<void> deleteRecord(String uid) async {
+    FirebaseFirestore.instance
+        .collection('pregnancy')
+        .where('uid', isEqualTo: uid)
+        .get()
+        .then((value) async {
+      var docVal = value.docs;
+      if (docVal.isNotEmpty) {
+        for (var data in docVal) {
+          await FirebaseFirestore.instance.runTransaction((transaction) async {
+            transaction.delete(data.reference);
+          });
+        }
+      }
     });
   }
 }

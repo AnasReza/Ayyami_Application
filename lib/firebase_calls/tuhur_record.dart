@@ -1,7 +1,6 @@
 import 'package:ayyami/firebase_calls/menses_record.dart';
 import 'package:ayyami/firebase_calls/post-natal_record.dart';
 import 'package:ayyami/providers/post-natal_timer_provider.dart';
-import 'package:ayyami/tracker/menses_tracker.dart';
 import 'package:ayyami/tracker/tuhur_tracker.dart';
 import 'package:ayyami/utils/utils.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -15,9 +14,8 @@ class TuhurRecord {
   static uploadTuhurStartTime(String uid, int from, bool isMenstrual) {
     var startTime = Timestamp.now();
 
-    return FirebaseFirestore.instance
-        .collection('tuhur')
-        .add({'uid': uid, 'start_date': startTime, 'non_menstrual_bleeding': isMenstrual, 'from': from});
+    return FirebaseFirestore.instance.collection('tuhur').add(
+        {'uid': uid, 'start_date': startTime, 'non_menstrual_bleeding': isMenstrual, 'from': from});
   }
 
   static uploadTuhurStartSpecificTime(String uid, Timestamp startTime, bool isMenstrual) {
@@ -34,10 +32,13 @@ class TuhurRecord {
       Timestamp start = value.get('start_date');
       DateTime startDate = start.toDate();
       var diffDuration = endDate.difference(startDate);
-      firestore
-          .collection('tuhur')
-          .doc(docID)
-          .update({'end_time': endTime, 'days': days, 'hours': hours, 'minutes': minutes, 'seconds': seconds});
+      firestore.collection('tuhur').doc(docID).update({
+        'end_time': endTime,
+        'days': days,
+        'hours': hours,
+        'minutes': minutes,
+        'seconds': seconds
+      });
     });
   }
 
@@ -56,7 +57,11 @@ class TuhurRecord {
 
   static void deleteTuhurID(String mensesID, String postNatalID, TuhurProvider tuhurProvider,
       MensesProvider mensesProvider, PostNatalProvider postNatalProvider) {
-    FirebaseFirestore.instance.collection('tuhur').doc(tuhurProvider.getTuhurID).delete().then((value) {
+    FirebaseFirestore.instance
+        .collection('tuhur')
+        .doc(tuhurProvider.getTuhurID)
+        .delete()
+        .then((value) {
       int from = tuhurProvider.getFrom;
       if (from == 0) {
         //MENSES START
@@ -68,7 +73,8 @@ class TuhurRecord {
     });
   }
 
-  getLastTuhur(UserProvider pro, Function(List<QueryDocumentSnapshot<Map<String, dynamic>>>) listReturn) {
+  getLastTuhur(
+      UserProvider pro, Function(List<QueryDocumentSnapshot<Map<String, dynamic>>>) listReturn) {
     List<QueryDocumentSnapshot<Map<String, dynamic>>> docList = [];
     FirebaseFirestore.instance
         .collection('tuhur')
@@ -111,20 +117,42 @@ class TuhurRecord {
         .snapshots();
   }
 
-  Stream<QuerySnapshot<Map<String, dynamic>>> getAllTuhurRecordLimit(String uid, DateTime limitedDate) {
+  Stream<QuerySnapshot<Map<String, dynamic>>> getAllTuhurRecordLimit(
+      String uid, DateTime limitedDate) {
     return FirebaseFirestore.instance
         .collection('tuhur')
         .where('uid', isEqualTo: uid)
         .where(
           'start_date',
-          isLessThanOrEqualTo: limitedDate,
+          isLessThanOrEqualTo: DateTime.now(),
+          isGreaterThanOrEqualTo: limitedDate,
         )
         .orderBy('start_date', descending: true)
         .snapshots();
   }
 
+  Future<void> deleteRecord(String uid) async {
+    FirebaseFirestore.instance
+        .collection('tuhur')
+        .where('uid', isEqualTo: uid)
+        .get()
+        .then((value) async {
+      var docVal = value.docs;
+      if (docVal.isNotEmpty) {
+        for (var data in docVal) {
+          await FirebaseFirestore.instance.runTransaction((transaction) async {
+            transaction.delete(data.reference);
+          });
+        }
+      }
+    });
+  }
+
   static void uploadNonMenstrualBleeding(String id, bool nonMenstrual) {
-    FirebaseFirestore.instance.collection('tuhur').doc(id).update({'non_menstrual_bleeding': nonMenstrual});
+    FirebaseFirestore.instance
+        .collection('tuhur')
+        .doc(id)
+        .update({'non_menstrual_bleeding': nonMenstrual});
   }
 
   static void saveDocMensesId(String id) async {

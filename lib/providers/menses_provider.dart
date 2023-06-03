@@ -7,7 +7,7 @@ class MensesProvider extends ChangeNotifier {
   int hours = 0;
   int days = 0;
   bool isTimerStart = false;
-  String mensesID='';
+  String mensesID = '';
   late Timestamp startTime;
 
   int get getSec => seconds;
@@ -21,12 +21,13 @@ class MensesProvider extends ChangeNotifier {
   String get getMensesID => mensesID;
   Timestamp get getStartTime => startTime;
 
-  setMensesID(String value){
-    mensesID=value;
+  setMensesID(String value) {
+    mensesID = value;
     notifyListeners();
   }
-  setStartTime(Timestamp value){
-    startTime=value;
+
+  setStartTime(Timestamp value) {
+    startTime = value;
     notifyListeners();
   }
 
@@ -39,17 +40,31 @@ class MensesProvider extends ChangeNotifier {
     minutes = value;
     notifyListeners();
   }
-  setHours(int value){
-    hours=value;
+
+  setHours(int value) {
+    hours = value;
     notifyListeners();
   }
-  setDays(int value){
-    days=value;
+
+  setDays(int value) {
+    days = value;
     notifyListeners();
   }
 
   setTimerStart(bool value) {
     isTimerStart = value;
+    notifyListeners();
+  }
+
+  resetValue() {
+    seconds = 0;
+    minutes = 0;
+    hours = 0;
+    hours = 0;
+    days = 0;
+    isTimerStart = false;
+    mensesID = '';
+    startTime = Timestamp(0, 0);
     notifyListeners();
   }
 }

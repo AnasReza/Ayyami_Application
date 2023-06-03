@@ -4,8 +4,12 @@ import 'package:ayyami/widgets/edit_medicine.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:provider/provider.dart';
 
 import '../constants/images.dart';
+import '../firebase_calls/user_record.dart';
+import '../providers/medicine_provider.dart';
+import '../providers/user_provider.dart';
 
 class MedicineContainer extends StatelessWidget {
   final String medicinetitle;
@@ -16,6 +20,7 @@ class MedicineContainer extends StatelessWidget {
   bool darkMode;
   Map<String, String> text;
   int index;
+  Function() returnFunction;
 
   MedicineContainer(
       {Key? key,
@@ -26,7 +31,8 @@ class MedicineContainer extends StatelessWidget {
       required this.text,
       required this.lang,
       required this.medId,
-      required this.index})
+      required this.index,
+      required this.returnFunction})
       : super(key: key);
 
   @override
@@ -46,10 +52,8 @@ class MedicineContainer extends StatelessWidget {
       child: Center(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            SizedBox(
-              height: 16.h,
-            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
@@ -86,6 +90,28 @@ class MedicineContainer extends StatelessWidget {
                         });
                   },
                 ),
+                IconButton(
+                    onPressed: () {
+                      var userProvider = Provider.of<UserProvider>(context, listen: false);
+                      var medProvider = Provider.of<MedicineProvider>(context, listen: false);
+                      UsersRecord().getUsersData(userProvider.getUid).then((value) {
+                        List<dynamic> medList = value['medicine_list'];
+                        List<String> list = [];
+                        for (dynamic id in medList) {
+                          if (id.toString() != medId) {
+                            list.add(id.toString());
+                          }
+                        }
+                        UsersRecord().updateMedicineList(userProvider.getUid, list);
+                        medProvider.removeIndex(index);
+                        returnFunction();
+                      });
+                    },
+                    icon: Icon(
+                      Icons.delete,
+                      size: 22,
+                      color: darkMode ? AppDarkColors.headingColor : AppColors.headingColor,
+                    ))
               ],
             ),
             Text(

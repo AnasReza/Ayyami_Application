@@ -9,20 +9,17 @@ import 'package:ayyami/tracker/likoria_tracker.dart';
 import 'package:ayyami/tracker/post-natal_tracker.dart';
 import 'package:ayyami/tracker/pregnancy_tracker.dart';
 import 'package:ayyami/widgets/likoria_timer_box.dart';
+import 'package:ayyami/widgets/menses_timer_box.dart';
 import 'package:ayyami/widgets/post_natal_timer_box.dart';
 import 'package:ayyami/widgets/pregnancy_timer_box.dart';
-import 'package:ayyami/widgets/menses_timer_box.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
 import '../../constants/images.dart';
 import '../../dialog/likoria_color_dialog.dart';
-import '../../providers/menses_provider.dart';
-import '../../providers/tuhur_provider.dart';
 import '../../translation/app_translation.dart';
 
 class AllTrackers extends StatefulWidget {
@@ -87,6 +84,7 @@ class AllTrackersState extends State<AllTrackers> {
           print('${doc.id} preg that is start');
           pregProvider.setTimerStart(true);
           pregProvider.setStartTime(startTime);
+          pregProvider.setPregnancyID(doc.id);
           var diff = DateTime.now().difference(startTime.toDate());
           PregnancyTracker().startPregnancyAgain(pregProvider, diff.inMilliseconds);
         }
@@ -156,8 +154,9 @@ class AllTrackersState extends State<AllTrackers> {
           body: Container(
             width: double.infinity,
             padding: EdgeInsets.only(left: 30, right: 30),
-            decoration:
-                BoxDecoration(gradient: darkMode ? AppDarkColors.backgroundGradient : AppColors.backgroundGradient),
+            decoration: BoxDecoration(
+                gradient:
+                    darkMode ? AppDarkColors.backgroundGradient : AppColors.backgroundGradient),
             child: SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -228,7 +227,8 @@ class AllTrackersState extends State<AllTrackers> {
                   const SizedBox(
                     height: 10,
                   ),
-                  TimerBox(mensis: (value, message) {}, islamicMonth: prayerProvider.hijriDateFormated),
+                  TimerBox(
+                      mensis: (value, message) {}, islamicMonth: prayerProvider.hijriDateFormated),
                   const SizedBox(
                     height: 60,
                   ),

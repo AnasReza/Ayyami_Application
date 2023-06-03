@@ -1,23 +1,12 @@
-import 'dart:async';
-import 'dart:ui';
-
-import 'package:ayyami/firebase_calls/menses_record.dart';
-import 'package:ayyami/providers/post-natal_timer_provider.dart';
 import 'package:ayyami/providers/tuhur_provider.dart';
 import 'package:ayyami/tracker/menses_tracker.dart';
-import 'package:ayyami/tracker/tuhur_tracker.dart';
-import 'package:ayyami/utils/utils.dart';
 import 'package:ayyami/widgets/utils.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_background_service/flutter_background_service.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:stop_watch_timer/stop_watch_timer.dart';
-import 'package:workmanager/workmanager.dart';
 
 import '../constants/colors.dart';
 import '../constants/dark_mode_colors.dart';
@@ -31,7 +20,6 @@ import 'app_text.dart';
 class TimerBox extends StatefulWidget {
   Function(bool mensis, String regulationMessage) mensis;
   String islamicMonth;
-
 
   TimerBox({Key? key, required this.mensis, required this.islamicMonth}) : super(key: key);
 
@@ -67,14 +55,13 @@ class _TimerBoxState extends State<TimerBox> {
       var lang = userProvider.getLanguage;
       var text = AppTranslate().textLanguage[lang];
       mensesProvider = pro;
+      print('${isTuhurStart} is tuhur start');
 
       return Stack(
         clipBehavior: Clip.none,
         children: [
-
           /// Timer Container
           Container(
-
             height: 210.h,
             decoration: BoxDecoration(
               color: darkMode ? AppDarkColors.white : AppColors.white,
@@ -103,12 +90,11 @@ class _TimerBoxState extends State<TimerBox> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-
                   /// Days
                   Column(
                     children: [
                       AppText(
-                        text: isMensesStart?pro.getDays.toString():'0',
+                        text: isMensesStart ? pro.getDays.toString() : '0',
                         color: AppColors.pink,
                         fontSize: 56.722694396972656.sp,
                         fontWeight: FontWeight.w700,
@@ -126,7 +112,7 @@ class _TimerBoxState extends State<TimerBox> {
                   Column(
                     children: [
                       AppText(
-                        text: isMensesStart?pro.getHours.toString():'0',
+                        text: isMensesStart ? pro.getHours.toString() : '0',
                         color: AppColors.pink,
                         fontSize: 56.722694396972656.sp,
                         fontWeight: FontWeight.w700,
@@ -144,7 +130,7 @@ class _TimerBoxState extends State<TimerBox> {
                   Column(
                     children: [
                       AppText(
-                        text: isMensesStart?pro.getmin.toString():'0',
+                        text: isMensesStart ? pro.getmin.toString() : '0',
                         color: AppColors.pink,
                         fontSize: 56.722694396972656.sp,
                         fontWeight: FontWeight.w700,
@@ -162,7 +148,7 @@ class _TimerBoxState extends State<TimerBox> {
                   Column(
                     children: [
                       AppText(
-                        text: isMensesStart?pro.getSec.toString():'0',
+                        text: isMensesStart ? pro.getSec.toString() : '0',
                         color: AppColors.pink,
                         fontSize: 56.722694396972656.sp,
                         fontWeight: FontWeight.w700,
@@ -188,7 +174,7 @@ class _TimerBoxState extends State<TimerBox> {
             child: InkWell(
               onTap: () {
                 bool start = calculateLastMenses();
-                print('$start  start');
+                print('$start  start, $isTuhurStart  tuhurstart}');
                 int tuhurDays = tuhurProvider.getDays;
                 int tuhurFrom = tuhurProvider.getFrom;
                 if (!isMensesStart) {
@@ -231,7 +217,7 @@ class _TimerBoxState extends State<TimerBox> {
                 ),
                 child: Center(
                   child: AppText(
-                    text: isMensesStart ?text['stop_timer']! : text['start_timer']!,
+                    text: isMensesStart ? text['stop_timer']! : text['start_timer']!,
                     color: AppColors.white,
                     fontSize: 26.36170196533203.sp,
                     fontWeight: FontWeight.w700,
@@ -320,7 +306,8 @@ class _TimerBoxState extends State<TimerBox> {
               widget.mensis(false, '');
               mensesProvider.setTimerStart(true);
               // startService();
-              mensesTrack.startMensisTimer(mensesProvider, uid, tuhurProvider, Timestamp.fromDate(startDate));
+              mensesTrack.startMensisTimer(
+                  mensesProvider, uid, tuhurProvider, Timestamp.fromDate(startDate));
               Navigator.pop(dialogContext);
             },
             darkMode: darkMode,
@@ -348,9 +335,9 @@ class _TimerBoxState extends State<TimerBox> {
               var mensesProvider = Provider.of<MensesProvider>(context, listen: false);
               var tuhurProvider = Provider.of<TuhurProvider>(context, listen: false);
               var userProvider = Provider.of<UserProvider>(context, listen: false);
-              String message=MensesTracker().stopMensesTimer(
-                  mensesProvider, tuhurProvider, uid, userProvider, Timestamp.fromDate(endDate), widget.islamicMonth,text);
-              widget.mensis(true,message);
+              String message = MensesTracker().stopMensesTimer(mensesProvider, tuhurProvider, uid,
+                  userProvider, Timestamp.fromDate(endDate), widget.islamicMonth, text);
+              widget.mensis(true, message);
               Navigator.pop(dialogContext);
             },
             darkMode: darkMode,

@@ -1,4 +1,11 @@
+import 'package:ayyami/firebase_calls/menses_record.dart';
+import 'package:ayyami/firebase_calls/post-natal_record.dart';
+import 'package:ayyami/firebase_calls/pregnancy_record.dart';
+import 'package:ayyami/firebase_calls/tuhur_record.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+
+import 'likoria_record.dart';
+import 'medicine_record.dart';
 
 class UsersRecord {
   Future<DocumentSnapshot<Map<String, dynamic>>> getUsersData(String uid) {
@@ -39,7 +46,33 @@ class UsersRecord {
     return FirebaseFirestore.instance.collection('users').doc(uid).update({'sadqa_amount': amount});
   }
 
+  Future<void> updateShowSadqa(String uid, bool value) {
+    return FirebaseFirestore.instance.collection('users').doc(uid).update({'show_sadqa': value});
+  }
+
+  Future<void> updateShowMedicine(String uid, bool value) {
+    return FirebaseFirestore.instance.collection('users').doc(uid).update({'show_medicine': value});
+  }
+
   Future<void> updateShowNamaz(String uid, String itemName, bool value) {
     return FirebaseFirestore.instance.collection('users').doc(uid).update({itemName: value});
+  }
+
+  Future<void> updateShowCycle(String uid, bool value) {
+    return FirebaseFirestore.instance.collection('users').doc(uid).update({'show_cycle': value});
+  }
+
+  Future<void> deleteAccount(String uid) async {
+    FirebaseFirestore.instance.collection('users').doc(uid).get().then((value) async {
+      await FirebaseFirestore.instance.runTransaction((transaction) async {
+        transaction.delete(value.reference);
+      });
+    });
+    LikoriaRecord().deleteRecord(uid);
+    MedicineRecord().deleteRecord(uid);
+    MensesRecord().deleteRecord(uid);
+    PostNatalRecord().deleteRecord(uid);
+    PregnancyRecord().deleteRecord(uid);
+    TuhurRecord().deleteRecord(uid);
   }
 }

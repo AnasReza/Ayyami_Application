@@ -1,28 +1,28 @@
-import 'package:ayyami/widgets/customerSwitch1.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../constants/colors.dart';
 import '../constants/dark_mode_colors.dart';
+import 'customerSwitch1.dart';
 
 class ReminderSwitchContainerWidget extends StatefulWidget {
   bool isSwitched = false;
   String title;
   bool darkMode;
+  Function(bool) returnvalue;
   ReminderSwitchContainerWidget({
     required this.isSwitched,
     required this.title,
     required this.darkMode,
+    required this.returnvalue,
     Key? key,
   }) : super(key: key);
 
   @override
-  State<ReminderSwitchContainerWidget> createState() =>
-      _ReminderSwitchContainerWidgetState();
+  State<ReminderSwitchContainerWidget> createState() => _ReminderSwitchContainerWidgetState();
 }
 
-class _ReminderSwitchContainerWidgetState
-    extends State<ReminderSwitchContainerWidget> {
+class _ReminderSwitchContainerWidgetState extends State<ReminderSwitchContainerWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -59,9 +59,8 @@ class _ReminderSwitchContainerWidgetState
           CustomSwitch1(
             value: widget.isSwitched,
             onChanged: ((value) {
-              setState(() {
-                value = widget.isSwitched;
-              });
+              print('$value value cycle ');
+              widget.returnvalue(value);
             }),
             activeColor: widget.darkMode ? AppDarkColors.headingColor : AppColors.headingColor,
             darkMode: widget.darkMode,

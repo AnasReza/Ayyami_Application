@@ -362,6 +362,25 @@ class _set_passwordState extends State<set_password> {
                             provider.setSadqaAmount(0);
                             setHive(uid!);
                             UsersRecord().updateSadqaAmount(uid!, 0);
+                            UsersRecord().updateShowSadqa(uid!, true);
+                            UsersRecord().updateShowNamaz(uid!, 'show_fajar', true);
+                            UsersRecord().updateShowNamaz(uid!, 'show_sunrise', true);
+                            UsersRecord().updateShowNamaz(uid!, 'show_duhur', true);
+                            UsersRecord().updateShowNamaz(uid!, 'show_asr', true);
+                            UsersRecord().updateShowNamaz(uid!, 'show_maghrib', true);
+                            UsersRecord().updateShowNamaz(uid!, 'show_isha', true);
+                            UsersRecord().updateShowMedicine(uid!, true);
+                            UsersRecord().updateShowCycle(uid!, true);
+
+                            provider.setShowFajar(true);
+                            provider.setShowSunrise(true);
+                            provider.setShowDuhur(true);
+                            provider.setShowAsr(true);
+                            provider.setShowMaghrib(true);
+                            provider.setShowIsha(true);
+                            provider.setShowMedicine(true);
+                            provider.setShowMedicine(true);
+                            provider.setShowCycle(true);
                             nextScreen(
                                 context,
                                 first_question(
@@ -370,12 +389,6 @@ class _set_passwordState extends State<set_password> {
                                   fromProfile: false,
                                 ));
                           });
-                          UsersRecord().updateShowNamaz(uid!, 'show_fajar', true);
-                          UsersRecord().updateShowNamaz(uid!, 'show_sunrise', true);
-                          UsersRecord().updateShowNamaz(uid!, 'show_duhur', true);
-                          UsersRecord().updateShowNamaz(uid!, 'show_asr', true);
-                          UsersRecord().updateShowNamaz(uid!, 'show_maghrib', true);
-                          UsersRecord().updateShowNamaz(uid!, 'show_isha', true);
                         }
                       } else {
                         setState(() {

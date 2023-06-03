@@ -40,4 +40,21 @@ class MedicineRecord {
   Future<DocumentSnapshot<Map<String, dynamic>>> getMedicineData(String medID) {
     return FirebaseFirestore.instance.collection('medicine_reminder').doc(medID).get();
   }
+
+  Future<void> deleteRecord(String uid) async {
+    FirebaseFirestore.instance
+        .collection('medicine_reminder')
+        .where('uid', isEqualTo: uid)
+        .get()
+        .then((value) async {
+      var docVal = value.docs;
+      if (docVal.isNotEmpty) {
+        for (var data in docVal) {
+          await FirebaseFirestore.instance.runTransaction((transaction) async {
+            transaction.delete(data.reference);
+          });
+        }
+      }
+    });
+  }
 }

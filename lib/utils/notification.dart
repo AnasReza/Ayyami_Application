@@ -2,6 +2,7 @@ import 'package:ayyami/providers/medicine_provider.dart';
 import 'package:ayyami/providers/user_provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:intl/intl.dart';
 import 'package:timezone/data/latest.dart' as latest;
 import 'package:timezone/timezone.dart' as tz;
 
@@ -105,8 +106,9 @@ class SendNotification {
 
     for (int x = 0; x < medList.length; x++) {
       Timestamp timestamp = medList[x]['time'];
+      int notiId = medList[x]['notificationID'];
       notificationsPlugin.periodicallyShow(
-        mapList.length + x + 7,
+        notiId,
         'Medicine Reminder',
         'You should eat $medName',
         RepeatInterval.daily,
@@ -122,6 +124,34 @@ class SendNotification {
         uiLocalNotificationDateInterpretation: UILocalNotificationDateInterpretation.absoluteTime,
         androidAllowWhileIdle: true,
         matchDateTimeComponents: DateTimeComponents.time,
+      );
+    }
+  }
+
+  void cancelMedicineNotification(List<Map<String, dynamic>> medList, MedicineProvider provider) {
+    var android = const AndroidNotificationDetails(
+      "2",
+      'Medicine Reminder',
+      importance: Importance.max,
+      category: AndroidNotificationCategory.reminder,
+    );
+    var ios = const DarwinNotificationDetails();
+    var platform = NotificationDetails(android: android, iOS: ios);
+    FlutterLocalNotificationsPlugin notificationsPlugin = FlutterLocalNotificationsPlugin();
+    AndroidInitializationSettings androidInitializationSettings =
+        const AndroidInitializationSettings('ic_launcher');
+    DarwinInitializationSettings iosInitializationSettings = const DarwinInitializationSettings();
+    final InitializationSettings initializationSettings = InitializationSettings(
+        android: androidInitializationSettings, iOS: iosInitializationSettings);
+
+    notificationsPlugin.initialize(
+      initializationSettings,
+    );
+    var mapList = provider.getMap;
+    for (int x = 0; x < medList.length; x++) {
+      int notiId = medList[x]['notificationID'];
+      notificationsPlugin.cancel(
+        notiId,
       );
     }
   }
@@ -216,5 +246,126 @@ class SendNotification {
       androidAllowWhileIdle: true,
       matchDateTimeComponents: DateTimeComponents.time,
     );
+  }
+
+  void cancelSadqaNotificationTime() {
+    String sound = 'assets/adhan.mp3';
+    latest.initializeTimeZones();
+    var soundFile = sound.replaceAll('.mp3', '');
+    final notificationSound = sound == '' ? null : RawResourceAndroidNotificationSound(soundFile);
+    var android = const AndroidNotificationDetails(
+      "3",
+      'Sadqa reminder',
+      importance: Importance.max,
+      category: AndroidNotificationCategory.reminder,
+    );
+    var ios = const DarwinNotificationDetails();
+    var platform = NotificationDetails(android: android, iOS: ios);
+    FlutterLocalNotificationsPlugin notificationsPlugin = FlutterLocalNotificationsPlugin();
+    AndroidInitializationSettings androidInitializationSettings =
+        const AndroidInitializationSettings('ic_launcher');
+    DarwinInitializationSettings iosInitializationSettings = const DarwinInitializationSettings();
+    final InitializationSettings initializationSettings = InitializationSettings(
+        android: androidInitializationSettings, iOS: iosInitializationSettings);
+
+    notificationsPlugin.initialize(
+      initializationSettings,
+    );
+
+    notificationsPlugin.cancel(50);
+  }
+
+  void cycleNotificationTime(DateTime datetime) {
+    String sound = 'assets/adhan.mp3';
+    latest.initializeTimeZones();
+    var soundFile = sound.replaceAll('.mp3', '');
+    final notificationSound = sound == '' ? null : RawResourceAndroidNotificationSound(soundFile);
+    var android = const AndroidNotificationDetails(
+      "3",
+      'Sadqa reminder',
+      importance: Importance.max,
+      category: AndroidNotificationCategory.reminder,
+    );
+    var ios = const DarwinNotificationDetails();
+    var platform = NotificationDetails(android: android, iOS: ios);
+    FlutterLocalNotificationsPlugin notificationsPlugin = FlutterLocalNotificationsPlugin();
+    AndroidInitializationSettings androidInitializationSettings =
+        const AndroidInitializationSettings('ic_launcher');
+    DarwinInitializationSettings iosInitializationSettings = const DarwinInitializationSettings();
+    final InitializationSettings initializationSettings = InitializationSettings(
+        android: androidInitializationSettings, iOS: iosInitializationSettings);
+
+    notificationsPlugin.initialize(
+      initializationSettings,
+    );
+
+    var format = DateFormat('dd-MM-yyyy');
+    var date = format.format(datetime);
+    var beforeDate = datetime.subtract(const Duration(days: 7));
+
+    notificationsPlugin.zonedSchedule(
+      500,
+      'Cycle Reminder',
+      'Your Menses should start at: $date',
+      tz.TZDateTime.from(beforeDate, tz.local),
+      platform,
+      uiLocalNotificationDateInterpretation: UILocalNotificationDateInterpretation.absoluteTime,
+      androidAllowWhileIdle: true,
+      matchDateTimeComponents: DateTimeComponents.time,
+    );
+  }
+
+  void cancelCycleNotificationTime() {
+    String sound = 'assets/adhan.mp3';
+    latest.initializeTimeZones();
+    var soundFile = sound.replaceAll('.mp3', '');
+    final notificationSound = sound == '' ? null : RawResourceAndroidNotificationSound(soundFile);
+    var android = const AndroidNotificationDetails(
+      "3",
+      'Sadqa reminder',
+      importance: Importance.max,
+      category: AndroidNotificationCategory.reminder,
+    );
+    var ios = const DarwinNotificationDetails();
+    var platform = NotificationDetails(android: android, iOS: ios);
+    FlutterLocalNotificationsPlugin notificationsPlugin = FlutterLocalNotificationsPlugin();
+    AndroidInitializationSettings androidInitializationSettings =
+        const AndroidInitializationSettings('ic_launcher');
+    DarwinInitializationSettings iosInitializationSettings = const DarwinInitializationSettings();
+    final InitializationSettings initializationSettings = InitializationSettings(
+        android: androidInitializationSettings, iOS: iosInitializationSettings);
+
+    notificationsPlugin.initialize(
+      initializationSettings,
+    );
+
+    notificationsPlugin.cancel(500);
+  }
+
+  void cancelAll() {
+    String sound = 'assets/adhan.mp3';
+    latest.initializeTimeZones();
+    var soundFile = sound.replaceAll('.mp3', '');
+    final notificationSound = sound == '' ? null : RawResourceAndroidNotificationSound(soundFile);
+    var android = const AndroidNotificationDetails(
+      "3",
+      'Sadqa reminder',
+      importance: Importance.max,
+      category: AndroidNotificationCategory.reminder,
+    );
+    var ios = const DarwinNotificationDetails();
+    var platform = NotificationDetails(android: android, iOS: ios);
+    FlutterLocalNotificationsPlugin notificationsPlugin = FlutterLocalNotificationsPlugin();
+    AndroidInitializationSettings androidInitializationSettings =
+        const AndroidInitializationSettings('ic_launcher');
+    DarwinInitializationSettings iosInitializationSettings = const DarwinInitializationSettings();
+    final InitializationSettings initializationSettings = InitializationSettings(
+        android: androidInitializationSettings, iOS: iosInitializationSettings);
+
+    notificationsPlugin.initialize(
+      initializationSettings,
+    );
+
+    notificationsPlugin.cancelAll();
   }
 }

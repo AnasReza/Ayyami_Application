@@ -13,7 +13,7 @@ import '../../providers/user_provider.dart';
 import '../../translation/app_translation.dart';
 import '../../widgets/app_text.dart';
 import '../../widgets/utils.dart';
-import 'medicine_reminder.dart';
+import 'reminder_screen.dart';
 
 class AddMedicineReminder extends StatefulWidget {
   const AddMedicineReminder({Key? key}) : super(key: key);
@@ -114,13 +114,17 @@ class _AddMedicineReminderState extends State<AddMedicineReminder> {
                           child: TextFormField(
                               keyboardType: TextInputType.text,
                               controller: medicineController,
-                              style:
-                                  TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: AppColors.headingColor),
+                              style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                  color: AppColors.headingColor),
                               decoration: InputDecoration(
                                 border: InputBorder.none,
                                 hintText: text['add_medicine']!,
                                 hintStyle: TextStyle(
-                                  color: darkMode ? AppDarkColors.headingColor : AppColors.headingColor,
+                                  color: darkMode
+                                      ? AppDarkColors.headingColor
+                                      : AppColors.headingColor,
                                 ),
                               ),
                               validator: (value) {
@@ -138,7 +142,8 @@ class _AddMedicineReminderState extends State<AddMedicineReminder> {
                     width: 830.w,
                     height: 3.h,
                     decoration: BoxDecoration(
-                      color: darkMode ? AppDarkColors.lightGreyBoxColor : AppColors.lightGreyBoxColor,
+                      color:
+                          darkMode ? AppDarkColors.lightGreyBoxColor : AppColors.lightGreyBoxColor,
                     ),
                   ),
                   const SizedBox(height: 25),
@@ -159,7 +164,9 @@ class _AddMedicineReminderState extends State<AddMedicineReminder> {
                               ? BoxDecoration(
                                   borderRadius: BorderRadius.circular(12.r),
                                   border: Border.all(
-                                    color: darkMode ? AppDarkColors.headingColor : AppColors.headingColor,
+                                    color: darkMode
+                                        ? AppDarkColors.headingColor
+                                        : AppColors.headingColor,
                                     width: 1.5.w,
                                     // strokeAlign: StrokeAlign.inside,
                                   ),
@@ -317,7 +324,9 @@ class _AddMedicineReminderState extends State<AddMedicineReminder> {
                   TextButton(
                       onPressed: () {
                         if (formKey.currentState!.validate()) {
-                          if (morningSelected == true && eveningSelected == true && nightSelected == true) {
+                          if (morningSelected == true &&
+                              eveningSelected == true &&
+                              nightSelected == true) {
                             toast_notification().toast_message(text['select_only_one']!);
                             return;
                           }
@@ -338,23 +347,22 @@ class _AddMedicineReminderState extends State<AddMedicineReminder> {
                           }
 
                           if (morningSelected == true) {
-                            provider.addToMedicineList(
-                                MedicineModel(medicalTile: medicineController.text, timing: 'Morning'));
+                            provider.addToMedicineList(MedicineModel(
+                                medicalTile: medicineController.text, timing: 'Morning'));
 
-                            Navigator.push(
-                                context, MaterialPageRoute(builder: (context) => const MedicineReminderScreen()));
+                            Navigator.push(context,
+                                MaterialPageRoute(builder: (context) => const ReminderScreen()));
                           } else if (eveningSelected == true) {
-                            provider.addToMedicineList(
-                                MedicineModel(medicalTile: medicineController.text, timing: 'Evening'));
-                            Navigator.push(
-                                context, MaterialPageRoute(builder: (context) => const MedicineReminderScreen()));
+                            provider.addToMedicineList(MedicineModel(
+                                medicalTile: medicineController.text, timing: 'Evening'));
+                            Navigator.push(context,
+                                MaterialPageRoute(builder: (context) => const ReminderScreen()));
                           } else if (nightSelected == true) {
-                            provider.addToMedicineList(
-                                MedicineModel(medicalTile: medicineController.text, timing: 'Night'));
-
-                            Navigator.push(
-                                context, MaterialPageRoute(builder: (context) => const MedicineReminderScreen()));
+                            provider.addToMedicineList(MedicineModel(
+                                medicalTile: medicineController.text, timing: 'Night'));
                           }
+                          Navigator.push(context,
+                              MaterialPageRoute(builder: (context) => const ReminderScreen()));
                         }
                       },
                       style: TextButton.styleFrom(

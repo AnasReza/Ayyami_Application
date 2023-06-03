@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 
-class NamazProvider extends ChangeNotifier{
-  String fajrTiming='';
-  String sunriseTiming='';
-  String duhurTiming='';
-  String asrTiming='';
-  String maghribTiming='';
-  String ishaTiming='';
-  DateTime fajrDateTime=DateTime(2023);
-  DateTime sunriseDateTime=DateTime(2023);
-  DateTime duhurDateTime=DateTime(2023);
-  DateTime asrDateTime=DateTime(2023);
-  DateTime maghribDateTime=DateTime(2023);
-  DateTime ishaDateTime=DateTime(2023);
+class NamazProvider extends ChangeNotifier {
+  String fajrTiming = '';
+  String sunriseTiming = '';
+  String duhurTiming = '';
+  String asrTiming = '';
+  String maghribTiming = '';
+  String ishaTiming = '';
+  DateTime fajrDateTime = DateTime(2023);
+  DateTime sunriseDateTime = DateTime(2023);
+  DateTime duhurDateTime = DateTime(2023);
+  DateTime asrDateTime = DateTime(2023);
+  DateTime maghribDateTime = DateTime(2023);
+  DateTime ishaDateTime = DateTime(2023);
 
   String get getFajrTime => fajrTiming;
   String get getSunriseTime => sunriseTiming;
@@ -27,53 +27,79 @@ class NamazProvider extends ChangeNotifier{
   DateTime get getMaghribDateTime => maghribDateTime;
   DateTime get getIshaDateTime => ishaDateTime;
 
+  void setFajarDateTime(DateTime value) {
+    fajrDateTime = value;
+    notifyListeners();
+  }
 
-  void setFajarDateTime(DateTime value){
-    fajrDateTime=value;
+  void setSunriseDateTime(DateTime value) {
+    sunriseDateTime = value;
     notifyListeners();
   }
-  void setSunriseDateTime(DateTime value){
-    sunriseDateTime=value;
+
+  void setDuhurDateTime(DateTime value) {
+    duhurDateTime = value;
     notifyListeners();
   }
-  void setDuhurDateTime(DateTime value){
-    duhurDateTime=value;
+
+  void setAsrDateTime(DateTime value) {
+    asrDateTime = value;
     notifyListeners();
   }
-  void setAsrDateTime(DateTime value){
-    asrDateTime=value;
+
+  void setMaghribDateTime(DateTime value) {
+    maghribDateTime = value;
     notifyListeners();
   }
-  void setMaghribDateTime(DateTime value){
-    maghribDateTime=value;
+
+  void setIshaDateTime(DateTime value) {
+    ishaDateTime = value;
     notifyListeners();
   }
-  void setIshaDateTime(DateTime value){
-    ishaDateTime=value;
+
+  void setFajrTime(String value) {
+    fajrTiming = value;
     notifyListeners();
   }
-  void setFajrTime(String value){
-    fajrTiming=value;
+
+  void setSunriseTime(String value) {
+    sunriseTiming = value;
     notifyListeners();
   }
-  void setSunriseTime(String value){
-    sunriseTiming=value;
+
+  void setDuhurTime(String value) {
+    duhurTiming = value;
     notifyListeners();
   }
-  void setDuhurTime(String value){
-    duhurTiming=value;
+
+  void setAsrTime(String value) {
+    asrTiming = value;
     notifyListeners();
   }
-  void setAsrTime(String value){
-    asrTiming=value;
+
+  void setMaghribTime(String value) {
+    maghribTiming = value;
     notifyListeners();
   }
-  void setMaghribTime(String value){
-    maghribTiming=value;
+
+  void setIshaTime(String value) {
+    ishaTiming = value;
     notifyListeners();
   }
-  void setIshaTime(String value){
-    ishaTiming=value;
+
+  resetValue() {
+    fajrTiming = '';
+    sunriseTiming = '';
+    duhurTiming = '';
+    asrTiming = '';
+    maghribTiming = '';
+    ishaTiming = '';
+    fajrDateTime = DateTime(2023);
+    sunriseDateTime = DateTime(2023);
+    duhurDateTime = DateTime(2023);
+    asrDateTime = DateTime(2023);
+    maghribDateTime = DateTime(2023);
+    ishaDateTime = DateTime(2023);
     notifyListeners();
   }
 }

@@ -1,7 +1,7 @@
 import 'package:ayyami/constants/dark_mode_colors.dart';
 import 'package:ayyami/providers/medicine_provider.dart';
+import 'package:ayyami/utils/notification.dart';
 import 'package:ayyami/widgets/add_medicine.dart';
-import 'package:ayyami/widgets/customerSwitch1.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -9,6 +9,9 @@ import 'package:provider/provider.dart';
 
 import '../constants/colors.dart';
 import '../constants/images.dart';
+import '../firebase_calls/user_record.dart';
+import '../providers/user_provider.dart';
+import 'customerSwitch1.dart';
 import 'medicine_container.dart';
 
 class ExpandedReminderContainer extends StatefulWidget {
@@ -18,6 +21,7 @@ class ExpandedReminderContainer extends StatefulWidget {
     required this.darkMode,
     required this.text,
     required this.lang,
+    required this.isSwitched,
   }) : super(key: key);
 
   bool regulationExpanded = true;
@@ -74,19 +78,31 @@ class _ExpandedReminderContainerState extends State<ExpandedReminderContainer> {
                           fontStyle: FontStyle.normal,
                         ),
                       ),
-                      Row(
-                        children: [
-                          CustomSwitch1(
-                            value: widget.isSwitched,
-                            onChanged: ((value) {
-                              setState(() {
-                                value = widget.isSwitched;
-                              });
-                            }),
-                            activeColor: AppColors.black,
-                            darkMode: widget.darkMode,
-                          )
-                        ],
+                      CustomSwitch1(
+                        value: widget.isSwitched,
+                        onChanged: ((value) {
+                          print('$value value from medicine }');
+                          List<Map<String, dynamic>> medicineMap = provider.getMap;
+                          var userProvider = Provider.of<UserProvider>(context, listen: false);
+                          if (value) {
+                            if (medicineMap.isNotEmpty) {
+                              for (var subMap in medicineMap) {
+                                SendNotification().medicineNotificationTime(
+                                    subMap['timeList'], subMap['medicine_name'], provider);
+                              }
+                            }
+
+                            UsersRecord().updateShowMedicine(userProvider.getUid, true);
+                          } else {
+                            for (var subMap in medicineMap) {
+                              SendNotification()
+                                  .cancelMedicineNotification(subMap['timeList'], provider);
+                            }
+                            UsersRecord().updateShowMedicine(userProvider.getUid, false);
+                          }
+                        }),
+                        activeColor: AppColors.black,
+                        darkMode: widget.darkMode,
                       ),
                       InkWell(
                         onTap: () {
@@ -135,6 +151,9 @@ class _ExpandedReminderContainerState extends State<ExpandedReminderContainer> {
                                           lang: widget.lang,
                                           medId: provider.getMap[index]['id'],
                                           index: index,
+                                          returnFunction: () {
+                                            setState(() {});
+                                          },
                                         ),
                                       );
                                     },

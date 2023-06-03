@@ -29,12 +29,19 @@ class SideBarBottomView extends StatelessWidget {
         crossAxisAlignment: WrapCrossAlignment.center,
         textDirection: TextDirection.rtl,
         children: [
-          SvgPicture.asset(
-            image,
-            width: 50.w,
-            height: 50.h,
-            color: darkMode ? AppDarkColors.headingColor : AppColors.headingColor,
-          ),
+          image.contains('.png')
+              ? Image.asset(
+                  image,
+                  width: 50.w,
+                  height: 50.h,
+                  color: darkMode ? AppDarkColors.headingColor : AppColors.headingColor,
+                )
+              : SvgPicture.asset(
+                  image,
+                  width: 50.w,
+                  height: 50.h,
+                  color: darkMode ? AppDarkColors.headingColor : AppColors.headingColor,
+                ),
           Text(
             text,
             style: TextStyle(

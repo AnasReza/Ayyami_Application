@@ -32,6 +32,7 @@ class AppImages {
   static const String historyIcon = "assets/svg/history.svg";
   static const String inviteIcon = "assets/svg/invite.svg";
   static const String logoutIcon = "assets/svg/logout.svg";
+  static const String deleteAccountIcon = "assets/images/delete_account.png";
   static const String timeIcon = "assets/svg/time.svg";
   static const String trackerIcon = "assets/svg/tracker.svg";
   static const String suggestIcon = "assets/svg/suggest.svg";
