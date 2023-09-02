@@ -1,0 +1,126 @@
+name: ayyami
+description: A new Flutter project.
+
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+version: 1.0.0+1
+
+environment:
+  sdk: '>=2.18.2 <3.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  cupertino_icons: ^1.0.2
+  flutter_screenutil: ^5.5.3+2
+  flutter_svg: ^2.0.6
+  dropdown_button2: ^1.8.8
+  fluttertoast: ^8.0.9
+  google_fonts: 4.0.4 #^3.0.1
+  flutter_spinkit: ^5.1.0
+  regexed_validator: ^2.0.0+1
+  intl_phone_number_input: ^0.7.1
+  persistent_bottom_nav_bar: ^5.0.2
+  pdf: ^3.10.1
+  sn_progress_dialog: ^1.0.3
+  flutter_share: ^2.0.0
+
+  
+
+  image_picker: ^0.8.6
+  numberpicker: ^2.1.1
+  flutter_time_picker_spinner: ^2.0.0
+
+  path_provider: ^2.0.11
+  flutter_background_service: ^2.4.5
+  pinch_zoom: ^1.0.0
+
+#  background_fetch: '^1.0.3'
+  stop_watch_timer: ^2.0.0
+  adhan: ^2.0.0-nullsafety.2
+
+  # GPS
+  geolocator: ^9.0.2
+  geocoding: ^2.0.5
+
+  #  date
+  hijri_picker: ^3.0.0
+  hijri: ^3.0.0
+  table_calendar: ^3.0.7
+  syncfusion_flutter_datepicker: ^21.2.9
+
+  #  state
+  provider: ^6.0.4
+
+  #  formating
+  intl: ^0.18.1
+
+  # firebase
+  cloud_firestore: ^4.8.0
+  firebase_core: ^2.13.1
+  firebase_storage: ^11.0.5
+  firebase_auth: ^4.1.2
+  firebase_database: ^10.0.5
+  firebase_core_platform_interface: ^4.5.2
+  firebase_messaging: ^14.2.1
+
+  #  storage
+  hive: ^2.2.3
+
+  #  networking
+  http: ^0.13.5
+
+  #  notification
+  flutter_local_notifications: ^14.1.1
+
+  #  players
+  audioplayers: ^4.1.0
+
+  #background
+  workmanager: ^0.5.1
+
+  change_app_package_name: ^1.1.0
+  get: ^4.6.5
+  get_storage: ^2.0.3
+
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^2.0.0
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/
+    - assets/svg/
+    - assets/images/
+
+  fonts:
+    - family: DMSans
+      fonts:
+        - asset: assets/fonts/DM-Sans-Bold.ttf
+        - asset: assets/fonts/DM-Sans-Regular.ttf
+
+    - family: Charm
+      fonts:
+        - asset: assets/fonts/Charm-Regular.ttf
+        - asset: assets/fonts/Charm-Bold.ttf
+          weight: 700
+
+    - family: Inter
+      fonts:
+        - asset: assets/fonts/Inter-Regular.ttf
+        - asset: assets/fonts/Inter-Medium.ttf
+        - asset: assets/fonts/Inter-Light.ttf
+        - asset: assets/fonts/Inter-Bold.ttf
+        - asset: assets/fonts/Inter-ExtraBold.ttf
+          weight: 900
+
+    - family: Al Qalam Quran Majeed Web
+      fonts:
+        - asset: assets/fonts/Qalam_Quran-Majeed.ttf
+   
+
