@@ -1,29 +1,18 @@
-import 'dart:async';
-import 'dart:ui';
-
 import 'package:ayyami/constants/dark_mode_colors.dart';
 import 'package:ayyami/firebase_calls/likoria_record.dart';
-import 'package:ayyami/firebase_calls/menses_record.dart';
 import 'package:ayyami/providers/likoria_timer_provider.dart';
 import 'package:ayyami/providers/tuhur_provider.dart';
 import 'package:ayyami/translation/app_translation.dart';
 import 'package:ayyami/widgets/utils.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_background_service/flutter_background_service.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get.dart';
-import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:stop_watch_timer/stop_watch_timer.dart';
-import 'package:workmanager/workmanager.dart';
 
 import '../constants/colors.dart';
 import '../constants/images.dart';
 import '../dialog/timer_date_time.dart';
-import '../providers/menses_provider.dart';
 import '../providers/user_provider.dart';
 import 'app_text.dart';
 
@@ -62,13 +51,10 @@ class _LikoriaTimerBoxState extends State<LikoriaTimerBox> {
           /// Timer Container
           Container(
             decoration: BoxDecoration(
-              color:
-                  darkMode ? AppDarkColors.lightGreyBoxColor : AppColors.white,
+              color: darkMode ? AppDarkColors.lightGreyBoxColor : AppColors.white,
               borderRadius: BorderRadius.circular(18.r),
               border: Border.all(
-                color: darkMode
-                    ? AppDarkColors.headingColor
-                    : AppColors.headingColor,
+                color: darkMode ? AppDarkColors.headingColor : AppColors.headingColor,
                 width: 5.w,
               ),
               boxShadow: const [
@@ -91,11 +77,9 @@ class _LikoriaTimerBoxState extends State<LikoriaTimerBox> {
                   children: [
                     GestureDetector(
                       child: Container(
-                        padding: const EdgeInsets.only(
-                            left: 10, right: 10, top: 3, bottom: 3),
+                        padding: const EdgeInsets.only(left: 10, right: 10, top: 3, bottom: 3),
                         decoration: BoxDecoration(
-                            color: AppColors.yellow,
-                            borderRadius: BorderRadius.circular(15)),
+                            color: AppColors.yellow, borderRadius: BorderRadius.circular(15)),
                         child: Text(
                           text!['change_colour']!,
                           style: TextStyle(
@@ -208,8 +192,7 @@ class _LikoriaTimerBoxState extends State<LikoriaTimerBox> {
                     showStopDialog(text!);
                   }
                 } else {
-                  toast_notification()
-                      .toast_message(text!['likoria_color_selected']!);
+                  toast_notification().toast_message(text!['likoria_color_selected']!);
                 }
               },
               child: Container(
@@ -225,9 +208,7 @@ class _LikoriaTimerBoxState extends State<LikoriaTimerBox> {
                 ),
                 child: Center(
                   child: AppText(
-                    text: isTimerStart
-                        ? text['stop_timer']!
-                        : text['start_timer']!,
+                    text: isTimerStart ? text['stop_timer']! : text['start_timer']!,
                     color: AppColors.white,
                     fontSize: 26.36170196533203.sp,
                     fontWeight: FontWeight.w700,
@@ -256,13 +237,12 @@ class _LikoriaTimerBoxState extends State<LikoriaTimerBox> {
               DateTime startDate = DateTime.utc(year, month, day, hour, minute);
               var dateString = DateFormat.yMEd().add_jms().format(startDate);
               print('$dateString  == dateString');
-              var provider =
-                  Provider.of<LikoriaTimerProvider>(context, listen: false);
+              var provider = Provider.of<LikoriaTimerProvider>(context, listen: false);
 
               var colorSelected = provider.selectedColor;
 
-              LikoriaRecord().uploadLikoriaStartTime(
-                  uid, Timestamp.fromDate(startDate), colorSelected.value);
+              LikoriaRecord()
+                  .uploadLikoriaStartTime(uid, Timestamp.fromDate(startDate), colorSelected.value);
               Navigator.pop(dialogContext);
             },
             darkMode: darkMode,
@@ -286,13 +266,12 @@ class _LikoriaTimerBoxState extends State<LikoriaTimerBox> {
               DateTime startDate = DateTime.utc(year, month, day, hour, minute);
               var dateString = DateFormat.yMEd().add_jms().format(startDate);
               print('$dateString  == dateString');
-              var provider =
-                  Provider.of<LikoriaTimerProvider>(context, listen: false);
+              var provider = Provider.of<LikoriaTimerProvider>(context, listen: false);
 
               var colorSelected = provider.selectedColor;
 
-              LikoriaRecord().uploadLikoriaStartTime(
-                  uid, Timestamp.fromDate(startDate), colorSelected.value);
+              LikoriaRecord()
+                  .uploadLikoriaStartTime(uid, Timestamp.fromDate(startDate), colorSelected.value);
               Navigator.pop(dialogContext);
             },
             darkMode: darkMode,

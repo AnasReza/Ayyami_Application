@@ -28,6 +28,15 @@ class SupplicationsDetails extends StatelessWidget {
         appBar: AppBar(
           backgroundColor: darkMode ? AppDarkColors.white : AppColors.white,
           elevation: 0,
+          leading: IconButton(
+            icon: Icon(
+              Icons.arrow_back,
+              color: darkMode ? AppColors.white : AppDarkColors.white,
+            ),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
           title: SvgPicture.asset(
             darkMode ? AppImages.logo_white : AppImages.logo,
             width: 249.6.w,
@@ -37,11 +46,14 @@ class SupplicationsDetails extends StatelessWidget {
         ),
         body: Container(
           padding: EdgeInsets.only(left: 20, right: 20),
-          decoration:
-              BoxDecoration(gradient: darkMode ? AppDarkColors.backgroundGradient : AppColors.backgroundGradient),
+          decoration: BoxDecoration(
+              gradient: darkMode ? AppDarkColors.backgroundGradient : AppColors.backgroundGradient),
           child: ListView.builder(
               itemCount: list?.length,
               itemBuilder: (listContext, index) {
+                print('${list![index]['dua']!} ==dua\n');
+                print('${list![index]['description']!}==des\n');
+                print('${list![index]['heading']!}==heading\n');
                 return SupplicationView(darkMode, list![index]['heading']!, list![index]['dua']!,
                     list![index]['times']!, list![index]['description']!);
               }),

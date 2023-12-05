@@ -39,6 +39,7 @@ class LocationQuestionState extends State<LocationQuestion> {
 
       return Scaffold(
         body: Container(
+          padding: EdgeInsets.only(left: 20, right: 20),
           decoration: BoxDecoration(
               gradient: widget.darkMode
                   ? AppDarkColors.backgroundGradient
@@ -50,8 +51,7 @@ class LocationQuestionState extends State<LocationQuestion> {
               Container(
                 height: 140,
                 width: 200,
-                child: SvgPicture.asset(
-                    widget.darkMode ? AppImages.logo_white : AppImages.logo),
+                child: SvgPicture.asset(widget.darkMode ? AppImages.logo_white : AppImages.logo),
               ),
               SizedBox(
                 width: double.infinity,
@@ -64,9 +64,8 @@ class LocationQuestionState extends State<LocationQuestion> {
                           text: text!['where_are_you_from']!,
                           fontSize: 45.sp,
                           fontWeight: FontWeight.w700,
-                          color: widget.darkMode
-                              ? AppDarkColors.headingColor
-                              : AppColors.headingColor,
+                          color:
+                              widget.darkMode ? AppDarkColors.headingColor : AppColors.headingColor,
                         ),
                       ),
                     ),
@@ -80,9 +79,7 @@ class LocationQuestionState extends State<LocationQuestion> {
                 text: text['your_location']!,
                 fontSize: 36.sp,
                 fontWeight: FontWeight.w700,
-                color: widget.darkMode
-                    ? AppDarkColors.headingColor
-                    : AppColors.grey,
+                color: widget.darkMode ? AppDarkColors.headingColor : AppColors.grey,
               ),
               const SizedBox(
                 height: 20,
@@ -91,9 +88,7 @@ class LocationQuestionState extends State<LocationQuestion> {
                 children: [
                   SvgPicture.asset(
                     AppImages.locationIcon,
-                    color: widget.darkMode
-                        ? AppDarkColors.headingColor
-                        : AppColors.headingColor,
+                    color: widget.darkMode ? AppDarkColors.headingColor : AppColors.headingColor,
                   ),
                   const SizedBox(
                     width: 20,
@@ -103,17 +98,14 @@ class LocationQuestionState extends State<LocationQuestion> {
                       decoration: InputDecoration(
                         border: InputBorder.none,
                         isDense: true,
-                        label: AppText(
-                            text: labelText,
-                            fontSize: 18,
-                            fontWeight: FontWeight.w700),
+                        enabled: false,
+                        label: AppText(text: labelText, fontSize: 18, fontWeight: FontWeight.w700),
                       ),
                     ),
                   ),
                 ],
               ),
-              const Divider(
-                  color: AppColors.grey, thickness: 0.5, height: 15.0),
+              const Divider(color: AppColors.grey, thickness: 0.5, height: 15.0),
               const SizedBox(
                 height: 20,
               ),
@@ -124,9 +116,7 @@ class LocationQuestionState extends State<LocationQuestion> {
                       AppImages.locateIcon,
                       width: 30,
                       height: 30,
-                      color: widget.darkMode
-                          ? AppDarkColors.headingColor
-                          : AppColors.headingColor,
+                      color: widget.darkMode ? AppDarkColors.headingColor : AppColors.headingColor,
                     ),
                     const SizedBox(
                       width: 20,
@@ -135,27 +125,21 @@ class LocationQuestionState extends State<LocationQuestion> {
                       text: text['locate_me']!,
                       fontSize: 18,
                       fontWeight: FontWeight.w700,
-                      color: widget.darkMode
-                          ? AppDarkColors.headingColor
-                          : AppColors.headingColor,
+                      color: widget.darkMode ? AppDarkColors.headingColor : AppColors.headingColor,
                     ),
                   ],
                 ),
                 onTap: () {
                   _determinePosition().then((value) async {
-                    print(
-                        '${value.latitude}==Latitude     ${value.longitude}==longitude');
+                    print('${value.latitude}==Latitude     ${value.longitude}==longitude');
                     currentPoint = GeoPoint(value.latitude, value.longitude);
-                    await placemarkFromCoordinates(
-                            value.latitude, value.longitude)
-                        .then((value) {
+                    await placemarkFromCoordinates(value.latitude, value.longitude).then((value) {
                       print('${value.length}==length');
                       print('${value.first.name}==name');
                       print('${value.first.locality}==locality');
                       print('${value.first.country}==country');
                       setState(() {
-                        labelText =
-                            '${value.first.locality}, ${value.first.country}';
+                        labelText = '${value.first.locality}, ${value.first.country}';
                       });
                     });
                   });
@@ -169,15 +153,14 @@ class LocationQuestionState extends State<LocationQuestion> {
                   title: text['save']!,
                   onPressedButon: () {
                     if (currentPoint != null) {
-                      var provider =
-                          Provider.of<UserProvider>(context, listen: false);
+                      var provider = Provider.of<UserProvider>(context, listen: false);
                       QuestionRecord()
                           .uploadLocation(widget.uid, labelText, currentPoint)
                           .then((value) {
                         provider.setCurrentPoint(currentPoint);
                         provider.setLocation(labelText);
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => MainScreen()));
+                        Navigator.of(context)
+                            .push(MaterialPageRoute(builder: (context) => MainScreen()));
                       });
                     }
                   }),

@@ -40,7 +40,8 @@ class SurahViewState extends State<SurahView> {
             ),
             borderRadius: BorderRadius.circular(18.r),
             boxShadow: const [
-              BoxShadow(color: Color(0x1e1f3d73), offset: Offset(0, 12), blurRadius: 40, spreadRadius: 0)
+              BoxShadow(
+                  color: Color(0x1e1f3d73), offset: Offset(0, 12), blurRadius: 40, spreadRadius: 0)
             ],
           ),
           child: Column(
@@ -66,6 +67,7 @@ class SurahViewState extends State<SurahView> {
               fontSize: _fontSize,
               fontWeight: FontWeight.w400,
               fontFamily: 'Al Qalam Quran Majeed Web'),
+          textDirection: TextDirection.ltr,
           textAlign: TextAlign.end,
         ),
         const SizedBox(

@@ -10,10 +10,10 @@ import '../../constants/dark_mode_colors.dart';
 import '../../constants/images.dart';
 import '../../providers/user_provider.dart';
 
-class SurahDetails extends StatelessWidget{
+class SurahDetails extends StatelessWidget {
   String prayerTime;
   List<String> heading;
-   SurahDetails(this.prayerTime,this.heading,{super.key});
+  SurahDetails(this.prayerTime, this.heading, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -24,6 +24,15 @@ class SurahDetails extends StatelessWidget{
         appBar: AppBar(
           backgroundColor: darkMode ? AppDarkColors.white : AppColors.white,
           elevation: 0,
+          leading: IconButton(
+            icon: Icon(
+              Icons.arrow_back,
+              color: darkMode ? AppColors.white : AppDarkColors.white,
+            ),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
           title: SvgPicture.asset(
             darkMode ? AppImages.logo_white : AppImages.logo,
             width: 249.6.w,
@@ -32,14 +41,16 @@ class SurahDetails extends StatelessWidget{
           centerTitle: true,
         ),
         body: Container(
-          padding: EdgeInsets.only(left: 20, right: 20),
-          decoration: BoxDecoration(gradient: darkMode?AppDarkColors.backgroundGradient:AppColors.backgroundGradient),
-          child: ListView.builder(itemCount: surah!.length,itemBuilder: (listContext,index){
-            return SurahView(darkMode, surah![index]['surah']!, heading[index]);
-          })
-        ),
+            padding: EdgeInsets.only(left: 20, right: 20),
+            decoration: BoxDecoration(
+                gradient:
+                    darkMode ? AppDarkColors.backgroundGradient : AppColors.backgroundGradient),
+            child: ListView.builder(
+                itemCount: surah!.length,
+                itemBuilder: (listContext, index) {
+                  return SurahView(darkMode, surah![index]['surah']!, heading[index]);
+                })),
       );
     });
   }
-
 }

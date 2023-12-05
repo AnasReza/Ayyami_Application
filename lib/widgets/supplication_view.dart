@@ -72,6 +72,7 @@ class SupplicationView extends StatelessWidget {
               fontSize: 20,
               fontWeight: FontWeight.w400,
               fontFamily: 'Al Qalam Quran Majeed Web'),
+          textDirection: TextDirection.ltr,
           textAlign: TextAlign.end,
         ),
         const SizedBox(
